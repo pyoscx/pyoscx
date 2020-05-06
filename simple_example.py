@@ -1,11 +1,12 @@
 import pyoscx   
-    
+
 catalog = pyoscx.Catalog()
 catalog.add_catalog('VehicleCatalog','Catalogs/VehicleCatalogs')
 catalog.add_catalog('ControllerCatalog','Catalogs/ControllerCatalogs')
 
 roadfile = 'Databases/SampleDatabase.xodr'
 road = pyoscx.RoadNetwork(roadfile)
+pyoscx.prettyprint(road.get_element())
 
 trigcond = pyoscx.TimeToCollisionCondition(10,'equalTo',True,freespace=False,position=pyoscx.WorldPosition())
 
