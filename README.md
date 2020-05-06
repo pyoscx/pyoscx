@@ -1,6 +1,6 @@
 # pyoscx
 pyoscx is a Python wrapper for generating OpenSCENARIO 1.0 xml files. 
-Please not that this is not an official implementation.
+Please note that this is not an official implementation.
 
 
 ## Getting Started
