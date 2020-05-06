@@ -58,5 +58,5 @@ sb = pyoscx.StoryBoard(init)
 sb.add_story(story)
 
 sce = pyoscx.Scenario('myscenario','Mandolin',pyoscx.ParameterDeclarations(),entities=entities,storyboard = sb,roadnetwork=road,catalog=catalog)
-pyoscx.prettyprint(sce.get_element())
-    
+# pyoscx.prettyprint(sce.get_element())
+sce.write_xml('myfirstscenario.xml',True)
