@@ -1,12 +1,30 @@
 import pyoscx   
 
+
+
+
+
+
+route = pyoscx.Route('myroute')
+
+route.add_waypoint(pyoscx.WorldPosition(0,0,0,0,0,0),'closest')
+route.add_waypoint(pyoscx.WorldPosition(1,1,0,0,0,0),'closest')
+
+pyoscx.prettyprint(route.get_element())
+
+
+
+
+
+
+
 catalog = pyoscx.Catalog()
 catalog.add_catalog('VehicleCatalog','Catalogs/VehicleCatalogs')
 catalog.add_catalog('ControllerCatalog','Catalogs/ControllerCatalogs')
 
 roadfile = 'Databases/SampleDatabase.xodr'
 road = pyoscx.RoadNetwork(roadfile)
-pyoscx.prettyprint(road.get_element())
+# pyoscx.prettyprint(road.get_element())
 
 trigcond = pyoscx.TimeToCollisionCondition(10,'equalTo',True,freespace=False,position=pyoscx.WorldPosition())
 
@@ -15,10 +33,12 @@ trigger = pyoscx.EntityTrigger('mytesttrigger',0.2,'rising',trigcond,'Target_1')
 event = pyoscx.Event('myfirstevent','overwrite')
 event.add_trigger(trigger)
 
-TD = pyoscx.TransitionDynamics('step',0,'rate',1)
+TD = pyoscx.TransitionDynamics('step','rate',1)
 
-speedaction = pyoscx.SpeedAction(TD)
-speedaction.set_absolute_target_speed(50)
+lanechangeaction = pyoscx.AbsoluteLaneChangeAction(1,TD)
+# pyoscx.prettyprint(lanechangeaction.get_element())
+
+speedaction = pyoscx.AbsoluteSpeedAction(50,TD)
 event.add_action('newspeed',speedaction)
 
 man = pyoscx.Maneuver('my maneuver')
@@ -34,21 +54,24 @@ act.add_maneuver_group(mangr)
 story = pyoscx.Story('mystory')
 story.add_act(act)
 
-ego = pyoscx.ScenarioObject('Ego')
-ego.set_catalog_reference('VehicleCatalog','S90')
-ego.set_object_controller('ControllerCatalog','Default')
 
-tar = pyoscx.ScenarioObject('Target_1')
-tar.set_catalog_reference('VehicleCatalog','A3')
-tar.set_object_controller('ControllerCatalog','Default')
+bb = pyoscx.BoundingBox(2,5,1.5,1.5,0,0.2)
+fa = pyoscx.Axel(2,2,2,1,1)
+ba = pyoscx.Axel(1,1,2,1,1)
+veh = pyoscx.Vehicle('mycar','vehicle',bb,fa,ba,150,10,10)
+
+veh.add_property_file('propfile.xml')
+veh.add_property('myprop','12')
+
 
 entities = pyoscx.Entities()
-entities.add_scenario_object(ego)
-entities.add_scenario_object(tar)
-
+entities.add_scenario_object('Ego',veh)
+entities.add_scenario_object('Target_1',veh)
+entities.add_entity_bytype('Target_2','vehicle')
+entities.add_entity_byref('Target_3','something')
 init = pyoscx.Init()
-egospeed = pyoscx.SpeedAction(TD)
-egospeed.set_absolute_target_speed(10)
+egospeed = pyoscx.AbsoluteSpeedAction(10,TD)
+
 
 init.add_init_action('Ego',egospeed)
 init.add_init_action('Ego',pyoscx.TeleportAction(pyoscx.WorldPosition(1,2,3,0,0,0)))
@@ -60,4 +83,4 @@ sb.add_story(story)
 
 sce = pyoscx.Scenario('myscenario','Mandolin',pyoscx.ParameterDeclarations(),entities=entities,storyboard = sb,roadnetwork=road,catalog=catalog)
 # pyoscx.prettyprint(sce.get_element())
-sce.write_xml('myfirstscenario.xml',True)
+# sce.write_xml('myfirstscenario.xml',True)
