@@ -10,11 +10,12 @@ route = pyoscx.Route('myroute')
 route.add_waypoint(pyoscx.WorldPosition(0,0,0,0,0,0),'closest')
 route.add_waypoint(pyoscx.WorldPosition(1,1,0,0,0,0),'closest')
 
-pyoscx.prettyprint(route.get_element())
+# pyoscx.prettyprint(route.get_element())
 
 
 
-
+overrideaction = pyoscx.OverrideBrakeAction(0.3,True)
+pyoscx.prettyprint(overrideaction.get_element())
 
 
 
