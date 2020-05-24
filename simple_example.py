@@ -5,12 +5,6 @@ import pyoscx
 
 
 
-# polyline = pyoscx.Polyline([0,2],[pyoscx.WorldPosition(),pyoscx.WorldPosition()])
-
-# pyoscx.prettyprint(polyline.get_element())
-
-
-
 ### create catalogs
 catalog = pyoscx.Catalog()
 catalog.add_catalog('VehicleCatalog','../xosc/Catalogs/Vehicles')
