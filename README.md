@@ -20,6 +20,15 @@ Go to the pyoscx folder and use
 pip install .
 ```
 
+### Running with esmini
+To view the scenario created, esmini can be used. Visit https://github.com/esmini/esmini and follow the "Binaries and demos" section, and your scenarios can be viewed directly!
+
+
+## Related work
+
+
+### esmini
+[esmini](https://github.com/esmini/esmini) is a basic OpenSCENARIO player
 
 ## Authors
 
