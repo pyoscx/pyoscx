@@ -1,0 +1,5015 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>pyoscx.triggers API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyoscx.triggers</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import xml.etree.ElementTree as ET
+
+from .utils import EntityRef
+from .enumerations import Rule, ConditionEdge
+
+
+
+class EmptyTrigger():
+    &#34;&#34;&#34; EmptyTrigger creates an empty trigger
+        
+        Parameters
+        ----------
+            triggeringpoint (str): start or stop 
+
+        Attributes
+        ----------
+            
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,triggeringpoint = &#39;start&#39;):
+        &#34;&#34;&#34; initalizes the emtpy trigger
+
+        Parameters
+        ----------
+            triggeringpoint (str): start or stop 
+
+        &#34;&#34;&#34;
+        if triggeringpoint not in [&#39;start&#39;,&#39;stop&#39;]:
+            raise ValueError(&#39;not a valid triggering point, valid start or stop&#39;)
+        if triggeringpoint == &#39;start&#39;:
+            self._triggerpoint = &#39;StartTrigger&#39;
+        else:
+            self._triggerpoint = &#39;StopTrigger&#39;
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Trigger
+
+        &#34;&#34;&#34;
+        return ET.Element(self._triggerpoint)
+        
+
+class EntityTrigger():
+    &#34;&#34;&#34; the EntityTrigger creates an EntityTrigger of openScenario
+        
+        Parameters
+        ----------
+            name (str): name of the trigger
+
+            delay (float): the delay of the trigger
+
+            conditionedge (ConditionEdge): on what conditionedge the trigger should act
+
+            entitycondotion (*Condition): an entity condition
+
+            triggeringentity (str): the entity of the trigger 
+
+            triggeringrule (str): rule of the trigger
+                Default: &#39;any&#39;
+
+            triggeringpoint (str): start or stop 
+            
+        Attributes
+        ----------
+            name (str): name of the trigger
+
+            delay (float): the delay of the trigger
+
+            conditionedge (ConditionEdge): the condition edge
+
+            entitycondition (*EntityCondition): the entitycondition
+        
+            triggerentity (TriggeringEntities): the triggering entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,delay,conditionedge,entitycondition,triggerentity,triggeringrule=&#39;any&#39;,triggeringpoint = &#39;start&#39;):
+        &#34;&#34;&#34; initalize the EntityTrigger
+
+        Parameters
+        ----------
+            name (str): name of the trigger
+
+            delay (float): the delay of the trigger
+
+            conditionedge (ConditionEdge): on what conditionedge the trigger should act
+
+            entitycondotion (*EntityCondition): an entity condition
+
+            triggeringentity (str): the entity of the trigger 
+
+            triggeringrule (str): rule of the trigger
+                Default: &#39;any&#39;
+
+            triggeringpoint (str): start or stop 
+    
+        &#34;&#34;&#34;
+        self.name = name
+        if triggeringpoint not in [&#39;start&#39;,&#39;stop&#39;]:
+            raise ValueError(&#39;not a valid triggering point, valid start or stop&#39;)
+        if triggeringpoint == &#39;start&#39;:
+            self._triggerpoint = &#39;StartTrigger&#39;
+        else:
+            self._triggerpoint = &#39;StopTrigger&#39;
+            
+        self.delay = delay
+        if conditionedge not in ConditionEdge:
+            raise ValueError(&#39;not a valid condition edge&#39;)
+        self.conditionedge = conditionedge
+        self.entitycondition = entitycondition
+        self.triggerentity = TriggeringEntities(triggerentity,triggeringrule)
+        
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name,&#39;delay&#39;:str(self.delay),&#39;conditionEdge&#39;:self.conditionedge.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the LaneOffsetAction
+
+        &#34;&#34;&#34;
+        element = ET.Element(self._triggerpoint)
+        condgroup = ET.SubElement(element,&#39;ConditionGroup&#39;)
+        condition = ET.SubElement(condgroup,&#39;Condition&#39;,attrib=self.get_attributes())
+        byentity = ET.SubElement(condition,&#39;ByEntityCondition&#39;)
+        byentity.append(self.triggerentity.get_element())
+        byentity.append(self.entitycondition.get_element())
+        return element
+
+
+
+class ValueTrigger():
+    &#34;&#34;&#34; the ValueTrigger creates a ValueTrigger of openscenario
+        
+        Parameters
+        ----------
+            name (str): name of the trigger
+
+            delay (float): the delay of the trigger
+
+            conditionedge (ConditionEdge): on what conditionedge the trigger should act
+
+            valuecondition (*ValueCondition): a value condition
+
+            triggeringentity (str): the entity of the trigger 
+
+            triggeringrule (str): rule of the trigger
+                Default: &#39;any&#39;
+
+            triggeringpoint (str): start or stop 
+            
+        Attributes
+        ----------
+            name (str): name of the trigger
+
+            delay (float): the delay of the trigger
+
+            conditionedge (ConditionEdge): the condition edge
+
+            valuecondition (*ValueCondition): the value condition
+        
+            triggerentity (TriggeringEntities): the triggering entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,delay,conditionedge,valuecondition,triggeringpoint=&#39;start&#39;):
+        &#34;&#34;&#34; initalize the ValueTrigger
+        
+        Parameters
+        ----------
+            name (str): name of the trigger
+
+            delay (float): the delay of the trigger
+
+            conditionedge (ConditionEdge): on what conditionedge the trigger should act
+
+            valuecondition (*ValueCondition): a value condition
+
+            triggeringentity (str): the entity of the trigger 
+
+            triggeringrule (str): rule of the trigger
+                Default: &#39;any&#39;
+            #TODO CHECK THIS
+            triggeringpoint (str): start or stop 
+
+        &#34;&#34;&#34;
+        self.name = name
+        if triggeringpoint not in [&#39;start&#39;,&#39;stop&#39;]:
+            raise ValueError(&#39;not a valid triggering point, valid start or stop&#39;)
+        if triggeringpoint == &#39;start&#39;:
+            self.triggerpoint = &#39;StartTrigger&#39;
+        else:
+            self.triggerpoint = &#39;StopTrigger&#39;
+            
+        self.delay = delay
+        if conditionedge not in ConditionEdge:
+            raise ValueError(&#39;not a valid condition edge&#39;)
+        self.conditionedge = conditionedge
+        self.valuecondition = valuecondition
+        
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name,&#39;delay&#39;:str(self.delay),&#39;conditionEdge&#39;:self.conditionedge.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the LaneOffsetAction
+
+        &#34;&#34;&#34;
+        element = ET.Element(self.triggerpoint)
+        condgroup = ET.SubElement(element,&#39;ConditionGroup&#39;)
+        condition = ET.SubElement(condgroup,&#39;Condition&#39;,attrib=self.get_attributes())
+        byvalue = ET.SubElement(condition,&#39;ByValueCondition&#39;)
+        byvalue.append(self.valuecondition.get_element())
+        
+        return element
+
+
+
+
+class TriggeringEntities():
+    &#34;&#34;&#34; the TriggeringEntities class is used by Value and Entity Triggers to defined the trigger entity
+        
+        Parameters
+        ----------
+            entity (str): name of the entity
+
+            triggeringrule (str): all or any
+
+        Attributes
+        ----------
+            entity (EntityRef): refernce to the entity
+
+            triggeringrule (str): all or any
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,entity,triggeringrule):
+        &#34;&#34;&#34; initalize the TriggeringEntities
+        
+        Parameters
+        ----------
+            entity (str): name of the entity
+
+            triggeringrule (str): all or any
+
+        &#34;&#34;&#34;
+        if triggeringrule not in [&#39;any&#39;,&#39;all&#39;]:
+            raise ValueError(&#39;not a vaild triggering rule&#39;)
+        self.entity = EntityRef(entity)
+        self.triggeringrule = triggeringrule
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;triggeringEntitiesRule&#39;:self.triggeringrule}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the LaneOffsetAction
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;TriggeringEntities&#39;,attrib=self.get_attributes())
+        element.append(self.entity.get_element())
+        return element
+
+
+
+&#34;&#34;&#34; Entity conditions
+
+
+&#34;&#34;&#34; 
+
+class EndOfRoadCondition():
+    &#34;&#34;&#34; the EndOfRoadCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            duration (float): the duration at the en of road
+
+        Attributes
+        ----------
+            duration (float): the duration at the en of road
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,duration):
+        &#34;&#34;&#34; initalize the EndOfRoadCondition
+        
+        Parameters
+        ----------
+            duration (float): the duration after the condition
+
+        &#34;&#34;&#34;
+        self.duration = duration
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the EndOfRoadCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;duration&#39;:str(self.duration)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the EndOfRoadCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;EndOfRoadCondition&#39;,attrib=self.get_attributes())
+        return element
+
+class CollisionCondition():
+    &#34;&#34;&#34; the CollisionCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            entity (str): name of the entity to collide with
+
+        Attributes
+        ----------
+            entity (str): name of the entity to collide with
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,entity):
+        &#34;&#34;&#34; the CollisionCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            entity (str): name of the entity to collide with
+
+        &#34;&#34;&#34;
+        #TODO: Add by ObjectType
+        self.entity = entity
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the CollisionCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;EntityRef&#39;:self.entity}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the CollisionCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;CollisionCondition&#39;,attrib=self.get_attributes())
+        return element
+
+class OffroadCondition():
+    &#34;&#34;&#34; the OffroadCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            duration (float): the duration of offroad
+
+        Attributes
+        ----------
+            duration (float): the duration of offroad
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,duration):
+        &#34;&#34;&#34; initalize the OffroadCondition 
+        
+        Parameters
+        ----------
+            duration (float): the duration of offroad
+
+        &#34;&#34;&#34;
+        self.duration = duration
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the OffroadCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;duration&#39;:str(self.duration)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the OffroadCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;OffroadCondition&#39;,attrib=self.get_attributes())
+        return element
+
+class TimeHeadwayCondition():
+    &#34;&#34;&#34; the TimeHeadwayCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            entity (str): name of the entity for the headway
+
+            value (float): time of headway
+
+            rule (Rule): condition rule of triggering 
+
+            alongroute (bool): if the route should count
+                Default: True
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+                Default: True
+
+        Attributes
+        ----------
+            entity (str): name of the entity for the headway
+
+            value (float): time of headway
+
+            rule (Rule): condition rule of triggering 
+
+            alongroute (bool): if the route should count
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,entity,value,rule,alongroute=True,freespace=True):
+        &#34;&#34;&#34; initalize the TimeHeadwayCondition
+        
+        Parameters
+        ----------
+            entity (str): name of the entity for the headway
+
+            value (float): time of headway
+
+            rule (Rule): condition rule of triggering 
+
+            alongroute (bool): if the route should count
+                Default: True
+                
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+                Default: True
+
+        &#34;&#34;&#34;
+        self.entity = entity
+        self.value = value
+        self.alongroute = alongroute
+        self.freespace = freespace
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TimeHeadwayCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;entityRef&#39;] = self.entity
+        basedict[&#39;value&#39;] = str(self.value)
+        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
+        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TimeHeadwayCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;TimeHeadwayCondition&#39;,attrib=self.get_attributes())
+        return element
+
+
+class TimeToCollisionCondition():
+    &#34;&#34;&#34; the TimeToCollisionCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+
+            value (float): time to collision
+
+            rule (Rule): condition rule of triggering 
+
+            alongroute (bool): if the route should count
+                Default: True
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+                Default: True
+
+            optionals:
+                entity (str): the entity to trigger collision on
+
+                position (*Position): a position for collision
+
+        Attributes
+        ----------
+            value (float): time before collision
+
+            rule (Rule): condition rule of triggering 
+
+            alongroute (bool): if the route should count
+            Default: True
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+            Default: True
+            optionals:
+                entity (EntityRef):  entity for the collision
+
+                position (*Position): a position for collision
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value,rule,alongroute=True,freespace=True,entity=None,position=None):
+        &#34;&#34;&#34; initalize the TimeToCollisionCondition
+        
+        Parameters
+        ----------
+
+            value (float): time to collision
+
+            rule (Rule): condition rule of triggering 
+
+            alongroute (bool): if the route should count
+                Default: True
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+                Default: True
+
+            optionals:
+                entity (str): the entity to trigger collision on
+
+                position (*Position): a position for collision
+        
+        &#34;&#34;&#34;
+        self.value = value
+        self.freespace = freespace
+        self.alongroute = alongroute
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        self.use_entity = None
+        if (entity !=None) and (position !=None):
+            raise ValueError(&#39;Can only have either entity of position, not both&#39;)
+        if entity:
+            self.entity = EntityRef(entity)
+            self.use_entity = True
+        if position:
+            self.position = position
+            self.use_entity = False
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TimeToCollisionCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;value&#39;] = str(self.value)
+        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
+        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+        
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TimeToCollisionCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        collisionevent = ET.SubElement(element,&#39;TimeToCollisionCondition&#39;,attrib=self.get_attributes())
+        
+        if self.use_entity == None:
+            raise ValueError(&#39;neither position or entity was set.&#39;)
+        elif self.use_entity:
+            collisionevent.append(self.entity.get_element())
+        else: 
+            collisionevent.append(self.position.get_element())
+        
+        
+        return element
+        
+
+
+
+class AccelerationCondition():
+    &#34;&#34;&#34; the AccelerationCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): acceleration
+
+            rule (Rule): condition rule of triggering 
+
+        Attributes
+        ----------
+            value (float): acceleration
+
+            rule (Rule): condition rule of triggering 
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value,rule):
+        &#34;&#34;&#34; the AccelerationCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): acceleration
+
+            rule (Rule): condition rule of triggering 
+        &#34;&#34;&#34;
+        self.value = value
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the AccelerationCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;value&#39;:str(self.value),&#39;rule&#39;:self.rule.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the AccelerationCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;AccelerationCondition&#39;,attrib=self.get_attributes())
+        return element
+
+class StandStillCondition():
+    &#34;&#34;&#34; the StandStillCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            duration (float): time of standstill
+
+        Attributes
+        ----------
+            duration (float): time of standstill
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,duration):
+        &#34;&#34;&#34; the StandStillCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            duration (float): time of standstill
+        &#34;&#34;&#34;
+        self.duration = duration
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the StandStillCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;duration&#39;:str(self.duration)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the StandStillCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;StandStillCondition&#39;,attrib=self.get_attributes())
+        return element
+
+class SpeedCondition():
+    &#34;&#34;&#34; the SpeedCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): speed to trigger on
+
+            rule (Rule): condition rule of triggering 
+
+        Attributes
+        ----------
+            value (float): speed to trigger on
+
+            rule (Rule): condition rule of triggering 
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value,rule):
+        &#34;&#34;&#34; initalize the SpeedCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): speed to trigger on
+
+            rule (Rule): condition rule of triggering 
+        &#34;&#34;&#34;
+        self.value = value
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the SpeedCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;value&#39;] = str(self.value)
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+        # return merge_dicts({&#39;value&#39;:str(self.value)},self.rule.get_attributes())
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the SpeedCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;SpeedCondition&#39;,attrib=self.get_attributes())
+        return element
+
+class RelativeSpeedCondition():
+    &#34;&#34;&#34; the RelativeSpeedCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): acceleration
+
+            rule (Rule): condition rule of triggering 
+
+            entity (str): name of the entity to be relative to
+
+        Attributes
+        ----------
+            value (float): acceleration
+
+            rule (Rule): condition rule of triggering 
+
+            entity (str): name of the entity to be relative to
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value,rule,entity):
+        &#34;&#34;&#34; initalize the RelativeSpeedCondition
+        
+        Parameters
+        ----------
+            value (float): acceleration
+
+            rule (Rule): condition rule of triggering 
+
+            entity (str): name of the entity to be relative to
+            
+        &#34;&#34;&#34;
+        self.value = value
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        self.entity = entity
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the RelativeSpeedCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;value&#39;] = str(self.value)
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+        # return merge_dicts({&#39;value&#39;:str(self.value),&#39;entityRef&#39;:self.entity},self.rule.get_attributes())
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the RelativeSpeedCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;RelativeSpeedCondition&#39;,attrib=self.get_attributes())
+        return element
+
+class TraveledDistanceCondition():
+    &#34;&#34;&#34; the TraveledDistanceCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): how far it has traveled
+
+        Attributes
+        ----------
+            value (float): how far it has traveled
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value):
+        &#34;&#34;&#34; the TraveledDistanceCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): how far it has traveled
+        
+        &#34;&#34;&#34;
+        self.value = value
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TraveledDistanceCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;value&#39;:str(self.value)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TraveledDistanceCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;TraveledDistanceCondition&#39;,attrib=self.get_attributes())
+        return element 
+    
+class ReachPositionCondition():
+    &#34;&#34;&#34; the ReachPositionCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            position (*Position): any position to reach
+
+            tolerance (float): tolerance of the position
+
+        Attributes
+        ----------
+            position (*Position): any position to reach
+
+            tolerance (float): tolerance of the position
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,position,tolerance):
+        &#34;&#34;&#34; initalize the ReachPositionCondition
+        
+        Parameters
+        ----------
+            position (*Position): any position to reach
+
+            tolerance (float): tolerance of the position
+
+        &#34;&#34;&#34;
+        self.position = position
+        self.tolerance = tolerance
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the ReachPositionCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;tolerance&#39;:str(self.tolerance)}
+        
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the ReachPositionCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        reachposcond = ET.SubElement(element,&#39;ReachPositionCondition&#39;,attrib=self.get_attributes())
+        reachposcond.append(self.position.get_element())
+        return element
+
+class DistanceCondition():
+    &#34;&#34;&#34; the DistanceCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): distance to position
+
+            rule (Rule): condition rule of triggering 
+
+            position (*Position): any position to reach
+
+            alongroute (bool): if the route should count
+                Default: True
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+                Default: True
+
+        Attributes
+        ----------
+            value (float): distance to position
+
+            rule (Rule): condition rule of triggering 
+
+            position (*Position): any position to reach
+
+            alongroute (bool): if the route should count
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value,rule,position,alongroute=True,freespace=True):
+        self.value = value
+        self.alongroute = alongroute
+        self.freespace = freespace
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        self.position = position
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the DistanceCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;value&#39;] = str(self.value)
+        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
+        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the DistanceCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        distancecond = ET.SubElement(element,&#39;DistanceCondition&#39;,attrib=self.get_attributes())
+        distancecond.append(self.position.get_element())
+        return element
+
+class RelativeDistanceCondition():
+    &#34;&#34;&#34; the RelativeDistanceCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): distance to position
+
+            rule (Rule): condition rule of triggering 
+
+            entity (str): name of the entity fore relative distance
+
+            alongroute (bool): if the route should count
+                Default: True
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+                Default: True
+
+        Attributes
+        ----------
+            value (float): distance to position
+
+            rule (Rule): condition rule of triggering 
+
+            entity (str): name of the entity fore relative distance
+
+            alongroute (bool): if the route should count
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value,rule,entity,alongroute=True,freespace=True):
+        &#34;&#34;&#34; initalize the RelativeDistanceCondition
+        
+        Parameters
+        ----------
+            value (float): distance to position
+
+            rule (Rule): condition rule of triggering 
+
+            entity (str): name of the entity fore relative distance
+
+            alongroute (bool): if the route should count
+                Default: True
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+                Default: True
+
+        &#34;&#34;&#34;
+        self.value = value
+        self.alongroute = alongroute
+        self.freespace = freespace
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        self.entity = entity
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the RelativeDistanceCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;value&#39;] = str(self.value)
+        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
+        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;entityRef&#39;] = self.entity
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the RelativeDistanceCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;RelativeDistanceCondition&#39;,attrib=self.get_attributes())
+        return element
+        
+
+
+&#34;&#34;&#34; Value Conditions
+
+&#34;&#34;&#34;
+
+
+class ParameterCondition():
+    &#34;&#34;&#34; the ParameterCondition class is an Value Condition used by the ValueTrigger
+        
+        Parameters
+        ----------
+            parameter (str): the parameter to trigger on
+
+            value (int): value to trigger on 
+
+            rule (Rule): condition rule of triggering 
+
+        Attributes
+        ----------
+            parameter (str): the parameter to trigger on
+
+            value (int): value to trigger on 
+
+            rule (Rule): condition rule of triggering 
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,parameter,value,rule):
+        &#34;&#34;&#34; initalize the ParameterCondition
+
+            Parameters
+            ----------
+                parameter (str): the parameter to trigger on
+
+                value (int): value to trigger on 
+
+                rule (Rule): condition rule of triggering 
+
+        &#34;&#34;&#34;
+        self.parameter = parameter
+        self.value = value
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the ParameterCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {&#39;parameterRef&#39;:self.parameter,&#39;value&#39;:str(self.value)}
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the ParameterCondition
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;ParameterCondition&#39;,attrib=self.get_attributes())
+
+class TimeOfDayCondition():
+    &#34;&#34;&#34; the TimeOfDayCondition class is an Value Condition used by the ValueTrigger
+        
+        Parameters
+        ----------
+            rule (Rule): condition rule of triggering 
+
+            time of day (str): datetime ??? format unknown
+            
+        Attributes
+        ----------
+            rule (Rule): condition rule of triggering 
+
+            time of day (str): datetime ??? format unknown
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,rule,datetime):
+        &#34;&#34;&#34; initalize the TimeOfDayCondition
+            Parameters
+            ----------
+                rule (Rule): condition rule of triggering 
+
+                time of day (str): datetime ??? format unknown
+            
+        &#34;&#34;&#34;
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        self.datetime = datetime
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TimeOfDayCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;datetime&#39;] = self.datetime
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TimeOfDayCondition
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;TimeOfDayCondition&#39;,attrib=self.get_attributes())
+
+
+class SimulationTimeCondition():
+    &#34;&#34;&#34; the SimulationTimeCondition class is an Value Condition used by the ValueTrigger
+        
+        Parameters
+        ----------
+            value (int): simulation time 
+
+            rule (Rule): condition rule of triggering 
+
+        Attributes
+        ----------
+            value (int): simulation time 
+
+            rule (Rule): condition rule of triggering 
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value,rule):
+        &#34;&#34;&#34; initalize the SimulationTimeCondition
+
+            Parameters
+            ----------
+                value (int): simulation time 
+
+                rule (Rule): condition rule of triggering 
+        &#34;&#34;&#34;
+        self.value = value
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the SimulationTimeCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;value&#39;] = str(self.value)
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the SimulationTimeCondition
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;SimulationTimeCondition&#39;,attrib=self.get_attributes())
+
+class StoryboardElementStateCondition():
+    &#34;&#34;&#34; the StoryboardElementStateCondition class is an Value Condition used by the ValueTrigger
+        
+        Parameters
+        ----------
+            element (str): the element to trigger on
+
+            reference (str): reference of the parameter
+
+            state (str): state to trigger on
+
+        Attributes
+        ----------
+            element (str): the element to trigger on
+
+            reference (str): reference of the parameter
+
+            state (str): state to trigger on
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,element,reference,state):
+        &#34;&#34;&#34; initalize the StoryboardElementStateCondition
+
+            Parameters
+            ----------
+                element (str): the element to trigger on
+
+                reference (str): reference of the parameter
+
+                state (str): state to trigger on
+        &#34;&#34;&#34;
+        self.element = element
+        self.reference = reference
+        self.state = state
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the StoryboardElementStateCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;storyboardElementType&#39;:self.element,&#39;storyboardElementRef&#39;:self.reference,&#39;state&#39;:self.state}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the StoryboardElementStateCondition
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;StoryboardElementStateCondition&#39;,attrib=self.get_attributes())
+
+class UserDefinedValueCondition():
+    &#34;&#34;&#34; the UserDefinedValueCondition class is an Value Condition used by the ValueTrigger
+        
+        Parameters
+        ----------
+            name (str): name of the parameter
+
+            value (int): value to trigger on
+
+            rule (Rule): condition rule of triggering 
+            
+        Attributes
+        ----------
+            name (str): name of the parameter
+
+            value (int): value to trigger on
+
+            rule (Rule): condition rule of triggering 
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,value,rule):
+        &#34;&#34;&#34; initalize the UserDefinedValueCondition
+        
+            Parameters
+            ----------
+                name (str): name of the parameter
+
+                value (int): value to trigger on
+
+                rule (Rule): condition rule of triggering 
+        &#34;&#34;&#34;
+        self.name = name
+        self.value = value
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the UserDefinedValueCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {&#39;name&#39;:self.name,&#39;value&#39;:str(self.value)}
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the UserDefinedValueCondition
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;UserDefinedValueCondition&#39;,attrib=self.get_attributes())
+
+class TrafficSignalCondition():
+    &#34;&#34;&#34; the TrafficSignalCondition class is an Value Condition used by the ValueTrigger
+        
+        Parameters
+        ----------
+            name (str): name of the traficsignal ???
+
+            state (str): state of the signal
+
+        Attributes
+        ----------
+            name (str): name of the traficsignal ???
+
+            state (str): state of the signal
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,state):
+        &#34;&#34;&#34; initalize the TrafficSignalCondition
+
+            Parameters
+            ----------
+                name (str): name of the traficsignal ???
+
+                state (str): state of the signal
+
+        &#34;&#34;&#34;
+        self.name = name
+        self.state = state
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TrafficSignalCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name,&#39;state&#39;:self.state}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TrafficSignalCondition
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;TrafficSignalCondition&#39;,attrib=self.get_attributes())
+
+
+class TrafficSignalControllerCondition():
+    &#34;&#34;&#34; the TrafficSignalControllerCondition class is an Value Condition used by the ValueTrigger
+        
+        Parameters
+        ----------
+            trafficsignalref (str): ???
+
+            phase (str): ???
+
+        Attributes
+        ----------
+            trafficsignalref (str): ???
+
+            phase (str): ???
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,trafficsignalref,phase):
+        &#34;&#34;&#34; initalize the TrafficSignalControllerCondition
+        
+            Parameters
+            ----------
+                trafficsignalref (str): ???
+
+                phase (str): ???
+
+        &#34;&#34;&#34;
+        self.trafficsignalref = trafficsignalref
+        self.phase = phase
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TrafficSignalControllerCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;trafficSignalControllerRef&#39;:self.trafficsignalref,&#39;phase&#39;:self.phase}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TrafficSignalControllerCondition
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;TrafficSignalControllerCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyoscx.triggers.AccelerationCondition"><code class="flex name class">
+<span>class <span class="ident">AccelerationCondition</span></span>
+<span>(</span><span>value, rule)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the AccelerationCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>value (float): acceleration
+
+rule (Rule): condition rule of triggering
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>value (float): acceleration
+
+rule (Rule): condition rule of triggering
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>the AccelerationCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>value (float): acceleration
+
+rule (Rule): condition rule of triggering
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AccelerationCondition():
+    &#34;&#34;&#34; the AccelerationCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): acceleration
+
+            rule (Rule): condition rule of triggering 
+
+        Attributes
+        ----------
+            value (float): acceleration
+
+            rule (Rule): condition rule of triggering 
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value,rule):
+        &#34;&#34;&#34; the AccelerationCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): acceleration
+
+            rule (Rule): condition rule of triggering 
+        &#34;&#34;&#34;
+        self.value = value
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the AccelerationCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;value&#39;:str(self.value),&#39;rule&#39;:self.rule.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the AccelerationCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;AccelerationCondition&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.AccelerationCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the AccelerationCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the AccelerationCondition as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;value&#39;:str(self.value),&#39;rule&#39;:self.rule.name}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.AccelerationCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the AccelerationCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the AccelerationCondition
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;EntityCondition&#39;)
+    ET.SubElement(element,&#39;AccelerationCondition&#39;,attrib=self.get_attributes())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.CollisionCondition"><code class="flex name class">
+<span>class <span class="ident">CollisionCondition</span></span>
+<span>(</span><span>entity)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the CollisionCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>entity (str): name of the entity to collide with
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>entity (str): name of the entity to collide with
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>the CollisionCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>entity (str): name of the entity to collide with
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CollisionCondition():
+    &#34;&#34;&#34; the CollisionCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            entity (str): name of the entity to collide with
+
+        Attributes
+        ----------
+            entity (str): name of the entity to collide with
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,entity):
+        &#34;&#34;&#34; the CollisionCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            entity (str): name of the entity to collide with
+
+        &#34;&#34;&#34;
+        #TODO: Add by ObjectType
+        self.entity = entity
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the CollisionCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;EntityRef&#39;:self.entity}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the CollisionCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;CollisionCondition&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.CollisionCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the CollisionCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the CollisionCondition as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;EntityRef&#39;:self.entity}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.CollisionCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the CollisionCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the CollisionCondition
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;EntityCondition&#39;)
+    ET.SubElement(element,&#39;CollisionCondition&#39;,attrib=self.get_attributes())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.DistanceCondition"><code class="flex name class">
+<span>class <span class="ident">DistanceCondition</span></span>
+<span>(</span><span>value, rule, position, alongroute=True, freespace=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the DistanceCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>value (float): distance to position
+
+rule (Rule): condition rule of triggering
+
+position (*Position): any position to reach
+
+alongroute (bool): if the route should count
+    Default: True
+
+freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+    Default: True
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>value (float): distance to position
+
+rule (Rule): condition rule of triggering
+
+position (*Position): any position to reach
+
+alongroute (bool): if the route should count
+
+freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DistanceCondition():
+    &#34;&#34;&#34; the DistanceCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): distance to position
+
+            rule (Rule): condition rule of triggering 
+
+            position (*Position): any position to reach
+
+            alongroute (bool): if the route should count
+                Default: True
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+                Default: True
+
+        Attributes
+        ----------
+            value (float): distance to position
+
+            rule (Rule): condition rule of triggering 
+
+            position (*Position): any position to reach
+
+            alongroute (bool): if the route should count
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value,rule,position,alongroute=True,freespace=True):
+        self.value = value
+        self.alongroute = alongroute
+        self.freespace = freespace
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        self.position = position
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the DistanceCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;value&#39;] = str(self.value)
+        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
+        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the DistanceCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        distancecond = ET.SubElement(element,&#39;DistanceCondition&#39;,attrib=self.get_attributes())
+        distancecond.append(self.position.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.DistanceCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the DistanceCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the DistanceCondition as a dict
+
+    &#34;&#34;&#34;
+    basedict = {}
+    basedict[&#39;value&#39;] = str(self.value)
+    basedict[&#39;alongRoute&#39;] = str(self.alongroute)
+    basedict[&#39;freespace&#39;] = str(self.freespace)
+    basedict[&#39;rule&#39;] = self.rule.name
+    return basedict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.DistanceCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the DistanceCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the DistanceCondition
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;EntityCondition&#39;)
+    distancecond = ET.SubElement(element,&#39;DistanceCondition&#39;,attrib=self.get_attributes())
+    distancecond.append(self.position.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.EmptyTrigger"><code class="flex name class">
+<span>class <span class="ident">EmptyTrigger</span></span>
+<span>(</span><span>triggeringpoint='start')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>EmptyTrigger creates an empty trigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>triggeringpoint (str): start or stop
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+</code></pre>
+<p>initalizes the emtpy trigger</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>triggeringpoint (str): start or stop
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EmptyTrigger():
+    &#34;&#34;&#34; EmptyTrigger creates an empty trigger
+        
+        Parameters
+        ----------
+            triggeringpoint (str): start or stop 
+
+        Attributes
+        ----------
+            
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,triggeringpoint = &#39;start&#39;):
+        &#34;&#34;&#34; initalizes the emtpy trigger
+
+        Parameters
+        ----------
+            triggeringpoint (str): start or stop 
+
+        &#34;&#34;&#34;
+        if triggeringpoint not in [&#39;start&#39;,&#39;stop&#39;]:
+            raise ValueError(&#39;not a valid triggering point, valid start or stop&#39;)
+        if triggeringpoint == &#39;start&#39;:
+            self._triggerpoint = &#39;StartTrigger&#39;
+        else:
+            self._triggerpoint = &#39;StopTrigger&#39;
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Trigger
+
+        &#34;&#34;&#34;
+        return ET.Element(self._triggerpoint)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.EmptyTrigger.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Trigger</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Trigger
+
+    &#34;&#34;&#34;
+    return ET.Element(self._triggerpoint)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.EndOfRoadCondition"><code class="flex name class">
+<span>class <span class="ident">EndOfRoadCondition</span></span>
+<span>(</span><span>duration)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the EndOfRoadCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>duration (float): the duration at the en of road
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>duration (float): the duration at the en of road
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the EndOfRoadCondition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>duration (float): the duration after the condition
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EndOfRoadCondition():
+    &#34;&#34;&#34; the EndOfRoadCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            duration (float): the duration at the en of road
+
+        Attributes
+        ----------
+            duration (float): the duration at the en of road
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,duration):
+        &#34;&#34;&#34; initalize the EndOfRoadCondition
+        
+        Parameters
+        ----------
+            duration (float): the duration after the condition
+
+        &#34;&#34;&#34;
+        self.duration = duration
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the EndOfRoadCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;duration&#39;:str(self.duration)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the EndOfRoadCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;EndOfRoadCondition&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.EndOfRoadCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the EndOfRoadCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the EndOfRoadCondition as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;duration&#39;:str(self.duration)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.EndOfRoadCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the EndOfRoadCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the EndOfRoadCondition
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;EntityCondition&#39;)
+    ET.SubElement(element,&#39;EndOfRoadCondition&#39;,attrib=self.get_attributes())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.EntityTrigger"><code class="flex name class">
+<span>class <span class="ident">EntityTrigger</span></span>
+<span>(</span><span>name, delay, conditionedge, entitycondition, triggerentity, triggeringrule='any', triggeringpoint='start')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the EntityTrigger creates an EntityTrigger of openScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the trigger
+
+delay (float): the delay of the trigger
+
+conditionedge (ConditionEdge): on what conditionedge the trigger should act
+
+entitycondotion (*Condition): an entity condition
+
+triggeringentity (str): the entity of the trigger
+
+triggeringrule (str): rule of the trigger
+    Default: 'any'
+
+triggeringpoint (str): start or stop
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the trigger
+
+delay (float): the delay of the trigger
+
+conditionedge (ConditionEdge): the condition edge
+
+entitycondition (*EntityCondition): the entitycondition
+
+triggerentity (TriggeringEntities): the triggering entity
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the EntityTrigger</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the trigger
+
+delay (float): the delay of the trigger
+
+conditionedge (ConditionEdge): on what conditionedge the trigger should act
+
+entitycondotion (*EntityCondition): an entity condition
+
+triggeringentity (str): the entity of the trigger
+
+triggeringrule (str): rule of the trigger
+    Default: 'any'
+
+triggeringpoint (str): start or stop
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EntityTrigger():
+    &#34;&#34;&#34; the EntityTrigger creates an EntityTrigger of openScenario
+        
+        Parameters
+        ----------
+            name (str): name of the trigger
+
+            delay (float): the delay of the trigger
+
+            conditionedge (ConditionEdge): on what conditionedge the trigger should act
+
+            entitycondotion (*Condition): an entity condition
+
+            triggeringentity (str): the entity of the trigger 
+
+            triggeringrule (str): rule of the trigger
+                Default: &#39;any&#39;
+
+            triggeringpoint (str): start or stop 
+            
+        Attributes
+        ----------
+            name (str): name of the trigger
+
+            delay (float): the delay of the trigger
+
+            conditionedge (ConditionEdge): the condition edge
+
+            entitycondition (*EntityCondition): the entitycondition
+        
+            triggerentity (TriggeringEntities): the triggering entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,delay,conditionedge,entitycondition,triggerentity,triggeringrule=&#39;any&#39;,triggeringpoint = &#39;start&#39;):
+        &#34;&#34;&#34; initalize the EntityTrigger
+
+        Parameters
+        ----------
+            name (str): name of the trigger
+
+            delay (float): the delay of the trigger
+
+            conditionedge (ConditionEdge): on what conditionedge the trigger should act
+
+            entitycondotion (*EntityCondition): an entity condition
+
+            triggeringentity (str): the entity of the trigger 
+
+            triggeringrule (str): rule of the trigger
+                Default: &#39;any&#39;
+
+            triggeringpoint (str): start or stop 
+    
+        &#34;&#34;&#34;
+        self.name = name
+        if triggeringpoint not in [&#39;start&#39;,&#39;stop&#39;]:
+            raise ValueError(&#39;not a valid triggering point, valid start or stop&#39;)
+        if triggeringpoint == &#39;start&#39;:
+            self._triggerpoint = &#39;StartTrigger&#39;
+        else:
+            self._triggerpoint = &#39;StopTrigger&#39;
+            
+        self.delay = delay
+        if conditionedge not in ConditionEdge:
+            raise ValueError(&#39;not a valid condition edge&#39;)
+        self.conditionedge = conditionedge
+        self.entitycondition = entitycondition
+        self.triggerentity = TriggeringEntities(triggerentity,triggeringrule)
+        
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name,&#39;delay&#39;:str(self.delay),&#39;conditionEdge&#39;:self.conditionedge.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the LaneOffsetAction
+
+        &#34;&#34;&#34;
+        element = ET.Element(self._triggerpoint)
+        condgroup = ET.SubElement(element,&#39;ConditionGroup&#39;)
+        condition = ET.SubElement(condgroup,&#39;Condition&#39;,attrib=self.get_attributes())
+        byentity = ET.SubElement(condition,&#39;ByEntityCondition&#39;)
+        byentity.append(self.triggerentity.get_element())
+        byentity.append(self.entitycondition.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.EntityTrigger.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the LaneOffsetAction as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:self.name,&#39;delay&#39;:str(self.delay),&#39;conditionEdge&#39;:self.conditionedge.name}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.EntityTrigger.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the LaneOffsetAction</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the LaneOffsetAction
+
+    &#34;&#34;&#34;
+    element = ET.Element(self._triggerpoint)
+    condgroup = ET.SubElement(element,&#39;ConditionGroup&#39;)
+    condition = ET.SubElement(condgroup,&#39;Condition&#39;,attrib=self.get_attributes())
+    byentity = ET.SubElement(condition,&#39;ByEntityCondition&#39;)
+    byentity.append(self.triggerentity.get_element())
+    byentity.append(self.entitycondition.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.OffroadCondition"><code class="flex name class">
+<span>class <span class="ident">OffroadCondition</span></span>
+<span>(</span><span>duration)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the OffroadCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>duration (float): the duration of offroad
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>duration (float): the duration of offroad
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the OffroadCondition </p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>duration (float): the duration of offroad
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class OffroadCondition():
+    &#34;&#34;&#34; the OffroadCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            duration (float): the duration of offroad
+
+        Attributes
+        ----------
+            duration (float): the duration of offroad
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,duration):
+        &#34;&#34;&#34; initalize the OffroadCondition 
+        
+        Parameters
+        ----------
+            duration (float): the duration of offroad
+
+        &#34;&#34;&#34;
+        self.duration = duration
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the OffroadCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;duration&#39;:str(self.duration)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the OffroadCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;OffroadCondition&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.OffroadCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the OffroadCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the OffroadCondition as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;duration&#39;:str(self.duration)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.OffroadCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the OffroadCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the OffroadCondition
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;EntityCondition&#39;)
+    ET.SubElement(element,&#39;OffroadCondition&#39;,attrib=self.get_attributes())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.ParameterCondition"><code class="flex name class">
+<span>class <span class="ident">ParameterCondition</span></span>
+<span>(</span><span>parameter, value, rule)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the ParameterCondition class is an Value Condition used by the ValueTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>parameter (str): the parameter to trigger on
+
+value (int): value to trigger on
+
+rule (Rule): condition rule of triggering
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>parameter (str): the parameter to trigger on
+
+value (int): value to trigger on
+
+rule (Rule): condition rule of triggering
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the ParameterCondition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>parameter (str): the parameter to trigger on
+
+value (int): value to trigger on
+
+rule (Rule): condition rule of triggering
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ParameterCondition():
+    &#34;&#34;&#34; the ParameterCondition class is an Value Condition used by the ValueTrigger
+        
+        Parameters
+        ----------
+            parameter (str): the parameter to trigger on
+
+            value (int): value to trigger on 
+
+            rule (Rule): condition rule of triggering 
+
+        Attributes
+        ----------
+            parameter (str): the parameter to trigger on
+
+            value (int): value to trigger on 
+
+            rule (Rule): condition rule of triggering 
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,parameter,value,rule):
+        &#34;&#34;&#34; initalize the ParameterCondition
+
+            Parameters
+            ----------
+                parameter (str): the parameter to trigger on
+
+                value (int): value to trigger on 
+
+                rule (Rule): condition rule of triggering 
+
+        &#34;&#34;&#34;
+        self.parameter = parameter
+        self.value = value
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the ParameterCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {&#39;parameterRef&#39;:self.parameter,&#39;value&#39;:str(self.value)}
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the ParameterCondition
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;ParameterCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.ParameterCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the ParameterCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the ParameterCondition as a dict
+
+    &#34;&#34;&#34;
+    basedict = {&#39;parameterRef&#39;:self.parameter,&#39;value&#39;:str(self.value)}
+    basedict[&#39;rule&#39;] = self.rule.name
+    return basedict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.ParameterCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the ParameterCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the ParameterCondition
+
+    &#34;&#34;&#34;
+    return ET.Element(&#39;ParameterCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.ReachPositionCondition"><code class="flex name class">
+<span>class <span class="ident">ReachPositionCondition</span></span>
+<span>(</span><span>position, tolerance)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the ReachPositionCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>position (*Position): any position to reach
+
+tolerance (float): tolerance of the position
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>position (*Position): any position to reach
+
+tolerance (float): tolerance of the position
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the ReachPositionCondition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>position (*Position): any position to reach
+
+tolerance (float): tolerance of the position
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ReachPositionCondition():
+    &#34;&#34;&#34; the ReachPositionCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            position (*Position): any position to reach
+
+            tolerance (float): tolerance of the position
+
+        Attributes
+        ----------
+            position (*Position): any position to reach
+
+            tolerance (float): tolerance of the position
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,position,tolerance):
+        &#34;&#34;&#34; initalize the ReachPositionCondition
+        
+        Parameters
+        ----------
+            position (*Position): any position to reach
+
+            tolerance (float): tolerance of the position
+
+        &#34;&#34;&#34;
+        self.position = position
+        self.tolerance = tolerance
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the ReachPositionCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;tolerance&#39;:str(self.tolerance)}
+        
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the ReachPositionCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        reachposcond = ET.SubElement(element,&#39;ReachPositionCondition&#39;,attrib=self.get_attributes())
+        reachposcond.append(self.position.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.ReachPositionCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the ReachPositionCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the ReachPositionCondition as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;tolerance&#39;:str(self.tolerance)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.ReachPositionCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the ReachPositionCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the ReachPositionCondition
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;EntityCondition&#39;)
+    reachposcond = ET.SubElement(element,&#39;ReachPositionCondition&#39;,attrib=self.get_attributes())
+    reachposcond.append(self.position.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.RelativeDistanceCondition"><code class="flex name class">
+<span>class <span class="ident">RelativeDistanceCondition</span></span>
+<span>(</span><span>value, rule, entity, alongroute=True, freespace=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the RelativeDistanceCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>value (float): distance to position
+
+rule (Rule): condition rule of triggering
+
+entity (str): name of the entity fore relative distance
+
+alongroute (bool): if the route should count
+    Default: True
+
+freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+    Default: True
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>value (float): distance to position
+
+rule (Rule): condition rule of triggering
+
+entity (str): name of the entity fore relative distance
+
+alongroute (bool): if the route should count
+
+freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the RelativeDistanceCondition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>value (float): distance to position
+
+rule (Rule): condition rule of triggering
+
+entity (str): name of the entity fore relative distance
+
+alongroute (bool): if the route should count
+    Default: True
+
+freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+    Default: True
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RelativeDistanceCondition():
+    &#34;&#34;&#34; the RelativeDistanceCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): distance to position
+
+            rule (Rule): condition rule of triggering 
+
+            entity (str): name of the entity fore relative distance
+
+            alongroute (bool): if the route should count
+                Default: True
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+                Default: True
+
+        Attributes
+        ----------
+            value (float): distance to position
+
+            rule (Rule): condition rule of triggering 
+
+            entity (str): name of the entity fore relative distance
+
+            alongroute (bool): if the route should count
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value,rule,entity,alongroute=True,freespace=True):
+        &#34;&#34;&#34; initalize the RelativeDistanceCondition
+        
+        Parameters
+        ----------
+            value (float): distance to position
+
+            rule (Rule): condition rule of triggering 
+
+            entity (str): name of the entity fore relative distance
+
+            alongroute (bool): if the route should count
+                Default: True
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+                Default: True
+
+        &#34;&#34;&#34;
+        self.value = value
+        self.alongroute = alongroute
+        self.freespace = freespace
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        self.entity = entity
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the RelativeDistanceCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;value&#39;] = str(self.value)
+        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
+        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;entityRef&#39;] = self.entity
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the RelativeDistanceCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;RelativeDistanceCondition&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.RelativeDistanceCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the RelativeDistanceCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the RelativeDistanceCondition as a dict
+
+    &#34;&#34;&#34;
+    basedict = {}
+    basedict[&#39;value&#39;] = str(self.value)
+    basedict[&#39;alongRoute&#39;] = str(self.alongroute)
+    basedict[&#39;freespace&#39;] = str(self.freespace)
+    basedict[&#39;entityRef&#39;] = self.entity
+    basedict[&#39;rule&#39;] = self.rule.name
+    return basedict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.RelativeDistanceCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the RelativeDistanceCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the RelativeDistanceCondition
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;EntityCondition&#39;)
+    ET.SubElement(element,&#39;RelativeDistanceCondition&#39;,attrib=self.get_attributes())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.RelativeSpeedCondition"><code class="flex name class">
+<span>class <span class="ident">RelativeSpeedCondition</span></span>
+<span>(</span><span>value, rule, entity)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the RelativeSpeedCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>value (float): acceleration
+
+rule (Rule): condition rule of triggering
+
+entity (str): name of the entity to be relative to
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>value (float): acceleration
+
+rule (Rule): condition rule of triggering
+
+entity (str): name of the entity to be relative to
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the RelativeSpeedCondition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>value (float): acceleration
+
+rule (Rule): condition rule of triggering
+
+entity (str): name of the entity to be relative to
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RelativeSpeedCondition():
+    &#34;&#34;&#34; the RelativeSpeedCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): acceleration
+
+            rule (Rule): condition rule of triggering 
+
+            entity (str): name of the entity to be relative to
+
+        Attributes
+        ----------
+            value (float): acceleration
+
+            rule (Rule): condition rule of triggering 
+
+            entity (str): name of the entity to be relative to
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value,rule,entity):
+        &#34;&#34;&#34; initalize the RelativeSpeedCondition
+        
+        Parameters
+        ----------
+            value (float): acceleration
+
+            rule (Rule): condition rule of triggering 
+
+            entity (str): name of the entity to be relative to
+            
+        &#34;&#34;&#34;
+        self.value = value
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        self.entity = entity
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the RelativeSpeedCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;value&#39;] = str(self.value)
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+        # return merge_dicts({&#39;value&#39;:str(self.value),&#39;entityRef&#39;:self.entity},self.rule.get_attributes())
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the RelativeSpeedCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;RelativeSpeedCondition&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.RelativeSpeedCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the RelativeSpeedCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the RelativeSpeedCondition as a dict
+
+    &#34;&#34;&#34;
+    basedict = {}
+    basedict[&#39;value&#39;] = str(self.value)
+    basedict[&#39;rule&#39;] = self.rule.name
+    return basedict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.RelativeSpeedCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the RelativeSpeedCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the RelativeSpeedCondition
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;EntityCondition&#39;)
+    ET.SubElement(element,&#39;RelativeSpeedCondition&#39;,attrib=self.get_attributes())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.SimulationTimeCondition"><code class="flex name class">
+<span>class <span class="ident">SimulationTimeCondition</span></span>
+<span>(</span><span>value, rule)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the SimulationTimeCondition class is an Value Condition used by the ValueTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>value (int): simulation time
+
+rule (Rule): condition rule of triggering
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>value (int): simulation time
+
+rule (Rule): condition rule of triggering
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the SimulationTimeCondition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>value (int): simulation time
+
+rule (Rule): condition rule of triggering
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SimulationTimeCondition():
+    &#34;&#34;&#34; the SimulationTimeCondition class is an Value Condition used by the ValueTrigger
+        
+        Parameters
+        ----------
+            value (int): simulation time 
+
+            rule (Rule): condition rule of triggering 
+
+        Attributes
+        ----------
+            value (int): simulation time 
+
+            rule (Rule): condition rule of triggering 
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value,rule):
+        &#34;&#34;&#34; initalize the SimulationTimeCondition
+
+            Parameters
+            ----------
+                value (int): simulation time 
+
+                rule (Rule): condition rule of triggering 
+        &#34;&#34;&#34;
+        self.value = value
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the SimulationTimeCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;value&#39;] = str(self.value)
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the SimulationTimeCondition
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;SimulationTimeCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.SimulationTimeCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the SimulationTimeCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the SimulationTimeCondition as a dict
+
+    &#34;&#34;&#34;
+    basedict = {}
+    basedict[&#39;value&#39;] = str(self.value)
+    basedict[&#39;rule&#39;] = self.rule.name
+    return basedict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.SimulationTimeCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the SimulationTimeCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the SimulationTimeCondition
+
+    &#34;&#34;&#34;
+    return ET.Element(&#39;SimulationTimeCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.SpeedCondition"><code class="flex name class">
+<span>class <span class="ident">SpeedCondition</span></span>
+<span>(</span><span>value, rule)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the SpeedCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>value (float): speed to trigger on
+
+rule (Rule): condition rule of triggering
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>value (float): speed to trigger on
+
+rule (Rule): condition rule of triggering
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the SpeedCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>value (float): speed to trigger on
+
+rule (Rule): condition rule of triggering
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SpeedCondition():
+    &#34;&#34;&#34; the SpeedCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): speed to trigger on
+
+            rule (Rule): condition rule of triggering 
+
+        Attributes
+        ----------
+            value (float): speed to trigger on
+
+            rule (Rule): condition rule of triggering 
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value,rule):
+        &#34;&#34;&#34; initalize the SpeedCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): speed to trigger on
+
+            rule (Rule): condition rule of triggering 
+        &#34;&#34;&#34;
+        self.value = value
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the SpeedCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;value&#39;] = str(self.value)
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+        # return merge_dicts({&#39;value&#39;:str(self.value)},self.rule.get_attributes())
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the SpeedCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;SpeedCondition&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.SpeedCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the SpeedCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the SpeedCondition as a dict
+
+    &#34;&#34;&#34;
+    basedict = {}
+    basedict[&#39;value&#39;] = str(self.value)
+    basedict[&#39;rule&#39;] = self.rule.name
+    return basedict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.SpeedCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the SpeedCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the SpeedCondition
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;EntityCondition&#39;)
+    ET.SubElement(element,&#39;SpeedCondition&#39;,attrib=self.get_attributes())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.StandStillCondition"><code class="flex name class">
+<span>class <span class="ident">StandStillCondition</span></span>
+<span>(</span><span>duration)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the StandStillCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>duration (float): time of standstill
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>duration (float): time of standstill
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>the StandStillCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>duration (float): time of standstill
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class StandStillCondition():
+    &#34;&#34;&#34; the StandStillCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            duration (float): time of standstill
+
+        Attributes
+        ----------
+            duration (float): time of standstill
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,duration):
+        &#34;&#34;&#34; the StandStillCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            duration (float): time of standstill
+        &#34;&#34;&#34;
+        self.duration = duration
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the StandStillCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;duration&#39;:str(self.duration)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the StandStillCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;StandStillCondition&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.StandStillCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the StandStillCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the StandStillCondition as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;duration&#39;:str(self.duration)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.StandStillCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the StandStillCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the StandStillCondition
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;EntityCondition&#39;)
+    ET.SubElement(element,&#39;StandStillCondition&#39;,attrib=self.get_attributes())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.StoryboardElementStateCondition"><code class="flex name class">
+<span>class <span class="ident">StoryboardElementStateCondition</span></span>
+<span>(</span><span>element, reference, state)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the StoryboardElementStateCondition class is an Value Condition used by the ValueTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>element (str): the element to trigger on
+
+reference (str): reference of the parameter
+
+state (str): state to trigger on
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>element (str): the element to trigger on
+
+reference (str): reference of the parameter
+
+state (str): state to trigger on
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the StoryboardElementStateCondition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>element (str): the element to trigger on
+
+reference (str): reference of the parameter
+
+state (str): state to trigger on
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class StoryboardElementStateCondition():
+    &#34;&#34;&#34; the StoryboardElementStateCondition class is an Value Condition used by the ValueTrigger
+        
+        Parameters
+        ----------
+            element (str): the element to trigger on
+
+            reference (str): reference of the parameter
+
+            state (str): state to trigger on
+
+        Attributes
+        ----------
+            element (str): the element to trigger on
+
+            reference (str): reference of the parameter
+
+            state (str): state to trigger on
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,element,reference,state):
+        &#34;&#34;&#34; initalize the StoryboardElementStateCondition
+
+            Parameters
+            ----------
+                element (str): the element to trigger on
+
+                reference (str): reference of the parameter
+
+                state (str): state to trigger on
+        &#34;&#34;&#34;
+        self.element = element
+        self.reference = reference
+        self.state = state
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the StoryboardElementStateCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;storyboardElementType&#39;:self.element,&#39;storyboardElementRef&#39;:self.reference,&#39;state&#39;:self.state}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the StoryboardElementStateCondition
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;StoryboardElementStateCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.StoryboardElementStateCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the StoryboardElementStateCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the StoryboardElementStateCondition as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;storyboardElementType&#39;:self.element,&#39;storyboardElementRef&#39;:self.reference,&#39;state&#39;:self.state}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.StoryboardElementStateCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the StoryboardElementStateCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the StoryboardElementStateCondition
+
+    &#34;&#34;&#34;
+    return ET.Element(&#39;StoryboardElementStateCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.TimeHeadwayCondition"><code class="flex name class">
+<span>class <span class="ident">TimeHeadwayCondition</span></span>
+<span>(</span><span>entity, value, rule, alongroute=True, freespace=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the TimeHeadwayCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>entity (str): name of the entity for the headway
+
+value (float): time of headway
+
+rule (Rule): condition rule of triggering
+
+alongroute (bool): if the route should count
+    Default: True
+
+freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+    Default: True
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>entity (str): name of the entity for the headway
+
+value (float): time of headway
+
+rule (Rule): condition rule of triggering
+
+alongroute (bool): if the route should count
+
+freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the TimeHeadwayCondition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>entity (str): name of the entity for the headway
+
+value (float): time of headway
+
+rule (Rule): condition rule of triggering
+
+alongroute (bool): if the route should count
+    Default: True
+
+freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+    Default: True
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TimeHeadwayCondition():
+    &#34;&#34;&#34; the TimeHeadwayCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            entity (str): name of the entity for the headway
+
+            value (float): time of headway
+
+            rule (Rule): condition rule of triggering 
+
+            alongroute (bool): if the route should count
+                Default: True
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+                Default: True
+
+        Attributes
+        ----------
+            entity (str): name of the entity for the headway
+
+            value (float): time of headway
+
+            rule (Rule): condition rule of triggering 
+
+            alongroute (bool): if the route should count
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,entity,value,rule,alongroute=True,freespace=True):
+        &#34;&#34;&#34; initalize the TimeHeadwayCondition
+        
+        Parameters
+        ----------
+            entity (str): name of the entity for the headway
+
+            value (float): time of headway
+
+            rule (Rule): condition rule of triggering 
+
+            alongroute (bool): if the route should count
+                Default: True
+                
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+                Default: True
+
+        &#34;&#34;&#34;
+        self.entity = entity
+        self.value = value
+        self.alongroute = alongroute
+        self.freespace = freespace
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TimeHeadwayCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;entityRef&#39;] = self.entity
+        basedict[&#39;value&#39;] = str(self.value)
+        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
+        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TimeHeadwayCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;TimeHeadwayCondition&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.TimeHeadwayCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the TimeHeadwayCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the TimeHeadwayCondition as a dict
+
+    &#34;&#34;&#34;
+    basedict = {}
+    basedict[&#39;entityRef&#39;] = self.entity
+    basedict[&#39;value&#39;] = str(self.value)
+    basedict[&#39;alongRoute&#39;] = str(self.alongroute)
+    basedict[&#39;freespace&#39;] = str(self.freespace)
+    basedict[&#39;rule&#39;] = self.rule.name
+    return basedict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.TimeHeadwayCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the TimeHeadwayCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the TimeHeadwayCondition
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;EntityCondition&#39;)
+    ET.SubElement(element,&#39;TimeHeadwayCondition&#39;,attrib=self.get_attributes())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.TimeOfDayCondition"><code class="flex name class">
+<span>class <span class="ident">TimeOfDayCondition</span></span>
+<span>(</span><span>rule, datetime)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the TimeOfDayCondition class is an Value Condition used by the ValueTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>rule (Rule): condition rule of triggering
+
+time of day (str): datetime ??? format unknown
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>rule (Rule): condition rule of triggering
+
+time of day (str): datetime ??? format unknown
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the TimeOfDayCondition
+Parameters</p>
+<hr>
+<pre><code>rule (Rule): condition rule of triggering
+
+time of day (str): datetime ??? format unknown
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TimeOfDayCondition():
+    &#34;&#34;&#34; the TimeOfDayCondition class is an Value Condition used by the ValueTrigger
+        
+        Parameters
+        ----------
+            rule (Rule): condition rule of triggering 
+
+            time of day (str): datetime ??? format unknown
+            
+        Attributes
+        ----------
+            rule (Rule): condition rule of triggering 
+
+            time of day (str): datetime ??? format unknown
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,rule,datetime):
+        &#34;&#34;&#34; initalize the TimeOfDayCondition
+            Parameters
+            ----------
+                rule (Rule): condition rule of triggering 
+
+                time of day (str): datetime ??? format unknown
+            
+        &#34;&#34;&#34;
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        self.datetime = datetime
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TimeOfDayCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;datetime&#39;] = self.datetime
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TimeOfDayCondition
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;TimeOfDayCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.TimeOfDayCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the TimeOfDayCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the TimeOfDayCondition as a dict
+
+    &#34;&#34;&#34;
+    basedict = {}
+    basedict[&#39;datetime&#39;] = self.datetime
+    basedict[&#39;rule&#39;] = self.rule.name
+    return basedict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.TimeOfDayCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the TimeOfDayCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the TimeOfDayCondition
+
+    &#34;&#34;&#34;
+    return ET.Element(&#39;TimeOfDayCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.TimeToCollisionCondition"><code class="flex name class">
+<span>class <span class="ident">TimeToCollisionCondition</span></span>
+<span>(</span><span>value, rule, alongroute=True, freespace=True, entity=None, position=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the TimeToCollisionCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>value (float): time to collision
+
+rule (Rule): condition rule of triggering
+
+alongroute (bool): if the route should count
+    Default: True
+
+freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+    Default: True
+
+optionals:
+    entity (str): the entity to trigger collision on
+
+    position (*Position): a position for collision
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>value (float): time before collision
+
+rule (Rule): condition rule of triggering
+
+alongroute (bool): if the route should count
+Default: True
+
+freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+Default: True
+optionals:
+    entity (EntityRef):  entity for the collision
+
+    position (*Position): a position for collision
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the TimeToCollisionCondition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>value (float): time to collision
+
+rule (Rule): condition rule of triggering
+
+alongroute (bool): if the route should count
+    Default: True
+
+freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+    Default: True
+
+optionals:
+    entity (str): the entity to trigger collision on
+
+    position (*Position): a position for collision
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TimeToCollisionCondition():
+    &#34;&#34;&#34; the TimeToCollisionCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+
+            value (float): time to collision
+
+            rule (Rule): condition rule of triggering 
+
+            alongroute (bool): if the route should count
+                Default: True
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+                Default: True
+
+            optionals:
+                entity (str): the entity to trigger collision on
+
+                position (*Position): a position for collision
+
+        Attributes
+        ----------
+            value (float): time before collision
+
+            rule (Rule): condition rule of triggering 
+
+            alongroute (bool): if the route should count
+            Default: True
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+            Default: True
+            optionals:
+                entity (EntityRef):  entity for the collision
+
+                position (*Position): a position for collision
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value,rule,alongroute=True,freespace=True,entity=None,position=None):
+        &#34;&#34;&#34; initalize the TimeToCollisionCondition
+        
+        Parameters
+        ----------
+
+            value (float): time to collision
+
+            rule (Rule): condition rule of triggering 
+
+            alongroute (bool): if the route should count
+                Default: True
+
+            freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
+                Default: True
+
+            optionals:
+                entity (str): the entity to trigger collision on
+
+                position (*Position): a position for collision
+        
+        &#34;&#34;&#34;
+        self.value = value
+        self.freespace = freespace
+        self.alongroute = alongroute
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+        self.use_entity = None
+        if (entity !=None) and (position !=None):
+            raise ValueError(&#39;Can only have either entity of position, not both&#39;)
+        if entity:
+            self.entity = EntityRef(entity)
+            self.use_entity = True
+        if position:
+            self.position = position
+            self.use_entity = False
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TimeToCollisionCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {}
+        basedict[&#39;value&#39;] = str(self.value)
+        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
+        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+        
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TimeToCollisionCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        collisionevent = ET.SubElement(element,&#39;TimeToCollisionCondition&#39;,attrib=self.get_attributes())
+        
+        if self.use_entity == None:
+            raise ValueError(&#39;neither position or entity was set.&#39;)
+        elif self.use_entity:
+            collisionevent.append(self.entity.get_element())
+        else: 
+            collisionevent.append(self.position.get_element())
+        
+        
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.TimeToCollisionCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the TimeToCollisionCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the TimeToCollisionCondition as a dict
+
+    &#34;&#34;&#34;
+    basedict = {}
+    basedict[&#39;value&#39;] = str(self.value)
+    basedict[&#39;alongRoute&#39;] = str(self.alongroute)
+    basedict[&#39;freespace&#39;] = str(self.freespace)
+    basedict[&#39;rule&#39;] = self.rule.name
+    return basedict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.TimeToCollisionCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the TimeToCollisionCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the TimeToCollisionCondition
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;EntityCondition&#39;)
+    collisionevent = ET.SubElement(element,&#39;TimeToCollisionCondition&#39;,attrib=self.get_attributes())
+    
+    if self.use_entity == None:
+        raise ValueError(&#39;neither position or entity was set.&#39;)
+    elif self.use_entity:
+        collisionevent.append(self.entity.get_element())
+    else: 
+        collisionevent.append(self.position.get_element())
+    
+    
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.TrafficSignalCondition"><code class="flex name class">
+<span>class <span class="ident">TrafficSignalCondition</span></span>
+<span>(</span><span>name, state)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the TrafficSignalCondition class is an Value Condition used by the ValueTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the traficsignal ???
+
+state (str): state of the signal
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the traficsignal ???
+
+state (str): state of the signal
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the TrafficSignalCondition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the traficsignal ???
+
+state (str): state of the signal
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TrafficSignalCondition():
+    &#34;&#34;&#34; the TrafficSignalCondition class is an Value Condition used by the ValueTrigger
+        
+        Parameters
+        ----------
+            name (str): name of the traficsignal ???
+
+            state (str): state of the signal
+
+        Attributes
+        ----------
+            name (str): name of the traficsignal ???
+
+            state (str): state of the signal
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,state):
+        &#34;&#34;&#34; initalize the TrafficSignalCondition
+
+            Parameters
+            ----------
+                name (str): name of the traficsignal ???
+
+                state (str): state of the signal
+
+        &#34;&#34;&#34;
+        self.name = name
+        self.state = state
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TrafficSignalCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name,&#39;state&#39;:self.state}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TrafficSignalCondition
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;TrafficSignalCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.TrafficSignalCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the TrafficSignalCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the TrafficSignalCondition as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:self.name,&#39;state&#39;:self.state}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.TrafficSignalCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the TrafficSignalCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the TrafficSignalCondition
+
+    &#34;&#34;&#34;
+    return ET.Element(&#39;TrafficSignalCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.TrafficSignalControllerCondition"><code class="flex name class">
+<span>class <span class="ident">TrafficSignalControllerCondition</span></span>
+<span>(</span><span>trafficsignalref, phase)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the TrafficSignalControllerCondition class is an Value Condition used by the ValueTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>trafficsignalref (str): ???
+
+phase (str): ???
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>trafficsignalref (str): ???
+
+phase (str): ???
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the TrafficSignalControllerCondition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>trafficsignalref (str): ???
+
+phase (str): ???
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TrafficSignalControllerCondition():
+    &#34;&#34;&#34; the TrafficSignalControllerCondition class is an Value Condition used by the ValueTrigger
+        
+        Parameters
+        ----------
+            trafficsignalref (str): ???
+
+            phase (str): ???
+
+        Attributes
+        ----------
+            trafficsignalref (str): ???
+
+            phase (str): ???
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,trafficsignalref,phase):
+        &#34;&#34;&#34; initalize the TrafficSignalControllerCondition
+        
+            Parameters
+            ----------
+                trafficsignalref (str): ???
+
+                phase (str): ???
+
+        &#34;&#34;&#34;
+        self.trafficsignalref = trafficsignalref
+        self.phase = phase
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TrafficSignalControllerCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;trafficSignalControllerRef&#39;:self.trafficsignalref,&#39;phase&#39;:self.phase}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TrafficSignalControllerCondition
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;TrafficSignalControllerCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.TrafficSignalControllerCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the TrafficSignalControllerCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the TrafficSignalControllerCondition as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;trafficSignalControllerRef&#39;:self.trafficsignalref,&#39;phase&#39;:self.phase}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.TrafficSignalControllerCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the TrafficSignalControllerCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the TrafficSignalControllerCondition
+
+    &#34;&#34;&#34;
+    return ET.Element(&#39;TrafficSignalControllerCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.TraveledDistanceCondition"><code class="flex name class">
+<span>class <span class="ident">TraveledDistanceCondition</span></span>
+<span>(</span><span>value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the TraveledDistanceCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>value (float): how far it has traveled
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>value (float): how far it has traveled
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>the TraveledDistanceCondition class is an Entity Condition used by the EntityTrigger</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>value (float): how far it has traveled
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TraveledDistanceCondition():
+    &#34;&#34;&#34; the TraveledDistanceCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): how far it has traveled
+
+        Attributes
+        ----------
+            value (float): how far it has traveled
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,value):
+        &#34;&#34;&#34; the TraveledDistanceCondition class is an Entity Condition used by the EntityTrigger
+        
+        Parameters
+        ----------
+            value (float): how far it has traveled
+        
+        &#34;&#34;&#34;
+        self.value = value
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TraveledDistanceCondition as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;value&#39;:str(self.value)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TraveledDistanceCondition
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntityCondition&#39;)
+        ET.SubElement(element,&#39;TraveledDistanceCondition&#39;,attrib=self.get_attributes())
+        return element </code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.TraveledDistanceCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the TraveledDistanceCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the TraveledDistanceCondition as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;value&#39;:str(self.value)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.TraveledDistanceCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the TraveledDistanceCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the TraveledDistanceCondition
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;EntityCondition&#39;)
+    ET.SubElement(element,&#39;TraveledDistanceCondition&#39;,attrib=self.get_attributes())
+    return element </code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.TriggeringEntities"><code class="flex name class">
+<span>class <span class="ident">TriggeringEntities</span></span>
+<span>(</span><span>entity, triggeringrule)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the TriggeringEntities class is used by Value and Entity Triggers to defined the trigger entity</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>entity (str): name of the entity
+
+triggeringrule (str): all or any
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>entity (EntityRef): refernce to the entity
+
+triggeringrule (str): all or any
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the TriggeringEntities</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>entity (str): name of the entity
+
+triggeringrule (str): all or any
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TriggeringEntities():
+    &#34;&#34;&#34; the TriggeringEntities class is used by Value and Entity Triggers to defined the trigger entity
+        
+        Parameters
+        ----------
+            entity (str): name of the entity
+
+            triggeringrule (str): all or any
+
+        Attributes
+        ----------
+            entity (EntityRef): refernce to the entity
+
+            triggeringrule (str): all or any
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,entity,triggeringrule):
+        &#34;&#34;&#34; initalize the TriggeringEntities
+        
+        Parameters
+        ----------
+            entity (str): name of the entity
+
+            triggeringrule (str): all or any
+
+        &#34;&#34;&#34;
+        if triggeringrule not in [&#39;any&#39;,&#39;all&#39;]:
+            raise ValueError(&#39;not a vaild triggering rule&#39;)
+        self.entity = EntityRef(entity)
+        self.triggeringrule = triggeringrule
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;triggeringEntitiesRule&#39;:self.triggeringrule}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the LaneOffsetAction
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;TriggeringEntities&#39;,attrib=self.get_attributes())
+        element.append(self.entity.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.TriggeringEntities.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the LaneOffsetAction as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;triggeringEntitiesRule&#39;:self.triggeringrule}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.TriggeringEntities.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the LaneOffsetAction</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the LaneOffsetAction
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;TriggeringEntities&#39;,attrib=self.get_attributes())
+    element.append(self.entity.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.UserDefinedValueCondition"><code class="flex name class">
+<span>class <span class="ident">UserDefinedValueCondition</span></span>
+<span>(</span><span>name, value, rule)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the UserDefinedValueCondition class is an Value Condition used by the ValueTrigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the parameter
+
+value (int): value to trigger on
+
+rule (Rule): condition rule of triggering
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the parameter
+
+value (int): value to trigger on
+
+rule (Rule): condition rule of triggering
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the UserDefinedValueCondition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the parameter
+
+value (int): value to trigger on
+
+rule (Rule): condition rule of triggering
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UserDefinedValueCondition():
+    &#34;&#34;&#34; the UserDefinedValueCondition class is an Value Condition used by the ValueTrigger
+        
+        Parameters
+        ----------
+            name (str): name of the parameter
+
+            value (int): value to trigger on
+
+            rule (Rule): condition rule of triggering 
+            
+        Attributes
+        ----------
+            name (str): name of the parameter
+
+            value (int): value to trigger on
+
+            rule (Rule): condition rule of triggering 
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,value,rule):
+        &#34;&#34;&#34; initalize the UserDefinedValueCondition
+        
+            Parameters
+            ----------
+                name (str): name of the parameter
+
+                value (int): value to trigger on
+
+                rule (Rule): condition rule of triggering 
+        &#34;&#34;&#34;
+        self.name = name
+        self.value = value
+        if rule not in Rule:
+            raise ValueError(rule + &#39;; is not a valid rule.&#39;)
+        self.rule = rule
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the UserDefinedValueCondition as a dict
+
+        &#34;&#34;&#34;
+        basedict = {&#39;name&#39;:self.name,&#39;value&#39;:str(self.value)}
+        basedict[&#39;rule&#39;] = self.rule.name
+        return basedict
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the UserDefinedValueCondition
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;UserDefinedValueCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.UserDefinedValueCondition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the UserDefinedValueCondition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the UserDefinedValueCondition as a dict
+
+    &#34;&#34;&#34;
+    basedict = {&#39;name&#39;:self.name,&#39;value&#39;:str(self.value)}
+    basedict[&#39;rule&#39;] = self.rule.name
+    return basedict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.UserDefinedValueCondition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the UserDefinedValueCondition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the UserDefinedValueCondition
+
+    &#34;&#34;&#34;
+    return ET.Element(&#39;UserDefinedValueCondition&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.triggers.ValueTrigger"><code class="flex name class">
+<span>class <span class="ident">ValueTrigger</span></span>
+<span>(</span><span>name, delay, conditionedge, valuecondition, triggeringpoint='start')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the ValueTrigger creates a ValueTrigger of openscenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the trigger
+
+delay (float): the delay of the trigger
+
+conditionedge (ConditionEdge): on what conditionedge the trigger should act
+
+valuecondition (*ValueCondition): a value condition
+
+triggeringentity (str): the entity of the trigger
+
+triggeringrule (str): rule of the trigger
+    Default: 'any'
+
+triggeringpoint (str): start or stop
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the trigger
+
+delay (float): the delay of the trigger
+
+conditionedge (ConditionEdge): the condition edge
+
+valuecondition (*ValueCondition): the value condition
+
+triggerentity (TriggeringEntities): the triggering entity
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the ValueTrigger</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the trigger
+
+delay (float): the delay of the trigger
+
+conditionedge (ConditionEdge): on what conditionedge the trigger should act
+
+valuecondition (*ValueCondition): a value condition
+
+triggeringentity (str): the entity of the trigger
+
+triggeringrule (str): rule of the trigger
+    Default: 'any'
+#TODO CHECK THIS
+triggeringpoint (str): start or stop
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ValueTrigger():
+    &#34;&#34;&#34; the ValueTrigger creates a ValueTrigger of openscenario
+        
+        Parameters
+        ----------
+            name (str): name of the trigger
+
+            delay (float): the delay of the trigger
+
+            conditionedge (ConditionEdge): on what conditionedge the trigger should act
+
+            valuecondition (*ValueCondition): a value condition
+
+            triggeringentity (str): the entity of the trigger 
+
+            triggeringrule (str): rule of the trigger
+                Default: &#39;any&#39;
+
+            triggeringpoint (str): start or stop 
+            
+        Attributes
+        ----------
+            name (str): name of the trigger
+
+            delay (float): the delay of the trigger
+
+            conditionedge (ConditionEdge): the condition edge
+
+            valuecondition (*ValueCondition): the value condition
+        
+            triggerentity (TriggeringEntities): the triggering entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,delay,conditionedge,valuecondition,triggeringpoint=&#39;start&#39;):
+        &#34;&#34;&#34; initalize the ValueTrigger
+        
+        Parameters
+        ----------
+            name (str): name of the trigger
+
+            delay (float): the delay of the trigger
+
+            conditionedge (ConditionEdge): on what conditionedge the trigger should act
+
+            valuecondition (*ValueCondition): a value condition
+
+            triggeringentity (str): the entity of the trigger 
+
+            triggeringrule (str): rule of the trigger
+                Default: &#39;any&#39;
+            #TODO CHECK THIS
+            triggeringpoint (str): start or stop 
+
+        &#34;&#34;&#34;
+        self.name = name
+        if triggeringpoint not in [&#39;start&#39;,&#39;stop&#39;]:
+            raise ValueError(&#39;not a valid triggering point, valid start or stop&#39;)
+        if triggeringpoint == &#39;start&#39;:
+            self.triggerpoint = &#39;StartTrigger&#39;
+        else:
+            self.triggerpoint = &#39;StopTrigger&#39;
+            
+        self.delay = delay
+        if conditionedge not in ConditionEdge:
+            raise ValueError(&#39;not a valid condition edge&#39;)
+        self.conditionedge = conditionedge
+        self.valuecondition = valuecondition
+        
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name,&#39;delay&#39;:str(self.delay),&#39;conditionEdge&#39;:self.conditionedge.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the LaneOffsetAction
+
+        &#34;&#34;&#34;
+        element = ET.Element(self.triggerpoint)
+        condgroup = ET.SubElement(element,&#39;ConditionGroup&#39;)
+        condition = ET.SubElement(condgroup,&#39;Condition&#39;,attrib=self.get_attributes())
+        byvalue = ET.SubElement(condition,&#39;ByValueCondition&#39;)
+        byvalue.append(self.valuecondition.get_element())
+        
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.triggers.ValueTrigger.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the LaneOffsetAction as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:self.name,&#39;delay&#39;:str(self.delay),&#39;conditionEdge&#39;:self.conditionedge.name}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.triggers.ValueTrigger.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the LaneOffsetAction</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the LaneOffsetAction
+
+    &#34;&#34;&#34;
+    element = ET.Element(self.triggerpoint)
+    condgroup = ET.SubElement(element,&#39;ConditionGroup&#39;)
+    condition = ET.SubElement(condgroup,&#39;Condition&#39;,attrib=self.get_attributes())
+    byvalue = ET.SubElement(condition,&#39;ByValueCondition&#39;)
+    byvalue.append(self.valuecondition.get_element())
+    
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyoscx" href="index.html">pyoscx</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyoscx.triggers.AccelerationCondition" href="#pyoscx.triggers.AccelerationCondition">AccelerationCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.AccelerationCondition.get_attributes" href="#pyoscx.triggers.AccelerationCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.AccelerationCondition.get_element" href="#pyoscx.triggers.AccelerationCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.CollisionCondition" href="#pyoscx.triggers.CollisionCondition">CollisionCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.CollisionCondition.get_attributes" href="#pyoscx.triggers.CollisionCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.CollisionCondition.get_element" href="#pyoscx.triggers.CollisionCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.DistanceCondition" href="#pyoscx.triggers.DistanceCondition">DistanceCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.DistanceCondition.get_attributes" href="#pyoscx.triggers.DistanceCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.DistanceCondition.get_element" href="#pyoscx.triggers.DistanceCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.EmptyTrigger" href="#pyoscx.triggers.EmptyTrigger">EmptyTrigger</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.EmptyTrigger.get_element" href="#pyoscx.triggers.EmptyTrigger.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.EndOfRoadCondition" href="#pyoscx.triggers.EndOfRoadCondition">EndOfRoadCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.EndOfRoadCondition.get_attributes" href="#pyoscx.triggers.EndOfRoadCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.EndOfRoadCondition.get_element" href="#pyoscx.triggers.EndOfRoadCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.EntityTrigger" href="#pyoscx.triggers.EntityTrigger">EntityTrigger</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.EntityTrigger.get_attributes" href="#pyoscx.triggers.EntityTrigger.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.EntityTrigger.get_element" href="#pyoscx.triggers.EntityTrigger.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.OffroadCondition" href="#pyoscx.triggers.OffroadCondition">OffroadCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.OffroadCondition.get_attributes" href="#pyoscx.triggers.OffroadCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.OffroadCondition.get_element" href="#pyoscx.triggers.OffroadCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.ParameterCondition" href="#pyoscx.triggers.ParameterCondition">ParameterCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.ParameterCondition.get_attributes" href="#pyoscx.triggers.ParameterCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.ParameterCondition.get_element" href="#pyoscx.triggers.ParameterCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.ReachPositionCondition" href="#pyoscx.triggers.ReachPositionCondition">ReachPositionCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.ReachPositionCondition.get_attributes" href="#pyoscx.triggers.ReachPositionCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.ReachPositionCondition.get_element" href="#pyoscx.triggers.ReachPositionCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.RelativeDistanceCondition" href="#pyoscx.triggers.RelativeDistanceCondition">RelativeDistanceCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.RelativeDistanceCondition.get_attributes" href="#pyoscx.triggers.RelativeDistanceCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.RelativeDistanceCondition.get_element" href="#pyoscx.triggers.RelativeDistanceCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.RelativeSpeedCondition" href="#pyoscx.triggers.RelativeSpeedCondition">RelativeSpeedCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.RelativeSpeedCondition.get_attributes" href="#pyoscx.triggers.RelativeSpeedCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.RelativeSpeedCondition.get_element" href="#pyoscx.triggers.RelativeSpeedCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.SimulationTimeCondition" href="#pyoscx.triggers.SimulationTimeCondition">SimulationTimeCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.SimulationTimeCondition.get_attributes" href="#pyoscx.triggers.SimulationTimeCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.SimulationTimeCondition.get_element" href="#pyoscx.triggers.SimulationTimeCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.SpeedCondition" href="#pyoscx.triggers.SpeedCondition">SpeedCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.SpeedCondition.get_attributes" href="#pyoscx.triggers.SpeedCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.SpeedCondition.get_element" href="#pyoscx.triggers.SpeedCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.StandStillCondition" href="#pyoscx.triggers.StandStillCondition">StandStillCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.StandStillCondition.get_attributes" href="#pyoscx.triggers.StandStillCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.StandStillCondition.get_element" href="#pyoscx.triggers.StandStillCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.StoryboardElementStateCondition" href="#pyoscx.triggers.StoryboardElementStateCondition">StoryboardElementStateCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.StoryboardElementStateCondition.get_attributes" href="#pyoscx.triggers.StoryboardElementStateCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.StoryboardElementStateCondition.get_element" href="#pyoscx.triggers.StoryboardElementStateCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.TimeHeadwayCondition" href="#pyoscx.triggers.TimeHeadwayCondition">TimeHeadwayCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.TimeHeadwayCondition.get_attributes" href="#pyoscx.triggers.TimeHeadwayCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.TimeHeadwayCondition.get_element" href="#pyoscx.triggers.TimeHeadwayCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.TimeOfDayCondition" href="#pyoscx.triggers.TimeOfDayCondition">TimeOfDayCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.TimeOfDayCondition.get_attributes" href="#pyoscx.triggers.TimeOfDayCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.TimeOfDayCondition.get_element" href="#pyoscx.triggers.TimeOfDayCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.TimeToCollisionCondition" href="#pyoscx.triggers.TimeToCollisionCondition">TimeToCollisionCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.TimeToCollisionCondition.get_attributes" href="#pyoscx.triggers.TimeToCollisionCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.TimeToCollisionCondition.get_element" href="#pyoscx.triggers.TimeToCollisionCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.TrafficSignalCondition" href="#pyoscx.triggers.TrafficSignalCondition">TrafficSignalCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.TrafficSignalCondition.get_attributes" href="#pyoscx.triggers.TrafficSignalCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.TrafficSignalCondition.get_element" href="#pyoscx.triggers.TrafficSignalCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.TrafficSignalControllerCondition" href="#pyoscx.triggers.TrafficSignalControllerCondition">TrafficSignalControllerCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.TrafficSignalControllerCondition.get_attributes" href="#pyoscx.triggers.TrafficSignalControllerCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.TrafficSignalControllerCondition.get_element" href="#pyoscx.triggers.TrafficSignalControllerCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.TraveledDistanceCondition" href="#pyoscx.triggers.TraveledDistanceCondition">TraveledDistanceCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.TraveledDistanceCondition.get_attributes" href="#pyoscx.triggers.TraveledDistanceCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.TraveledDistanceCondition.get_element" href="#pyoscx.triggers.TraveledDistanceCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.TriggeringEntities" href="#pyoscx.triggers.TriggeringEntities">TriggeringEntities</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.TriggeringEntities.get_attributes" href="#pyoscx.triggers.TriggeringEntities.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.TriggeringEntities.get_element" href="#pyoscx.triggers.TriggeringEntities.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.UserDefinedValueCondition" href="#pyoscx.triggers.UserDefinedValueCondition">UserDefinedValueCondition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.UserDefinedValueCondition.get_attributes" href="#pyoscx.triggers.UserDefinedValueCondition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.UserDefinedValueCondition.get_element" href="#pyoscx.triggers.UserDefinedValueCondition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.triggers.ValueTrigger" href="#pyoscx.triggers.ValueTrigger">ValueTrigger</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.triggers.ValueTrigger.get_attributes" href="#pyoscx.triggers.ValueTrigger.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.triggers.ValueTrigger.get_element" href="#pyoscx.triggers.ValueTrigger.get_element">get_element</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

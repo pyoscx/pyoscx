@@ -1,0 +1,1342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>pyoscx.enumerations API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyoscx.enumerations</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">XMLNS = &#39;http://www.w3.org/2001/XMLSchema-instance&#39;
+XSI = &#39;OpenSccenario.xsd&#39;
+
+from enum import Enum, auto
+
+class Cloudstate(Enum):
+    &#34;&#34;&#34; Enum for Cloudstate
+    &#34;&#34;&#34;
+    skyOff = auto()
+    free = auto()
+    cloudy = auto()
+    overcast = auto()
+    rainy = auto()
+
+class ConditionEdge(Enum):
+    &#34;&#34;&#34; Enum for ConditionEdge
+    &#34;&#34;&#34;
+    rising = auto()
+    falling = auto()
+    risingorFalling = auto()
+    none = auto()
+
+class DynamicsDimension(Enum):
+    &#34;&#34;&#34; Enum for DynamicsDimension
+    &#34;&#34;&#34;
+    rate = auto()
+    time = auto()
+    distance = auto()
+
+class DynamicsShapes(Enum):
+    &#34;&#34;&#34; Enum for DynamicsShapes
+    &#34;&#34;&#34;
+    linear = auto()
+    cubic = auto()
+    sinusoidal = auto()
+    step = auto()
+
+class FollowMode(Enum):
+    &#34;&#34;&#34; Enum for FollowMode
+    &#34;&#34;&#34;
+    position = auto()
+    follow = auto()
+
+class MiscObjectCategory(Enum):
+    &#34;&#34;&#34; Enum for MiscObjectCategory
+    &#34;&#34;&#34;
+    
+    none = auto()
+    obstacle = auto()
+    pole = auto()
+    tree = auto()
+    vegetation = auto()
+    barrier = auto()
+    building = auto()
+    parkingSpace = auto()
+    patch = auto()
+    railing = auto()
+    grafficIsland = auto()
+    crosswalk = auto()
+    streetLamp = auto()
+    gantry = auto()
+    soundBarrier = auto()
+    wind = auto()
+    roadMark = auto()
+
+class ObjectType(Enum):
+    &#34;&#34;&#34; Enum for ObjectType
+    &#34;&#34;&#34;
+    pedestrian = auto()
+    vehicle = auto()
+    miscellaneous = auto()
+
+class ParameterType(Enum):
+    &#34;&#34;&#34; Enum for ParameterType
+    &#34;&#34;&#34;
+    integer = auto()
+    double = auto()
+    string = auto()
+    unsighedInt = auto()
+    unsighedShort = auto()
+    boolean = auto()
+    dateTime = auto()
+
+class PedestrianCategory(Enum):
+    &#34;&#34;&#34; Enum for PedestrianCategory
+    &#34;&#34;&#34;
+    pedestrian = auto()
+    wheelchair = auto()
+    animal = auto()
+
+class PercipitationType(Enum):
+    &#34;&#34;&#34; Enum for PercipitationType
+    &#34;&#34;&#34;
+    dry = auto()
+    rain = auto()
+    snow = auto()
+
+class Priority(Enum):
+    &#34;&#34;&#34; Enum for Priority
+    &#34;&#34;&#34;
+    overwrite = auto()
+    skip = auto()
+    parallel = auto()
+
+class ReferenceContext(Enum):
+    &#34;&#34;&#34; Enum for ReferenceContext
+    &#34;&#34;&#34;
+    relative = auto()
+    absolute = auto()
+
+class RelativeDistanceType(Enum):
+    &#34;&#34;&#34; Enum for RelativeDistanceType
+    &#34;&#34;&#34;
+    longitudinal = auto()
+    lateral = auto()
+    cartesianDistance = auto()
+
+class RouteStrategy(Enum):
+    &#34;&#34;&#34; Enum for RouteStrategy
+    &#34;&#34;&#34;
+    fastest = auto()
+    shortest = auto()
+    leastIntersections = auto()
+    random = auto()
+
+class Rule(Enum):
+    &#34;&#34;&#34; Enum for Rule
+    &#34;&#34;&#34;
+    greaterThan = auto()
+    lessThan = auto()
+    equalTo = auto()
+
+class SpeedTargetValueType(Enum):
+    &#34;&#34;&#34; Enum for SpeedTargetValueType
+    &#34;&#34;&#34;
+    delta = auto()
+    factor = auto()
+
+class StoryboardElementState(Enum):
+    &#34;&#34;&#34; Enum for StoryboardElementState
+    &#34;&#34;&#34;
+    startTransition = auto()
+    endTransition = auto()
+    stopTransition = auto()
+    skipTransition = auto()
+    completeState = auto()
+    runningState = auto()
+    standbyState = auto()
+
+class StoryboardElementType(Enum):
+    &#34;&#34;&#34; Enum for StoryboardElementType
+    &#34;&#34;&#34;
+    story = auto()
+    act = auto()
+    maneuver = auto()
+    event = auto()
+    action = auto()
+    maneuverGroup = auto()
+
+class TriggeringEntitiesRule(Enum):
+    &#34;&#34;&#34; Enum for TriggeringEntitiesRule
+    &#34;&#34;&#34;
+    any = auto()
+    all = auto()
+
+class VehicleCategory(Enum):
+    &#34;&#34;&#34; Enum for VehicleCategory
+    &#34;&#34;&#34;
+    car = auto()
+    van = auto()
+    truck = auto()
+    trailer = auto()
+    semitrailer = auto()
+    bus = auto()
+    motorbike = auto()
+    bicycle = auto()
+    train = auto()
+    tram = auto()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyoscx.enumerations.Cloudstate"><code class="flex name class">
+<span>class <span class="ident">Cloudstate</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for Cloudstate</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Cloudstate(Enum):
+    &#34;&#34;&#34; Enum for Cloudstate
+    &#34;&#34;&#34;
+    skyOff = auto()
+    free = auto()
+    cloudy = auto()
+    overcast = auto()
+    rainy = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.Cloudstate.cloudy"><code class="name">var <span class="ident">cloudy</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.Cloudstate.free"><code class="name">var <span class="ident">free</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.Cloudstate.overcast"><code class="name">var <span class="ident">overcast</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.Cloudstate.rainy"><code class="name">var <span class="ident">rainy</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.Cloudstate.skyOff"><code class="name">var <span class="ident">skyOff</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.ConditionEdge"><code class="flex name class">
+<span>class <span class="ident">ConditionEdge</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for ConditionEdge</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ConditionEdge(Enum):
+    &#34;&#34;&#34; Enum for ConditionEdge
+    &#34;&#34;&#34;
+    rising = auto()
+    falling = auto()
+    risingorFalling = auto()
+    none = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.ConditionEdge.falling"><code class="name">var <span class="ident">falling</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.ConditionEdge.none"><code class="name">var <span class="ident">none</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.ConditionEdge.rising"><code class="name">var <span class="ident">rising</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.ConditionEdge.risingorFalling"><code class="name">var <span class="ident">risingorFalling</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.DynamicsDimension"><code class="flex name class">
+<span>class <span class="ident">DynamicsDimension</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for DynamicsDimension</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DynamicsDimension(Enum):
+    &#34;&#34;&#34; Enum for DynamicsDimension
+    &#34;&#34;&#34;
+    rate = auto()
+    time = auto()
+    distance = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.DynamicsDimension.distance"><code class="name">var <span class="ident">distance</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.DynamicsDimension.rate"><code class="name">var <span class="ident">rate</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.DynamicsDimension.time"><code class="name">var <span class="ident">time</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.DynamicsShapes"><code class="flex name class">
+<span>class <span class="ident">DynamicsShapes</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for DynamicsShapes</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DynamicsShapes(Enum):
+    &#34;&#34;&#34; Enum for DynamicsShapes
+    &#34;&#34;&#34;
+    linear = auto()
+    cubic = auto()
+    sinusoidal = auto()
+    step = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.DynamicsShapes.cubic"><code class="name">var <span class="ident">cubic</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.DynamicsShapes.linear"><code class="name">var <span class="ident">linear</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.DynamicsShapes.sinusoidal"><code class="name">var <span class="ident">sinusoidal</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.DynamicsShapes.step"><code class="name">var <span class="ident">step</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.FollowMode"><code class="flex name class">
+<span>class <span class="ident">FollowMode</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for FollowMode</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FollowMode(Enum):
+    &#34;&#34;&#34; Enum for FollowMode
+    &#34;&#34;&#34;
+    position = auto()
+    follow = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.FollowMode.follow"><code class="name">var <span class="ident">follow</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.FollowMode.position"><code class="name">var <span class="ident">position</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory"><code class="flex name class">
+<span>class <span class="ident">MiscObjectCategory</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for MiscObjectCategory</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MiscObjectCategory(Enum):
+    &#34;&#34;&#34; Enum for MiscObjectCategory
+    &#34;&#34;&#34;
+    
+    none = auto()
+    obstacle = auto()
+    pole = auto()
+    tree = auto()
+    vegetation = auto()
+    barrier = auto()
+    building = auto()
+    parkingSpace = auto()
+    patch = auto()
+    railing = auto()
+    grafficIsland = auto()
+    crosswalk = auto()
+    streetLamp = auto()
+    gantry = auto()
+    soundBarrier = auto()
+    wind = auto()
+    roadMark = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.MiscObjectCategory.barrier"><code class="name">var <span class="ident">barrier</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.building"><code class="name">var <span class="ident">building</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.crosswalk"><code class="name">var <span class="ident">crosswalk</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.gantry"><code class="name">var <span class="ident">gantry</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.grafficIsland"><code class="name">var <span class="ident">grafficIsland</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.none"><code class="name">var <span class="ident">none</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.obstacle"><code class="name">var <span class="ident">obstacle</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.parkingSpace"><code class="name">var <span class="ident">parkingSpace</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.patch"><code class="name">var <span class="ident">patch</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.pole"><code class="name">var <span class="ident">pole</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.railing"><code class="name">var <span class="ident">railing</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.roadMark"><code class="name">var <span class="ident">roadMark</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.soundBarrier"><code class="name">var <span class="ident">soundBarrier</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.streetLamp"><code class="name">var <span class="ident">streetLamp</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.tree"><code class="name">var <span class="ident">tree</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.vegetation"><code class="name">var <span class="ident">vegetation</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.MiscObjectCategory.wind"><code class="name">var <span class="ident">wind</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.ObjectType"><code class="flex name class">
+<span>class <span class="ident">ObjectType</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for ObjectType</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ObjectType(Enum):
+    &#34;&#34;&#34; Enum for ObjectType
+    &#34;&#34;&#34;
+    pedestrian = auto()
+    vehicle = auto()
+    miscellaneous = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.ObjectType.miscellaneous"><code class="name">var <span class="ident">miscellaneous</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.ObjectType.pedestrian"><code class="name">var <span class="ident">pedestrian</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.ObjectType.vehicle"><code class="name">var <span class="ident">vehicle</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.ParameterType"><code class="flex name class">
+<span>class <span class="ident">ParameterType</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for ParameterType</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ParameterType(Enum):
+    &#34;&#34;&#34; Enum for ParameterType
+    &#34;&#34;&#34;
+    integer = auto()
+    double = auto()
+    string = auto()
+    unsighedInt = auto()
+    unsighedShort = auto()
+    boolean = auto()
+    dateTime = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.ParameterType.boolean"><code class="name">var <span class="ident">boolean</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.ParameterType.dateTime"><code class="name">var <span class="ident">dateTime</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.ParameterType.double"><code class="name">var <span class="ident">double</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.ParameterType.integer"><code class="name">var <span class="ident">integer</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.ParameterType.string"><code class="name">var <span class="ident">string</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.ParameterType.unsighedInt"><code class="name">var <span class="ident">unsighedInt</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.ParameterType.unsighedShort"><code class="name">var <span class="ident">unsighedShort</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.PedestrianCategory"><code class="flex name class">
+<span>class <span class="ident">PedestrianCategory</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for PedestrianCategory</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PedestrianCategory(Enum):
+    &#34;&#34;&#34; Enum for PedestrianCategory
+    &#34;&#34;&#34;
+    pedestrian = auto()
+    wheelchair = auto()
+    animal = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.PedestrianCategory.animal"><code class="name">var <span class="ident">animal</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.PedestrianCategory.pedestrian"><code class="name">var <span class="ident">pedestrian</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.PedestrianCategory.wheelchair"><code class="name">var <span class="ident">wheelchair</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.PercipitationType"><code class="flex name class">
+<span>class <span class="ident">PercipitationType</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for PercipitationType</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PercipitationType(Enum):
+    &#34;&#34;&#34; Enum for PercipitationType
+    &#34;&#34;&#34;
+    dry = auto()
+    rain = auto()
+    snow = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.PercipitationType.dry"><code class="name">var <span class="ident">dry</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.PercipitationType.rain"><code class="name">var <span class="ident">rain</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.PercipitationType.snow"><code class="name">var <span class="ident">snow</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.Priority"><code class="flex name class">
+<span>class <span class="ident">Priority</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for Priority</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Priority(Enum):
+    &#34;&#34;&#34; Enum for Priority
+    &#34;&#34;&#34;
+    overwrite = auto()
+    skip = auto()
+    parallel = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.Priority.overwrite"><code class="name">var <span class="ident">overwrite</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.Priority.parallel"><code class="name">var <span class="ident">parallel</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.Priority.skip"><code class="name">var <span class="ident">skip</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.ReferenceContext"><code class="flex name class">
+<span>class <span class="ident">ReferenceContext</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for ReferenceContext</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ReferenceContext(Enum):
+    &#34;&#34;&#34; Enum for ReferenceContext
+    &#34;&#34;&#34;
+    relative = auto()
+    absolute = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.ReferenceContext.absolute"><code class="name">var <span class="ident">absolute</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.ReferenceContext.relative"><code class="name">var <span class="ident">relative</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.RelativeDistanceType"><code class="flex name class">
+<span>class <span class="ident">RelativeDistanceType</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for RelativeDistanceType</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RelativeDistanceType(Enum):
+    &#34;&#34;&#34; Enum for RelativeDistanceType
+    &#34;&#34;&#34;
+    longitudinal = auto()
+    lateral = auto()
+    cartesianDistance = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.RelativeDistanceType.cartesianDistance"><code class="name">var <span class="ident">cartesianDistance</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.RelativeDistanceType.lateral"><code class="name">var <span class="ident">lateral</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.RelativeDistanceType.longitudinal"><code class="name">var <span class="ident">longitudinal</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.RouteStrategy"><code class="flex name class">
+<span>class <span class="ident">RouteStrategy</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for RouteStrategy</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RouteStrategy(Enum):
+    &#34;&#34;&#34; Enum for RouteStrategy
+    &#34;&#34;&#34;
+    fastest = auto()
+    shortest = auto()
+    leastIntersections = auto()
+    random = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.RouteStrategy.fastest"><code class="name">var <span class="ident">fastest</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.RouteStrategy.leastIntersections"><code class="name">var <span class="ident">leastIntersections</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.RouteStrategy.random"><code class="name">var <span class="ident">random</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.RouteStrategy.shortest"><code class="name">var <span class="ident">shortest</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.Rule"><code class="flex name class">
+<span>class <span class="ident">Rule</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for Rule</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Rule(Enum):
+    &#34;&#34;&#34; Enum for Rule
+    &#34;&#34;&#34;
+    greaterThan = auto()
+    lessThan = auto()
+    equalTo = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.Rule.equalTo"><code class="name">var <span class="ident">equalTo</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.Rule.greaterThan"><code class="name">var <span class="ident">greaterThan</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.Rule.lessThan"><code class="name">var <span class="ident">lessThan</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.SpeedTargetValueType"><code class="flex name class">
+<span>class <span class="ident">SpeedTargetValueType</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for SpeedTargetValueType</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SpeedTargetValueType(Enum):
+    &#34;&#34;&#34; Enum for SpeedTargetValueType
+    &#34;&#34;&#34;
+    delta = auto()
+    factor = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.SpeedTargetValueType.delta"><code class="name">var <span class="ident">delta</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.SpeedTargetValueType.factor"><code class="name">var <span class="ident">factor</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.StoryboardElementState"><code class="flex name class">
+<span>class <span class="ident">StoryboardElementState</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for StoryboardElementState</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class StoryboardElementState(Enum):
+    &#34;&#34;&#34; Enum for StoryboardElementState
+    &#34;&#34;&#34;
+    startTransition = auto()
+    endTransition = auto()
+    stopTransition = auto()
+    skipTransition = auto()
+    completeState = auto()
+    runningState = auto()
+    standbyState = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.StoryboardElementState.completeState"><code class="name">var <span class="ident">completeState</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.StoryboardElementState.endTransition"><code class="name">var <span class="ident">endTransition</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.StoryboardElementState.runningState"><code class="name">var <span class="ident">runningState</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.StoryboardElementState.skipTransition"><code class="name">var <span class="ident">skipTransition</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.StoryboardElementState.standbyState"><code class="name">var <span class="ident">standbyState</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.StoryboardElementState.startTransition"><code class="name">var <span class="ident">startTransition</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.StoryboardElementState.stopTransition"><code class="name">var <span class="ident">stopTransition</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.StoryboardElementType"><code class="flex name class">
+<span>class <span class="ident">StoryboardElementType</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for StoryboardElementType</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class StoryboardElementType(Enum):
+    &#34;&#34;&#34; Enum for StoryboardElementType
+    &#34;&#34;&#34;
+    story = auto()
+    act = auto()
+    maneuver = auto()
+    event = auto()
+    action = auto()
+    maneuverGroup = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.StoryboardElementType.act"><code class="name">var <span class="ident">act</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.StoryboardElementType.action"><code class="name">var <span class="ident">action</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.StoryboardElementType.event"><code class="name">var <span class="ident">event</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.StoryboardElementType.maneuver"><code class="name">var <span class="ident">maneuver</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.StoryboardElementType.maneuverGroup"><code class="name">var <span class="ident">maneuverGroup</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.StoryboardElementType.story"><code class="name">var <span class="ident">story</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.TriggeringEntitiesRule"><code class="flex name class">
+<span>class <span class="ident">TriggeringEntitiesRule</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for TriggeringEntitiesRule</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TriggeringEntitiesRule(Enum):
+    &#34;&#34;&#34; Enum for TriggeringEntitiesRule
+    &#34;&#34;&#34;
+    any = auto()
+    all = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.TriggeringEntitiesRule.all"><code class="name">var <span class="ident">all</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.TriggeringEntitiesRule.any"><code class="name">var <span class="ident">any</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.enumerations.VehicleCategory"><code class="flex name class">
+<span>class <span class="ident">VehicleCategory</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enum for VehicleCategory</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class VehicleCategory(Enum):
+    &#34;&#34;&#34; Enum for VehicleCategory
+    &#34;&#34;&#34;
+    car = auto()
+    van = auto()
+    truck = auto()
+    trailer = auto()
+    semitrailer = auto()
+    bus = auto()
+    motorbike = auto()
+    bicycle = auto()
+    train = auto()
+    tram = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyoscx.enumerations.VehicleCategory.bicycle"><code class="name">var <span class="ident">bicycle</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.VehicleCategory.bus"><code class="name">var <span class="ident">bus</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.VehicleCategory.car"><code class="name">var <span class="ident">car</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.VehicleCategory.motorbike"><code class="name">var <span class="ident">motorbike</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.VehicleCategory.semitrailer"><code class="name">var <span class="ident">semitrailer</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.VehicleCategory.trailer"><code class="name">var <span class="ident">trailer</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.VehicleCategory.train"><code class="name">var <span class="ident">train</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.VehicleCategory.tram"><code class="name">var <span class="ident">tram</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.VehicleCategory.truck"><code class="name">var <span class="ident">truck</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyoscx.enumerations.VehicleCategory.van"><code class="name">var <span class="ident">van</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyoscx" href="index.html">pyoscx</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyoscx.enumerations.Cloudstate" href="#pyoscx.enumerations.Cloudstate">Cloudstate</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.Cloudstate.cloudy" href="#pyoscx.enumerations.Cloudstate.cloudy">cloudy</a></code></li>
+<li><code><a title="pyoscx.enumerations.Cloudstate.free" href="#pyoscx.enumerations.Cloudstate.free">free</a></code></li>
+<li><code><a title="pyoscx.enumerations.Cloudstate.overcast" href="#pyoscx.enumerations.Cloudstate.overcast">overcast</a></code></li>
+<li><code><a title="pyoscx.enumerations.Cloudstate.rainy" href="#pyoscx.enumerations.Cloudstate.rainy">rainy</a></code></li>
+<li><code><a title="pyoscx.enumerations.Cloudstate.skyOff" href="#pyoscx.enumerations.Cloudstate.skyOff">skyOff</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.ConditionEdge" href="#pyoscx.enumerations.ConditionEdge">ConditionEdge</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.ConditionEdge.falling" href="#pyoscx.enumerations.ConditionEdge.falling">falling</a></code></li>
+<li><code><a title="pyoscx.enumerations.ConditionEdge.none" href="#pyoscx.enumerations.ConditionEdge.none">none</a></code></li>
+<li><code><a title="pyoscx.enumerations.ConditionEdge.rising" href="#pyoscx.enumerations.ConditionEdge.rising">rising</a></code></li>
+<li><code><a title="pyoscx.enumerations.ConditionEdge.risingorFalling" href="#pyoscx.enumerations.ConditionEdge.risingorFalling">risingorFalling</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.DynamicsDimension" href="#pyoscx.enumerations.DynamicsDimension">DynamicsDimension</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.DynamicsDimension.distance" href="#pyoscx.enumerations.DynamicsDimension.distance">distance</a></code></li>
+<li><code><a title="pyoscx.enumerations.DynamicsDimension.rate" href="#pyoscx.enumerations.DynamicsDimension.rate">rate</a></code></li>
+<li><code><a title="pyoscx.enumerations.DynamicsDimension.time" href="#pyoscx.enumerations.DynamicsDimension.time">time</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.DynamicsShapes" href="#pyoscx.enumerations.DynamicsShapes">DynamicsShapes</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.DynamicsShapes.cubic" href="#pyoscx.enumerations.DynamicsShapes.cubic">cubic</a></code></li>
+<li><code><a title="pyoscx.enumerations.DynamicsShapes.linear" href="#pyoscx.enumerations.DynamicsShapes.linear">linear</a></code></li>
+<li><code><a title="pyoscx.enumerations.DynamicsShapes.sinusoidal" href="#pyoscx.enumerations.DynamicsShapes.sinusoidal">sinusoidal</a></code></li>
+<li><code><a title="pyoscx.enumerations.DynamicsShapes.step" href="#pyoscx.enumerations.DynamicsShapes.step">step</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.FollowMode" href="#pyoscx.enumerations.FollowMode">FollowMode</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.FollowMode.follow" href="#pyoscx.enumerations.FollowMode.follow">follow</a></code></li>
+<li><code><a title="pyoscx.enumerations.FollowMode.position" href="#pyoscx.enumerations.FollowMode.position">position</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.MiscObjectCategory" href="#pyoscx.enumerations.MiscObjectCategory">MiscObjectCategory</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.barrier" href="#pyoscx.enumerations.MiscObjectCategory.barrier">barrier</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.building" href="#pyoscx.enumerations.MiscObjectCategory.building">building</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.crosswalk" href="#pyoscx.enumerations.MiscObjectCategory.crosswalk">crosswalk</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.gantry" href="#pyoscx.enumerations.MiscObjectCategory.gantry">gantry</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.grafficIsland" href="#pyoscx.enumerations.MiscObjectCategory.grafficIsland">grafficIsland</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.none" href="#pyoscx.enumerations.MiscObjectCategory.none">none</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.obstacle" href="#pyoscx.enumerations.MiscObjectCategory.obstacle">obstacle</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.parkingSpace" href="#pyoscx.enumerations.MiscObjectCategory.parkingSpace">parkingSpace</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.patch" href="#pyoscx.enumerations.MiscObjectCategory.patch">patch</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.pole" href="#pyoscx.enumerations.MiscObjectCategory.pole">pole</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.railing" href="#pyoscx.enumerations.MiscObjectCategory.railing">railing</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.roadMark" href="#pyoscx.enumerations.MiscObjectCategory.roadMark">roadMark</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.soundBarrier" href="#pyoscx.enumerations.MiscObjectCategory.soundBarrier">soundBarrier</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.streetLamp" href="#pyoscx.enumerations.MiscObjectCategory.streetLamp">streetLamp</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.tree" href="#pyoscx.enumerations.MiscObjectCategory.tree">tree</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.vegetation" href="#pyoscx.enumerations.MiscObjectCategory.vegetation">vegetation</a></code></li>
+<li><code><a title="pyoscx.enumerations.MiscObjectCategory.wind" href="#pyoscx.enumerations.MiscObjectCategory.wind">wind</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.ObjectType" href="#pyoscx.enumerations.ObjectType">ObjectType</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.ObjectType.miscellaneous" href="#pyoscx.enumerations.ObjectType.miscellaneous">miscellaneous</a></code></li>
+<li><code><a title="pyoscx.enumerations.ObjectType.pedestrian" href="#pyoscx.enumerations.ObjectType.pedestrian">pedestrian</a></code></li>
+<li><code><a title="pyoscx.enumerations.ObjectType.vehicle" href="#pyoscx.enumerations.ObjectType.vehicle">vehicle</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.ParameterType" href="#pyoscx.enumerations.ParameterType">ParameterType</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pyoscx.enumerations.ParameterType.boolean" href="#pyoscx.enumerations.ParameterType.boolean">boolean</a></code></li>
+<li><code><a title="pyoscx.enumerations.ParameterType.dateTime" href="#pyoscx.enumerations.ParameterType.dateTime">dateTime</a></code></li>
+<li><code><a title="pyoscx.enumerations.ParameterType.double" href="#pyoscx.enumerations.ParameterType.double">double</a></code></li>
+<li><code><a title="pyoscx.enumerations.ParameterType.integer" href="#pyoscx.enumerations.ParameterType.integer">integer</a></code></li>
+<li><code><a title="pyoscx.enumerations.ParameterType.string" href="#pyoscx.enumerations.ParameterType.string">string</a></code></li>
+<li><code><a title="pyoscx.enumerations.ParameterType.unsighedInt" href="#pyoscx.enumerations.ParameterType.unsighedInt">unsighedInt</a></code></li>
+<li><code><a title="pyoscx.enumerations.ParameterType.unsighedShort" href="#pyoscx.enumerations.ParameterType.unsighedShort">unsighedShort</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.PedestrianCategory" href="#pyoscx.enumerations.PedestrianCategory">PedestrianCategory</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.PedestrianCategory.animal" href="#pyoscx.enumerations.PedestrianCategory.animal">animal</a></code></li>
+<li><code><a title="pyoscx.enumerations.PedestrianCategory.pedestrian" href="#pyoscx.enumerations.PedestrianCategory.pedestrian">pedestrian</a></code></li>
+<li><code><a title="pyoscx.enumerations.PedestrianCategory.wheelchair" href="#pyoscx.enumerations.PedestrianCategory.wheelchair">wheelchair</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.PercipitationType" href="#pyoscx.enumerations.PercipitationType">PercipitationType</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.PercipitationType.dry" href="#pyoscx.enumerations.PercipitationType.dry">dry</a></code></li>
+<li><code><a title="pyoscx.enumerations.PercipitationType.rain" href="#pyoscx.enumerations.PercipitationType.rain">rain</a></code></li>
+<li><code><a title="pyoscx.enumerations.PercipitationType.snow" href="#pyoscx.enumerations.PercipitationType.snow">snow</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.Priority" href="#pyoscx.enumerations.Priority">Priority</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.Priority.overwrite" href="#pyoscx.enumerations.Priority.overwrite">overwrite</a></code></li>
+<li><code><a title="pyoscx.enumerations.Priority.parallel" href="#pyoscx.enumerations.Priority.parallel">parallel</a></code></li>
+<li><code><a title="pyoscx.enumerations.Priority.skip" href="#pyoscx.enumerations.Priority.skip">skip</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.ReferenceContext" href="#pyoscx.enumerations.ReferenceContext">ReferenceContext</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.ReferenceContext.absolute" href="#pyoscx.enumerations.ReferenceContext.absolute">absolute</a></code></li>
+<li><code><a title="pyoscx.enumerations.ReferenceContext.relative" href="#pyoscx.enumerations.ReferenceContext.relative">relative</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.RelativeDistanceType" href="#pyoscx.enumerations.RelativeDistanceType">RelativeDistanceType</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.RelativeDistanceType.cartesianDistance" href="#pyoscx.enumerations.RelativeDistanceType.cartesianDistance">cartesianDistance</a></code></li>
+<li><code><a title="pyoscx.enumerations.RelativeDistanceType.lateral" href="#pyoscx.enumerations.RelativeDistanceType.lateral">lateral</a></code></li>
+<li><code><a title="pyoscx.enumerations.RelativeDistanceType.longitudinal" href="#pyoscx.enumerations.RelativeDistanceType.longitudinal">longitudinal</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.RouteStrategy" href="#pyoscx.enumerations.RouteStrategy">RouteStrategy</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.RouteStrategy.fastest" href="#pyoscx.enumerations.RouteStrategy.fastest">fastest</a></code></li>
+<li><code><a title="pyoscx.enumerations.RouteStrategy.leastIntersections" href="#pyoscx.enumerations.RouteStrategy.leastIntersections">leastIntersections</a></code></li>
+<li><code><a title="pyoscx.enumerations.RouteStrategy.random" href="#pyoscx.enumerations.RouteStrategy.random">random</a></code></li>
+<li><code><a title="pyoscx.enumerations.RouteStrategy.shortest" href="#pyoscx.enumerations.RouteStrategy.shortest">shortest</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.Rule" href="#pyoscx.enumerations.Rule">Rule</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.Rule.equalTo" href="#pyoscx.enumerations.Rule.equalTo">equalTo</a></code></li>
+<li><code><a title="pyoscx.enumerations.Rule.greaterThan" href="#pyoscx.enumerations.Rule.greaterThan">greaterThan</a></code></li>
+<li><code><a title="pyoscx.enumerations.Rule.lessThan" href="#pyoscx.enumerations.Rule.lessThan">lessThan</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.SpeedTargetValueType" href="#pyoscx.enumerations.SpeedTargetValueType">SpeedTargetValueType</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.SpeedTargetValueType.delta" href="#pyoscx.enumerations.SpeedTargetValueType.delta">delta</a></code></li>
+<li><code><a title="pyoscx.enumerations.SpeedTargetValueType.factor" href="#pyoscx.enumerations.SpeedTargetValueType.factor">factor</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.StoryboardElementState" href="#pyoscx.enumerations.StoryboardElementState">StoryboardElementState</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pyoscx.enumerations.StoryboardElementState.completeState" href="#pyoscx.enumerations.StoryboardElementState.completeState">completeState</a></code></li>
+<li><code><a title="pyoscx.enumerations.StoryboardElementState.endTransition" href="#pyoscx.enumerations.StoryboardElementState.endTransition">endTransition</a></code></li>
+<li><code><a title="pyoscx.enumerations.StoryboardElementState.runningState" href="#pyoscx.enumerations.StoryboardElementState.runningState">runningState</a></code></li>
+<li><code><a title="pyoscx.enumerations.StoryboardElementState.skipTransition" href="#pyoscx.enumerations.StoryboardElementState.skipTransition">skipTransition</a></code></li>
+<li><code><a title="pyoscx.enumerations.StoryboardElementState.standbyState" href="#pyoscx.enumerations.StoryboardElementState.standbyState">standbyState</a></code></li>
+<li><code><a title="pyoscx.enumerations.StoryboardElementState.startTransition" href="#pyoscx.enumerations.StoryboardElementState.startTransition">startTransition</a></code></li>
+<li><code><a title="pyoscx.enumerations.StoryboardElementState.stopTransition" href="#pyoscx.enumerations.StoryboardElementState.stopTransition">stopTransition</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.StoryboardElementType" href="#pyoscx.enumerations.StoryboardElementType">StoryboardElementType</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pyoscx.enumerations.StoryboardElementType.act" href="#pyoscx.enumerations.StoryboardElementType.act">act</a></code></li>
+<li><code><a title="pyoscx.enumerations.StoryboardElementType.action" href="#pyoscx.enumerations.StoryboardElementType.action">action</a></code></li>
+<li><code><a title="pyoscx.enumerations.StoryboardElementType.event" href="#pyoscx.enumerations.StoryboardElementType.event">event</a></code></li>
+<li><code><a title="pyoscx.enumerations.StoryboardElementType.maneuver" href="#pyoscx.enumerations.StoryboardElementType.maneuver">maneuver</a></code></li>
+<li><code><a title="pyoscx.enumerations.StoryboardElementType.maneuverGroup" href="#pyoscx.enumerations.StoryboardElementType.maneuverGroup">maneuverGroup</a></code></li>
+<li><code><a title="pyoscx.enumerations.StoryboardElementType.story" href="#pyoscx.enumerations.StoryboardElementType.story">story</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.TriggeringEntitiesRule" href="#pyoscx.enumerations.TriggeringEntitiesRule">TriggeringEntitiesRule</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.enumerations.TriggeringEntitiesRule.all" href="#pyoscx.enumerations.TriggeringEntitiesRule.all">all</a></code></li>
+<li><code><a title="pyoscx.enumerations.TriggeringEntitiesRule.any" href="#pyoscx.enumerations.TriggeringEntitiesRule.any">any</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.enumerations.VehicleCategory" href="#pyoscx.enumerations.VehicleCategory">VehicleCategory</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pyoscx.enumerations.VehicleCategory.bicycle" href="#pyoscx.enumerations.VehicleCategory.bicycle">bicycle</a></code></li>
+<li><code><a title="pyoscx.enumerations.VehicleCategory.bus" href="#pyoscx.enumerations.VehicleCategory.bus">bus</a></code></li>
+<li><code><a title="pyoscx.enumerations.VehicleCategory.car" href="#pyoscx.enumerations.VehicleCategory.car">car</a></code></li>
+<li><code><a title="pyoscx.enumerations.VehicleCategory.motorbike" href="#pyoscx.enumerations.VehicleCategory.motorbike">motorbike</a></code></li>
+<li><code><a title="pyoscx.enumerations.VehicleCategory.semitrailer" href="#pyoscx.enumerations.VehicleCategory.semitrailer">semitrailer</a></code></li>
+<li><code><a title="pyoscx.enumerations.VehicleCategory.trailer" href="#pyoscx.enumerations.VehicleCategory.trailer">trailer</a></code></li>
+<li><code><a title="pyoscx.enumerations.VehicleCategory.train" href="#pyoscx.enumerations.VehicleCategory.train">train</a></code></li>
+<li><code><a title="pyoscx.enumerations.VehicleCategory.tram" href="#pyoscx.enumerations.VehicleCategory.tram">tram</a></code></li>
+<li><code><a title="pyoscx.enumerations.VehicleCategory.truck" href="#pyoscx.enumerations.VehicleCategory.truck">truck</a></code></li>
+<li><code><a title="pyoscx.enumerations.VehicleCategory.van" href="#pyoscx.enumerations.VehicleCategory.van">van</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

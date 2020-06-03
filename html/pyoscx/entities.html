@@ -1,0 +1,4359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>pyoscx.entities API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyoscx.entities</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import xml.etree.ElementTree as ET
+
+from .utils import EntityRef, ObjectType
+from .scenario import ParameterDeclarations
+from .enumerations import VehicleCategory, PedestrianCategory, MiscObjectCategory
+from .utils import DynamicsConstrains
+from .catalog import CatalogFile
+
+class Entities():
+    &#34;&#34;&#34; The Entities class creates the entities part of OpenScenario
+        
+        Attributes
+        ----------
+            scenario_objects (list of ScenarioObject): ScenarioObject type entities in the scenario
+
+            entities (list of Entity): Entity type of entities in the scenario
+
+
+        Methods
+        -------
+            add_scenario_object(entityobject,controller)
+                adds a ScenarioObject to the scenario
+
+            add_entity_bytype(name,entity_type)
+                adds an Entity by the type of entity
+
+            add_entity_byref(name,reference)
+                adds an Entity by a reference name
+
+            get_element()
+                Returns the full ElementTree of the class
+
+
+    &#34;&#34;&#34;
+    def __init__(self):
+        &#34;&#34;&#34; initalizes the Entities class
+
+        &#34;&#34;&#34;
+        self.scenario_objects = []
+        self.entities = []
+
+
+    def add_scenario_object(self, name, entityobject, controller=None):
+        &#34;&#34;&#34; adds a ScenarioObject to the scenario
+        
+            Parameters
+            ----------
+                name (str): name of the scenario object
+
+                entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
+
+                controller (CatalogReference, or Controller): controller for the object
+                    Default (None)
+
+        &#34;&#34;&#34;
+
+        self.scenario_objects.append(ScenarioObject(name,entityobject,controller))
+    
+    def add_entity_bytype(self,name,entity_type):
+        &#34;&#34;&#34; adds an Entity to the scenario
+        
+            Parameters
+            ----------
+                name (str): name of the entity
+
+                object_type (ObjectType): type of entity
+            
+        &#34;&#34;&#34;
+        self.entities.append(Entity(name,object_type=entity_type))
+
+    def add_entity_byref(self,name,entity):
+        &#34;&#34;&#34; adds an Entity to the scenario
+        
+            Parameters
+            ----------
+                name (str): name of the entity
+
+                entity (str): type of entity
+            
+        &#34;&#34;&#34;
+        self.entities.append(Entity(name,entityref=entity))
+
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Entities
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Entities&#39;)
+        for i in self.scenario_objects:
+            element.append(i.get_element())
+
+        for i in self.entities:
+            element.append(i.get_element())
+
+        return element
+
+
+class ScenarioObject():
+    &#34;&#34;&#34; The ScenarioObject creates a scenario object of OpenScenario
+        
+        Parameters
+        ----------
+            name (str): name of the object
+
+            entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
+
+            controller (CatalogReference, or Controller): controller for the object
+
+
+        Attributes
+        ----------
+            name (str): name of the object
+
+            entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
+
+            controller (CatalogReference, or Controller): controller for the object
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+            
+            get_attributes()
+                returns the attributes of the class
+
+    &#34;&#34;&#34; 
+    def __init__(self ,name ,entityobject ,controller = None):
+        &#34;&#34;&#34; initalizes the ScenarioObject
+
+        Parameters
+        ----------
+            name (str): name of the object
+
+            entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
+
+            controller (CatalogReference, or Controller): controller for the object
+                Default (None)
+
+        &#34;&#34;&#34;
+        self.name = name
+        self.entityobject = entityobject
+        self.controller = controller
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Entity as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Entity
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;ScenarioObject&#39;,attrib=self.get_attributes())
+        
+        # print(self.entityobject.get_element())
+        element.append(self.entityobject.get_element())
+        if self.controller:
+            ET.SubElement(&#39;ObjectController&#39;,self.controller.get_element())
+        
+        return element
+
+class Entity():
+    &#34;&#34;&#34; The Entity class creates an Entity of OpenScenario
+        Can either use a object_type or entityref (not both)
+        
+        Parameters
+        ----------
+            name (str): name of the Entity
+
+            optionals:
+                object_type (ObjectType): the object_type to be used
+
+                entityref (str): reference to an entity
+
+        Attributes
+        ----------
+            name (str): name of the Entity
+
+            object_type (ObjectType): the object_type to be used
+
+            entityref (str): reference to an entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,object_type=None,entityref=None):
+        &#34;&#34;&#34; Initalizes the Entity
+
+        Parameters
+        ----------
+            name (str): name of the Entity
+
+            optionals (only use one):
+                object_type (ObjectType): the object_type to be used
+
+                entityref (str): reference to an entity
+
+        &#34;&#34;&#34;
+        self.name = name
+        if (object_type !=None) and (entityref != None):
+            raise KeyError(&#39;only one of objecttype or entityref are alowed&#39;)
+        if (object_type ==None) and (entityref == None):
+            raise KeyError(&#39;either objecttype or entityref is requiered&#39;)
+        if entityref:
+            self.entity = EntityRef(entityref)
+            self.object_type = None
+        else:
+            if object_type not in ObjectType:
+                ValueError(&#39;Not a valid ObjectType&#39;)
+            self.object_type = object_type
+            self.entity = None
+        
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Entity as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Entity
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntitySelection&#39;,attrib=self.get_attributes())
+        members = ET.SubElement(element,&#39;Members&#39;)
+        if self.entity:
+            members.append(self.entity.get_element())
+        if self.object_type:
+            ET.SubElement(members,&#39;ByType&#39;,attrib={&#39;value&#39;:self.object_type.name})
+        return element
+
+class Pedestrian():
+    &#34;&#34;&#34; the Pedestrian class creates a pedestrian type entity of openscenario
+
+        Parameters
+        ----------
+            name (str): name of the type (req for catalog)
+
+            model (str): definition model of the pedestrian
+
+            mass (float): mass of the pedestrian
+
+            boundingbox (BoundingBox): the bounding box of the pedestrian
+
+            category (PedestrianCategory): type of of pedestrian 
+                
+
+        Attributes
+        ----------
+            name (str): name of the pedestrian
+
+            model (str): definition model of the pedestrian
+
+            mass (float): mass of the pedestrian
+
+            category (PedestrianCategory): type of pedestrian
+
+            boundingbox (BoundingBox): the bounding box of the pedestrian
+
+            parameters (ParameterDeclaration): Parameter declarations of the pedestrian
+
+            properties (Properties): additional properties of the pedestrian
+
+        Methods
+        -------
+            add_parameter(parameter)
+                adds a parameter declaration to the pedestrian
+
+            add_property(name, value)
+                adds a single property to the pedestrian
+
+            add_property_file(filename)
+                adds a property file to the pedestrian
+
+            append_to_catalog(filename)
+                adds the vehicle to an existing pedestrian
+
+            dump_to_catalog(filename,name,description,author)
+                crates a new catalog with the pedestrian
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name, model, mass, category, boundingbox):
+        &#34;&#34;&#34; initalzie the Pedestrian Class
+
+        Parameters
+        ----------
+            name (str): name of the type (req for catalog)
+
+            model (str): definition model of the pedestrian
+
+            mass (float): mass of the pedestrian
+
+            category (PedestrianCategory): type of of pedestrian 
+
+            boundingbox (BoundingBox): the bounding box of the pedestrian
+        
+        &#34;&#34;&#34;
+        self.name = name
+        self.model = model
+        self.mass = mass
+        if category not in PedestrianCategory:
+            ValueError(str(category) + &#39; is not a valid pedestrian type&#39;)    
+        self.category = category
+        self.boundingbox = boundingbox
+        self.parameters = ParameterDeclarations()
+        self.properties = Properties()
+
+        
+    
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Pedestrian to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the Pedestrian to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; adds a parameter declaration to the pedestrian
+
+            Parameters
+            ----------
+                parameter (Parameter): A new parameter declaration for the pedestrian
+
+        &#34;&#34;&#34;
+        self.parameters.add_parameter(parameter)
+
+    def add_property(self,name, value):
+        &#34;&#34;&#34; adds a single property to the pedestrian
+
+            Parameters
+            ----------
+                name (str): name of the property
+
+                value (str): value of the property
+
+        &#34;&#34;&#34;
+        self.properties.add_property(name,value)
+
+    def add_property_file(self,filename):
+        &#34;&#34;&#34; adds a property file to the pedestrian
+
+            Parameters
+            ----------
+                filename (str): filename of a property file
+
+        &#34;&#34;&#34;
+        self.properties.add_file(filename)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the pedestrian
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:str(self.name),&#39;pedestrianCategory&#39;:str(self.category),&#39;model&#39;:self.model,&#39;mass&#39;:str(self.mass)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the pedestrian
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Pedestrian&#39;,attrib=self.get_attributes())
+        element.append(self.parameters.get_element())
+        element.append(self.boundingbox.get_element())
+        element.append(self.properties.get_element())
+        
+        return element
+
+class MiscObject():
+    &#34;&#34;&#34; the MiscObject Class creates a MiscObject for openscenario
+
+        Parameters
+        ----------
+            name (str): name of the MiscObject
+
+            mass (float): mass of the object
+
+            category (str): the category of the misc object
+
+            boundingbox (BoundingBox): the bounding box of the MiscObject               
+
+        Attributes
+        ----------
+            name (str): name of the object
+
+            mass (float): mass of the object
+
+            misc_type (str): type of misc object
+
+            boundingbox (BoundingBox): the bounding box of the MiscObject
+
+            parameters (ParameterDeclaration): Parameter declarations of the MiscObject
+
+            properties (Properties): additional properties of the MiscObject
+
+        Methods
+        -------
+            add_parameter(parameter)
+                adds a parameter declaration to the MiscObject
+
+            add_property(name, value)
+                adds a single property to the MiscObject
+
+            add_property_file(filename)
+                adds a property file to the MiscObject
+
+            append_to_catalog(filename)
+                adds the MiscObject to an existing catalog
+
+            dump_to_catalog(filename,name,description,author)
+                crates a new catalog with the MiscObject
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name, mass, category, boundingbox):
+        &#34;&#34;&#34; initalzie the MiscObject Class
+
+        Parameters
+        ----------
+            name (str): name of the MiscObject
+
+            mass (float): mass of the object
+
+            category (str): the category of the misc object
+
+            boundingbox (BoundingBox): the bounding box of the MiscObject       
+        
+        &#34;&#34;&#34;
+        self.name = name
+        self.mass = mass
+        if category not in MiscObjectCategory:
+            ValueError(str(category) + &#39; is not a valid MiscObject type&#39;)    
+        self.category = category
+        self.boundingbox = boundingbox
+        self.parameters = ParameterDeclarations()
+        self.properties = Properties()
+
+       
+    
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the MiscObject to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the MiscObject to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; adds a parameter declaration to the MiscObject
+
+            Parameters
+            ----------
+                parameter (Parameter): A new parameter declaration for the MiscObject
+
+        &#34;&#34;&#34;
+        self.parameters.add_parameter(parameter)
+
+    def add_property(self,name, value):
+        &#34;&#34;&#34; adds a single property to the MiscObject
+
+            Parameters
+            ----------
+                name (str): name of the property
+
+                value (str): value of the property
+
+        &#34;&#34;&#34;
+        self.properties.add_property(name,value)
+
+    def add_property_file(self,filename):
+        &#34;&#34;&#34; adds a property file to the MiscObject
+
+            Parameters
+            ----------
+                filename (str): filename of a property file
+
+        &#34;&#34;&#34;
+        self.properties.add_file(filename)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the MiscObject
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:str(self.name),&#39;miscObjectCategory&#39;:str(self.category),&#39;mass&#39;:str(self.mass)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the MiscObject
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;MiscObject&#39;,attrib=self.get_attributes())
+        element.append(self.parameters.get_element())
+        element.append(self.boundingbox.get_element())
+        element.append(self.properties.get_element())
+        
+        return element
+
+class Vehicle():
+    &#34;&#34;&#34; the Vehicle Class creates a Vehicle for openscenario
+
+        Parameters
+        ----------
+            name (str): name of the vehicle
+
+            vehicle_type (VehicleCategory): type of vehicle
+
+            boundingbox (BoundingBox): the bounding box of the vehicle
+
+            frontaxel (Axel): the front axel properties of the vehicle
+
+            backaxel (Axel): the back axel properties of the vehicle
+
+            max_speed (float): the maximum speed of the vehicle
+
+            max_acceleration (float): the maximum acceleration of the vehicle
+
+            max_deceleration (float): the maximum deceleration of the vehicle
+                
+
+        Attributes
+        ----------
+            name (str): name of the vehicle
+
+            vehicle_type (VehicleCategory): type of vehicle
+
+            boundingbox (BoundingBox): the bounding box of the vehicle
+
+            axels (Axels): an Axels object
+
+            dynamics (DynamicsConstraints): the allowed dynamics of the vehicle
+
+            parameters (ParameterDeclaration): Parameter declarations of the vehicle
+
+            properties (Properties): additional properties of the vehicle
+
+        Methods
+        -------
+            add_axel(axel)
+                adds an additional axel to the vehicle
+
+            add_parameter(parameter)
+                adds a parameter declaration to the vehicle
+
+            add_property(name, value)
+                adds a single property to the vehicle
+
+            add_property_file(filename)
+                adds a property file to the vehicle
+
+            append_to_catalog(filename)
+                adds the vehicle to an existing catalog
+
+            dump_to_catalog(filename,name,description,author)
+                crates a new catalog with the vehicle
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name, vehicle_type, boundingbox, frontaxel, backaxel, max_speed, max_acceleration, max_deceleration):
+        &#34;&#34;&#34; initalzie the Vehicle Class
+
+        Parameters
+        ----------
+            name (str): name of the vehicle
+
+            vehicle_type (VehicleCategory): type of vehicle
+
+            boundingbox (BoundingBox): the bounding box of the vehicle
+
+            frontaxel (Axel): the front axel properties of the vehicle
+
+            backaxel (Axel): the back axel properties of the vehicle
+
+            max_speed (float): the maximum speed of the vehicle
+
+            max_acceleration (float): the maximum acceleration of the vehicle
+
+            max_deceleration (float): the maximum deceleration of the vehicle
+        
+        &#34;&#34;&#34;
+        self.name = name
+        if vehicle_type not in VehicleCategory:
+            ValueError(&#39;not a valid vehicle type&#39;)    
+        self.vehicle_type = vehicle_type
+        self.boundingbox = boundingbox
+        self.axels = Axels(frontaxel,backaxel)
+        self.dynamics = DynamicsConstrains(max_acceleration,max_deceleration,max_speed)
+        self.parameters = ParameterDeclarations()
+        self.properties = Properties()
+
+    
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the vehicle to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the vehicle to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+
+    def add_axel(self,axel):
+        &#34;&#34;&#34; adds an additional axel to the vehicle
+
+            Parameters
+            ----------
+                axel (Axel): an additional Axel
+
+        &#34;&#34;&#34;
+        self.axels.add_axel(axel)
+
+
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; adds a parameter declaration to the vehicle
+
+            Parameters
+            ----------
+                parameter (Parameter): A new parameter declaration for the vehicle
+
+        &#34;&#34;&#34;
+        self.parameters.add_parameter(parameter)
+
+    def add_property(self,name, value):
+        &#34;&#34;&#34; adds a single property to the vehicle
+
+            Parameters
+            ----------
+                name (str): name of the property
+
+                value (str): value of the property
+
+        &#34;&#34;&#34;
+        self.properties.add_property(name,value)
+
+    def add_property_file(self,filename):
+        &#34;&#34;&#34; adds a property file to the vehicle
+
+            Parameters
+            ----------
+                filename (str): filename of a property file
+
+        &#34;&#34;&#34;
+        self.properties.add_file(filename)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Center
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:str(self.name),&#39;vehicleCategory&#39;:str(self.vehicle_type.name)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Center
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Vehicle&#39;,attrib=self.get_attributes())
+        element.append(self.parameters.get_element())
+        element.append(self.boundingbox.get_element())
+        element.append(self.dynamics.get_element(&#39;Performance&#39;))
+        element.append(self.axels.get_element())
+        element.append(self.properties.get_element())
+        
+        return element
+
+
+class BoundingBox():
+    &#34;&#34;&#34; the Dimensions describes the size of an entity
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+
+            x_center (float): x distance from back axel to center
+
+            y_center (float): y distance from back axel to center
+
+            z_center (float): z distance from back axel to center
+                
+
+        Attributes
+        ----------
+            boundingbox (BoundingBox): the bounding box of the entity
+
+            center (Center): the center of the object relative the the back axel
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,width,length,height,x_center,y_center,z_center):
+        &#34;&#34;&#34; initalzie the Dimensions
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+
+            x_center (float): x distance from back axel to center
+
+            y_center (float): y distance from back axel to center
+
+            z_center (float): z distance from back axel to center
+        
+        &#34;&#34;&#34;
+        self.boundingbox = Dimensions(width,length,height)
+        self.center = Center(x_center,y_center,z_center)
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Dimensions
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;BoundingBox&#39;)
+        element.append(self.center.get_element())
+        element.append(self.boundingbox.get_element())
+        return element
+
+class Center():
+    &#34;&#34;&#34; the Center Class creates a centerpoint for a bounding box, reference point of a vehicle is the back axel
+
+        Parameters
+        ----------
+            x (float): x distance from back axel to center
+
+            y (float): y distance from back axel to center
+
+            z (float): z distance from back axel to center
+                
+
+        Attributes
+        ----------
+            x (float): x distance from back axel to center
+
+            y (float): y distance from back axel to center
+
+            z (float): z distance from back axel to center
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,x,y,z):
+        &#34;&#34;&#34; initalzie the Center Class
+
+        Parameters
+        ----------
+            x (float): x distance from back axel to center
+
+            y (float): y distance from back axel to center
+
+            z (float): z distance from back axel to center
+        
+        &#34;&#34;&#34;
+        self.x = x
+        self.y = y
+        self.z = z
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Center
+
+        &#34;&#34;&#34;
+        return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Center
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Center&#39;,attrib=self.get_attributes())
+        return element
+
+class Dimensions():
+    &#34;&#34;&#34; the Dimensions describes the size of an entity
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+                
+
+        Attributes
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,width,length,height):
+        &#34;&#34;&#34; initalzie the Dimensions
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+        
+        &#34;&#34;&#34;
+        self.width = width
+        self.length = length
+        self.height = height
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Dimensions
+
+        &#34;&#34;&#34;
+        return {&#39;width&#39;:str(self.width),&#39;length&#39;:str(self.length),&#39;height&#39;:str(self.height)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Dimensions
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Dimensions&#39;,attrib=self.get_attributes())
+        return element
+
+class Properties():
+    &#34;&#34;&#34; the Properties contains are for user defined properties of an object               
+
+        Attributes
+        ----------
+            files (list of str): arbitrary files with properties
+
+            properties (list of tuple(str,str)): properties in name/value pairs
+
+        Methods
+        -------
+            add_file(file)
+                adds a file with properties
+
+            add_property(name,value)
+                adds a property pair, with name and value
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            
+    &#34;&#34;&#34;
+    def __init__(self):
+        &#34;&#34;&#34; initalzie the Properties
+
+        &#34;&#34;&#34;
+        self.files = []
+        self.properties = []
+
+    def add_file(self,file):
+        &#34;&#34;&#34; adds a property file
+
+        Parameters
+        ----------
+            file (str): name of the file
+
+        &#34;&#34;&#34;
+
+        self.files.append(file)
+
+    def add_property(self,name,value):
+        &#34;&#34;&#34; adds a property pair
+
+        Parameters
+        ----------
+            name (str): name of the property
+
+            value (str): value of the property
+
+        &#34;&#34;&#34;
+        self.properties.append((name,value))
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Properties
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Properties&#39;)
+        for p in self.properties:
+            ET.SubElement(element,&#39;Property&#39;,attrib={&#39;name&#39;:p[0],&#39;value&#39;:p[1]})
+        for f in self.files:
+            ET.SubElement(element,&#39;File&#39;,attrib={&#39;filepath&#39;:f})
+        
+        
+        return element
+
+class Axel():
+    &#34;&#34;&#34; the Axel describes the axel properties of a vehicle
+
+        Parameters
+        ----------
+            maxsteer (double): max steering angle
+
+            wheeldia (double): diameter of wheel
+
+            track_width (double): distance between wheelcenter
+
+            xpos (double): x position of axel relative to car reference
+
+            zpos (double): z position of axel relative to car reference
+
+        Attributes
+        ----------
+            maxsteer (double): max steering angle
+
+            wheeldia (double): diameter of wheel
+
+            track_width (double): distance between wheelcenter
+
+            xpos (double): x position of axel relative to car reference
+
+            zpos (double): z position of axel relative to car reference
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns the attributes of the class
+
+            
+    &#34;&#34;&#34;
+    def __init__(self,maxsteer,wheeldia,track_width,xpos,zpos):
+        &#34;&#34;&#34; initalzie the Axel
+
+            Parameters
+            ----------
+                maxsteer (double): max steering angle
+
+                wheeldia (double): diameter of wheel
+
+                track_width (double): distance between wheelcenter
+
+                xpos (double): x position of axel relative to car reference
+
+                zpos (double): z position of axel relative to car reference
+        &#34;&#34;&#34;
+        self.maxsteer = maxsteer
+        self.wheeldia = wheeldia
+        self.track_width = track_width
+        self.xpos = xpos
+        self.zpos = zpos
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Axel as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;maxSteering&#39;:str(self.maxsteer),&#39;wheelDiameter&#39;:str(self.wheeldia),&#39;trackWidth&#39;:str(self.track_width),&#39;positionX&#39;:str(self.xpos),&#39;positionZ&#39;:str(self.zpos)}
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Axel
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;Axel&#39;,attrib=self.get_attributes())
+        
+class Axels():
+    &#34;&#34;&#34; the Axels combines the different Axels to one Element
+
+        Parameters
+        ----------
+            frontaxel (Axel): Axel properties of the front axel
+
+            backaxel (Axel): Axel properties of the rear axel
+
+        Attributes
+        ----------
+            frontaxel (Axel): Axel properties of the front axel
+
+            backaxel (Axel): Axel properties of the rear axel
+
+            additionals (Axel): additional axels if requiered
+
+
+        Methods
+        -------
+            add_axel(Axel)
+                adds an additional axel to the Axels
+
+            get_element()
+                Returns the full ElementTree of the class
+
+
+    &#34;&#34;&#34;
+    def __init__(self,frontaxel,backaxel):
+        &#34;&#34;&#34; initalzie the Axel
+
+            Parameters
+            ----------
+                frontaxel (Axel): Axel properties of the front axel
+
+                backaxel (Axel): Axel properties of the rear axel
+
+        &#34;&#34;&#34;
+        self.frontaxel = frontaxel
+        self.backaxel = backaxel
+        self.additionals = []
+
+    def add_axel(self,axel):
+        &#34;&#34;&#34; adds an additional axel to the Axels
+
+            Parameters
+            ----------
+                frontaxel (Axel): Axel properties of the front axel
+
+        &#34;&#34;&#34;
+        self.additionals.append(axel)
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Axel
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Axels&#39;)
+        element.append(self.frontaxel.get_element())
+        element.append(self.backaxel.get_element())
+        for ax in self.additionals:
+            element.append(ax.get_element())
+
+        return element
+
+class Controller():
+    &#34;&#34;&#34; the Controller class creates a controller of openScenario
+
+        Parameters
+        ----------
+            name (str): name of the object
+
+            properties (Properties): properties of the controller
+                
+        Attributes
+        ----------
+            parameters (ParameterDeclaration): Parameter declarations of the vehicle
+
+            properties (Properties): additional properties of the vehicle
+
+        Methods
+        -------
+            add_parameter(parameter)
+                adds a parameter declaration to the Controller
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self ,name ,properties):
+        &#34;&#34;&#34; initalzie the Controller Class
+
+        Parameters
+        ----------
+            name (str): name of the object
+
+            properties (Properties): properties of the Controller
+        
+        &#34;&#34;&#34;
+        self.name = name
+        self.parameters = ParameterDeclarations()
+        self.properties = properties
+
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the Controller to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; adds a parameter declaration to the Controller
+
+            Parameters
+            ----------
+                parameter (Parameter): A new parameter declaration for the Controller
+
+        &#34;&#34;&#34;
+        self.parameters.add_parameter(parameter)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Controller as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Controller
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Controller&#39;,attrib=self.get_attributes())
+        element.append(self.parameters.get_element())
+        element.append(self.properties.get_element())
+        
+        return element</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyoscx.entities.Axel"><code class="flex name class">
+<span>class <span class="ident">Axel</span></span>
+<span>(</span><span>maxsteer, wheeldia, track_width, xpos, zpos)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Axel describes the axel properties of a vehicle</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>maxsteer (double): max steering angle
+
+wheeldia (double): diameter of wheel
+
+track_width (double): distance between wheelcenter
+
+xpos (double): x position of axel relative to car reference
+
+zpos (double): z position of axel relative to car reference
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>maxsteer (double): max steering angle
+
+wheeldia (double): diameter of wheel
+
+track_width (double): distance between wheelcenter
+
+xpos (double): x position of axel relative to car reference
+
+zpos (double): z position of axel relative to car reference
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns the attributes of the class
+</code></pre>
+<p>initalzie the Axel</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>maxsteer (double): max steering angle
+
+wheeldia (double): diameter of wheel
+
+track_width (double): distance between wheelcenter
+
+xpos (double): x position of axel relative to car reference
+
+zpos (double): z position of axel relative to car reference
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Axel():
+    &#34;&#34;&#34; the Axel describes the axel properties of a vehicle
+
+        Parameters
+        ----------
+            maxsteer (double): max steering angle
+
+            wheeldia (double): diameter of wheel
+
+            track_width (double): distance between wheelcenter
+
+            xpos (double): x position of axel relative to car reference
+
+            zpos (double): z position of axel relative to car reference
+
+        Attributes
+        ----------
+            maxsteer (double): max steering angle
+
+            wheeldia (double): diameter of wheel
+
+            track_width (double): distance between wheelcenter
+
+            xpos (double): x position of axel relative to car reference
+
+            zpos (double): z position of axel relative to car reference
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns the attributes of the class
+
+            
+    &#34;&#34;&#34;
+    def __init__(self,maxsteer,wheeldia,track_width,xpos,zpos):
+        &#34;&#34;&#34; initalzie the Axel
+
+            Parameters
+            ----------
+                maxsteer (double): max steering angle
+
+                wheeldia (double): diameter of wheel
+
+                track_width (double): distance between wheelcenter
+
+                xpos (double): x position of axel relative to car reference
+
+                zpos (double): z position of axel relative to car reference
+        &#34;&#34;&#34;
+        self.maxsteer = maxsteer
+        self.wheeldia = wheeldia
+        self.track_width = track_width
+        self.xpos = xpos
+        self.zpos = zpos
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Axel as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;maxSteering&#39;:str(self.maxsteer),&#39;wheelDiameter&#39;:str(self.wheeldia),&#39;trackWidth&#39;:str(self.track_width),&#39;positionX&#39;:str(self.xpos),&#39;positionZ&#39;:str(self.zpos)}
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Axel
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;Axel&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.entities.Axel.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the Axel as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the Axel as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;maxSteering&#39;:str(self.maxsteer),&#39;wheelDiameter&#39;:str(self.wheeldia),&#39;trackWidth&#39;:str(self.track_width),&#39;positionX&#39;:str(self.xpos),&#39;positionZ&#39;:str(self.zpos)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Axel.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Axel</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Axel
+
+    &#34;&#34;&#34;
+    return ET.Element(&#39;Axel&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.entities.Axels"><code class="flex name class">
+<span>class <span class="ident">Axels</span></span>
+<span>(</span><span>frontaxel, backaxel)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Axels combines the different Axels to one Element</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>frontaxel (Axel): Axel properties of the front axel
+
+backaxel (Axel): Axel properties of the rear axel
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>frontaxel (Axel): Axel properties of the front axel
+
+backaxel (Axel): Axel properties of the rear axel
+
+additionals (Axel): additional axels if requiered
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_axel(Axel)
+    adds an additional axel to the Axels
+
+get_element()
+    Returns the full ElementTree of the class
+</code></pre>
+<p>initalzie the Axel</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>frontaxel (Axel): Axel properties of the front axel
+
+backaxel (Axel): Axel properties of the rear axel
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Axels():
+    &#34;&#34;&#34; the Axels combines the different Axels to one Element
+
+        Parameters
+        ----------
+            frontaxel (Axel): Axel properties of the front axel
+
+            backaxel (Axel): Axel properties of the rear axel
+
+        Attributes
+        ----------
+            frontaxel (Axel): Axel properties of the front axel
+
+            backaxel (Axel): Axel properties of the rear axel
+
+            additionals (Axel): additional axels if requiered
+
+
+        Methods
+        -------
+            add_axel(Axel)
+                adds an additional axel to the Axels
+
+            get_element()
+                Returns the full ElementTree of the class
+
+
+    &#34;&#34;&#34;
+    def __init__(self,frontaxel,backaxel):
+        &#34;&#34;&#34; initalzie the Axel
+
+            Parameters
+            ----------
+                frontaxel (Axel): Axel properties of the front axel
+
+                backaxel (Axel): Axel properties of the rear axel
+
+        &#34;&#34;&#34;
+        self.frontaxel = frontaxel
+        self.backaxel = backaxel
+        self.additionals = []
+
+    def add_axel(self,axel):
+        &#34;&#34;&#34; adds an additional axel to the Axels
+
+            Parameters
+            ----------
+                frontaxel (Axel): Axel properties of the front axel
+
+        &#34;&#34;&#34;
+        self.additionals.append(axel)
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Axel
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Axels&#39;)
+        element.append(self.frontaxel.get_element())
+        element.append(self.backaxel.get_element())
+        for ax in self.additionals:
+            element.append(ax.get_element())
+
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.entities.Axels.add_axel"><code class="name flex">
+<span>def <span class="ident">add_axel</span></span>(<span>self, axel)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds an additional axel to the Axels</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>frontaxel (Axel): Axel properties of the front axel
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_axel(self,axel):
+    &#34;&#34;&#34; adds an additional axel to the Axels
+
+        Parameters
+        ----------
+            frontaxel (Axel): Axel properties of the front axel
+
+    &#34;&#34;&#34;
+    self.additionals.append(axel)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Axels.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Axel</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Axel
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Axels&#39;)
+    element.append(self.frontaxel.get_element())
+    element.append(self.backaxel.get_element())
+    for ax in self.additionals:
+        element.append(ax.get_element())
+
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.entities.BoundingBox"><code class="flex name class">
+<span>class <span class="ident">BoundingBox</span></span>
+<span>(</span><span>width, length, height, x_center, y_center, z_center)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Dimensions describes the size of an entity</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>width (float): the width of the entity
+
+length (float): the lenght of the entity
+
+height (float): the height of the entity
+
+x_center (float): x distance from back axel to center
+
+y_center (float): y distance from back axel to center
+
+z_center (float): z distance from back axel to center
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>boundingbox (BoundingBox): the bounding box of the entity
+
+center (Center): the center of the object relative the the back axel
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+</code></pre>
+<p>initalzie the Dimensions</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>width (float): the width of the entity
+
+length (float): the lenght of the entity
+
+height (float): the height of the entity
+
+x_center (float): x distance from back axel to center
+
+y_center (float): y distance from back axel to center
+
+z_center (float): z distance from back axel to center
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BoundingBox():
+    &#34;&#34;&#34; the Dimensions describes the size of an entity
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+
+            x_center (float): x distance from back axel to center
+
+            y_center (float): y distance from back axel to center
+
+            z_center (float): z distance from back axel to center
+                
+
+        Attributes
+        ----------
+            boundingbox (BoundingBox): the bounding box of the entity
+
+            center (Center): the center of the object relative the the back axel
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,width,length,height,x_center,y_center,z_center):
+        &#34;&#34;&#34; initalzie the Dimensions
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+
+            x_center (float): x distance from back axel to center
+
+            y_center (float): y distance from back axel to center
+
+            z_center (float): z distance from back axel to center
+        
+        &#34;&#34;&#34;
+        self.boundingbox = Dimensions(width,length,height)
+        self.center = Center(x_center,y_center,z_center)
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Dimensions
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;BoundingBox&#39;)
+        element.append(self.center.get_element())
+        element.append(self.boundingbox.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.entities.BoundingBox.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Dimensions</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Dimensions
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;BoundingBox&#39;)
+    element.append(self.center.get_element())
+    element.append(self.boundingbox.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.entities.Center"><code class="flex name class">
+<span>class <span class="ident">Center</span></span>
+<span>(</span><span>x, y, z)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Center Class creates a centerpoint for a bounding box, reference point of a vehicle is the back axel</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>x (float): x distance from back axel to center
+
+y (float): y distance from back axel to center
+
+z (float): z distance from back axel to center
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>x (float): x distance from back axel to center
+
+y (float): y distance from back axel to center
+
+z (float): z distance from back axel to center
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalzie the Center Class</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>x (float): x distance from back axel to center
+
+y (float): y distance from back axel to center
+
+z (float): z distance from back axel to center
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Center():
+    &#34;&#34;&#34; the Center Class creates a centerpoint for a bounding box, reference point of a vehicle is the back axel
+
+        Parameters
+        ----------
+            x (float): x distance from back axel to center
+
+            y (float): y distance from back axel to center
+
+            z (float): z distance from back axel to center
+                
+
+        Attributes
+        ----------
+            x (float): x distance from back axel to center
+
+            y (float): y distance from back axel to center
+
+            z (float): z distance from back axel to center
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,x,y,z):
+        &#34;&#34;&#34; initalzie the Center Class
+
+        Parameters
+        ----------
+            x (float): x distance from back axel to center
+
+            y (float): y distance from back axel to center
+
+            z (float): z distance from back axel to center
+        
+        &#34;&#34;&#34;
+        self.x = x
+        self.y = y
+        self.z = z
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Center
+
+        &#34;&#34;&#34;
+        return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Center
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Center&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.entities.Center.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the Center</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the Center
+
+    &#34;&#34;&#34;
+    return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Center.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Center</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Center
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Center&#39;,attrib=self.get_attributes())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.entities.Controller"><code class="flex name class">
+<span>class <span class="ident">Controller</span></span>
+<span>(</span><span>name, properties)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Controller class creates a controller of openScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the object
+
+properties (Properties): properties of the controller
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>parameters (ParameterDeclaration): Parameter declarations of the vehicle
+
+properties (Properties): additional properties of the vehicle
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_parameter(parameter)
+    adds a parameter declaration to the Controller
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalzie the Controller Class</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the object
+
+properties (Properties): properties of the Controller
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Controller():
+    &#34;&#34;&#34; the Controller class creates a controller of openScenario
+
+        Parameters
+        ----------
+            name (str): name of the object
+
+            properties (Properties): properties of the controller
+                
+        Attributes
+        ----------
+            parameters (ParameterDeclaration): Parameter declarations of the vehicle
+
+            properties (Properties): additional properties of the vehicle
+
+        Methods
+        -------
+            add_parameter(parameter)
+                adds a parameter declaration to the Controller
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self ,name ,properties):
+        &#34;&#34;&#34; initalzie the Controller Class
+
+        Parameters
+        ----------
+            name (str): name of the object
+
+            properties (Properties): properties of the Controller
+        
+        &#34;&#34;&#34;
+        self.name = name
+        self.parameters = ParameterDeclarations()
+        self.properties = properties
+
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the Controller to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; adds a parameter declaration to the Controller
+
+            Parameters
+            ----------
+                parameter (Parameter): A new parameter declaration for the Controller
+
+        &#34;&#34;&#34;
+        self.parameters.add_parameter(parameter)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Controller as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Controller
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Controller&#39;,attrib=self.get_attributes())
+        element.append(self.parameters.get_element())
+        element.append(self.properties.get_element())
+        
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.entities.Controller.add_parameter"><code class="name flex">
+<span>def <span class="ident">add_parameter</span></span>(<span>self, parameter)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a parameter declaration to the Controller</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>parameter (Parameter): A new parameter declaration for the Controller
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_parameter(self,parameter):
+    &#34;&#34;&#34; adds a parameter declaration to the Controller
+
+        Parameters
+        ----------
+            parameter (Parameter): A new parameter declaration for the Controller
+
+    &#34;&#34;&#34;
+    self.parameters.add_parameter(parameter)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Controller.append_to_catalog"><code class="name flex">
+<span>def <span class="ident">append_to_catalog</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds the Controller to an existing catalog</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path to the catalog file
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_to_catalog(self,filename):
+    &#34;&#34;&#34; adds the Controller to an existing catalog
+
+        Parameters
+        ----------
+            filename (str): path to the catalog file
+
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.open_catalog(filename)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Controller.dump_to_catalog"><code class="name flex">
+<span>def <span class="ident">dump_to_catalog</span></span>(<span>self, filename, catalogtype, description, author)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dump_to_catalog creates a new catalog and adds the Controller to it</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path of the new catalog file
+
+catalogtype (str): name of the catalog
+
+description (str): description of the catalog
+
+author (str): author of the catalog
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dump_to_catalog(self,filename,catalogtype,description,author):
+    &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+        
+        Parameters
+        ----------
+            filename (str): path of the new catalog file
+
+            catalogtype (str): name of the catalog
+
+            description (str): description of the catalog
+
+            author (str): author of the catalog
+    
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.create_catalog(filename,catalogtype,description,author)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Controller.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the Controller as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the Controller as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:self.name}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Controller.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Controller</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Controller
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Controller&#39;,attrib=self.get_attributes())
+    element.append(self.parameters.get_element())
+    element.append(self.properties.get_element())
+    
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.entities.Dimensions"><code class="flex name class">
+<span>class <span class="ident">Dimensions</span></span>
+<span>(</span><span>width, length, height)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Dimensions describes the size of an entity</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>width (float): the width of the entity
+
+length (float): the lenght of the entity
+
+height (float): the height of the entity
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>width (float): the width of the entity
+
+length (float): the lenght of the entity
+
+height (float): the height of the entity
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalzie the Dimensions</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>width (float): the width of the entity
+
+length (float): the lenght of the entity
+
+height (float): the height of the entity
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Dimensions():
+    &#34;&#34;&#34; the Dimensions describes the size of an entity
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+                
+
+        Attributes
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,width,length,height):
+        &#34;&#34;&#34; initalzie the Dimensions
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+        
+        &#34;&#34;&#34;
+        self.width = width
+        self.length = length
+        self.height = height
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Dimensions
+
+        &#34;&#34;&#34;
+        return {&#39;width&#39;:str(self.width),&#39;length&#39;:str(self.length),&#39;height&#39;:str(self.height)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Dimensions
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Dimensions&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.entities.Dimensions.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the Dimensions</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the Dimensions
+
+    &#34;&#34;&#34;
+    return {&#39;width&#39;:str(self.width),&#39;length&#39;:str(self.length),&#39;height&#39;:str(self.height)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Dimensions.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Dimensions</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Dimensions
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Dimensions&#39;,attrib=self.get_attributes())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.entities.Entities"><code class="flex name class">
+<span>class <span class="ident">Entities</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>The Entities class creates the entities part of OpenScenario</p>
+<h2 id="attributes">Attributes</h2>
+<pre><code>scenario_objects (list of ScenarioObject): ScenarioObject type entities in the scenario
+
+entities (list of Entity): Entity type of entities in the scenario
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_scenario_object(entityobject,controller)
+    adds a ScenarioObject to the scenario
+
+add_entity_bytype(name,entity_type)
+    adds an Entity by the type of entity
+
+add_entity_byref(name,reference)
+    adds an Entity by a reference name
+
+get_element()
+    Returns the full ElementTree of the class
+</code></pre>
+<p>initalizes the Entities class</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Entities():
+    &#34;&#34;&#34; The Entities class creates the entities part of OpenScenario
+        
+        Attributes
+        ----------
+            scenario_objects (list of ScenarioObject): ScenarioObject type entities in the scenario
+
+            entities (list of Entity): Entity type of entities in the scenario
+
+
+        Methods
+        -------
+            add_scenario_object(entityobject,controller)
+                adds a ScenarioObject to the scenario
+
+            add_entity_bytype(name,entity_type)
+                adds an Entity by the type of entity
+
+            add_entity_byref(name,reference)
+                adds an Entity by a reference name
+
+            get_element()
+                Returns the full ElementTree of the class
+
+
+    &#34;&#34;&#34;
+    def __init__(self):
+        &#34;&#34;&#34; initalizes the Entities class
+
+        &#34;&#34;&#34;
+        self.scenario_objects = []
+        self.entities = []
+
+
+    def add_scenario_object(self, name, entityobject, controller=None):
+        &#34;&#34;&#34; adds a ScenarioObject to the scenario
+        
+            Parameters
+            ----------
+                name (str): name of the scenario object
+
+                entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
+
+                controller (CatalogReference, or Controller): controller for the object
+                    Default (None)
+
+        &#34;&#34;&#34;
+
+        self.scenario_objects.append(ScenarioObject(name,entityobject,controller))
+    
+    def add_entity_bytype(self,name,entity_type):
+        &#34;&#34;&#34; adds an Entity to the scenario
+        
+            Parameters
+            ----------
+                name (str): name of the entity
+
+                object_type (ObjectType): type of entity
+            
+        &#34;&#34;&#34;
+        self.entities.append(Entity(name,object_type=entity_type))
+
+    def add_entity_byref(self,name,entity):
+        &#34;&#34;&#34; adds an Entity to the scenario
+        
+            Parameters
+            ----------
+                name (str): name of the entity
+
+                entity (str): type of entity
+            
+        &#34;&#34;&#34;
+        self.entities.append(Entity(name,entityref=entity))
+
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Entities
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Entities&#39;)
+        for i in self.scenario_objects:
+            element.append(i.get_element())
+
+        for i in self.entities:
+            element.append(i.get_element())
+
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.entities.Entities.add_entity_byref"><code class="name flex">
+<span>def <span class="ident">add_entity_byref</span></span>(<span>self, name, entity)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds an Entity to the scenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the entity
+
+entity (str): type of entity
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_entity_byref(self,name,entity):
+    &#34;&#34;&#34; adds an Entity to the scenario
+    
+        Parameters
+        ----------
+            name (str): name of the entity
+
+            entity (str): type of entity
+        
+    &#34;&#34;&#34;
+    self.entities.append(Entity(name,entityref=entity))</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Entities.add_entity_bytype"><code class="name flex">
+<span>def <span class="ident">add_entity_bytype</span></span>(<span>self, name, entity_type)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds an Entity to the scenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the entity
+
+object_type (ObjectType): type of entity
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_entity_bytype(self,name,entity_type):
+    &#34;&#34;&#34; adds an Entity to the scenario
+    
+        Parameters
+        ----------
+            name (str): name of the entity
+
+            object_type (ObjectType): type of entity
+        
+    &#34;&#34;&#34;
+    self.entities.append(Entity(name,object_type=entity_type))</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Entities.add_scenario_object"><code class="name flex">
+<span>def <span class="ident">add_scenario_object</span></span>(<span>self, name, entityobject, controller=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a ScenarioObject to the scenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the scenario object
+
+entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
+
+controller (CatalogReference, or Controller): controller for the object
+    Default (None)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_scenario_object(self, name, entityobject, controller=None):
+    &#34;&#34;&#34; adds a ScenarioObject to the scenario
+    
+        Parameters
+        ----------
+            name (str): name of the scenario object
+
+            entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
+
+            controller (CatalogReference, or Controller): controller for the object
+                Default (None)
+
+    &#34;&#34;&#34;
+
+    self.scenario_objects.append(ScenarioObject(name,entityobject,controller))</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Entities.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Entities</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Entities
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Entities&#39;)
+    for i in self.scenario_objects:
+        element.append(i.get_element())
+
+    for i in self.entities:
+        element.append(i.get_element())
+
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.entities.Entity"><code class="flex name class">
+<span>class <span class="ident">Entity</span></span>
+<span>(</span><span>name, object_type=None, entityref=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The Entity class creates an Entity of OpenScenario
+Can either use a object_type or entityref (not both)</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the Entity
+
+optionals:
+    object_type (ObjectType): the object_type to be used
+
+    entityref (str): reference to an entity
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the Entity
+
+object_type (ObjectType): the object_type to be used
+
+entityref (str): reference to an entity
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>Initalizes the Entity</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the Entity
+
+optionals (only use one):
+    object_type (ObjectType): the object_type to be used
+
+    entityref (str): reference to an entity
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Entity():
+    &#34;&#34;&#34; The Entity class creates an Entity of OpenScenario
+        Can either use a object_type or entityref (not both)
+        
+        Parameters
+        ----------
+            name (str): name of the Entity
+
+            optionals:
+                object_type (ObjectType): the object_type to be used
+
+                entityref (str): reference to an entity
+
+        Attributes
+        ----------
+            name (str): name of the Entity
+
+            object_type (ObjectType): the object_type to be used
+
+            entityref (str): reference to an entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,object_type=None,entityref=None):
+        &#34;&#34;&#34; Initalizes the Entity
+
+        Parameters
+        ----------
+            name (str): name of the Entity
+
+            optionals (only use one):
+                object_type (ObjectType): the object_type to be used
+
+                entityref (str): reference to an entity
+
+        &#34;&#34;&#34;
+        self.name = name
+        if (object_type !=None) and (entityref != None):
+            raise KeyError(&#39;only one of objecttype or entityref are alowed&#39;)
+        if (object_type ==None) and (entityref == None):
+            raise KeyError(&#39;either objecttype or entityref is requiered&#39;)
+        if entityref:
+            self.entity = EntityRef(entityref)
+            self.object_type = None
+        else:
+            if object_type not in ObjectType:
+                ValueError(&#39;Not a valid ObjectType&#39;)
+            self.object_type = object_type
+            self.entity = None
+        
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Entity as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Entity
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;EntitySelection&#39;,attrib=self.get_attributes())
+        members = ET.SubElement(element,&#39;Members&#39;)
+        if self.entity:
+            members.append(self.entity.get_element())
+        if self.object_type:
+            ET.SubElement(members,&#39;ByType&#39;,attrib={&#39;value&#39;:self.object_type.name})
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.entities.Entity.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the Entity as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the Entity as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:self.name}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Entity.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Entity</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Entity
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;EntitySelection&#39;,attrib=self.get_attributes())
+    members = ET.SubElement(element,&#39;Members&#39;)
+    if self.entity:
+        members.append(self.entity.get_element())
+    if self.object_type:
+        ET.SubElement(members,&#39;ByType&#39;,attrib={&#39;value&#39;:self.object_type.name})
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.entities.MiscObject"><code class="flex name class">
+<span>class <span class="ident">MiscObject</span></span>
+<span>(</span><span>name, mass, category, boundingbox)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the MiscObject Class creates a MiscObject for openscenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the MiscObject
+
+mass (float): mass of the object
+
+category (str): the category of the misc object
+
+boundingbox (BoundingBox): the bounding box of the MiscObject
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the object
+
+mass (float): mass of the object
+
+misc_type (str): type of misc object
+
+boundingbox (BoundingBox): the bounding box of the MiscObject
+
+parameters (ParameterDeclaration): Parameter declarations of the MiscObject
+
+properties (Properties): additional properties of the MiscObject
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_parameter(parameter)
+    adds a parameter declaration to the MiscObject
+
+add_property(name, value)
+    adds a single property to the MiscObject
+
+add_property_file(filename)
+    adds a property file to the MiscObject
+
+append_to_catalog(filename)
+    adds the MiscObject to an existing catalog
+
+dump_to_catalog(filename,name,description,author)
+    crates a new catalog with the MiscObject
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalzie the MiscObject Class</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the MiscObject
+
+mass (float): mass of the object
+
+category (str): the category of the misc object
+
+boundingbox (BoundingBox): the bounding box of the MiscObject
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MiscObject():
+    &#34;&#34;&#34; the MiscObject Class creates a MiscObject for openscenario
+
+        Parameters
+        ----------
+            name (str): name of the MiscObject
+
+            mass (float): mass of the object
+
+            category (str): the category of the misc object
+
+            boundingbox (BoundingBox): the bounding box of the MiscObject               
+
+        Attributes
+        ----------
+            name (str): name of the object
+
+            mass (float): mass of the object
+
+            misc_type (str): type of misc object
+
+            boundingbox (BoundingBox): the bounding box of the MiscObject
+
+            parameters (ParameterDeclaration): Parameter declarations of the MiscObject
+
+            properties (Properties): additional properties of the MiscObject
+
+        Methods
+        -------
+            add_parameter(parameter)
+                adds a parameter declaration to the MiscObject
+
+            add_property(name, value)
+                adds a single property to the MiscObject
+
+            add_property_file(filename)
+                adds a property file to the MiscObject
+
+            append_to_catalog(filename)
+                adds the MiscObject to an existing catalog
+
+            dump_to_catalog(filename,name,description,author)
+                crates a new catalog with the MiscObject
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name, mass, category, boundingbox):
+        &#34;&#34;&#34; initalzie the MiscObject Class
+
+        Parameters
+        ----------
+            name (str): name of the MiscObject
+
+            mass (float): mass of the object
+
+            category (str): the category of the misc object
+
+            boundingbox (BoundingBox): the bounding box of the MiscObject       
+        
+        &#34;&#34;&#34;
+        self.name = name
+        self.mass = mass
+        if category not in MiscObjectCategory:
+            ValueError(str(category) + &#39; is not a valid MiscObject type&#39;)    
+        self.category = category
+        self.boundingbox = boundingbox
+        self.parameters = ParameterDeclarations()
+        self.properties = Properties()
+
+       
+    
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the MiscObject to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the MiscObject to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; adds a parameter declaration to the MiscObject
+
+            Parameters
+            ----------
+                parameter (Parameter): A new parameter declaration for the MiscObject
+
+        &#34;&#34;&#34;
+        self.parameters.add_parameter(parameter)
+
+    def add_property(self,name, value):
+        &#34;&#34;&#34; adds a single property to the MiscObject
+
+            Parameters
+            ----------
+                name (str): name of the property
+
+                value (str): value of the property
+
+        &#34;&#34;&#34;
+        self.properties.add_property(name,value)
+
+    def add_property_file(self,filename):
+        &#34;&#34;&#34; adds a property file to the MiscObject
+
+            Parameters
+            ----------
+                filename (str): filename of a property file
+
+        &#34;&#34;&#34;
+        self.properties.add_file(filename)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the MiscObject
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:str(self.name),&#39;miscObjectCategory&#39;:str(self.category),&#39;mass&#39;:str(self.mass)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the MiscObject
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;MiscObject&#39;,attrib=self.get_attributes())
+        element.append(self.parameters.get_element())
+        element.append(self.boundingbox.get_element())
+        element.append(self.properties.get_element())
+        
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.entities.MiscObject.add_parameter"><code class="name flex">
+<span>def <span class="ident">add_parameter</span></span>(<span>self, parameter)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a parameter declaration to the MiscObject</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>parameter (Parameter): A new parameter declaration for the MiscObject
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_parameter(self,parameter):
+    &#34;&#34;&#34; adds a parameter declaration to the MiscObject
+
+        Parameters
+        ----------
+            parameter (Parameter): A new parameter declaration for the MiscObject
+
+    &#34;&#34;&#34;
+    self.parameters.add_parameter(parameter)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.MiscObject.add_property"><code class="name flex">
+<span>def <span class="ident">add_property</span></span>(<span>self, name, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a single property to the MiscObject</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the property
+
+value (str): value of the property
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_property(self,name, value):
+    &#34;&#34;&#34; adds a single property to the MiscObject
+
+        Parameters
+        ----------
+            name (str): name of the property
+
+            value (str): value of the property
+
+    &#34;&#34;&#34;
+    self.properties.add_property(name,value)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.MiscObject.add_property_file"><code class="name flex">
+<span>def <span class="ident">add_property_file</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a property file to the MiscObject</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): filename of a property file
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_property_file(self,filename):
+    &#34;&#34;&#34; adds a property file to the MiscObject
+
+        Parameters
+        ----------
+            filename (str): filename of a property file
+
+    &#34;&#34;&#34;
+    self.properties.add_file(filename)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.MiscObject.append_to_catalog"><code class="name flex">
+<span>def <span class="ident">append_to_catalog</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds the MiscObject to an existing catalog</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path to the catalog file
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_to_catalog(self,filename):
+    &#34;&#34;&#34; adds the MiscObject to an existing catalog
+
+        Parameters
+        ----------
+            filename (str): path to the catalog file
+
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.open_catalog(filename)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.MiscObject.dump_to_catalog"><code class="name flex">
+<span>def <span class="ident">dump_to_catalog</span></span>(<span>self, filename, catalogtype, description, author)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dump_to_catalog creates a new catalog and adds the MiscObject to it</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path of the new catalog file
+
+catalogtype (str): name of the catalog
+
+description (str): description of the catalog
+
+author (str): author of the catalog
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dump_to_catalog(self,filename,catalogtype,description,author):
+    &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the MiscObject to it
+        
+        Parameters
+        ----------
+            filename (str): path of the new catalog file
+
+            catalogtype (str): name of the catalog
+
+            description (str): description of the catalog
+
+            author (str): author of the catalog
+    
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.create_catalog(filename,catalogtype,description,author)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.MiscObject.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the MiscObject</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the MiscObject
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:str(self.name),&#39;miscObjectCategory&#39;:str(self.category),&#39;mass&#39;:str(self.mass)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.MiscObject.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the MiscObject</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the MiscObject
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;MiscObject&#39;,attrib=self.get_attributes())
+    element.append(self.parameters.get_element())
+    element.append(self.boundingbox.get_element())
+    element.append(self.properties.get_element())
+    
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.entities.Pedestrian"><code class="flex name class">
+<span>class <span class="ident">Pedestrian</span></span>
+<span>(</span><span>name, model, mass, category, boundingbox)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Pedestrian class creates a pedestrian type entity of openscenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the type (req for catalog)
+
+model (str): definition model of the pedestrian
+
+mass (float): mass of the pedestrian
+
+boundingbox (BoundingBox): the bounding box of the pedestrian
+
+category (PedestrianCategory): type of of pedestrian
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the pedestrian
+
+model (str): definition model of the pedestrian
+
+mass (float): mass of the pedestrian
+
+category (PedestrianCategory): type of pedestrian
+
+boundingbox (BoundingBox): the bounding box of the pedestrian
+
+parameters (ParameterDeclaration): Parameter declarations of the pedestrian
+
+properties (Properties): additional properties of the pedestrian
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_parameter(parameter)
+    adds a parameter declaration to the pedestrian
+
+add_property(name, value)
+    adds a single property to the pedestrian
+
+add_property_file(filename)
+    adds a property file to the pedestrian
+
+append_to_catalog(filename)
+    adds the vehicle to an existing pedestrian
+
+dump_to_catalog(filename,name,description,author)
+    crates a new catalog with the pedestrian
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalzie the Pedestrian Class</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the type (req for catalog)
+
+model (str): definition model of the pedestrian
+
+mass (float): mass of the pedestrian
+
+category (PedestrianCategory): type of of pedestrian
+
+boundingbox (BoundingBox): the bounding box of the pedestrian
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Pedestrian():
+    &#34;&#34;&#34; the Pedestrian class creates a pedestrian type entity of openscenario
+
+        Parameters
+        ----------
+            name (str): name of the type (req for catalog)
+
+            model (str): definition model of the pedestrian
+
+            mass (float): mass of the pedestrian
+
+            boundingbox (BoundingBox): the bounding box of the pedestrian
+
+            category (PedestrianCategory): type of of pedestrian 
+                
+
+        Attributes
+        ----------
+            name (str): name of the pedestrian
+
+            model (str): definition model of the pedestrian
+
+            mass (float): mass of the pedestrian
+
+            category (PedestrianCategory): type of pedestrian
+
+            boundingbox (BoundingBox): the bounding box of the pedestrian
+
+            parameters (ParameterDeclaration): Parameter declarations of the pedestrian
+
+            properties (Properties): additional properties of the pedestrian
+
+        Methods
+        -------
+            add_parameter(parameter)
+                adds a parameter declaration to the pedestrian
+
+            add_property(name, value)
+                adds a single property to the pedestrian
+
+            add_property_file(filename)
+                adds a property file to the pedestrian
+
+            append_to_catalog(filename)
+                adds the vehicle to an existing pedestrian
+
+            dump_to_catalog(filename,name,description,author)
+                crates a new catalog with the pedestrian
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name, model, mass, category, boundingbox):
+        &#34;&#34;&#34; initalzie the Pedestrian Class
+
+        Parameters
+        ----------
+            name (str): name of the type (req for catalog)
+
+            model (str): definition model of the pedestrian
+
+            mass (float): mass of the pedestrian
+
+            category (PedestrianCategory): type of of pedestrian 
+
+            boundingbox (BoundingBox): the bounding box of the pedestrian
+        
+        &#34;&#34;&#34;
+        self.name = name
+        self.model = model
+        self.mass = mass
+        if category not in PedestrianCategory:
+            ValueError(str(category) + &#39; is not a valid pedestrian type&#39;)    
+        self.category = category
+        self.boundingbox = boundingbox
+        self.parameters = ParameterDeclarations()
+        self.properties = Properties()
+
+        
+    
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Pedestrian to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the Pedestrian to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; adds a parameter declaration to the pedestrian
+
+            Parameters
+            ----------
+                parameter (Parameter): A new parameter declaration for the pedestrian
+
+        &#34;&#34;&#34;
+        self.parameters.add_parameter(parameter)
+
+    def add_property(self,name, value):
+        &#34;&#34;&#34; adds a single property to the pedestrian
+
+            Parameters
+            ----------
+                name (str): name of the property
+
+                value (str): value of the property
+
+        &#34;&#34;&#34;
+        self.properties.add_property(name,value)
+
+    def add_property_file(self,filename):
+        &#34;&#34;&#34; adds a property file to the pedestrian
+
+            Parameters
+            ----------
+                filename (str): filename of a property file
+
+        &#34;&#34;&#34;
+        self.properties.add_file(filename)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the pedestrian
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:str(self.name),&#39;pedestrianCategory&#39;:str(self.category),&#39;model&#39;:self.model,&#39;mass&#39;:str(self.mass)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the pedestrian
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Pedestrian&#39;,attrib=self.get_attributes())
+        element.append(self.parameters.get_element())
+        element.append(self.boundingbox.get_element())
+        element.append(self.properties.get_element())
+        
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.entities.Pedestrian.add_parameter"><code class="name flex">
+<span>def <span class="ident">add_parameter</span></span>(<span>self, parameter)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a parameter declaration to the pedestrian</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>parameter (Parameter): A new parameter declaration for the pedestrian
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_parameter(self,parameter):
+    &#34;&#34;&#34; adds a parameter declaration to the pedestrian
+
+        Parameters
+        ----------
+            parameter (Parameter): A new parameter declaration for the pedestrian
+
+    &#34;&#34;&#34;
+    self.parameters.add_parameter(parameter)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Pedestrian.add_property"><code class="name flex">
+<span>def <span class="ident">add_property</span></span>(<span>self, name, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a single property to the pedestrian</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the property
+
+value (str): value of the property
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_property(self,name, value):
+    &#34;&#34;&#34; adds a single property to the pedestrian
+
+        Parameters
+        ----------
+            name (str): name of the property
+
+            value (str): value of the property
+
+    &#34;&#34;&#34;
+    self.properties.add_property(name,value)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Pedestrian.add_property_file"><code class="name flex">
+<span>def <span class="ident">add_property_file</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a property file to the pedestrian</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): filename of a property file
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_property_file(self,filename):
+    &#34;&#34;&#34; adds a property file to the pedestrian
+
+        Parameters
+        ----------
+            filename (str): filename of a property file
+
+    &#34;&#34;&#34;
+    self.properties.add_file(filename)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Pedestrian.append_to_catalog"><code class="name flex">
+<span>def <span class="ident">append_to_catalog</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds the Pedestrian to an existing catalog</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path to the catalog file
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_to_catalog(self,filename):
+    &#34;&#34;&#34; adds the Pedestrian to an existing catalog
+
+        Parameters
+        ----------
+            filename (str): path to the catalog file
+
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.open_catalog(filename)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Pedestrian.dump_to_catalog"><code class="name flex">
+<span>def <span class="ident">dump_to_catalog</span></span>(<span>self, filename, catalogtype, description, author)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dump_to_catalog creates a new catalog and adds the Pedestrian to it</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path of the new catalog file
+
+catalogtype (str): name of the catalog
+
+description (str): description of the catalog
+
+author (str): author of the catalog
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dump_to_catalog(self,filename,catalogtype,description,author):
+    &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Pedestrian to it
+        
+        Parameters
+        ----------
+            filename (str): path of the new catalog file
+
+            catalogtype (str): name of the catalog
+
+            description (str): description of the catalog
+
+            author (str): author of the catalog
+    
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.create_catalog(filename,catalogtype,description,author)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Pedestrian.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the pedestrian</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the pedestrian
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:str(self.name),&#39;pedestrianCategory&#39;:str(self.category),&#39;model&#39;:self.model,&#39;mass&#39;:str(self.mass)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Pedestrian.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the pedestrian</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the pedestrian
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Pedestrian&#39;,attrib=self.get_attributes())
+    element.append(self.parameters.get_element())
+    element.append(self.boundingbox.get_element())
+    element.append(self.properties.get_element())
+    
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.entities.Properties"><code class="flex name class">
+<span>class <span class="ident">Properties</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Properties contains are for user defined properties of an object
+</p>
+<h2 id="attributes">Attributes</h2>
+<pre><code>files (list of str): arbitrary files with properties
+
+properties (list of tuple(str,str)): properties in name/value pairs
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_file(file)
+    adds a file with properties
+
+add_property(name,value)
+    adds a property pair, with name and value
+
+get_element()
+    Returns the full ElementTree of the class
+</code></pre>
+<p>initalzie the Properties</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Properties():
+    &#34;&#34;&#34; the Properties contains are for user defined properties of an object               
+
+        Attributes
+        ----------
+            files (list of str): arbitrary files with properties
+
+            properties (list of tuple(str,str)): properties in name/value pairs
+
+        Methods
+        -------
+            add_file(file)
+                adds a file with properties
+
+            add_property(name,value)
+                adds a property pair, with name and value
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            
+    &#34;&#34;&#34;
+    def __init__(self):
+        &#34;&#34;&#34; initalzie the Properties
+
+        &#34;&#34;&#34;
+        self.files = []
+        self.properties = []
+
+    def add_file(self,file):
+        &#34;&#34;&#34; adds a property file
+
+        Parameters
+        ----------
+            file (str): name of the file
+
+        &#34;&#34;&#34;
+
+        self.files.append(file)
+
+    def add_property(self,name,value):
+        &#34;&#34;&#34; adds a property pair
+
+        Parameters
+        ----------
+            name (str): name of the property
+
+            value (str): value of the property
+
+        &#34;&#34;&#34;
+        self.properties.append((name,value))
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Properties
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Properties&#39;)
+        for p in self.properties:
+            ET.SubElement(element,&#39;Property&#39;,attrib={&#39;name&#39;:p[0],&#39;value&#39;:p[1]})
+        for f in self.files:
+            ET.SubElement(element,&#39;File&#39;,attrib={&#39;filepath&#39;:f})
+        
+        
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.entities.Properties.add_file"><code class="name flex">
+<span>def <span class="ident">add_file</span></span>(<span>self, file)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a property file</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>file (str): name of the file
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_file(self,file):
+    &#34;&#34;&#34; adds a property file
+
+    Parameters
+    ----------
+        file (str): name of the file
+
+    &#34;&#34;&#34;
+
+    self.files.append(file)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Properties.add_property"><code class="name flex">
+<span>def <span class="ident">add_property</span></span>(<span>self, name, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a property pair</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the property
+
+value (str): value of the property
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_property(self,name,value):
+    &#34;&#34;&#34; adds a property pair
+
+    Parameters
+    ----------
+        name (str): name of the property
+
+        value (str): value of the property
+
+    &#34;&#34;&#34;
+    self.properties.append((name,value))</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Properties.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Properties</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Properties
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Properties&#39;)
+    for p in self.properties:
+        ET.SubElement(element,&#39;Property&#39;,attrib={&#39;name&#39;:p[0],&#39;value&#39;:p[1]})
+    for f in self.files:
+        ET.SubElement(element,&#39;File&#39;,attrib={&#39;filepath&#39;:f})
+    
+    
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.entities.ScenarioObject"><code class="flex name class">
+<span>class <span class="ident">ScenarioObject</span></span>
+<span>(</span><span>name, entityobject, controller=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The ScenarioObject creates a scenario object of OpenScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the object
+
+entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
+
+controller (CatalogReference, or Controller): controller for the object
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the object
+
+entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
+
+controller (CatalogReference, or Controller): controller for the object
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    returns the attributes of the class
+</code></pre>
+<p>initalizes the ScenarioObject</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the object
+
+entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
+
+controller (CatalogReference, or Controller): controller for the object
+    Default (None)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ScenarioObject():
+    &#34;&#34;&#34; The ScenarioObject creates a scenario object of OpenScenario
+        
+        Parameters
+        ----------
+            name (str): name of the object
+
+            entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
+
+            controller (CatalogReference, or Controller): controller for the object
+
+
+        Attributes
+        ----------
+            name (str): name of the object
+
+            entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
+
+            controller (CatalogReference, or Controller): controller for the object
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+            
+            get_attributes()
+                returns the attributes of the class
+
+    &#34;&#34;&#34; 
+    def __init__(self ,name ,entityobject ,controller = None):
+        &#34;&#34;&#34; initalizes the ScenarioObject
+
+        Parameters
+        ----------
+            name (str): name of the object
+
+            entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
+
+            controller (CatalogReference, or Controller): controller for the object
+                Default (None)
+
+        &#34;&#34;&#34;
+        self.name = name
+        self.entityobject = entityobject
+        self.controller = controller
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Entity as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Entity
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;ScenarioObject&#39;,attrib=self.get_attributes())
+        
+        # print(self.entityobject.get_element())
+        element.append(self.entityobject.get_element())
+        if self.controller:
+            ET.SubElement(&#39;ObjectController&#39;,self.controller.get_element())
+        
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.entities.ScenarioObject.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the Entity as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the Entity as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:self.name}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.ScenarioObject.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Entity</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Entity
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;ScenarioObject&#39;,attrib=self.get_attributes())
+    
+    # print(self.entityobject.get_element())
+    element.append(self.entityobject.get_element())
+    if self.controller:
+        ET.SubElement(&#39;ObjectController&#39;,self.controller.get_element())
+    
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.entities.Vehicle"><code class="flex name class">
+<span>class <span class="ident">Vehicle</span></span>
+<span>(</span><span>name, vehicle_type, boundingbox, frontaxel, backaxel, max_speed, max_acceleration, max_deceleration)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Vehicle Class creates a Vehicle for openscenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the vehicle
+
+vehicle_type (VehicleCategory): type of vehicle
+
+boundingbox (BoundingBox): the bounding box of the vehicle
+
+frontaxel (Axel): the front axel properties of the vehicle
+
+backaxel (Axel): the back axel properties of the vehicle
+
+max_speed (float): the maximum speed of the vehicle
+
+max_acceleration (float): the maximum acceleration of the vehicle
+
+max_deceleration (float): the maximum deceleration of the vehicle
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the vehicle
+
+vehicle_type (VehicleCategory): type of vehicle
+
+boundingbox (BoundingBox): the bounding box of the vehicle
+
+axels (Axels): an Axels object
+
+dynamics (DynamicsConstraints): the allowed dynamics of the vehicle
+
+parameters (ParameterDeclaration): Parameter declarations of the vehicle
+
+properties (Properties): additional properties of the vehicle
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_axel(axel)
+    adds an additional axel to the vehicle
+
+add_parameter(parameter)
+    adds a parameter declaration to the vehicle
+
+add_property(name, value)
+    adds a single property to the vehicle
+
+add_property_file(filename)
+    adds a property file to the vehicle
+
+append_to_catalog(filename)
+    adds the vehicle to an existing catalog
+
+dump_to_catalog(filename,name,description,author)
+    crates a new catalog with the vehicle
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalzie the Vehicle Class</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the vehicle
+
+vehicle_type (VehicleCategory): type of vehicle
+
+boundingbox (BoundingBox): the bounding box of the vehicle
+
+frontaxel (Axel): the front axel properties of the vehicle
+
+backaxel (Axel): the back axel properties of the vehicle
+
+max_speed (float): the maximum speed of the vehicle
+
+max_acceleration (float): the maximum acceleration of the vehicle
+
+max_deceleration (float): the maximum deceleration of the vehicle
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Vehicle():
+    &#34;&#34;&#34; the Vehicle Class creates a Vehicle for openscenario
+
+        Parameters
+        ----------
+            name (str): name of the vehicle
+
+            vehicle_type (VehicleCategory): type of vehicle
+
+            boundingbox (BoundingBox): the bounding box of the vehicle
+
+            frontaxel (Axel): the front axel properties of the vehicle
+
+            backaxel (Axel): the back axel properties of the vehicle
+
+            max_speed (float): the maximum speed of the vehicle
+
+            max_acceleration (float): the maximum acceleration of the vehicle
+
+            max_deceleration (float): the maximum deceleration of the vehicle
+                
+
+        Attributes
+        ----------
+            name (str): name of the vehicle
+
+            vehicle_type (VehicleCategory): type of vehicle
+
+            boundingbox (BoundingBox): the bounding box of the vehicle
+
+            axels (Axels): an Axels object
+
+            dynamics (DynamicsConstraints): the allowed dynamics of the vehicle
+
+            parameters (ParameterDeclaration): Parameter declarations of the vehicle
+
+            properties (Properties): additional properties of the vehicle
+
+        Methods
+        -------
+            add_axel(axel)
+                adds an additional axel to the vehicle
+
+            add_parameter(parameter)
+                adds a parameter declaration to the vehicle
+
+            add_property(name, value)
+                adds a single property to the vehicle
+
+            add_property_file(filename)
+                adds a property file to the vehicle
+
+            append_to_catalog(filename)
+                adds the vehicle to an existing catalog
+
+            dump_to_catalog(filename,name,description,author)
+                crates a new catalog with the vehicle
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name, vehicle_type, boundingbox, frontaxel, backaxel, max_speed, max_acceleration, max_deceleration):
+        &#34;&#34;&#34; initalzie the Vehicle Class
+
+        Parameters
+        ----------
+            name (str): name of the vehicle
+
+            vehicle_type (VehicleCategory): type of vehicle
+
+            boundingbox (BoundingBox): the bounding box of the vehicle
+
+            frontaxel (Axel): the front axel properties of the vehicle
+
+            backaxel (Axel): the back axel properties of the vehicle
+
+            max_speed (float): the maximum speed of the vehicle
+
+            max_acceleration (float): the maximum acceleration of the vehicle
+
+            max_deceleration (float): the maximum deceleration of the vehicle
+        
+        &#34;&#34;&#34;
+        self.name = name
+        if vehicle_type not in VehicleCategory:
+            ValueError(&#39;not a valid vehicle type&#39;)    
+        self.vehicle_type = vehicle_type
+        self.boundingbox = boundingbox
+        self.axels = Axels(frontaxel,backaxel)
+        self.dynamics = DynamicsConstrains(max_acceleration,max_deceleration,max_speed)
+        self.parameters = ParameterDeclarations()
+        self.properties = Properties()
+
+    
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the vehicle to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the vehicle to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+
+    def add_axel(self,axel):
+        &#34;&#34;&#34; adds an additional axel to the vehicle
+
+            Parameters
+            ----------
+                axel (Axel): an additional Axel
+
+        &#34;&#34;&#34;
+        self.axels.add_axel(axel)
+
+
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; adds a parameter declaration to the vehicle
+
+            Parameters
+            ----------
+                parameter (Parameter): A new parameter declaration for the vehicle
+
+        &#34;&#34;&#34;
+        self.parameters.add_parameter(parameter)
+
+    def add_property(self,name, value):
+        &#34;&#34;&#34; adds a single property to the vehicle
+
+            Parameters
+            ----------
+                name (str): name of the property
+
+                value (str): value of the property
+
+        &#34;&#34;&#34;
+        self.properties.add_property(name,value)
+
+    def add_property_file(self,filename):
+        &#34;&#34;&#34; adds a property file to the vehicle
+
+            Parameters
+            ----------
+                filename (str): filename of a property file
+
+        &#34;&#34;&#34;
+        self.properties.add_file(filename)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Center
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:str(self.name),&#39;vehicleCategory&#39;:str(self.vehicle_type.name)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Center
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Vehicle&#39;,attrib=self.get_attributes())
+        element.append(self.parameters.get_element())
+        element.append(self.boundingbox.get_element())
+        element.append(self.dynamics.get_element(&#39;Performance&#39;))
+        element.append(self.axels.get_element())
+        element.append(self.properties.get_element())
+        
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.entities.Vehicle.add_axel"><code class="name flex">
+<span>def <span class="ident">add_axel</span></span>(<span>self, axel)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds an additional axel to the vehicle</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>axel (Axel): an additional Axel
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_axel(self,axel):
+    &#34;&#34;&#34; adds an additional axel to the vehicle
+
+        Parameters
+        ----------
+            axel (Axel): an additional Axel
+
+    &#34;&#34;&#34;
+    self.axels.add_axel(axel)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Vehicle.add_parameter"><code class="name flex">
+<span>def <span class="ident">add_parameter</span></span>(<span>self, parameter)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a parameter declaration to the vehicle</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>parameter (Parameter): A new parameter declaration for the vehicle
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_parameter(self,parameter):
+    &#34;&#34;&#34; adds a parameter declaration to the vehicle
+
+        Parameters
+        ----------
+            parameter (Parameter): A new parameter declaration for the vehicle
+
+    &#34;&#34;&#34;
+    self.parameters.add_parameter(parameter)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Vehicle.add_property"><code class="name flex">
+<span>def <span class="ident">add_property</span></span>(<span>self, name, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a single property to the vehicle</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the property
+
+value (str): value of the property
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_property(self,name, value):
+    &#34;&#34;&#34; adds a single property to the vehicle
+
+        Parameters
+        ----------
+            name (str): name of the property
+
+            value (str): value of the property
+
+    &#34;&#34;&#34;
+    self.properties.add_property(name,value)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Vehicle.add_property_file"><code class="name flex">
+<span>def <span class="ident">add_property_file</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a property file to the vehicle</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): filename of a property file
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_property_file(self,filename):
+    &#34;&#34;&#34; adds a property file to the vehicle
+
+        Parameters
+        ----------
+            filename (str): filename of a property file
+
+    &#34;&#34;&#34;
+    self.properties.add_file(filename)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Vehicle.append_to_catalog"><code class="name flex">
+<span>def <span class="ident">append_to_catalog</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds the vehicle to an existing catalog</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path to the catalog file
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_to_catalog(self,filename):
+    &#34;&#34;&#34; adds the vehicle to an existing catalog
+
+        Parameters
+        ----------
+            filename (str): path to the catalog file
+
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.open_catalog(filename)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Vehicle.dump_to_catalog"><code class="name flex">
+<span>def <span class="ident">dump_to_catalog</span></span>(<span>self, filename, catalogtype, description, author)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dump_to_catalog creates a new catalog and adds the vehicle to it</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path of the new catalog file
+
+catalogtype (str): name of the catalog
+
+description (str): description of the catalog
+
+author (str): author of the catalog
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dump_to_catalog(self,filename,catalogtype,description,author):
+    &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the vehicle to it
+        
+        Parameters
+        ----------
+            filename (str): path of the new catalog file
+
+            catalogtype (str): name of the catalog
+
+            description (str): description of the catalog
+
+            author (str): author of the catalog
+    
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.create_catalog(filename,catalogtype,description,author)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Vehicle.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the Center</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the Center
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:str(self.name),&#39;vehicleCategory&#39;:str(self.vehicle_type.name)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.entities.Vehicle.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Center</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Center
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Vehicle&#39;,attrib=self.get_attributes())
+    element.append(self.parameters.get_element())
+    element.append(self.boundingbox.get_element())
+    element.append(self.dynamics.get_element(&#39;Performance&#39;))
+    element.append(self.axels.get_element())
+    element.append(self.properties.get_element())
+    
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyoscx" href="index.html">pyoscx</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyoscx.entities.Axel" href="#pyoscx.entities.Axel">Axel</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.entities.Axel.get_attributes" href="#pyoscx.entities.Axel.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.entities.Axel.get_element" href="#pyoscx.entities.Axel.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.entities.Axels" href="#pyoscx.entities.Axels">Axels</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.entities.Axels.add_axel" href="#pyoscx.entities.Axels.add_axel">add_axel</a></code></li>
+<li><code><a title="pyoscx.entities.Axels.get_element" href="#pyoscx.entities.Axels.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.entities.BoundingBox" href="#pyoscx.entities.BoundingBox">BoundingBox</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.entities.BoundingBox.get_element" href="#pyoscx.entities.BoundingBox.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.entities.Center" href="#pyoscx.entities.Center">Center</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.entities.Center.get_attributes" href="#pyoscx.entities.Center.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.entities.Center.get_element" href="#pyoscx.entities.Center.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.entities.Controller" href="#pyoscx.entities.Controller">Controller</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.entities.Controller.add_parameter" href="#pyoscx.entities.Controller.add_parameter">add_parameter</a></code></li>
+<li><code><a title="pyoscx.entities.Controller.append_to_catalog" href="#pyoscx.entities.Controller.append_to_catalog">append_to_catalog</a></code></li>
+<li><code><a title="pyoscx.entities.Controller.dump_to_catalog" href="#pyoscx.entities.Controller.dump_to_catalog">dump_to_catalog</a></code></li>
+<li><code><a title="pyoscx.entities.Controller.get_attributes" href="#pyoscx.entities.Controller.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.entities.Controller.get_element" href="#pyoscx.entities.Controller.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.entities.Dimensions" href="#pyoscx.entities.Dimensions">Dimensions</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.entities.Dimensions.get_attributes" href="#pyoscx.entities.Dimensions.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.entities.Dimensions.get_element" href="#pyoscx.entities.Dimensions.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.entities.Entities" href="#pyoscx.entities.Entities">Entities</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.entities.Entities.add_entity_byref" href="#pyoscx.entities.Entities.add_entity_byref">add_entity_byref</a></code></li>
+<li><code><a title="pyoscx.entities.Entities.add_entity_bytype" href="#pyoscx.entities.Entities.add_entity_bytype">add_entity_bytype</a></code></li>
+<li><code><a title="pyoscx.entities.Entities.add_scenario_object" href="#pyoscx.entities.Entities.add_scenario_object">add_scenario_object</a></code></li>
+<li><code><a title="pyoscx.entities.Entities.get_element" href="#pyoscx.entities.Entities.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.entities.Entity" href="#pyoscx.entities.Entity">Entity</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.entities.Entity.get_attributes" href="#pyoscx.entities.Entity.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.entities.Entity.get_element" href="#pyoscx.entities.Entity.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.entities.MiscObject" href="#pyoscx.entities.MiscObject">MiscObject</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pyoscx.entities.MiscObject.add_parameter" href="#pyoscx.entities.MiscObject.add_parameter">add_parameter</a></code></li>
+<li><code><a title="pyoscx.entities.MiscObject.add_property" href="#pyoscx.entities.MiscObject.add_property">add_property</a></code></li>
+<li><code><a title="pyoscx.entities.MiscObject.add_property_file" href="#pyoscx.entities.MiscObject.add_property_file">add_property_file</a></code></li>
+<li><code><a title="pyoscx.entities.MiscObject.append_to_catalog" href="#pyoscx.entities.MiscObject.append_to_catalog">append_to_catalog</a></code></li>
+<li><code><a title="pyoscx.entities.MiscObject.dump_to_catalog" href="#pyoscx.entities.MiscObject.dump_to_catalog">dump_to_catalog</a></code></li>
+<li><code><a title="pyoscx.entities.MiscObject.get_attributes" href="#pyoscx.entities.MiscObject.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.entities.MiscObject.get_element" href="#pyoscx.entities.MiscObject.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.entities.Pedestrian" href="#pyoscx.entities.Pedestrian">Pedestrian</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pyoscx.entities.Pedestrian.add_parameter" href="#pyoscx.entities.Pedestrian.add_parameter">add_parameter</a></code></li>
+<li><code><a title="pyoscx.entities.Pedestrian.add_property" href="#pyoscx.entities.Pedestrian.add_property">add_property</a></code></li>
+<li><code><a title="pyoscx.entities.Pedestrian.add_property_file" href="#pyoscx.entities.Pedestrian.add_property_file">add_property_file</a></code></li>
+<li><code><a title="pyoscx.entities.Pedestrian.append_to_catalog" href="#pyoscx.entities.Pedestrian.append_to_catalog">append_to_catalog</a></code></li>
+<li><code><a title="pyoscx.entities.Pedestrian.dump_to_catalog" href="#pyoscx.entities.Pedestrian.dump_to_catalog">dump_to_catalog</a></code></li>
+<li><code><a title="pyoscx.entities.Pedestrian.get_attributes" href="#pyoscx.entities.Pedestrian.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.entities.Pedestrian.get_element" href="#pyoscx.entities.Pedestrian.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.entities.Properties" href="#pyoscx.entities.Properties">Properties</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.entities.Properties.add_file" href="#pyoscx.entities.Properties.add_file">add_file</a></code></li>
+<li><code><a title="pyoscx.entities.Properties.add_property" href="#pyoscx.entities.Properties.add_property">add_property</a></code></li>
+<li><code><a title="pyoscx.entities.Properties.get_element" href="#pyoscx.entities.Properties.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.entities.ScenarioObject" href="#pyoscx.entities.ScenarioObject">ScenarioObject</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.entities.ScenarioObject.get_attributes" href="#pyoscx.entities.ScenarioObject.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.entities.ScenarioObject.get_element" href="#pyoscx.entities.ScenarioObject.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.entities.Vehicle" href="#pyoscx.entities.Vehicle">Vehicle</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pyoscx.entities.Vehicle.add_axel" href="#pyoscx.entities.Vehicle.add_axel">add_axel</a></code></li>
+<li><code><a title="pyoscx.entities.Vehicle.add_parameter" href="#pyoscx.entities.Vehicle.add_parameter">add_parameter</a></code></li>
+<li><code><a title="pyoscx.entities.Vehicle.add_property" href="#pyoscx.entities.Vehicle.add_property">add_property</a></code></li>
+<li><code><a title="pyoscx.entities.Vehicle.add_property_file" href="#pyoscx.entities.Vehicle.add_property_file">add_property_file</a></code></li>
+<li><code><a title="pyoscx.entities.Vehicle.append_to_catalog" href="#pyoscx.entities.Vehicle.append_to_catalog">append_to_catalog</a></code></li>
+<li><code><a title="pyoscx.entities.Vehicle.dump_to_catalog" href="#pyoscx.entities.Vehicle.dump_to_catalog">dump_to_catalog</a></code></li>
+<li><code><a title="pyoscx.entities.Vehicle.get_attributes" href="#pyoscx.entities.Vehicle.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.entities.Vehicle.get_element" href="#pyoscx.entities.Vehicle.get_element">get_element</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

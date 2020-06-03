@@ -1,0 +1,2133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>pyoscx.storyboard API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyoscx.storyboard</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import xml.etree.ElementTree as ET
+
+from .actions import _Action
+
+from .triggers import EmptyTrigger
+from .utils import EntityRef
+from .utils import ParameterDeclarations
+from .enumerations import Priority
+
+class StoryBoard():
+    &#34;&#34;&#34; The StoryBoard class creates the storyboard of OpenScenario
+        
+        Parameters
+        ----------
+            init (Init): the init part of the storyboard
+
+            stoptrigger (Valuetrigger, Entitytrigger or EmptyTrigger): 
+                the stoptrigger of the storyboard (optional)
+                Default (EmptyTrigger) 
+
+        Attributes
+        ----------
+
+            init (Init): the init of the storyboard
+
+            stoptrigger (Valuetrigger, Entitytrigger or EmptyTrigger): 
+                the stoptrigger
+
+            stories (list of Story): all stories of the scenario
+
+        Methods
+        -------
+            add_story (story)
+                adds a story to the storyboard
+
+            get_element()
+                Returns the full ElementTree of the class
+
+
+    &#34;&#34;&#34;
+    def __init__(self,init,stoptrigger=EmptyTrigger(&#39;stop&#39;)):
+        &#34;&#34;&#34; initalizes the storyboard
+
+        Parameters
+        ----------
+            init (Init): the init part of the storyboard
+
+            stoptrigger (Valuetrigger, Entitytrigger or EmptyTrigger): 
+                the stoptrigger of the storyboard (optional)
+                Default (EmptyTrigger) 
+
+        &#34;&#34;&#34;
+        self.init = init
+        self.stoptrigger = stoptrigger
+        self.stories = []
+
+    def add_story(self,story):
+        &#34;&#34;&#34; adds a story to the storyboard
+
+        Parameters
+        ----------
+            story (Story): the story to be added 
+
+        &#34;&#34;&#34;
+        self.stories.append(story)
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Storyboard
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Storyboard&#39;)
+        element.append(self.init.get_element())
+        if not self.stories:
+            raise ValueError(&#39;no stories available for storyboard&#39;)
+        
+        for story in self.stories:
+            element.append(story.get_element())
+        element.append(self.stoptrigger.get_element())
+
+        return element
+
+class Init():
+    &#34;&#34;&#34; the Init class, creates the init part of the storyboard
+        
+        Attributes
+        ----------
+            initactions (dir: {entityname: Action}): a directory 
+                containing all init actions of the scenario
+                
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            add_init_action(entityname, action):
+                adds an action to the init
+
+    &#34;&#34;&#34;
+    def __init__(self):
+        &#34;&#34;&#34; initalize the Init class
+
+        &#34;&#34;&#34;
+        self.initactions = {}
+
+    def add_init_action(self,entityname,action):
+        &#34;&#34;&#34; add_init_action adds an Action to the init.
+
+        Parameters
+        ----------
+            entityname (str): name of the entity to add the action to
+            Action (*Action): Any action to be added (like TeleportAction)
+            
+        &#34;&#34;&#34;
+        if entityname not in self.initactions:
+            self.initactions[entityname] = []
+
+        self.initactions[entityname].append(action)
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Init
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Init&#39;)
+        actions = ET.SubElement(element,&#39;Actions&#39;)
+        
+        for i in self.initactions:
+            private = ET.SubElement(actions,&#39;Private&#39;,attrib={&#39;entityRef&#39;:i})
+            for j in self.initactions[i]:
+                private.append(j.get_element())
+
+
+        return element
+
+class Story():
+    &#34;&#34;&#34; The Story class creates a story of the OpenScenario
+        
+        Parameters
+        ---------- 
+            name (str): name of the story
+
+            parameters (ParameterDeclarations): the parameters of the Story
+            
+        Attributes
+        ----------
+            name (str): name of the story
+
+            parameters (ParameterDeclarations): the parameters of the story (optional)
+
+            acts (list of Act): all acts belonging to the story
+
+        Methods
+        -------
+            add_act(act)
+                adds an act to the story
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self, name, parameters=ParameterDeclarations()):
+        &#34;&#34;&#34; initalizes the Story class
+
+        Parameters
+        ---------- 
+            name (str): name of the story
+
+            parameters (ParameterDeclarations): the parameters of the Story
+        &#34;&#34;&#34;
+        self.name = name
+
+        self.acts = []
+
+        self.parameter = parameters
+
+    def add_act(self,act):
+        &#34;&#34;&#34; adds an act to the story
+
+        Parameters
+        ---------- 
+            act (Act): act to add to the story
+
+        &#34;&#34;&#34;
+        self.acts.append(act)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Story
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name}
+    
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Story
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Story&#39;,attrib=self.get_attributes())
+        element.append(self.parameter.get_element())
+        if not self.acts:
+            raise ValueError(&#39;no acts added to the story&#39;)
+        for a in self.acts:
+            element.append(a.get_element())
+        return element
+
+class Act():
+    &#34;&#34;&#34; the Act class creates the Act of the OpenScenario
+        
+        Parameters
+        ----------
+            name (str): name of the act
+
+            starttrigger (*Trigger): starttrigger of the act
+
+            stoptrigger (*Trigger): stoptrigger of the act (optional)
+            
+        Attributes
+        ----------
+            name (str): name of the act
+
+            starttrigger (*Trigger): starttrigger of the act
+
+            stoptrigger (*Trigger): stoptrigger of the act (optional)
+
+            maneuvergroup (list of ManeuverGroup): list of ManeuverGroups belonging to the act
+
+        Methods
+        -------
+            add_maneuver_group(maneuvergroup)
+                adds a maneuvuergroup to the act
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,starttrigger,stoptrigger=None):
+        &#34;&#34;&#34; Initalize the Act
+
+        Parameters
+        ----------
+            name (str): name of the act
+
+            starttrigger (*Trigger): starttrigger of the act
+
+            stoptrigger (*Trigger): stoptrigger of the act (optional)
+                Default: Emptytrigger
+
+        &#34;&#34;&#34;
+        self.name = name
+        self.starttrigger = starttrigger
+        if stoptrigger == None:
+            self.stoptrigger = EmptyTrigger(&#39;stop&#39;)
+        else:
+            self.stoptrigger = stoptrigger
+        self.maneuvergroup = []
+
+    def add_maneuver_group(self,maneuvergroup):
+        &#34;&#34;&#34; adds a maneuvuergroup to the act
+
+        Parameters
+        ----------
+            name (str): name of the act
+
+        &#34;&#34;&#34;
+        self.maneuvergroup.append(maneuvergroup)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Act
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Act
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Act&#39;,attrib=self.get_attributes())
+        if not self.maneuvergroup:
+            raise ValueError(&#39;no maneuver group added to the act&#39;)
+        for mangr in self.maneuvergroup:
+            element.append(mangr.get_element())
+
+        element.append(self.starttrigger.get_element())
+        element.append(self.stoptrigger.get_element())
+        return element
+
+class ManeuverGroup():
+    &#34;&#34;&#34; the ManeuverGroup creates the ManeuverGroup of the OpenScenario
+        
+        Parameters
+        ----------
+            name (str): name of the ManeuverGroup
+
+            maxexecution (int): maximum number of iterations
+
+            selecttriggeringentities (bool): Have no idea what this does ??? TODO: check
+
+        Attributes
+        ----------
+            name (str): name of the ManeuverGroup
+
+            maxexecution (int): maximum number of iterations
+
+            selecttriggeringentities (bool): Have no idea what this does ??? TODO: check
+
+            maneuvers (list of Maneuver): the maneuvers in the ManeuverGroup
+
+            actprs (_Actors): all actors of the ManeuverGroup
+
+        Methods
+        -------
+            add_maneuver(Maneuver)
+                adds a maneuver to the ManeuverGroup
+
+            add_actor(entity)
+                adds an actor to the ManeuverGroup
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,maxexecution=1,selecttriggeringentities = False):
+        &#34;&#34;&#34; initalize the ManeuverGroup
+
+            Parameters
+            ----------
+                name (str): name of the ManeuverGroup
+
+                maxexecution (int): maximum number of iterations
+
+                selecttriggeringentities (bool): Have no idea what this does ??? TODO: check
+        
+        &#34;&#34;&#34;
+        self.name = name
+        self.maxexecution = maxexecution
+        self.actors = _Actors(selecttriggeringentities)
+        self.maneuvers = []
+ 
+
+    
+    def add_maneuver(self,maneuver):
+        &#34;&#34;&#34; adds a maneuver to the ManeuverGroup
+            
+        Parameters
+        ----------
+            maneuver (Maneuver, or CatalogReference): maneuver to add
+
+        &#34;&#34;&#34;
+        self.maneuvers.append(maneuver)
+
+    def add_actor(self,entity):
+        &#34;&#34;&#34; adds an actor to the ManeuverGroup
+            
+        Parameters
+        ----------
+            entity (str): name of the entity to add as an actor
+
+        &#34;&#34;&#34;
+        self.actors.add_actor(entity)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the ManeuverGroup
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name,&#39;maximumExecutionCount&#39;:str(self.maxexecution)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the ManeuverGroup
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;ManeuverGroup&#39;,attrib=self.get_attributes())
+        element.append(self.actors.get_element())
+        for man in self.maneuvers:
+            element.append(man.get_element())
+        return element
+
+
+
+class _Actors():
+    &#34;&#34;&#34; _Actors is used to create the actors of a ManeuverGroup
+        
+        Parameters
+        ----------
+            selectTriggeringEntities (bool): ???
+                Default: False
+
+        Attributes
+        ----------
+            selectTriggeringEntities (bool): ???
+
+            actors (list or EntityRef): all actors to add to the element
+
+        Methods
+        -------
+            add_actor(actor)
+                adds an actor 
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self, selectTriggeringEntities=False):
+        &#34;&#34;&#34; initalize the _Actors
+
+            Parameters
+            ----------
+                selectTriggeringEntities (bool): ???
+                    Default: False
+
+        &#34;&#34;&#34;
+        self.actors = []
+        self.select = selectTriggeringEntities
+
+    
+
+    def add_actor(self,entity):
+        &#34;&#34;&#34; adds an actor to the list of actors
+            
+            Parameters
+            ----------
+                entity (str): name of the entity
+
+        &#34;&#34;&#34;
+        self.actors.append(EntityRef(entity))
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the _Actors as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;selectTriggeringEntities&#39;:str(self.select)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the _Actors
+
+        &#34;&#34;&#34;
+        if not self.actors:
+            raise ValueError(&#39;no actors are set&#39;)
+
+        element = ET.Element(&#39;Actors&#39;,attrib=self.get_attributes())
+        for ent in self.actors:
+            element.append(ent.get_element())
+        return element
+
+
+
+class Maneuver():
+    &#34;&#34;&#34; The Maneuver class creates the Maneuver of OpenScenario
+        
+        Parameters
+        ----------
+            name (str): name of the Maneuver
+
+        Attributes
+        ----------
+            name (str): name of the Maneuver
+
+            events (list of Event): all events belonging to the Maneuver
+
+        Methods
+        -------
+            add_event (event)
+                adds an event to the Maneuver
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name):
+        &#34;&#34;&#34; initalizes the Maneuver
+        Parameters
+        ----------
+            name (str): name of the Maneuver
+
+        &#34;&#34;&#34;
+        self.name = name
+        self.events = []
+        # TODO:add parameter declaration
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the Controller to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+    def add_event(self,event):
+        &#34;&#34;&#34; adds an event to the Maneuver
+
+        Parameters
+        ----------
+            name (Event): the event to add to the Maneuver
+
+        &#34;&#34;&#34;
+        self.events.append(event)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Maneuver
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Maneuver
+
+        &#34;&#34;&#34;
+        if not self.events:
+            raise ValueError(&#39;no events added to the maneuver&#39;)
+
+        element = ET.Element(&#39;Maneuver&#39;,attrib=self.get_attributes())
+        for event in self.events:
+            element.append(event.get_element())
+
+        return element
+
+class Event():
+    &#34;&#34;&#34; the Event class creates the event of OpenScenario
+        
+        Parameters
+        ----------
+            name (str): name of the event
+
+            priority (Priority): what priority the event has 
+
+            maxexecution (int): the maximum allowed executions of the event
+                Default: 1
+
+        Attributes
+        ----------
+            name (str): name of the event
+
+            priority (Priority): what priority the event has TODO: add definition
+
+            maxexecution (int): the maximum allowed executions of the event
+                
+            action (list of actions): all actions belonging to the event
+
+            trigger (*Trigger): a start trigger to the event
+
+        Methods
+        -------
+            add_trigger()
+                adds an trigger to the event
+
+            add_action()
+                adds an action to the event (can be called multiple times)
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,priority,maxexecution=1):
+        self.name = name
+        if priority not in Priority:
+            ValueError(&#39;Not a valid priority&#39;)
+        self.priority = priority
+        self.action = []
+        self.trigger = None
+        self.maxexecution = maxexecution
+
+    def add_trigger(self,trigger):
+        &#34;&#34;&#34; adds a starging trigger to the event
+
+        Parameters
+        ----------
+            trigger (*Trigger): Adds a trigger to start the event (not EmptyTrigger)
+
+        &#34;&#34;&#34;
+        self.trigger = trigger
+
+    def add_action(self,actionname,action):
+        &#34;&#34;&#34; adds an action to the Event, multiple actions can be added and will be ordered as added.
+
+        Parameters
+        ----------
+            action (*Action): any action to be added to the event
+
+        &#34;&#34;&#34;
+        self.action.append(_Action(actionname,action))
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Event
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name,&#39;priority&#39;:self.priority.name,&#39;maximumExecutionCount&#39;:str(self.maxexecution)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Event
+
+        &#34;&#34;&#34;
+        if not self.action:
+            raise ValueError(&#39;no action(s) set&#39;)
+        if not self.trigger:
+            raise ValueError(&#39;no trigger set&#39;)
+
+        element = ET.Element(&#39;Event&#39;,attrib=self.get_attributes())
+        for action in self.action:
+            element.append(action.get_element())
+
+        element.append(self.trigger.get_element())
+        return element</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyoscx.storyboard.Act"><code class="flex name class">
+<span>class <span class="ident">Act</span></span>
+<span>(</span><span>name, starttrigger, stoptrigger=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Act class creates the Act of the OpenScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the act
+
+starttrigger (*Trigger): starttrigger of the act
+
+stoptrigger (*Trigger): stoptrigger of the act (optional)
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the act
+
+starttrigger (*Trigger): starttrigger of the act
+
+stoptrigger (*Trigger): stoptrigger of the act (optional)
+
+maneuvergroup (list of ManeuverGroup): list of ManeuverGroups belonging to the act
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_maneuver_group(maneuvergroup)
+    adds a maneuvuergroup to the act
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>Initalize the Act</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the act
+
+starttrigger (*Trigger): starttrigger of the act
+
+stoptrigger (*Trigger): stoptrigger of the act (optional)
+    Default: Emptytrigger
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Act():
+    &#34;&#34;&#34; the Act class creates the Act of the OpenScenario
+        
+        Parameters
+        ----------
+            name (str): name of the act
+
+            starttrigger (*Trigger): starttrigger of the act
+
+            stoptrigger (*Trigger): stoptrigger of the act (optional)
+            
+        Attributes
+        ----------
+            name (str): name of the act
+
+            starttrigger (*Trigger): starttrigger of the act
+
+            stoptrigger (*Trigger): stoptrigger of the act (optional)
+
+            maneuvergroup (list of ManeuverGroup): list of ManeuverGroups belonging to the act
+
+        Methods
+        -------
+            add_maneuver_group(maneuvergroup)
+                adds a maneuvuergroup to the act
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,starttrigger,stoptrigger=None):
+        &#34;&#34;&#34; Initalize the Act
+
+        Parameters
+        ----------
+            name (str): name of the act
+
+            starttrigger (*Trigger): starttrigger of the act
+
+            stoptrigger (*Trigger): stoptrigger of the act (optional)
+                Default: Emptytrigger
+
+        &#34;&#34;&#34;
+        self.name = name
+        self.starttrigger = starttrigger
+        if stoptrigger == None:
+            self.stoptrigger = EmptyTrigger(&#39;stop&#39;)
+        else:
+            self.stoptrigger = stoptrigger
+        self.maneuvergroup = []
+
+    def add_maneuver_group(self,maneuvergroup):
+        &#34;&#34;&#34; adds a maneuvuergroup to the act
+
+        Parameters
+        ----------
+            name (str): name of the act
+
+        &#34;&#34;&#34;
+        self.maneuvergroup.append(maneuvergroup)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Act
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Act
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Act&#39;,attrib=self.get_attributes())
+        if not self.maneuvergroup:
+            raise ValueError(&#39;no maneuver group added to the act&#39;)
+        for mangr in self.maneuvergroup:
+            element.append(mangr.get_element())
+
+        element.append(self.starttrigger.get_element())
+        element.append(self.stoptrigger.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.storyboard.Act.add_maneuver_group"><code class="name flex">
+<span>def <span class="ident">add_maneuver_group</span></span>(<span>self, maneuvergroup)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a maneuvuergroup to the act</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the act
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_maneuver_group(self,maneuvergroup):
+    &#34;&#34;&#34; adds a maneuvuergroup to the act
+
+    Parameters
+    ----------
+        name (str): name of the act
+
+    &#34;&#34;&#34;
+    self.maneuvergroup.append(maneuvergroup)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.Act.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the Act</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the Act
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:self.name}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.Act.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Act</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Act
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Act&#39;,attrib=self.get_attributes())
+    if not self.maneuvergroup:
+        raise ValueError(&#39;no maneuver group added to the act&#39;)
+    for mangr in self.maneuvergroup:
+        element.append(mangr.get_element())
+
+    element.append(self.starttrigger.get_element())
+    element.append(self.stoptrigger.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.storyboard.Event"><code class="flex name class">
+<span>class <span class="ident">Event</span></span>
+<span>(</span><span>name, priority, maxexecution=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Event class creates the event of OpenScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the event
+
+priority (Priority): what priority the event has
+
+maxexecution (int): the maximum allowed executions of the event
+    Default: 1
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the event
+
+priority (Priority): what priority the event has TODO: add definition
+
+maxexecution (int): the maximum allowed executions of the event
+
+action (list of actions): all actions belonging to the event
+
+trigger (*Trigger): a start trigger to the event
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_trigger()
+    adds an trigger to the event
+
+add_action()
+    adds an action to the event (can be called multiple times)
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Event():
+    &#34;&#34;&#34; the Event class creates the event of OpenScenario
+        
+        Parameters
+        ----------
+            name (str): name of the event
+
+            priority (Priority): what priority the event has 
+
+            maxexecution (int): the maximum allowed executions of the event
+                Default: 1
+
+        Attributes
+        ----------
+            name (str): name of the event
+
+            priority (Priority): what priority the event has TODO: add definition
+
+            maxexecution (int): the maximum allowed executions of the event
+                
+            action (list of actions): all actions belonging to the event
+
+            trigger (*Trigger): a start trigger to the event
+
+        Methods
+        -------
+            add_trigger()
+                adds an trigger to the event
+
+            add_action()
+                adds an action to the event (can be called multiple times)
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,priority,maxexecution=1):
+        self.name = name
+        if priority not in Priority:
+            ValueError(&#39;Not a valid priority&#39;)
+        self.priority = priority
+        self.action = []
+        self.trigger = None
+        self.maxexecution = maxexecution
+
+    def add_trigger(self,trigger):
+        &#34;&#34;&#34; adds a starging trigger to the event
+
+        Parameters
+        ----------
+            trigger (*Trigger): Adds a trigger to start the event (not EmptyTrigger)
+
+        &#34;&#34;&#34;
+        self.trigger = trigger
+
+    def add_action(self,actionname,action):
+        &#34;&#34;&#34; adds an action to the Event, multiple actions can be added and will be ordered as added.
+
+        Parameters
+        ----------
+            action (*Action): any action to be added to the event
+
+        &#34;&#34;&#34;
+        self.action.append(_Action(actionname,action))
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Event
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name,&#39;priority&#39;:self.priority.name,&#39;maximumExecutionCount&#39;:str(self.maxexecution)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Event
+
+        &#34;&#34;&#34;
+        if not self.action:
+            raise ValueError(&#39;no action(s) set&#39;)
+        if not self.trigger:
+            raise ValueError(&#39;no trigger set&#39;)
+
+        element = ET.Element(&#39;Event&#39;,attrib=self.get_attributes())
+        for action in self.action:
+            element.append(action.get_element())
+
+        element.append(self.trigger.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.storyboard.Event.add_action"><code class="name flex">
+<span>def <span class="ident">add_action</span></span>(<span>self, actionname, action)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds an action to the Event, multiple actions can be added and will be ordered as added.</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>action (*Action): any action to be added to the event
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_action(self,actionname,action):
+    &#34;&#34;&#34; adds an action to the Event, multiple actions can be added and will be ordered as added.
+
+    Parameters
+    ----------
+        action (*Action): any action to be added to the event
+
+    &#34;&#34;&#34;
+    self.action.append(_Action(actionname,action))</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.Event.add_trigger"><code class="name flex">
+<span>def <span class="ident">add_trigger</span></span>(<span>self, trigger)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a starging trigger to the event</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>trigger (*Trigger): Adds a trigger to start the event (not EmptyTrigger)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_trigger(self,trigger):
+    &#34;&#34;&#34; adds a starging trigger to the event
+
+    Parameters
+    ----------
+        trigger (*Trigger): Adds a trigger to start the event (not EmptyTrigger)
+
+    &#34;&#34;&#34;
+    self.trigger = trigger</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.Event.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the Event</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the Event
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:self.name,&#39;priority&#39;:self.priority.name,&#39;maximumExecutionCount&#39;:str(self.maxexecution)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.Event.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Event</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Event
+
+    &#34;&#34;&#34;
+    if not self.action:
+        raise ValueError(&#39;no action(s) set&#39;)
+    if not self.trigger:
+        raise ValueError(&#39;no trigger set&#39;)
+
+    element = ET.Element(&#39;Event&#39;,attrib=self.get_attributes())
+    for action in self.action:
+        element.append(action.get_element())
+
+    element.append(self.trigger.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.storyboard.Init"><code class="flex name class">
+<span>class <span class="ident">Init</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Init class, creates the init part of the storyboard</p>
+<h2 id="attributes">Attributes</h2>
+<pre><code>initactions (dir: {entityname: Action}): a directory 
+    containing all init actions of the scenario
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+add_init_action(entityname, action):
+    adds an action to the init
+</code></pre>
+<p>initalize the Init class</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Init():
+    &#34;&#34;&#34; the Init class, creates the init part of the storyboard
+        
+        Attributes
+        ----------
+            initactions (dir: {entityname: Action}): a directory 
+                containing all init actions of the scenario
+                
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            add_init_action(entityname, action):
+                adds an action to the init
+
+    &#34;&#34;&#34;
+    def __init__(self):
+        &#34;&#34;&#34; initalize the Init class
+
+        &#34;&#34;&#34;
+        self.initactions = {}
+
+    def add_init_action(self,entityname,action):
+        &#34;&#34;&#34; add_init_action adds an Action to the init.
+
+        Parameters
+        ----------
+            entityname (str): name of the entity to add the action to
+            Action (*Action): Any action to be added (like TeleportAction)
+            
+        &#34;&#34;&#34;
+        if entityname not in self.initactions:
+            self.initactions[entityname] = []
+
+        self.initactions[entityname].append(action)
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Init
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Init&#39;)
+        actions = ET.SubElement(element,&#39;Actions&#39;)
+        
+        for i in self.initactions:
+            private = ET.SubElement(actions,&#39;Private&#39;,attrib={&#39;entityRef&#39;:i})
+            for j in self.initactions[i]:
+                private.append(j.get_element())
+
+
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.storyboard.Init.add_init_action"><code class="name flex">
+<span>def <span class="ident">add_init_action</span></span>(<span>self, entityname, action)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>add_init_action adds an Action to the init.</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>entityname (str): name of the entity to add the action to
+Action (*Action): Any action to be added (like TeleportAction)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_init_action(self,entityname,action):
+    &#34;&#34;&#34; add_init_action adds an Action to the init.
+
+    Parameters
+    ----------
+        entityname (str): name of the entity to add the action to
+        Action (*Action): Any action to be added (like TeleportAction)
+        
+    &#34;&#34;&#34;
+    if entityname not in self.initactions:
+        self.initactions[entityname] = []
+
+    self.initactions[entityname].append(action)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.Init.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Init</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Init
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Init&#39;)
+    actions = ET.SubElement(element,&#39;Actions&#39;)
+    
+    for i in self.initactions:
+        private = ET.SubElement(actions,&#39;Private&#39;,attrib={&#39;entityRef&#39;:i})
+        for j in self.initactions[i]:
+            private.append(j.get_element())
+
+
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.storyboard.Maneuver"><code class="flex name class">
+<span>class <span class="ident">Maneuver</span></span>
+<span>(</span><span>name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The Maneuver class creates the Maneuver of OpenScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the Maneuver
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the Maneuver
+
+events (list of Event): all events belonging to the Maneuver
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_event (event)
+    adds an event to the Maneuver
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalizes the Maneuver
+Parameters</p>
+<hr>
+<pre><code>name (str): name of the Maneuver
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Maneuver():
+    &#34;&#34;&#34; The Maneuver class creates the Maneuver of OpenScenario
+        
+        Parameters
+        ----------
+            name (str): name of the Maneuver
+
+        Attributes
+        ----------
+            name (str): name of the Maneuver
+
+            events (list of Event): all events belonging to the Maneuver
+
+        Methods
+        -------
+            add_event (event)
+                adds an event to the Maneuver
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name):
+        &#34;&#34;&#34; initalizes the Maneuver
+        Parameters
+        ----------
+            name (str): name of the Maneuver
+
+        &#34;&#34;&#34;
+        self.name = name
+        self.events = []
+        # TODO:add parameter declaration
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the Controller to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+    def add_event(self,event):
+        &#34;&#34;&#34; adds an event to the Maneuver
+
+        Parameters
+        ----------
+            name (Event): the event to add to the Maneuver
+
+        &#34;&#34;&#34;
+        self.events.append(event)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Maneuver
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Maneuver
+
+        &#34;&#34;&#34;
+        if not self.events:
+            raise ValueError(&#39;no events added to the maneuver&#39;)
+
+        element = ET.Element(&#39;Maneuver&#39;,attrib=self.get_attributes())
+        for event in self.events:
+            element.append(event.get_element())
+
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.storyboard.Maneuver.add_event"><code class="name flex">
+<span>def <span class="ident">add_event</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds an event to the Maneuver</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (Event): the event to add to the Maneuver
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_event(self,event):
+    &#34;&#34;&#34; adds an event to the Maneuver
+
+    Parameters
+    ----------
+        name (Event): the event to add to the Maneuver
+
+    &#34;&#34;&#34;
+    self.events.append(event)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.Maneuver.append_to_catalog"><code class="name flex">
+<span>def <span class="ident">append_to_catalog</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds the Controller to an existing catalog</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path to the catalog file
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_to_catalog(self,filename):
+    &#34;&#34;&#34; adds the Controller to an existing catalog
+
+        Parameters
+        ----------
+            filename (str): path to the catalog file
+
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.open_catalog(filename)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.Maneuver.dump_to_catalog"><code class="name flex">
+<span>def <span class="ident">dump_to_catalog</span></span>(<span>self, filename, catalogtype, description, author)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dump_to_catalog creates a new catalog and adds the Controller to it</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path of the new catalog file
+
+catalogtype (str): name of the catalog
+
+description (str): description of the catalog
+
+author (str): author of the catalog
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dump_to_catalog(self,filename,catalogtype,description,author):
+    &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+        
+        Parameters
+        ----------
+            filename (str): path of the new catalog file
+
+            catalogtype (str): name of the catalog
+
+            description (str): description of the catalog
+
+            author (str): author of the catalog
+    
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.create_catalog(filename,catalogtype,description,author)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.Maneuver.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the Maneuver</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the Maneuver
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:self.name}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.Maneuver.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Maneuver</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Maneuver
+
+    &#34;&#34;&#34;
+    if not self.events:
+        raise ValueError(&#39;no events added to the maneuver&#39;)
+
+    element = ET.Element(&#39;Maneuver&#39;,attrib=self.get_attributes())
+    for event in self.events:
+        element.append(event.get_element())
+
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.storyboard.ManeuverGroup"><code class="flex name class">
+<span>class <span class="ident">ManeuverGroup</span></span>
+<span>(</span><span>name, maxexecution=1, selecttriggeringentities=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the ManeuverGroup creates the ManeuverGroup of the OpenScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the ManeuverGroup
+
+maxexecution (int): maximum number of iterations
+
+selecttriggeringentities (bool): Have no idea what this does ??? TODO: check
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the ManeuverGroup
+
+maxexecution (int): maximum number of iterations
+
+selecttriggeringentities (bool): Have no idea what this does ??? TODO: check
+
+maneuvers (list of Maneuver): the maneuvers in the ManeuverGroup
+
+actprs (_Actors): all actors of the ManeuverGroup
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_maneuver(Maneuver)
+    adds a maneuver to the ManeuverGroup
+
+add_actor(entity)
+    adds an actor to the ManeuverGroup
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the ManeuverGroup</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the ManeuverGroup
+
+maxexecution (int): maximum number of iterations
+
+selecttriggeringentities (bool): Have no idea what this does ??? TODO: check
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ManeuverGroup():
+    &#34;&#34;&#34; the ManeuverGroup creates the ManeuverGroup of the OpenScenario
+        
+        Parameters
+        ----------
+            name (str): name of the ManeuverGroup
+
+            maxexecution (int): maximum number of iterations
+
+            selecttriggeringentities (bool): Have no idea what this does ??? TODO: check
+
+        Attributes
+        ----------
+            name (str): name of the ManeuverGroup
+
+            maxexecution (int): maximum number of iterations
+
+            selecttriggeringentities (bool): Have no idea what this does ??? TODO: check
+
+            maneuvers (list of Maneuver): the maneuvers in the ManeuverGroup
+
+            actprs (_Actors): all actors of the ManeuverGroup
+
+        Methods
+        -------
+            add_maneuver(Maneuver)
+                adds a maneuver to the ManeuverGroup
+
+            add_actor(entity)
+                adds an actor to the ManeuverGroup
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,name,maxexecution=1,selecttriggeringentities = False):
+        &#34;&#34;&#34; initalize the ManeuverGroup
+
+            Parameters
+            ----------
+                name (str): name of the ManeuverGroup
+
+                maxexecution (int): maximum number of iterations
+
+                selecttriggeringentities (bool): Have no idea what this does ??? TODO: check
+        
+        &#34;&#34;&#34;
+        self.name = name
+        self.maxexecution = maxexecution
+        self.actors = _Actors(selecttriggeringentities)
+        self.maneuvers = []
+ 
+
+    
+    def add_maneuver(self,maneuver):
+        &#34;&#34;&#34; adds a maneuver to the ManeuverGroup
+            
+        Parameters
+        ----------
+            maneuver (Maneuver, or CatalogReference): maneuver to add
+
+        &#34;&#34;&#34;
+        self.maneuvers.append(maneuver)
+
+    def add_actor(self,entity):
+        &#34;&#34;&#34; adds an actor to the ManeuverGroup
+            
+        Parameters
+        ----------
+            entity (str): name of the entity to add as an actor
+
+        &#34;&#34;&#34;
+        self.actors.add_actor(entity)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the ManeuverGroup
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name,&#39;maximumExecutionCount&#39;:str(self.maxexecution)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the ManeuverGroup
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;ManeuverGroup&#39;,attrib=self.get_attributes())
+        element.append(self.actors.get_element())
+        for man in self.maneuvers:
+            element.append(man.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.storyboard.ManeuverGroup.add_actor"><code class="name flex">
+<span>def <span class="ident">add_actor</span></span>(<span>self, entity)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds an actor to the ManeuverGroup</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>entity (str): name of the entity to add as an actor
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_actor(self,entity):
+    &#34;&#34;&#34; adds an actor to the ManeuverGroup
+        
+    Parameters
+    ----------
+        entity (str): name of the entity to add as an actor
+
+    &#34;&#34;&#34;
+    self.actors.add_actor(entity)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.ManeuverGroup.add_maneuver"><code class="name flex">
+<span>def <span class="ident">add_maneuver</span></span>(<span>self, maneuver)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a maneuver to the ManeuverGroup</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>maneuver (Maneuver, or CatalogReference): maneuver to add
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_maneuver(self,maneuver):
+    &#34;&#34;&#34; adds a maneuver to the ManeuverGroup
+        
+    Parameters
+    ----------
+        maneuver (Maneuver, or CatalogReference): maneuver to add
+
+    &#34;&#34;&#34;
+    self.maneuvers.append(maneuver)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.ManeuverGroup.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the ManeuverGroup</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the ManeuverGroup
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:self.name,&#39;maximumExecutionCount&#39;:str(self.maxexecution)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.ManeuverGroup.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the ManeuverGroup</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the ManeuverGroup
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;ManeuverGroup&#39;,attrib=self.get_attributes())
+    element.append(self.actors.get_element())
+    for man in self.maneuvers:
+        element.append(man.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.storyboard.Story"><code class="flex name class">
+<span>class <span class="ident">Story</span></span>
+<span>(</span><span>name, parameters=&lt;pyoscx.utils.ParameterDeclarations object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The Story class creates a story of the OpenScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the story
+
+parameters (ParameterDeclarations): the parameters of the Story
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the story
+
+parameters (ParameterDeclarations): the parameters of the story (optional)
+
+acts (list of Act): all acts belonging to the story
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_act(act)
+    adds an act to the story
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalizes the Story class</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the story
+
+parameters (ParameterDeclarations): the parameters of the Story
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Story():
+    &#34;&#34;&#34; The Story class creates a story of the OpenScenario
+        
+        Parameters
+        ---------- 
+            name (str): name of the story
+
+            parameters (ParameterDeclarations): the parameters of the Story
+            
+        Attributes
+        ----------
+            name (str): name of the story
+
+            parameters (ParameterDeclarations): the parameters of the story (optional)
+
+            acts (list of Act): all acts belonging to the story
+
+        Methods
+        -------
+            add_act(act)
+                adds an act to the story
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self, name, parameters=ParameterDeclarations()):
+        &#34;&#34;&#34; initalizes the Story class
+
+        Parameters
+        ---------- 
+            name (str): name of the story
+
+            parameters (ParameterDeclarations): the parameters of the Story
+        &#34;&#34;&#34;
+        self.name = name
+
+        self.acts = []
+
+        self.parameter = parameters
+
+    def add_act(self,act):
+        &#34;&#34;&#34; adds an act to the story
+
+        Parameters
+        ---------- 
+            act (Act): act to add to the story
+
+        &#34;&#34;&#34;
+        self.acts.append(act)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Story
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name}
+    
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Story
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Story&#39;,attrib=self.get_attributes())
+        element.append(self.parameter.get_element())
+        if not self.acts:
+            raise ValueError(&#39;no acts added to the story&#39;)
+        for a in self.acts:
+            element.append(a.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.storyboard.Story.add_act"><code class="name flex">
+<span>def <span class="ident">add_act</span></span>(<span>self, act)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds an act to the story</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>act (Act): act to add to the story
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_act(self,act):
+    &#34;&#34;&#34; adds an act to the story
+
+    Parameters
+    ---------- 
+        act (Act): act to add to the story
+
+    &#34;&#34;&#34;
+    self.acts.append(act)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.Story.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the Story</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the Story
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:self.name}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.Story.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Story</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Story
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Story&#39;,attrib=self.get_attributes())
+    element.append(self.parameter.get_element())
+    if not self.acts:
+        raise ValueError(&#39;no acts added to the story&#39;)
+    for a in self.acts:
+        element.append(a.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.storyboard.StoryBoard"><code class="flex name class">
+<span>class <span class="ident">StoryBoard</span></span>
+<span>(</span><span>init, stoptrigger=&lt;pyoscx.triggers.EmptyTrigger object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The StoryBoard class creates the storyboard of OpenScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>init (Init): the init part of the storyboard
+
+stoptrigger (Valuetrigger, Entitytrigger or EmptyTrigger): 
+    the stoptrigger of the storyboard (optional)
+    Default (EmptyTrigger)
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>init (Init): the init of the storyboard
+
+stoptrigger (Valuetrigger, Entitytrigger or EmptyTrigger): 
+    the stoptrigger
+
+stories (list of Story): all stories of the scenario
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_story (story)
+    adds a story to the storyboard
+
+get_element()
+    Returns the full ElementTree of the class
+</code></pre>
+<p>initalizes the storyboard</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>init (Init): the init part of the storyboard
+
+stoptrigger (Valuetrigger, Entitytrigger or EmptyTrigger): 
+    the stoptrigger of the storyboard (optional)
+    Default (EmptyTrigger)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class StoryBoard():
+    &#34;&#34;&#34; The StoryBoard class creates the storyboard of OpenScenario
+        
+        Parameters
+        ----------
+            init (Init): the init part of the storyboard
+
+            stoptrigger (Valuetrigger, Entitytrigger or EmptyTrigger): 
+                the stoptrigger of the storyboard (optional)
+                Default (EmptyTrigger) 
+
+        Attributes
+        ----------
+
+            init (Init): the init of the storyboard
+
+            stoptrigger (Valuetrigger, Entitytrigger or EmptyTrigger): 
+                the stoptrigger
+
+            stories (list of Story): all stories of the scenario
+
+        Methods
+        -------
+            add_story (story)
+                adds a story to the storyboard
+
+            get_element()
+                Returns the full ElementTree of the class
+
+
+    &#34;&#34;&#34;
+    def __init__(self,init,stoptrigger=EmptyTrigger(&#39;stop&#39;)):
+        &#34;&#34;&#34; initalizes the storyboard
+
+        Parameters
+        ----------
+            init (Init): the init part of the storyboard
+
+            stoptrigger (Valuetrigger, Entitytrigger or EmptyTrigger): 
+                the stoptrigger of the storyboard (optional)
+                Default (EmptyTrigger) 
+
+        &#34;&#34;&#34;
+        self.init = init
+        self.stoptrigger = stoptrigger
+        self.stories = []
+
+    def add_story(self,story):
+        &#34;&#34;&#34; adds a story to the storyboard
+
+        Parameters
+        ----------
+            story (Story): the story to be added 
+
+        &#34;&#34;&#34;
+        self.stories.append(story)
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Storyboard
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Storyboard&#39;)
+        element.append(self.init.get_element())
+        if not self.stories:
+            raise ValueError(&#39;no stories available for storyboard&#39;)
+        
+        for story in self.stories:
+            element.append(story.get_element())
+        element.append(self.stoptrigger.get_element())
+
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.storyboard.StoryBoard.add_story"><code class="name flex">
+<span>def <span class="ident">add_story</span></span>(<span>self, story)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a story to the storyboard</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>story (Story): the story to be added
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_story(self,story):
+    &#34;&#34;&#34; adds a story to the storyboard
+
+    Parameters
+    ----------
+        story (Story): the story to be added 
+
+    &#34;&#34;&#34;
+    self.stories.append(story)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.StoryBoard.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Storyboard</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Storyboard
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Storyboard&#39;)
+    element.append(self.init.get_element())
+    if not self.stories:
+        raise ValueError(&#39;no stories available for storyboard&#39;)
+    
+    for story in self.stories:
+        element.append(story.get_element())
+    element.append(self.stoptrigger.get_element())
+
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyoscx" href="index.html">pyoscx</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyoscx.storyboard.Act" href="#pyoscx.storyboard.Act">Act</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.storyboard.Act.add_maneuver_group" href="#pyoscx.storyboard.Act.add_maneuver_group">add_maneuver_group</a></code></li>
+<li><code><a title="pyoscx.storyboard.Act.get_attributes" href="#pyoscx.storyboard.Act.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.storyboard.Act.get_element" href="#pyoscx.storyboard.Act.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.storyboard.Event" href="#pyoscx.storyboard.Event">Event</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.storyboard.Event.add_action" href="#pyoscx.storyboard.Event.add_action">add_action</a></code></li>
+<li><code><a title="pyoscx.storyboard.Event.add_trigger" href="#pyoscx.storyboard.Event.add_trigger">add_trigger</a></code></li>
+<li><code><a title="pyoscx.storyboard.Event.get_attributes" href="#pyoscx.storyboard.Event.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.storyboard.Event.get_element" href="#pyoscx.storyboard.Event.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.storyboard.Init" href="#pyoscx.storyboard.Init">Init</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.storyboard.Init.add_init_action" href="#pyoscx.storyboard.Init.add_init_action">add_init_action</a></code></li>
+<li><code><a title="pyoscx.storyboard.Init.get_element" href="#pyoscx.storyboard.Init.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.storyboard.Maneuver" href="#pyoscx.storyboard.Maneuver">Maneuver</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.storyboard.Maneuver.add_event" href="#pyoscx.storyboard.Maneuver.add_event">add_event</a></code></li>
+<li><code><a title="pyoscx.storyboard.Maneuver.append_to_catalog" href="#pyoscx.storyboard.Maneuver.append_to_catalog">append_to_catalog</a></code></li>
+<li><code><a title="pyoscx.storyboard.Maneuver.dump_to_catalog" href="#pyoscx.storyboard.Maneuver.dump_to_catalog">dump_to_catalog</a></code></li>
+<li><code><a title="pyoscx.storyboard.Maneuver.get_attributes" href="#pyoscx.storyboard.Maneuver.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.storyboard.Maneuver.get_element" href="#pyoscx.storyboard.Maneuver.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.storyboard.ManeuverGroup" href="#pyoscx.storyboard.ManeuverGroup">ManeuverGroup</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.storyboard.ManeuverGroup.add_actor" href="#pyoscx.storyboard.ManeuverGroup.add_actor">add_actor</a></code></li>
+<li><code><a title="pyoscx.storyboard.ManeuverGroup.add_maneuver" href="#pyoscx.storyboard.ManeuverGroup.add_maneuver">add_maneuver</a></code></li>
+<li><code><a title="pyoscx.storyboard.ManeuverGroup.get_attributes" href="#pyoscx.storyboard.ManeuverGroup.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.storyboard.ManeuverGroup.get_element" href="#pyoscx.storyboard.ManeuverGroup.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.storyboard.Story" href="#pyoscx.storyboard.Story">Story</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.storyboard.Story.add_act" href="#pyoscx.storyboard.Story.add_act">add_act</a></code></li>
+<li><code><a title="pyoscx.storyboard.Story.get_attributes" href="#pyoscx.storyboard.Story.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.storyboard.Story.get_element" href="#pyoscx.storyboard.Story.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.storyboard.StoryBoard" href="#pyoscx.storyboard.StoryBoard">StoryBoard</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.storyboard.StoryBoard.add_story" href="#pyoscx.storyboard.StoryBoard.add_story">add_story</a></code></li>
+<li><code><a title="pyoscx.storyboard.StoryBoard.get_element" href="#pyoscx.storyboard.StoryBoard.get_element">get_element</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

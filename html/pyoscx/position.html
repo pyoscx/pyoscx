@@ -1,0 +1,2651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>pyoscx.position API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyoscx.position</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import xml.etree.ElementTree as ET
+
+from .utils import Orientation
+
+class WorldPosition():
+    &#34;&#34;&#34; the WorldPostion creates a worldposition of openScenario
+        
+        Parameters
+        ----------
+            x (float): x-coord of the entity
+
+            y (float): y-coord of the entity
+
+            z (float): z-coord of the entity
+
+            h (float): heading of the entity
+
+            p (float): pitch of the entity
+
+            r (float): roll of the entity
+
+        Attributes
+        ----------
+            x (float): x-coord of the entity
+
+            y (float): y-coord of the entity
+
+            z (float): z-coord of the entity
+
+            h (float): heading of the entity
+
+            p (float): pitch of the entity
+
+            r (float): roll of the entity
+
+        Methods
+        -------
+            get_element(elementname)
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,x=0,y=0,z=0,h=0,p=0,r=0):
+        &#34;&#34;&#34; initalizes the WorldPosition
+
+        Parameters
+        ----------
+            x (float): x-coord of the entity
+
+            y (float): y-coord of the entity
+
+            z (float): z-coord of the entity
+
+            h (float): heading of the entity
+
+            p (float): pitch of the entity
+
+            r (float): roll of the entity
+        &#34;&#34;&#34; 
+        self.x = x
+        self.y = y 
+        self.z = z
+        self.h = h
+        self.p = p
+        self.r = r
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the WorldPostion as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z),&#39;h&#39;:str(self.h),&#39;p&#39;:str(self.p),&#39;r&#39;:str(self.r)}
+
+    def get_element(self,elementname = &#39;Position&#39;):
+        &#34;&#34;&#34; returns the elementTree of the WorldPostion
+
+            Parameters
+            ----------
+                elementname (str): used if another name is needed for the position
+                    Default: Position
+        &#34;&#34;&#34;
+        element = ET.Element(elementname)
+        ET.SubElement(element,&#39;WorldPosition&#39;,attrib=self.get_attributes())
+        return element
+
+
+
+class RelativeWorldPosition():
+    &#34;&#34;&#34; the WorldRelativePosition creates a RelativePosition with the option of world as reference
+        
+        Parameters
+        ----------
+            entity (str): the entity to be relative to
+
+            dx (float): relative x-coord
+
+            dy (float): relative y-coord
+
+            dz (float): relative z-coord
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()
+        
+        Attributes
+        ----------
+            target (str): the entity to be relative to
+
+            dx (float): relative x-coord
+
+            dy (float): relative y-coord
+
+            dz (float): relative z-coord
+
+            orient (Orientation): the angular orientation of the entity
+
+
+        Methods
+        -------
+            get_element(elementname)
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__ (self,entity,dx,dy,dz,orientation = Orientation()):
+        &#34;&#34;&#34; initalizes the RelativeWorldPosition
+
+        Parameters
+        ----------
+            target (str): the entity to be relative to
+
+            dx (float): relative x-coord
+
+            dy (float): relative y-coord
+
+            dz (float): relative z-coord
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()
+
+        &#34;&#34;&#34;
+        self.target = entity
+        self.dx = dx
+        self.dy = dy
+        self.dz = dz
+        self.orient = orientation
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the RelativeWorldPosition as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;entityRef&#39;] = self.target
+        retdict[&#39;dx&#39;] = str(self.dx)
+        retdict[&#39;dy&#39;] = str(self.dy)
+        retdict[&#39;dz&#39;] = str(self.dz)
+        return retdict
+
+    def get_element(self,elementname = &#39;Position&#39;):
+        &#34;&#34;&#34; returns the elementTree of the RelativeWorldPosition
+
+            Parameters
+            ----------
+                elementname (str): used if another name is needed for the position
+                    Default: Position
+
+        &#34;&#34;&#34;
+        element = ET.Element(elementname)            
+        relpos = ET.SubElement(element,&#39;RelativeWorldPosition&#39;,attrib=self.get_attributes())
+        if self.orient.is_filled():
+            relpos.append(self.orient.get_element())
+        return element
+
+
+class RelativeObjectPosition():
+    &#34;&#34;&#34; the RelativeObjectPosition creates a RelativePosition with the option of object as reference
+        
+        Parameters
+        ----------
+            entity (str): the entity to be relative to
+
+            dx (float): relative x-coord
+
+            dy (float): relative y-coord
+
+            dz (float): relative z-coord
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()
+        
+        Attributes
+        ----------
+            target (str): the entity to be relative to
+
+            dx (float): relative x-coord
+
+            dy (float): relative y-coord
+
+            dz (float): relative z-coord
+
+            orient (Orientation): the angular orientation of the entity
+
+
+        Methods
+        -------
+            get_element(elementname)
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__ (self,entity,dx,dy,dz=None,orientation = Orientation()):
+        &#34;&#34;&#34; initalizes the RelativeObjectPosition
+
+        Parameters
+        ----------
+            target (str): the entity to be relative to
+
+            dx (float): relative x-coord
+
+            dy (float): relative y-coord
+
+            dz (float): relative z-coord
+                Default: None
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()
+
+        &#34;&#34;&#34;
+        self.target = entity
+        self.dx = dx
+        self.dy = dy
+        self.dz = dz
+        self.orient = orientation
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the RelativeObjectPosition as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;entityRef&#39;] = self.target
+        retdict[&#39;dx&#39;] = str(self.dx)
+        retdict[&#39;dy&#39;] = str(self.dy)
+        if self.dz != None:
+            retdict[&#39;dz&#39;] = str(self.dz)
+        return retdict
+
+    def get_element(self,elementname = &#39;Position&#39;):
+        &#34;&#34;&#34; returns the elementTree of the RelativeObjectPosition
+
+            Parameters
+            ----------
+                elementname (str): used if another name is needed for the position
+                    Default: Position
+                    
+        &#34;&#34;&#34;
+        element = ET.Element(elementname)              
+        relpos = ET.SubElement(element,&#39;RelativeObjectPosition&#39;,attrib=self.get_attributes())
+        if self.orient.is_filled():
+            relpos.append(self.orient.get_element())
+        return element
+
+
+
+class RoadPosition():
+    &#34;&#34;&#34;  the RoadPosition creates a RoadPosition of openScenario
+        
+        Parameters
+        ----------
+            s (float): length along road
+
+            t (float): lateral offset of center
+
+            reference_id (str): id of the road
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()
+        
+        Attributes
+        ----------
+            s (float): length along road
+
+            t (float): lateral offset of center
+
+            id (str): id of the road
+
+            orient (Orientation): the angular orientation of the entity
+                Default: Orientation()
+        
+        Methods
+        -------
+            get_element(elementname)
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,s,t,reference_id,orientation=Orientation()):
+        &#34;&#34;&#34; initalize the RoadPosition
+        
+            Parameters
+            ----------
+                s (float): length along road
+
+                t (float): lateral offset of center
+
+                reference_id (str): id of the road
+
+                orientation (Orientation): the angular orientation of the entity
+                    Default: Orientation()
+
+        &#34;&#34;&#34;
+        self.s = s
+        self.t = t
+        self.id = reference_id
+        self.orient = orientation
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the RoadPosition as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;roadId&#39;] = self.id
+        retdict[&#39;ds&#39;] = str(self.s)
+        retdict[&#39;dt&#39;] = str(self.t)                
+        return retdict
+    
+    def get_element(self,elementname = &#39;Position&#39;):
+        &#34;&#34;&#34; returns the elementTree of the RoadPosition
+
+            Parameters
+            ----------
+                elementname (str): used if another name is needed for the position
+                    Default: Position
+                    
+        &#34;&#34;&#34;
+        element = ET.Element(elementname)
+        ET.SubElement(element,&#39;RoadPosition&#39;,attrib=self.get_attributes())
+        if self.orient.is_filled():
+            element.append(self.orient.get_element())
+        return element
+
+
+class RelativeRoadPosition():
+    &#34;&#34;&#34;  the RelativeRoadPosition creates a RelativeRoadPosition of openScenario
+        
+        Parameters
+        ----------
+            s (float): length along road
+
+            t (float): lateral offset of center
+
+            entity (str): id of the entity
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()
+        
+        Attributes
+        ----------
+            s (float): length along road
+
+            t (float): lateral offset of center
+
+            target (str): id of the entity
+
+            orient (Orientation): the angular orientation of the entity
+                Default: Orientation()
+        
+        Methods
+        -------
+            get_element(elementname)
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,s,t,entity,orientation=Orientation()):
+        &#34;&#34;&#34; initalize the RoadPosition
+        
+            Parameters
+            ----------
+                s (float): length along road
+
+                t (float): lateral offset of center
+
+                entity (str): id of the entity
+
+                orientation (Orientation): the angular orientation of the entity
+                    Default: Orientation()
+
+        &#34;&#34;&#34;
+        self.s = s
+        self.t = t
+        self.target = entity
+        self.orient = orientation
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the RelativeRoadPosition as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;entityRef&#39;] = self.target
+        retdict[&#39;s&#39;] = str(self.s)
+        retdict[&#39;t&#39;] = str(self.t)
+        return retdict
+    
+    def get_element(self,elementname = &#39;Position&#39;):
+        &#34;&#34;&#34; returns the elementTree of the RelativeRoadPosition
+
+            Parameters
+            ----------
+                elementname (str): used if another name is needed for the position
+                    Default: Position
+                    
+        &#34;&#34;&#34;
+        element = ET.Element(elementname)    
+        ET.SubElement(element,&#39;RelativeRoadPosition&#39;,attrib=self.get_attributes())
+        if self.orient.is_filled():
+            element.append(self.orient.get_element())
+        return element
+
+class LanePosition():
+    &#34;&#34;&#34; the LanePosition creates a LanePosition of openScenario
+        
+        Parameters
+        ----------
+            s (float): length along road
+
+            offset (float): offset from center of lane
+
+            road_id (int): id of the road
+
+            lane_id (int): lane of the road
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()    
+
+        Attributes
+        ----------
+            s (float): length along road
+
+            offset (float): offset from center of lane
+
+            lane_id (int): lane of the road
+
+            road_id (int): id of the road
+
+            orient (Orientation): the angular orientation of the entity
+                Default: Orientation()
+
+        Methods
+        -------
+            get_element(elementname)
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,s,offset,lane_id,road_id,orientation=Orientation()):
+        &#34;&#34;&#34; initalizes the LanePosition
+        
+        Parameters
+        ----------
+            s (float): length along road
+
+            offset (float): offset from center of lane
+
+            road_id (int): id of the road
+
+            lane_id (int): lane of the road
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()  
+        
+        &#34;&#34;&#34; 
+        self.s = s
+        self.lane_id = lane_id
+        self.offset = offset
+        self.road_id = road_id
+        self.orient = orientation
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the LanePosition as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;roadId&#39;] = str(self.road_id)
+        retdict[&#39;laneId&#39;] = str(self.lane_id)
+        retdict[&#39;s&#39;] = str(self.s)
+        retdict[&#39;offset&#39;] = str(self.offset)
+                   
+        return retdict
+    
+    def get_element(self,elementname = &#39;Position&#39;):
+        &#34;&#34;&#34; returns the elementTree of the LanePosition
+
+            Parameters
+            ----------
+                elementname (str): used if another name is needed for the position
+                    Default: Position
+                    
+        &#34;&#34;&#34;
+        element = ET.Element(elementname)    
+        ET.SubElement(element,&#39;LanePosition&#39;,attrib=self.get_attributes())
+        if self.orient.is_filled():
+            element.append(self.orient.get_element())
+        return element
+
+
+class RelativeLanePosition():
+    &#34;&#34;&#34; the RelativeLanePosition creates a RelativeLanePosition of openScenario
+        
+        Parameters
+        ----------
+            s (float): length along road
+
+            offset (float): offset from center of lane
+
+            entity (str): id of the entity
+
+            lane_id (str): lane of the road
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()    
+
+        Attributes
+        ----------
+            s (float): length along road
+
+            offset (float): offset from center of lane
+
+            road_id (str): id of the road
+
+            lane_id (str): lane of the road
+
+            orient (Orientation): the angular orientation of the entity
+                Default: Orientation()
+
+        Methods
+        -------
+            get_element(elementname)
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,s,offset,lane_id,entity,orientation=Orientation()):
+        &#34;&#34;&#34; initalizes the LanePosition
+        
+        Parameters
+        ----------
+            s (float): length along road
+
+            offset (float): offset from center of lane
+
+            entity (str): id of the entity
+
+            lane_id (str): lane of the road
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()  
+        
+        &#34;&#34;&#34; 
+        self.s = s
+        self.lane_id = lane_id
+        self.offset = offset
+        self.entity = entity
+        self.orient = orientation
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the LanePosition as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;entityRef&#39;] = self.entity
+        retdict[&#39;ds&#39;] = str(self.s)
+        retdict[&#39;offset&#39;] = str(self.offset)
+        retdict[&#39;dLane&#39;] = str(self.lane_id)
+        return retdict
+    
+    def get_element(self,elementname = &#39;Position&#39;):
+        &#34;&#34;&#34; returns the elementTree of the RelativeLanePosition
+
+            Parameters
+            ----------
+                elementname (str): used if another name is needed for the position
+                    Default: Position
+                    
+        &#34;&#34;&#34;
+        element = ET.Element(elementname)    
+        ET.SubElement(element,&#39;RelativeLanePosition&#39;,attrib=self.get_attributes())
+        if self.orient.is_filled():
+            element.append(self.orient.get_element())
+        return element
+
+
+class RoutePositionOfCurrentEntity():
+    &#34;&#34;&#34; RoutePositionOfCurrentEntity creates a RoutePosition with the InRoutePosition of type PositionOfCurrentEntity
+        
+        Parameters
+        ----------
+            route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+            entity (str): reference to the entity on the route
+
+            orientation (Orientation): Oritation of the entity
+                Default: Orientation()
+
+        Attributes
+        ----------
+            route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+            entity (str): reference to the entity on the route
+
+            orientation (Orientation): Oritation of the entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,route_ref,entity,orientation = Orientation()):
+        &#34;&#34;&#34; Initalize the RoutePositionOfCurrentEntity class
+        
+            Parameters
+            ----------
+                route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+                entity (str): reference to the entity on the route
+
+                orientation (Orientation): Oritation of the entity
+                    Default: Orientation()
+        &#34;&#34;&#34;
+        self.route_ref = route_ref
+        self.entity = entity
+        self.orientation = orientation
+    
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the RoutePositionOfCurrentEntity
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;RoutePosition&#39;)
+        routeref = ET.SubElement(element,&#39;RouteRef&#39;)
+        routeref.append(self.route_ref.get_element())
+        element.append(self.orientation.get_element())
+        inroute = ET.SubElement(element,&#39;InRoutePosition&#39;)
+        ET.SubElement(inroute,&#39;PositionOfCurrentEntity&#39;,attrib={&#39;entityRef&#39;:self.entity})
+        return element
+
+
+
+class RoutePositionInRoadCoordinates():
+    &#34;&#34;&#34; RoutePositionInRoadCoordinates creates a RoutePosition with the InRoutePosition of type PositionInRoadCooardinates
+        
+        Parameters
+        ----------
+            route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+            s (double): s coordinate of the road
+
+            t (double): t coordinate of the road
+
+            orientation (Orientation): Oritation of the entity
+                Default: Orientation()
+
+        Attributes
+        ----------
+            route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+            s (double): s coordinate of the road
+
+            t (double): t coordinate of the road
+
+            orientation (Orientation): Oritation of the entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+    def __init__(self, route_ref, s, t, orientation = Orientation()):
+        &#34;&#34;&#34; Initalize the RoutePositionInRoadCoordinates class
+        
+            Parameters
+            ----------
+                route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+                s (double): s coordinate of the road
+
+                t (double): t coordinate of the road
+
+                orientation (Orientation): Oritation of the entity
+                    Default: Orientation()
+        &#34;&#34;&#34;
+        self.route_ref = route_ref
+        self.s = s
+        self.t = t
+        self.orientation = orientation
+    
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the RoutePositionInRoadCoordinates
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;RoutePosition&#39;)
+        routeref = ET.SubElement(element,&#39;RouteRef&#39;)
+        routeref.append(self.route_ref.get_element())
+        element.append(self.orientation.get_element())
+        inroute = ET.SubElement(element,&#39;InRoutePosition&#39;)
+        ET.SubElement(inroute,&#39;PositionInRoadCoordinates&#39;,attrib={&#39;pathS&#39;:str(self.s),&#39;t&#39;:str(self.t)})
+        return element
+
+
+class RoutePositionInLaneCoordinates():
+    &#34;&#34;&#34; RoutePositionInLaneCoordinates creates a RoutePosition with the InRoutePosition of type PositionInLaneCoordinates
+        
+        Parameters
+        ----------
+            route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+            s (double): s coordinate of the road
+
+            laneid (str): t coordinate of the road
+
+            offset (double): lateral offset relative to the lane
+                Default: 0
+
+            orientation (Orientation): Oritation of the entity
+                Default: Orientation()
+
+        Attributes
+        ----------
+            route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+            s (double): s coordinate of the road
+
+            laneid (str): t coordinate of the road
+
+            offset (double): lateral offset relative to the lane
+                Default: 0
+
+            orientation (Orientation): Oritation of the entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+    def __init__(self, route_ref, s, laneid, offset, orientation = Orientation()):
+        &#34;&#34;&#34; Initalize the RoutePositionInRoadCoordinates class
+        
+            Parameters
+            ----------
+                route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+                s (double): s coordinate of the road
+
+                laneid (str): t coordinate of the road
+
+                offset (double): lateral offset relative to the lane
+                    Default: 0
+
+                orientation (Orientation): Oritation of the entity
+                    Default: Orientation()
+        &#34;&#34;&#34;
+        self.route_ref = route_ref
+        self.s = s
+        self.laneid = laneid
+        self.offset = offset
+        self.orientation = orientation
+    
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the RoutePositionInRoadCoordinates
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;RoutePosition&#39;)
+        routeref = ET.SubElement(element,&#39;RouteRef&#39;)
+        routeref.append(self.route_ref.get_element())
+        element.append(self.orientation.get_element())
+        inroute = ET.SubElement(element,&#39;InRoutePosition&#39;)
+        ET.SubElement(inroute,&#39;PositionInLaneCoordinates&#39;,attrib={&#39;pathS&#39;:str(self.s),&#39;laneId&#39;:self.laneid,&#39;laneOffset&#39;:str(self.offset)})
+        return element</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyoscx.position.LanePosition"><code class="flex name class">
+<span>class <span class="ident">LanePosition</span></span>
+<span>(</span><span>s, offset, lane_id, road_id, orientation=&lt;pyoscx.utils.Orientation object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the LanePosition creates a LanePosition of openScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>s (float): length along road
+
+offset (float): offset from center of lane
+
+road_id (int): id of the road
+
+lane_id (int): lane of the road
+
+orientation (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>s (float): length along road
+
+offset (float): offset from center of lane
+
+lane_id (int): lane of the road
+
+road_id (int): id of the road
+
+orient (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element(elementname)
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalizes the LanePosition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>s (float): length along road
+
+offset (float): offset from center of lane
+
+road_id (int): id of the road
+
+lane_id (int): lane of the road
+
+orientation (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LanePosition():
+    &#34;&#34;&#34; the LanePosition creates a LanePosition of openScenario
+        
+        Parameters
+        ----------
+            s (float): length along road
+
+            offset (float): offset from center of lane
+
+            road_id (int): id of the road
+
+            lane_id (int): lane of the road
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()    
+
+        Attributes
+        ----------
+            s (float): length along road
+
+            offset (float): offset from center of lane
+
+            lane_id (int): lane of the road
+
+            road_id (int): id of the road
+
+            orient (Orientation): the angular orientation of the entity
+                Default: Orientation()
+
+        Methods
+        -------
+            get_element(elementname)
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,s,offset,lane_id,road_id,orientation=Orientation()):
+        &#34;&#34;&#34; initalizes the LanePosition
+        
+        Parameters
+        ----------
+            s (float): length along road
+
+            offset (float): offset from center of lane
+
+            road_id (int): id of the road
+
+            lane_id (int): lane of the road
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()  
+        
+        &#34;&#34;&#34; 
+        self.s = s
+        self.lane_id = lane_id
+        self.offset = offset
+        self.road_id = road_id
+        self.orient = orientation
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the LanePosition as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;roadId&#39;] = str(self.road_id)
+        retdict[&#39;laneId&#39;] = str(self.lane_id)
+        retdict[&#39;s&#39;] = str(self.s)
+        retdict[&#39;offset&#39;] = str(self.offset)
+                   
+        return retdict
+    
+    def get_element(self,elementname = &#39;Position&#39;):
+        &#34;&#34;&#34; returns the elementTree of the LanePosition
+
+            Parameters
+            ----------
+                elementname (str): used if another name is needed for the position
+                    Default: Position
+                    
+        &#34;&#34;&#34;
+        element = ET.Element(elementname)    
+        ET.SubElement(element,&#39;LanePosition&#39;,attrib=self.get_attributes())
+        if self.orient.is_filled():
+            element.append(self.orient.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.position.LanePosition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the LanePosition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the LanePosition as a dict
+
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;roadId&#39;] = str(self.road_id)
+    retdict[&#39;laneId&#39;] = str(self.lane_id)
+    retdict[&#39;s&#39;] = str(self.s)
+    retdict[&#39;offset&#39;] = str(self.offset)
+               
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.position.LanePosition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self, elementname='Position')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the LanePosition</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>elementname (str): used if another name is needed for the position
+    Default: Position
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self,elementname = &#39;Position&#39;):
+    &#34;&#34;&#34; returns the elementTree of the LanePosition
+
+        Parameters
+        ----------
+            elementname (str): used if another name is needed for the position
+                Default: Position
+                
+    &#34;&#34;&#34;
+    element = ET.Element(elementname)    
+    ET.SubElement(element,&#39;LanePosition&#39;,attrib=self.get_attributes())
+    if self.orient.is_filled():
+        element.append(self.orient.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.position.RelativeLanePosition"><code class="flex name class">
+<span>class <span class="ident">RelativeLanePosition</span></span>
+<span>(</span><span>s, offset, lane_id, entity, orientation=&lt;pyoscx.utils.Orientation object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the RelativeLanePosition creates a RelativeLanePosition of openScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>s (float): length along road
+
+offset (float): offset from center of lane
+
+entity (str): id of the entity
+
+lane_id (str): lane of the road
+
+orientation (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>s (float): length along road
+
+offset (float): offset from center of lane
+
+road_id (str): id of the road
+
+lane_id (str): lane of the road
+
+orient (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element(elementname)
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalizes the LanePosition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>s (float): length along road
+
+offset (float): offset from center of lane
+
+entity (str): id of the entity
+
+lane_id (str): lane of the road
+
+orientation (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RelativeLanePosition():
+    &#34;&#34;&#34; the RelativeLanePosition creates a RelativeLanePosition of openScenario
+        
+        Parameters
+        ----------
+            s (float): length along road
+
+            offset (float): offset from center of lane
+
+            entity (str): id of the entity
+
+            lane_id (str): lane of the road
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()    
+
+        Attributes
+        ----------
+            s (float): length along road
+
+            offset (float): offset from center of lane
+
+            road_id (str): id of the road
+
+            lane_id (str): lane of the road
+
+            orient (Orientation): the angular orientation of the entity
+                Default: Orientation()
+
+        Methods
+        -------
+            get_element(elementname)
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,s,offset,lane_id,entity,orientation=Orientation()):
+        &#34;&#34;&#34; initalizes the LanePosition
+        
+        Parameters
+        ----------
+            s (float): length along road
+
+            offset (float): offset from center of lane
+
+            entity (str): id of the entity
+
+            lane_id (str): lane of the road
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()  
+        
+        &#34;&#34;&#34; 
+        self.s = s
+        self.lane_id = lane_id
+        self.offset = offset
+        self.entity = entity
+        self.orient = orientation
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the LanePosition as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;entityRef&#39;] = self.entity
+        retdict[&#39;ds&#39;] = str(self.s)
+        retdict[&#39;offset&#39;] = str(self.offset)
+        retdict[&#39;dLane&#39;] = str(self.lane_id)
+        return retdict
+    
+    def get_element(self,elementname = &#39;Position&#39;):
+        &#34;&#34;&#34; returns the elementTree of the RelativeLanePosition
+
+            Parameters
+            ----------
+                elementname (str): used if another name is needed for the position
+                    Default: Position
+                    
+        &#34;&#34;&#34;
+        element = ET.Element(elementname)    
+        ET.SubElement(element,&#39;RelativeLanePosition&#39;,attrib=self.get_attributes())
+        if self.orient.is_filled():
+            element.append(self.orient.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.position.RelativeLanePosition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the LanePosition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the LanePosition as a dict
+
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;entityRef&#39;] = self.entity
+    retdict[&#39;ds&#39;] = str(self.s)
+    retdict[&#39;offset&#39;] = str(self.offset)
+    retdict[&#39;dLane&#39;] = str(self.lane_id)
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.position.RelativeLanePosition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self, elementname='Position')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the RelativeLanePosition</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>elementname (str): used if another name is needed for the position
+    Default: Position
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self,elementname = &#39;Position&#39;):
+    &#34;&#34;&#34; returns the elementTree of the RelativeLanePosition
+
+        Parameters
+        ----------
+            elementname (str): used if another name is needed for the position
+                Default: Position
+                
+    &#34;&#34;&#34;
+    element = ET.Element(elementname)    
+    ET.SubElement(element,&#39;RelativeLanePosition&#39;,attrib=self.get_attributes())
+    if self.orient.is_filled():
+        element.append(self.orient.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.position.RelativeObjectPosition"><code class="flex name class">
+<span>class <span class="ident">RelativeObjectPosition</span></span>
+<span>(</span><span>entity, dx, dy, dz=None, orientation=&lt;pyoscx.utils.Orientation object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the RelativeObjectPosition creates a RelativePosition with the option of object as reference</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>entity (str): the entity to be relative to
+
+dx (float): relative x-coord
+
+dy (float): relative y-coord
+
+dz (float): relative z-coord
+
+orientation (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>target (str): the entity to be relative to
+
+dx (float): relative x-coord
+
+dy (float): relative y-coord
+
+dz (float): relative z-coord
+
+orient (Orientation): the angular orientation of the entity
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element(elementname)
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalizes the RelativeObjectPosition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>target (str): the entity to be relative to
+
+dx (float): relative x-coord
+
+dy (float): relative y-coord
+
+dz (float): relative z-coord
+    Default: None
+
+orientation (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RelativeObjectPosition():
+    &#34;&#34;&#34; the RelativeObjectPosition creates a RelativePosition with the option of object as reference
+        
+        Parameters
+        ----------
+            entity (str): the entity to be relative to
+
+            dx (float): relative x-coord
+
+            dy (float): relative y-coord
+
+            dz (float): relative z-coord
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()
+        
+        Attributes
+        ----------
+            target (str): the entity to be relative to
+
+            dx (float): relative x-coord
+
+            dy (float): relative y-coord
+
+            dz (float): relative z-coord
+
+            orient (Orientation): the angular orientation of the entity
+
+
+        Methods
+        -------
+            get_element(elementname)
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__ (self,entity,dx,dy,dz=None,orientation = Orientation()):
+        &#34;&#34;&#34; initalizes the RelativeObjectPosition
+
+        Parameters
+        ----------
+            target (str): the entity to be relative to
+
+            dx (float): relative x-coord
+
+            dy (float): relative y-coord
+
+            dz (float): relative z-coord
+                Default: None
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()
+
+        &#34;&#34;&#34;
+        self.target = entity
+        self.dx = dx
+        self.dy = dy
+        self.dz = dz
+        self.orient = orientation
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the RelativeObjectPosition as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;entityRef&#39;] = self.target
+        retdict[&#39;dx&#39;] = str(self.dx)
+        retdict[&#39;dy&#39;] = str(self.dy)
+        if self.dz != None:
+            retdict[&#39;dz&#39;] = str(self.dz)
+        return retdict
+
+    def get_element(self,elementname = &#39;Position&#39;):
+        &#34;&#34;&#34; returns the elementTree of the RelativeObjectPosition
+
+            Parameters
+            ----------
+                elementname (str): used if another name is needed for the position
+                    Default: Position
+                    
+        &#34;&#34;&#34;
+        element = ET.Element(elementname)              
+        relpos = ET.SubElement(element,&#39;RelativeObjectPosition&#39;,attrib=self.get_attributes())
+        if self.orient.is_filled():
+            relpos.append(self.orient.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.position.RelativeObjectPosition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the RelativeObjectPosition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the RelativeObjectPosition as a dict
+
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;entityRef&#39;] = self.target
+    retdict[&#39;dx&#39;] = str(self.dx)
+    retdict[&#39;dy&#39;] = str(self.dy)
+    if self.dz != None:
+        retdict[&#39;dz&#39;] = str(self.dz)
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.position.RelativeObjectPosition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self, elementname='Position')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the RelativeObjectPosition</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>elementname (str): used if another name is needed for the position
+    Default: Position
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self,elementname = &#39;Position&#39;):
+    &#34;&#34;&#34; returns the elementTree of the RelativeObjectPosition
+
+        Parameters
+        ----------
+            elementname (str): used if another name is needed for the position
+                Default: Position
+                
+    &#34;&#34;&#34;
+    element = ET.Element(elementname)              
+    relpos = ET.SubElement(element,&#39;RelativeObjectPosition&#39;,attrib=self.get_attributes())
+    if self.orient.is_filled():
+        relpos.append(self.orient.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.position.RelativeRoadPosition"><code class="flex name class">
+<span>class <span class="ident">RelativeRoadPosition</span></span>
+<span>(</span><span>s, t, entity, orientation=&lt;pyoscx.utils.Orientation object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the RelativeRoadPosition creates a RelativeRoadPosition of openScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>s (float): length along road
+
+t (float): lateral offset of center
+
+entity (str): id of the entity
+
+orientation (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>s (float): length along road
+
+t (float): lateral offset of center
+
+target (str): id of the entity
+
+orient (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element(elementname)
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the RoadPosition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>s (float): length along road
+
+t (float): lateral offset of center
+
+entity (str): id of the entity
+
+orientation (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RelativeRoadPosition():
+    &#34;&#34;&#34;  the RelativeRoadPosition creates a RelativeRoadPosition of openScenario
+        
+        Parameters
+        ----------
+            s (float): length along road
+
+            t (float): lateral offset of center
+
+            entity (str): id of the entity
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()
+        
+        Attributes
+        ----------
+            s (float): length along road
+
+            t (float): lateral offset of center
+
+            target (str): id of the entity
+
+            orient (Orientation): the angular orientation of the entity
+                Default: Orientation()
+        
+        Methods
+        -------
+            get_element(elementname)
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,s,t,entity,orientation=Orientation()):
+        &#34;&#34;&#34; initalize the RoadPosition
+        
+            Parameters
+            ----------
+                s (float): length along road
+
+                t (float): lateral offset of center
+
+                entity (str): id of the entity
+
+                orientation (Orientation): the angular orientation of the entity
+                    Default: Orientation()
+
+        &#34;&#34;&#34;
+        self.s = s
+        self.t = t
+        self.target = entity
+        self.orient = orientation
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the RelativeRoadPosition as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;entityRef&#39;] = self.target
+        retdict[&#39;s&#39;] = str(self.s)
+        retdict[&#39;t&#39;] = str(self.t)
+        return retdict
+    
+    def get_element(self,elementname = &#39;Position&#39;):
+        &#34;&#34;&#34; returns the elementTree of the RelativeRoadPosition
+
+            Parameters
+            ----------
+                elementname (str): used if another name is needed for the position
+                    Default: Position
+                    
+        &#34;&#34;&#34;
+        element = ET.Element(elementname)    
+        ET.SubElement(element,&#39;RelativeRoadPosition&#39;,attrib=self.get_attributes())
+        if self.orient.is_filled():
+            element.append(self.orient.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.position.RelativeRoadPosition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the RelativeRoadPosition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the RelativeRoadPosition as a dict
+
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;entityRef&#39;] = self.target
+    retdict[&#39;s&#39;] = str(self.s)
+    retdict[&#39;t&#39;] = str(self.t)
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.position.RelativeRoadPosition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self, elementname='Position')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the RelativeRoadPosition</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>elementname (str): used if another name is needed for the position
+    Default: Position
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self,elementname = &#39;Position&#39;):
+    &#34;&#34;&#34; returns the elementTree of the RelativeRoadPosition
+
+        Parameters
+        ----------
+            elementname (str): used if another name is needed for the position
+                Default: Position
+                
+    &#34;&#34;&#34;
+    element = ET.Element(elementname)    
+    ET.SubElement(element,&#39;RelativeRoadPosition&#39;,attrib=self.get_attributes())
+    if self.orient.is_filled():
+        element.append(self.orient.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.position.RelativeWorldPosition"><code class="flex name class">
+<span>class <span class="ident">RelativeWorldPosition</span></span>
+<span>(</span><span>entity, dx, dy, dz, orientation=&lt;pyoscx.utils.Orientation object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the WorldRelativePosition creates a RelativePosition with the option of world as reference</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>entity (str): the entity to be relative to
+
+dx (float): relative x-coord
+
+dy (float): relative y-coord
+
+dz (float): relative z-coord
+
+orientation (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>target (str): the entity to be relative to
+
+dx (float): relative x-coord
+
+dy (float): relative y-coord
+
+dz (float): relative z-coord
+
+orient (Orientation): the angular orientation of the entity
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element(elementname)
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalizes the RelativeWorldPosition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>target (str): the entity to be relative to
+
+dx (float): relative x-coord
+
+dy (float): relative y-coord
+
+dz (float): relative z-coord
+
+orientation (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RelativeWorldPosition():
+    &#34;&#34;&#34; the WorldRelativePosition creates a RelativePosition with the option of world as reference
+        
+        Parameters
+        ----------
+            entity (str): the entity to be relative to
+
+            dx (float): relative x-coord
+
+            dy (float): relative y-coord
+
+            dz (float): relative z-coord
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()
+        
+        Attributes
+        ----------
+            target (str): the entity to be relative to
+
+            dx (float): relative x-coord
+
+            dy (float): relative y-coord
+
+            dz (float): relative z-coord
+
+            orient (Orientation): the angular orientation of the entity
+
+
+        Methods
+        -------
+            get_element(elementname)
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__ (self,entity,dx,dy,dz,orientation = Orientation()):
+        &#34;&#34;&#34; initalizes the RelativeWorldPosition
+
+        Parameters
+        ----------
+            target (str): the entity to be relative to
+
+            dx (float): relative x-coord
+
+            dy (float): relative y-coord
+
+            dz (float): relative z-coord
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()
+
+        &#34;&#34;&#34;
+        self.target = entity
+        self.dx = dx
+        self.dy = dy
+        self.dz = dz
+        self.orient = orientation
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the RelativeWorldPosition as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;entityRef&#39;] = self.target
+        retdict[&#39;dx&#39;] = str(self.dx)
+        retdict[&#39;dy&#39;] = str(self.dy)
+        retdict[&#39;dz&#39;] = str(self.dz)
+        return retdict
+
+    def get_element(self,elementname = &#39;Position&#39;):
+        &#34;&#34;&#34; returns the elementTree of the RelativeWorldPosition
+
+            Parameters
+            ----------
+                elementname (str): used if another name is needed for the position
+                    Default: Position
+
+        &#34;&#34;&#34;
+        element = ET.Element(elementname)            
+        relpos = ET.SubElement(element,&#39;RelativeWorldPosition&#39;,attrib=self.get_attributes())
+        if self.orient.is_filled():
+            relpos.append(self.orient.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.position.RelativeWorldPosition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the RelativeWorldPosition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the RelativeWorldPosition as a dict
+
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;entityRef&#39;] = self.target
+    retdict[&#39;dx&#39;] = str(self.dx)
+    retdict[&#39;dy&#39;] = str(self.dy)
+    retdict[&#39;dz&#39;] = str(self.dz)
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.position.RelativeWorldPosition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self, elementname='Position')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the RelativeWorldPosition</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>elementname (str): used if another name is needed for the position
+    Default: Position
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self,elementname = &#39;Position&#39;):
+    &#34;&#34;&#34; returns the elementTree of the RelativeWorldPosition
+
+        Parameters
+        ----------
+            elementname (str): used if another name is needed for the position
+                Default: Position
+
+    &#34;&#34;&#34;
+    element = ET.Element(elementname)            
+    relpos = ET.SubElement(element,&#39;RelativeWorldPosition&#39;,attrib=self.get_attributes())
+    if self.orient.is_filled():
+        relpos.append(self.orient.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.position.RoadPosition"><code class="flex name class">
+<span>class <span class="ident">RoadPosition</span></span>
+<span>(</span><span>s, t, reference_id, orientation=&lt;pyoscx.utils.Orientation object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the RoadPosition creates a RoadPosition of openScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>s (float): length along road
+
+t (float): lateral offset of center
+
+reference_id (str): id of the road
+
+orientation (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>s (float): length along road
+
+t (float): lateral offset of center
+
+id (str): id of the road
+
+orient (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element(elementname)
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the RoadPosition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>s (float): length along road
+
+t (float): lateral offset of center
+
+reference_id (str): id of the road
+
+orientation (Orientation): the angular orientation of the entity
+    Default: Orientation()
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RoadPosition():
+    &#34;&#34;&#34;  the RoadPosition creates a RoadPosition of openScenario
+        
+        Parameters
+        ----------
+            s (float): length along road
+
+            t (float): lateral offset of center
+
+            reference_id (str): id of the road
+
+            orientation (Orientation): the angular orientation of the entity
+                Default: Orientation()
+        
+        Attributes
+        ----------
+            s (float): length along road
+
+            t (float): lateral offset of center
+
+            id (str): id of the road
+
+            orient (Orientation): the angular orientation of the entity
+                Default: Orientation()
+        
+        Methods
+        -------
+            get_element(elementname)
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,s,t,reference_id,orientation=Orientation()):
+        &#34;&#34;&#34; initalize the RoadPosition
+        
+            Parameters
+            ----------
+                s (float): length along road
+
+                t (float): lateral offset of center
+
+                reference_id (str): id of the road
+
+                orientation (Orientation): the angular orientation of the entity
+                    Default: Orientation()
+
+        &#34;&#34;&#34;
+        self.s = s
+        self.t = t
+        self.id = reference_id
+        self.orient = orientation
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the RoadPosition as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;roadId&#39;] = self.id
+        retdict[&#39;ds&#39;] = str(self.s)
+        retdict[&#39;dt&#39;] = str(self.t)                
+        return retdict
+    
+    def get_element(self,elementname = &#39;Position&#39;):
+        &#34;&#34;&#34; returns the elementTree of the RoadPosition
+
+            Parameters
+            ----------
+                elementname (str): used if another name is needed for the position
+                    Default: Position
+                    
+        &#34;&#34;&#34;
+        element = ET.Element(elementname)
+        ET.SubElement(element,&#39;RoadPosition&#39;,attrib=self.get_attributes())
+        if self.orient.is_filled():
+            element.append(self.orient.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.position.RoadPosition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the RoadPosition as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the RoadPosition as a dict
+
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;roadId&#39;] = self.id
+    retdict[&#39;ds&#39;] = str(self.s)
+    retdict[&#39;dt&#39;] = str(self.t)                
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.position.RoadPosition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self, elementname='Position')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the RoadPosition</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>elementname (str): used if another name is needed for the position
+    Default: Position
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self,elementname = &#39;Position&#39;):
+    &#34;&#34;&#34; returns the elementTree of the RoadPosition
+
+        Parameters
+        ----------
+            elementname (str): used if another name is needed for the position
+                Default: Position
+                
+    &#34;&#34;&#34;
+    element = ET.Element(elementname)
+    ET.SubElement(element,&#39;RoadPosition&#39;,attrib=self.get_attributes())
+    if self.orient.is_filled():
+        element.append(self.orient.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.position.RoutePositionInLaneCoordinates"><code class="flex name class">
+<span>class <span class="ident">RoutePositionInLaneCoordinates</span></span>
+<span>(</span><span>route_ref, s, laneid, offset, orientation=&lt;pyoscx.utils.Orientation object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>RoutePositionInLaneCoordinates creates a RoutePosition with the InRoutePosition of type PositionInLaneCoordinates</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+s (double): s coordinate of the road
+
+laneid (str): t coordinate of the road
+
+offset (double): lateral offset relative to the lane
+    Default: 0
+
+orientation (Orientation): Oritation of the entity
+    Default: Orientation()
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+s (double): s coordinate of the road
+
+laneid (str): t coordinate of the road
+
+offset (double): lateral offset relative to the lane
+    Default: 0
+
+orientation (Orientation): Oritation of the entity
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+</code></pre>
+<p>Initalize the RoutePositionInRoadCoordinates class</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+s (double): s coordinate of the road
+
+laneid (str): t coordinate of the road
+
+offset (double): lateral offset relative to the lane
+    Default: 0
+
+orientation (Orientation): Oritation of the entity
+    Default: Orientation()
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RoutePositionInLaneCoordinates():
+    &#34;&#34;&#34; RoutePositionInLaneCoordinates creates a RoutePosition with the InRoutePosition of type PositionInLaneCoordinates
+        
+        Parameters
+        ----------
+            route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+            s (double): s coordinate of the road
+
+            laneid (str): t coordinate of the road
+
+            offset (double): lateral offset relative to the lane
+                Default: 0
+
+            orientation (Orientation): Oritation of the entity
+                Default: Orientation()
+
+        Attributes
+        ----------
+            route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+            s (double): s coordinate of the road
+
+            laneid (str): t coordinate of the road
+
+            offset (double): lateral offset relative to the lane
+                Default: 0
+
+            orientation (Orientation): Oritation of the entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+    def __init__(self, route_ref, s, laneid, offset, orientation = Orientation()):
+        &#34;&#34;&#34; Initalize the RoutePositionInRoadCoordinates class
+        
+            Parameters
+            ----------
+                route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+                s (double): s coordinate of the road
+
+                laneid (str): t coordinate of the road
+
+                offset (double): lateral offset relative to the lane
+                    Default: 0
+
+                orientation (Orientation): Oritation of the entity
+                    Default: Orientation()
+        &#34;&#34;&#34;
+        self.route_ref = route_ref
+        self.s = s
+        self.laneid = laneid
+        self.offset = offset
+        self.orientation = orientation
+    
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the RoutePositionInRoadCoordinates
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;RoutePosition&#39;)
+        routeref = ET.SubElement(element,&#39;RouteRef&#39;)
+        routeref.append(self.route_ref.get_element())
+        element.append(self.orientation.get_element())
+        inroute = ET.SubElement(element,&#39;InRoutePosition&#39;)
+        ET.SubElement(inroute,&#39;PositionInLaneCoordinates&#39;,attrib={&#39;pathS&#39;:str(self.s),&#39;laneId&#39;:self.laneid,&#39;laneOffset&#39;:str(self.offset)})
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.position.RoutePositionInLaneCoordinates.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the RoutePositionInRoadCoordinates</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the RoutePositionInRoadCoordinates
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;RoutePosition&#39;)
+    routeref = ET.SubElement(element,&#39;RouteRef&#39;)
+    routeref.append(self.route_ref.get_element())
+    element.append(self.orientation.get_element())
+    inroute = ET.SubElement(element,&#39;InRoutePosition&#39;)
+    ET.SubElement(inroute,&#39;PositionInLaneCoordinates&#39;,attrib={&#39;pathS&#39;:str(self.s),&#39;laneId&#39;:self.laneid,&#39;laneOffset&#39;:str(self.offset)})
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.position.RoutePositionInRoadCoordinates"><code class="flex name class">
+<span>class <span class="ident">RoutePositionInRoadCoordinates</span></span>
+<span>(</span><span>route_ref, s, t, orientation=&lt;pyoscx.utils.Orientation object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>RoutePositionInRoadCoordinates creates a RoutePosition with the InRoutePosition of type PositionInRoadCooardinates</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+s (double): s coordinate of the road
+
+t (double): t coordinate of the road
+
+orientation (Orientation): Oritation of the entity
+    Default: Orientation()
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+s (double): s coordinate of the road
+
+t (double): t coordinate of the road
+
+orientation (Orientation): Oritation of the entity
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+</code></pre>
+<p>Initalize the RoutePositionInRoadCoordinates class</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+s (double): s coordinate of the road
+
+t (double): t coordinate of the road
+
+orientation (Orientation): Oritation of the entity
+    Default: Orientation()
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RoutePositionInRoadCoordinates():
+    &#34;&#34;&#34; RoutePositionInRoadCoordinates creates a RoutePosition with the InRoutePosition of type PositionInRoadCooardinates
+        
+        Parameters
+        ----------
+            route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+            s (double): s coordinate of the road
+
+            t (double): t coordinate of the road
+
+            orientation (Orientation): Oritation of the entity
+                Default: Orientation()
+
+        Attributes
+        ----------
+            route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+            s (double): s coordinate of the road
+
+            t (double): t coordinate of the road
+
+            orientation (Orientation): Oritation of the entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+    def __init__(self, route_ref, s, t, orientation = Orientation()):
+        &#34;&#34;&#34; Initalize the RoutePositionInRoadCoordinates class
+        
+            Parameters
+            ----------
+                route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+                s (double): s coordinate of the road
+
+                t (double): t coordinate of the road
+
+                orientation (Orientation): Oritation of the entity
+                    Default: Orientation()
+        &#34;&#34;&#34;
+        self.route_ref = route_ref
+        self.s = s
+        self.t = t
+        self.orientation = orientation
+    
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the RoutePositionInRoadCoordinates
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;RoutePosition&#39;)
+        routeref = ET.SubElement(element,&#39;RouteRef&#39;)
+        routeref.append(self.route_ref.get_element())
+        element.append(self.orientation.get_element())
+        inroute = ET.SubElement(element,&#39;InRoutePosition&#39;)
+        ET.SubElement(inroute,&#39;PositionInRoadCoordinates&#39;,attrib={&#39;pathS&#39;:str(self.s),&#39;t&#39;:str(self.t)})
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.position.RoutePositionInRoadCoordinates.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the RoutePositionInRoadCoordinates</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the RoutePositionInRoadCoordinates
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;RoutePosition&#39;)
+    routeref = ET.SubElement(element,&#39;RouteRef&#39;)
+    routeref.append(self.route_ref.get_element())
+    element.append(self.orientation.get_element())
+    inroute = ET.SubElement(element,&#39;InRoutePosition&#39;)
+    ET.SubElement(inroute,&#39;PositionInRoadCoordinates&#39;,attrib={&#39;pathS&#39;:str(self.s),&#39;t&#39;:str(self.t)})
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.position.RoutePositionOfCurrentEntity"><code class="flex name class">
+<span>class <span class="ident">RoutePositionOfCurrentEntity</span></span>
+<span>(</span><span>route_ref, entity, orientation=&lt;pyoscx.utils.Orientation object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>RoutePositionOfCurrentEntity creates a RoutePosition with the InRoutePosition of type PositionOfCurrentEntity</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+entity (str): reference to the entity on the route
+
+orientation (Orientation): Oritation of the entity
+    Default: Orientation()
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+entity (str): reference to the entity on the route
+
+orientation (Orientation): Oritation of the entity
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+</code></pre>
+<p>Initalize the RoutePositionOfCurrentEntity class</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+entity (str): reference to the entity on the route
+
+orientation (Orientation): Oritation of the entity
+    Default: Orientation()
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RoutePositionOfCurrentEntity():
+    &#34;&#34;&#34; RoutePositionOfCurrentEntity creates a RoutePosition with the InRoutePosition of type PositionOfCurrentEntity
+        
+        Parameters
+        ----------
+            route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+            entity (str): reference to the entity on the route
+
+            orientation (Orientation): Oritation of the entity
+                Default: Orientation()
+
+        Attributes
+        ----------
+            route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+            entity (str): reference to the entity on the route
+
+            orientation (Orientation): Oritation of the entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,route_ref,entity,orientation = Orientation()):
+        &#34;&#34;&#34; Initalize the RoutePositionOfCurrentEntity class
+        
+            Parameters
+            ----------
+                route_ref (Route, or CatalogReference): Reference to the route the position is calculated from
+
+                entity (str): reference to the entity on the route
+
+                orientation (Orientation): Oritation of the entity
+                    Default: Orientation()
+        &#34;&#34;&#34;
+        self.route_ref = route_ref
+        self.entity = entity
+        self.orientation = orientation
+    
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the RoutePositionOfCurrentEntity
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;RoutePosition&#39;)
+        routeref = ET.SubElement(element,&#39;RouteRef&#39;)
+        routeref.append(self.route_ref.get_element())
+        element.append(self.orientation.get_element())
+        inroute = ET.SubElement(element,&#39;InRoutePosition&#39;)
+        ET.SubElement(inroute,&#39;PositionOfCurrentEntity&#39;,attrib={&#39;entityRef&#39;:self.entity})
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.position.RoutePositionOfCurrentEntity.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the RoutePositionOfCurrentEntity</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the RoutePositionOfCurrentEntity
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;RoutePosition&#39;)
+    routeref = ET.SubElement(element,&#39;RouteRef&#39;)
+    routeref.append(self.route_ref.get_element())
+    element.append(self.orientation.get_element())
+    inroute = ET.SubElement(element,&#39;InRoutePosition&#39;)
+    ET.SubElement(inroute,&#39;PositionOfCurrentEntity&#39;,attrib={&#39;entityRef&#39;:self.entity})
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.position.WorldPosition"><code class="flex name class">
+<span>class <span class="ident">WorldPosition</span></span>
+<span>(</span><span>x=0, y=0, z=0, h=0, p=0, r=0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the WorldPostion creates a worldposition of openScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>x (float): x-coord of the entity
+
+y (float): y-coord of the entity
+
+z (float): z-coord of the entity
+
+h (float): heading of the entity
+
+p (float): pitch of the entity
+
+r (float): roll of the entity
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>x (float): x-coord of the entity
+
+y (float): y-coord of the entity
+
+z (float): z-coord of the entity
+
+h (float): heading of the entity
+
+p (float): pitch of the entity
+
+r (float): roll of the entity
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element(elementname)
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalizes the WorldPosition</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>x (float): x-coord of the entity
+
+y (float): y-coord of the entity
+
+z (float): z-coord of the entity
+
+h (float): heading of the entity
+
+p (float): pitch of the entity
+
+r (float): roll of the entity
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class WorldPosition():
+    &#34;&#34;&#34; the WorldPostion creates a worldposition of openScenario
+        
+        Parameters
+        ----------
+            x (float): x-coord of the entity
+
+            y (float): y-coord of the entity
+
+            z (float): z-coord of the entity
+
+            h (float): heading of the entity
+
+            p (float): pitch of the entity
+
+            r (float): roll of the entity
+
+        Attributes
+        ----------
+            x (float): x-coord of the entity
+
+            y (float): y-coord of the entity
+
+            z (float): z-coord of the entity
+
+            h (float): heading of the entity
+
+            p (float): pitch of the entity
+
+            r (float): roll of the entity
+
+        Methods
+        -------
+            get_element(elementname)
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,x=0,y=0,z=0,h=0,p=0,r=0):
+        &#34;&#34;&#34; initalizes the WorldPosition
+
+        Parameters
+        ----------
+            x (float): x-coord of the entity
+
+            y (float): y-coord of the entity
+
+            z (float): z-coord of the entity
+
+            h (float): heading of the entity
+
+            p (float): pitch of the entity
+
+            r (float): roll of the entity
+        &#34;&#34;&#34; 
+        self.x = x
+        self.y = y 
+        self.z = z
+        self.h = h
+        self.p = p
+        self.r = r
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the WorldPostion as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z),&#39;h&#39;:str(self.h),&#39;p&#39;:str(self.p),&#39;r&#39;:str(self.r)}
+
+    def get_element(self,elementname = &#39;Position&#39;):
+        &#34;&#34;&#34; returns the elementTree of the WorldPostion
+
+            Parameters
+            ----------
+                elementname (str): used if another name is needed for the position
+                    Default: Position
+        &#34;&#34;&#34;
+        element = ET.Element(elementname)
+        ET.SubElement(element,&#39;WorldPosition&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.position.WorldPosition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the WorldPostion as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the WorldPostion as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z),&#39;h&#39;:str(self.h),&#39;p&#39;:str(self.p),&#39;r&#39;:str(self.r)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.position.WorldPosition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self, elementname='Position')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the WorldPostion</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>elementname (str): used if another name is needed for the position
+    Default: Position
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self,elementname = &#39;Position&#39;):
+    &#34;&#34;&#34; returns the elementTree of the WorldPostion
+
+        Parameters
+        ----------
+            elementname (str): used if another name is needed for the position
+                Default: Position
+    &#34;&#34;&#34;
+    element = ET.Element(elementname)
+    ET.SubElement(element,&#39;WorldPosition&#39;,attrib=self.get_attributes())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyoscx" href="index.html">pyoscx</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyoscx.position.LanePosition" href="#pyoscx.position.LanePosition">LanePosition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.position.LanePosition.get_attributes" href="#pyoscx.position.LanePosition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.position.LanePosition.get_element" href="#pyoscx.position.LanePosition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.position.RelativeLanePosition" href="#pyoscx.position.RelativeLanePosition">RelativeLanePosition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.position.RelativeLanePosition.get_attributes" href="#pyoscx.position.RelativeLanePosition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.position.RelativeLanePosition.get_element" href="#pyoscx.position.RelativeLanePosition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.position.RelativeObjectPosition" href="#pyoscx.position.RelativeObjectPosition">RelativeObjectPosition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.position.RelativeObjectPosition.get_attributes" href="#pyoscx.position.RelativeObjectPosition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.position.RelativeObjectPosition.get_element" href="#pyoscx.position.RelativeObjectPosition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.position.RelativeRoadPosition" href="#pyoscx.position.RelativeRoadPosition">RelativeRoadPosition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.position.RelativeRoadPosition.get_attributes" href="#pyoscx.position.RelativeRoadPosition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.position.RelativeRoadPosition.get_element" href="#pyoscx.position.RelativeRoadPosition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.position.RelativeWorldPosition" href="#pyoscx.position.RelativeWorldPosition">RelativeWorldPosition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.position.RelativeWorldPosition.get_attributes" href="#pyoscx.position.RelativeWorldPosition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.position.RelativeWorldPosition.get_element" href="#pyoscx.position.RelativeWorldPosition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.position.RoadPosition" href="#pyoscx.position.RoadPosition">RoadPosition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.position.RoadPosition.get_attributes" href="#pyoscx.position.RoadPosition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.position.RoadPosition.get_element" href="#pyoscx.position.RoadPosition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.position.RoutePositionInLaneCoordinates" href="#pyoscx.position.RoutePositionInLaneCoordinates">RoutePositionInLaneCoordinates</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.position.RoutePositionInLaneCoordinates.get_element" href="#pyoscx.position.RoutePositionInLaneCoordinates.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.position.RoutePositionInRoadCoordinates" href="#pyoscx.position.RoutePositionInRoadCoordinates">RoutePositionInRoadCoordinates</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.position.RoutePositionInRoadCoordinates.get_element" href="#pyoscx.position.RoutePositionInRoadCoordinates.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.position.RoutePositionOfCurrentEntity" href="#pyoscx.position.RoutePositionOfCurrentEntity">RoutePositionOfCurrentEntity</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.position.RoutePositionOfCurrentEntity.get_element" href="#pyoscx.position.RoutePositionOfCurrentEntity.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.position.WorldPosition" href="#pyoscx.position.WorldPosition">WorldPosition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.position.WorldPosition.get_attributes" href="#pyoscx.position.WorldPosition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.position.WorldPosition.get_element" href="#pyoscx.position.WorldPosition.get_element">get_element</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

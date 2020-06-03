@@ -1,0 +1,3123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>pyoscx.utils API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyoscx.utils</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import xml.etree.ElementTree as ET
+
+from .enumerations import ConditionEdge, ObjectType, ParameterType, Rule, ReferenceContext, DynamicsShapes, DynamicsDimension, RouteStrategy
+import datetime as dt
+
+
+class ParameterDeclarations():
+    &#34;&#34;&#34; The ParameterDeclarations class creates the ParameterDeclaration of OpenScenario
+                    
+        Attributes
+        ----------
+            parameters: list of Parameter objects
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            add_parameter(Parameter)
+                adds a Parameter to the ParameterDeclarations
+
+    &#34;&#34;&#34;
+    def __init__(self):
+        &#34;&#34;&#34; initalizes the ParameterDeclarations
+
+        &#34;&#34;&#34;
+        self.parameters = []
+
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; add_parameter adds a Parameter to the ParameterDeclarations
+
+        Parameters
+        ----------
+            parameter (Parameter): a new parameter
+
+
+        &#34;&#34;&#34;
+        self.parameters.append(parameter)
+    
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the ParameterDeclarations
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;ParameterDeclarations&#39;)
+        for p in self.parameters:
+            element.append(p.get_element())
+        return element
+
+class EntityRef():
+    &#34;&#34;&#34; EntityRef creates an EntityRef element of openscenario
+        
+        Parameters
+        ----------
+            entity (str): name of the entity
+
+        Attributes
+        ----------
+            entity (str): name of the entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,entity):
+        &#34;&#34;&#34; initalize the EntityRef
+
+            Parameters
+            ----------
+                entity (str): name of the entity
+                
+        &#34;&#34;&#34;
+        self.entity = entity
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the EntityRef as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;entityRef&#39;:self.entity}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the EntityRef
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;EntityRef&#39;,attrib=self.get_attributes())
+
+# class ObjectType():
+#     &#34;&#34;&#34; creates an objecttype of openscenario
+        
+#         Parameters
+#         ----------
+#             obj_type (ObjectType): the type of object
+            
+#         Attributes
+#         ----------
+#             obj_type (str): the typ of object
+
+#         Methods
+#         -------
+
+#             get_attributes()
+#                 Returns a dictionary of all attributes of the class
+
+#     &#34;&#34;&#34;
+#     def __init__(self,obj_type):
+#         &#34;&#34;&#34; initalize the ObjectType
+
+#             Parameters
+#             ----------
+#                 obj_type (str): the typ of object, vehicle, pedestrian or miscellaneous
+
+#         &#34;&#34;&#34;
+#         if obj_type not in ObjectType:
+#             raise ValueError(&#39;not a valid object type&#39;)
+
+#         self.obj_type = obj_type
+
+#     def get_attributes(self):
+#         &#34;&#34;&#34; returns the attributes of the Parameter as a dict
+
+#         &#34;&#34;&#34;
+#         return {&#39;value&#39;:self.obj_type.name}
+
+
+class Parameter():
+    &#34;&#34;&#34; Parameter is a declaration of a ParameterDeclaration for declarations
+        
+        Parameters
+        ----------
+            name (str): name of parameter
+
+            parameter_type (ParameterType): type of the parameter 
+
+            value (str): value of the parameter
+
+        Attributes
+        ----------
+            name (str): name of parameter
+
+            parameter_type (str): type of the parameter
+
+            value (str): value of the parameter
+
+        Methods
+        -------
+            add_parameter ???
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    
+    def __init__(self,name,parameter_type,value):
+        &#34;&#34;&#34; initalize the Parameter 
+
+            Parameters
+            ----------
+                name (str): name of parameter
+
+                parameter_type (str): type of the parameter
+
+                value (str): value of the parameter
+
+        &#34;&#34;&#34;
+        self.name = name
+        if parameter_type not in ParameterType:
+            raise ValueError(&#39;parameter_type not a valid type.&#39;)
+        self.parameter_type = parameter_type
+        self.value = value
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Parameter as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name,&#39;parameterType&#39;:self.parameter_type.name,&#39;value&#39;:str(self.value)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Parameter
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;ParameterDeclaration&#39;,attrib=self.get_attributes())
+        return element
+
+class Orientation():
+    &#34;&#34;&#34; Orientation describes the angular orientation of an entity
+        
+        Parameters
+        ----------
+            h (float): header 
+
+            p (float): pitch
+
+            r (float): roll
+
+            reference (ReferenceContext): absolute or relative
+
+        Attributes
+        ----------
+            h (float): header 
+
+            p (float): pitch
+
+            r (float): roll
+
+            reference (ReferenceContext): absolute or relative
+
+        Methods
+        -------
+            is_filled()
+                check is any orientations are set
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,h=None,p=None,r=None,reference = None):
+        &#34;&#34;&#34; initalize Orientation 
+        
+            Parameters
+            ----------
+                h (float): header 
+
+                p (float): pitch
+
+                r (float): roll
+
+                reference (ReferenceContext): absolute or relative
+        &#34;&#34;&#34;
+        self.h = h
+        self.p = p
+        self.r = r
+
+        if (reference not in ReferenceContext) and (reference != None):
+            raise ValueError(str(reference) + &#39;; is not a valid reference type.&#39;)
+        self.ref = reference
+
+    def is_filled(self):
+        &#34;&#34;&#34; is_filled check is any orientations are  set
+
+            Returns: boolean
+
+        &#34;&#34;&#34;
+        if self.h or self.p or self.r or self.ref:
+            return True
+        else:
+            return False
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the DynamicsConstrains as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        if self.h:
+            retdict[&#39;h&#39;] = str(self.h)
+
+        if self.p:
+            retdict[&#39;p&#39;] = str(self.p)
+
+        if self.r:
+            retdict[&#39;r&#39;] = str(self.r)
+
+        if self.ref:
+            retdict[&#39;type&#39;] = self.ref.name
+        
+        return retdict
+    
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the DynamicsConstrains
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;Orientation&#39;,attrib=self.get_attributes())
+
+class TransitionDynamics():
+    &#34;&#34;&#34; TransitionDynamics is used to define how the dynamics of a change
+        
+        Parameters
+        ----------
+            shape (DynamicsShapes): shape of the transition
+
+            dimension (DynamicsDimension): the dimension of the transition (rate, time or distance)
+
+            value (float): the value of the dynamics (time rate or distance)
+
+
+        Attributes
+        ----------
+            shape (DynamicsShapes): shape of the transition
+
+            dimension (DynamicsDimension): the dimension of the transition (rate, time or distance)
+
+            value (float): the value of the dynamics (time rate or distance)
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,shape,dimension,value):
+        &#34;&#34;&#34;
+            Parameters
+            ----------
+                shape (str): shape of the transition
+
+                dimension (str): the dimension of the transition (rate, time or distance)
+
+                value (float): the value of the dynamics (time rate or distance)
+
+        &#34;&#34;&#34;
+        if shape not in DynamicsShapes:
+            raise ValueError(shape + &#39;; is not a valid shape.&#39;)
+        
+        self.shape = shape
+        if dimension not in DynamicsDimension:
+            raise ValueError(dimension + &#39; is not a valid dynamics dimension&#39;)
+        self.dimension = dimension
+        self.value = value
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the DynamicsConstrains as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;dynamicsShape&#39;:self.shape.name,&#39;value&#39;:str(self.value),&#39;dynamicsDimension&#39;:self.dimension.name}
+
+    def get_element(self,name=&#39;TransitionDynamics&#39;):
+        &#34;&#34;&#34; returns the elementTree of the DynamicsConstrains
+
+        &#34;&#34;&#34;
+        return ET.Element(name,self.get_attributes())
+
+class DynamicsConstrains():
+    &#34;&#34;&#34; DynamicsConstrains is used by triggers
+        
+        Parameters
+        ----------
+            max_acceleration (float): maximum acceleration allowed
+
+            max_deceleration (float): maximum deceleration allowed
+
+            max_speed (float): maximum speed allowed
+
+        Attributes
+        ----------
+            max_acceleration (float): maximum acceleration allowed
+
+            max_deceleration (float): maximum deceleration allowed
+
+            max_speed (float): maximum speed allowed
+
+        Methods
+        -------
+            is_filled()
+                check is any constraints are set
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self, max_acceleration=None, max_deceleration=None, max_speed=None):
+        &#34;&#34;&#34; initalize DynamicsConstrains
+
+        &#34;&#34;&#34;
+
+        self.max_acceleration = max_acceleration
+        self.max_deceleration = max_deceleration
+        self.max_speed = max_speed
+
+    def is_filled(self):
+        &#34;&#34;&#34; is_filled check is any constraints are set
+
+            Returns: boolean
+
+        &#34;&#34;&#34;
+
+        if self.max_acceleration or self.max_deceleration or self.max_speed:
+            return True
+        else:
+            return False
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the DynamicsConstrains as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        if self.max_speed:
+            retdict[&#39;maxSpeed&#39;] = str(self.max_speed)
+        if self.max_deceleration:
+            retdict[&#39;maxDeceleration&#39;] = str(self.max_deceleration)
+        if self.max_acceleration:
+            retdict[&#39;maxAcceleration&#39;] = str(self.max_acceleration)
+        return retdict
+
+    def get_element(self,name = &#39;DynamicConstraints&#39;):
+        &#34;&#34;&#34; returns the elementTree of the DynamicsConstrains
+
+        &#34;&#34;&#34;
+        return ET.Element(name,attrib=self.get_attributes())
+
+
+class Route():
+    &#34;&#34;&#34; the Route class creates a route, needs atleast two waypoints to be valid
+        
+        Parameters
+        ----------
+            name (str): name of the Route
+
+            closed (boolean): if the waypoints forms a loop
+                Default: False
+
+        Attributes
+        ----------
+            name (str): name of the Route
+
+            closed (boolean): if the waypoints forms a loop
+            
+            waypoints (list of Waypoint): a list of waypoints
+
+            parameters (ParameterDeclarations)
+
+        Methods
+        -------
+            add_waypoint(waypoint)
+                adds a waypoint to the route (minimum two)
+
+            add_parameter(Parameter)
+                adds a parameter to the route
+
+            append_to_catalog(filename)
+                adds the Route to an existing catalog
+
+            dump_to_catalog(filename,name,description,author)
+                crates a new catalog with the Route
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self, name, closed=False):
+        &#34;&#34;&#34; initalize Route
+
+            Parameters
+            ----------
+                name (str): name of the Route
+
+                closed (boolean): if the waypoints forms a loop
+                    Default: False
+
+        &#34;&#34;&#34;
+        self.name = name
+        self.closed = closed
+        self.waypoints = []
+        self.parameters = ParameterDeclarations()
+
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the Controller to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; adds a parameter to the Route
+
+            Parameters
+            ----------
+                parameter (Parameter): the parameter to add
+
+        &#34;&#34;&#34;
+        self.parameters.add_parameter(parameter)
+
+    def add_waypoint(self,position,routestrategy):
+        &#34;&#34;&#34; adds a waypoint to the Route
+
+            Parameters
+            ----------
+                position (*Position): any position for the route
+
+                routestrategy (RouteStrategy): routing strategy for this waypoint
+
+        &#34;&#34;&#34;
+        self.waypoints.append(Waypoint(position,routestrategy))
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Route as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;name&#39;] = self.name
+        retdict[&#39;closed&#39;] = str(self.closed)
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Route
+
+        &#34;&#34;&#34;
+        if len(self.waypoints) &lt;2:
+            ValueError(&#39;Too few waypoints&#39;)
+        element = ET.Element(&#39;Route&#39;,attrib=self.get_attributes())
+        element.append(self.parameters.get_element())
+        for w in self.waypoints:
+            element.append(w.get_element())
+        return element
+
+class Waypoint():
+    &#34;&#34;&#34; the Route class creates a route, needs atleast two waypoints to be valid
+        
+        Parameters
+        ----------
+            position (*Position): any position for the route
+
+            routestrategy (RouteStrategy): routing strategy for this waypoint
+
+        Attributes
+        ----------
+            position (*Position): any position for the route
+
+            routestrategy (RouteStrategy): routing strategy for this waypoint
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self, position, routestrategy):
+        &#34;&#34;&#34; initalize the Waypoint
+
+            Parameters
+            ----------
+                position (*Position): any position for the route
+
+                routestrategy (RouteStrategy): routing strategy for this waypoint
+
+        &#34;&#34;&#34;
+        self.position = position
+        if routestrategy not in RouteStrategy:
+            ValueError(&#39;not a valid RouteStrategy&#39;)
+        self.routestrategy = routestrategy
+
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Waypoint as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;routeStrategy&#39;:self.routestrategy.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Waypoint
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Waypoint&#39;,attrib=self.get_attributes())
+        element.append(self.position.get_element())
+        return element
+
+
+class Trajectory():
+    &#34;&#34;&#34; the Trajectory class creates a Trajectory, 
+        
+        Parameters
+        ----------
+            name (str): name of the trajectory
+
+            closed (boolean): if the trajectory is closed at the end
+
+        Attributes
+        ----------
+            name (str): name of the trajectory
+
+            closed (boolean): if the trajectory is closed at the end
+
+            parameters (ParameterDeclaration): parameters for the trajectory
+
+            shapes (list of Polyline, Clothoid, or Nurbs): list of the different shapes building the trajectory
+
+        Methods
+        -------
+            add_shape(Polyline, Clothoid, or Nurbs):
+                adds a shape to the trajectory (only the same shape can be used)
+            
+            add_parameter(Parameter)
+                adds a parameter to the route
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self, name, closed):
+        &#34;&#34;&#34; initalize the Trajectory
+
+            Parameters
+            ----------
+            name (str): name of the trajectory
+
+            closed (boolean): if the trajectory is closed at the end
+
+        &#34;&#34;&#34;
+
+        self.name = name
+        self.closed = closed
+        self.parameters = ParameterDeclarations()
+        self.shapes = []
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the Controller to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+    def add_shape(self,shape):
+        &#34;&#34;&#34; adds a shape to the trajectory (only the same shape can be used)
+
+            Parameters
+            ----------
+            shape (Polyline, Clothoid, or Nurbs): the shape to be added to the trajectory
+
+        &#34;&#34;&#34;
+        self.shapes.append(shape)
+
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; adds a parameter to the Trajectory
+
+            Parameters
+            ----------
+                parameter (Parameter): the parameter to add
+
+        &#34;&#34;&#34;
+        self.parameters.add_parameter(parameter)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Trajectory as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;name&#39;] = self.name
+        retdict[&#39;closed&#39;] = str(self.closed)
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Trajectory
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Trajectory&#39;,attrib=self.get_attributes())
+        element.append(self.parameters.get_element())
+        shape = ET.SubElement(element,&#39;Shape&#39;)
+        for sh in self.shapes:
+            shape.append(sh.get_element())
+        return element
+
+
+class TimeReference():
+    &#34;&#34;&#34; the TimeReference class creates a TimeReference, 
+        
+        Parameters
+        ----------
+            referece_domain (ReferenceContext): absolute or relative time reference (must be combined with scale and offset)
+                Default: None
+            scale (double): scalefactor of the timeings (must be combined with referece_domain and offset)
+                Default: None
+            offset (double): offset for time values (must be combined with referece_domain and scale)
+                Default: None
+
+        Attributes
+        ----------
+            referece_domain (str): absolute or relative time reference 
+
+            scale (double): scalefactor of the timeings 
+
+            offset (double): offset for time values 
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+    &#34;&#34;&#34;
+
+    def __init__(self, referece_domain=None,scale=None,offset=None):
+        &#34;&#34;&#34; initalize the TimeReference
+
+            Parameters
+            ----------
+            name (str): name of the trajectory
+
+            closed (boolean): if the trajectory is closed at the end
+
+        &#34;&#34;&#34;
+        nones = [referece_domain == None, scale == None, offset == None]
+        if sum(nones) == 3:
+            self._only_nones = True
+        elif sum(nones) == 0:
+            self._only_nones = False
+        else:
+            ValueError(&#39;missing inputs for time reference&#39;)
+        if referece_domain not in ReferenceContext:
+            ValueError(&#39;not a valid reference domain&#39;)
+        self.referece_domain = referece_domain
+        self.scale = scale
+        self.offset = offset
+        
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TimeReference as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;domainAbsoluteRelative&#39;] = self.referece_domain.name
+        retdict[&#39;scale&#39;] = str(self.scale)
+        retdict[&#39;offset&#39;] = str(self.offset)
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TimeReference
+
+        &#34;&#34;&#34;
+
+        element = ET.Element(&#39;TimeReference&#39;)
+        if self._only_nones:
+            ET.SubElement(element,&#39;None&#39;)
+        else:
+            ET.SubElement(element,&#39;Timing&#39;,self.get_attributes())
+        
+        return element
+
+class Polyline():
+    &#34;&#34;&#34; the Polyline class creates a polyline of (minimum 2) positions
+        
+        Parameters
+        ----------
+            time (list of double): a list of timings for the positions
+
+            positions (list of positions): list of positions to create the polyline
+
+        Attributes
+        ----------
+            time (*Position): any position for the route
+
+            positions (str): routing strategy for this waypoint
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self, time, positions):
+        &#34;&#34;&#34; initalize the Polyline
+
+            Parameters
+            ----------
+                time (list of double): a list of timings for the positions
+
+                positions (list of positions): list of positions to create the polyline
+
+        &#34;&#34;&#34;
+        if len(time) &lt; 2:
+            ValueError(&#39;not enough time inputs&#39;)
+        if len(positions)&lt;2:
+            ValueError(&#39;not enough position inputs&#39;)
+        if len(time) != len(positions):
+            ValueError(&#39;time and positions are not the same lenght&#39;)
+        
+        self.positions = positions
+        self.time = time
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Polyline
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Polyline&#39;)
+        for i in range(len(self.time)):
+            vert = ET.SubElement(element,&#39;Vertex&#39;,attrib={&#39;time&#39;:str(self.time[i])})
+            vert.append(self.positions[i].get_element())
+        return element
+
+
+class FileHeader():
+    &#34;&#34;&#34; FileHeader creates the header of the OpenScenario file
+        
+        Parameters
+        ----------
+            name (str): name of the scenario 
+
+            author (str): the author of the scenario
+
+        Attributes
+        ----------
+            name (str): name of the scenario 
+
+            author (str): the author of the scenario
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of FileHeader
+
+            get_attributes()
+                Returns a dictionary of all attributes of FileHeader
+
+    &#34;&#34;&#34;
+    def __init__(self,name,author):
+        self.name = name
+        self.author = author
+        
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the FileHeader
+
+        &#34;&#34;&#34;
+        return {&#39;decription&#39;:self.name,&#39;author&#39;:self.author,&#39;revMajor&#39;:&#39;1&#39;,&#39;revMinor&#39;:&#39;0&#39;,&#39;date&#39;:str(dt.datetime.now())}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the FileHeader
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;FileHeader&#39;,attrib=self.get_attributes())
+
+        return element
+
+def merge_dicts(*dict_args):
+    &#34;&#34;&#34; Funciton to merge dicts 
+    
+    &#34;&#34;&#34;
+    retdict = {}
+    for d in dict_args:
+        retdict.update(d)
+
+    return retdict</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pyoscx.utils.merge_dicts"><code class="name flex">
+<span>def <span class="ident">merge_dicts</span></span>(<span>*dict_args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Funciton to merge dicts</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def merge_dicts(*dict_args):
+    &#34;&#34;&#34; Funciton to merge dicts 
+    
+    &#34;&#34;&#34;
+    retdict = {}
+    for d in dict_args:
+        retdict.update(d)
+
+    return retdict</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyoscx.utils.DynamicsConstrains"><code class="flex name class">
+<span>class <span class="ident">DynamicsConstrains</span></span>
+<span>(</span><span>max_acceleration=None, max_deceleration=None, max_speed=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>DynamicsConstrains is used by triggers</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>max_acceleration (float): maximum acceleration allowed
+
+max_deceleration (float): maximum deceleration allowed
+
+max_speed (float): maximum speed allowed
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>max_acceleration (float): maximum acceleration allowed
+
+max_deceleration (float): maximum deceleration allowed
+
+max_speed (float): maximum speed allowed
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>is_filled()
+    check is any constraints are set
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize DynamicsConstrains</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DynamicsConstrains():
+    &#34;&#34;&#34; DynamicsConstrains is used by triggers
+        
+        Parameters
+        ----------
+            max_acceleration (float): maximum acceleration allowed
+
+            max_deceleration (float): maximum deceleration allowed
+
+            max_speed (float): maximum speed allowed
+
+        Attributes
+        ----------
+            max_acceleration (float): maximum acceleration allowed
+
+            max_deceleration (float): maximum deceleration allowed
+
+            max_speed (float): maximum speed allowed
+
+        Methods
+        -------
+            is_filled()
+                check is any constraints are set
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self, max_acceleration=None, max_deceleration=None, max_speed=None):
+        &#34;&#34;&#34; initalize DynamicsConstrains
+
+        &#34;&#34;&#34;
+
+        self.max_acceleration = max_acceleration
+        self.max_deceleration = max_deceleration
+        self.max_speed = max_speed
+
+    def is_filled(self):
+        &#34;&#34;&#34; is_filled check is any constraints are set
+
+            Returns: boolean
+
+        &#34;&#34;&#34;
+
+        if self.max_acceleration or self.max_deceleration or self.max_speed:
+            return True
+        else:
+            return False
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the DynamicsConstrains as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        if self.max_speed:
+            retdict[&#39;maxSpeed&#39;] = str(self.max_speed)
+        if self.max_deceleration:
+            retdict[&#39;maxDeceleration&#39;] = str(self.max_deceleration)
+        if self.max_acceleration:
+            retdict[&#39;maxAcceleration&#39;] = str(self.max_acceleration)
+        return retdict
+
+    def get_element(self,name = &#39;DynamicConstraints&#39;):
+        &#34;&#34;&#34; returns the elementTree of the DynamicsConstrains
+
+        &#34;&#34;&#34;
+        return ET.Element(name,attrib=self.get_attributes())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.DynamicsConstrains.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the DynamicsConstrains as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the DynamicsConstrains as a dict
+
+    &#34;&#34;&#34;
+    retdict = {}
+    if self.max_speed:
+        retdict[&#39;maxSpeed&#39;] = str(self.max_speed)
+    if self.max_deceleration:
+        retdict[&#39;maxDeceleration&#39;] = str(self.max_deceleration)
+    if self.max_acceleration:
+        retdict[&#39;maxAcceleration&#39;] = str(self.max_acceleration)
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.DynamicsConstrains.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self, name='DynamicConstraints')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the DynamicsConstrains</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self,name = &#39;DynamicConstraints&#39;):
+    &#34;&#34;&#34; returns the elementTree of the DynamicsConstrains
+
+    &#34;&#34;&#34;
+    return ET.Element(name,attrib=self.get_attributes())</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.DynamicsConstrains.is_filled"><code class="name flex">
+<span>def <span class="ident">is_filled</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>is_filled check is any constraints are set</p>
+<p>Returns: boolean</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_filled(self):
+    &#34;&#34;&#34; is_filled check is any constraints are set
+
+        Returns: boolean
+
+    &#34;&#34;&#34;
+
+    if self.max_acceleration or self.max_deceleration or self.max_speed:
+        return True
+    else:
+        return False</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.EntityRef"><code class="flex name class">
+<span>class <span class="ident">EntityRef</span></span>
+<span>(</span><span>entity)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>EntityRef creates an EntityRef element of openscenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>entity (str): name of the entity
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>entity (str): name of the entity
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the EntityRef</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>entity (str): name of the entity
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EntityRef():
+    &#34;&#34;&#34; EntityRef creates an EntityRef element of openscenario
+        
+        Parameters
+        ----------
+            entity (str): name of the entity
+
+        Attributes
+        ----------
+            entity (str): name of the entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,entity):
+        &#34;&#34;&#34; initalize the EntityRef
+
+            Parameters
+            ----------
+                entity (str): name of the entity
+                
+        &#34;&#34;&#34;
+        self.entity = entity
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the EntityRef as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;entityRef&#39;:self.entity}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the EntityRef
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;EntityRef&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.EntityRef.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the EntityRef as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the EntityRef as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;entityRef&#39;:self.entity}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.EntityRef.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the EntityRef</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the EntityRef
+
+    &#34;&#34;&#34;
+    return ET.Element(&#39;EntityRef&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.FileHeader"><code class="flex name class">
+<span>class <span class="ident">FileHeader</span></span>
+<span>(</span><span>name, author)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>FileHeader creates the header of the OpenScenario file</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the scenario
+
+author (str): the author of the scenario
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the scenario
+
+author (str): the author of the scenario
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of FileHeader
+
+get_attributes()
+    Returns a dictionary of all attributes of FileHeader
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FileHeader():
+    &#34;&#34;&#34; FileHeader creates the header of the OpenScenario file
+        
+        Parameters
+        ----------
+            name (str): name of the scenario 
+
+            author (str): the author of the scenario
+
+        Attributes
+        ----------
+            name (str): name of the scenario 
+
+            author (str): the author of the scenario
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of FileHeader
+
+            get_attributes()
+                Returns a dictionary of all attributes of FileHeader
+
+    &#34;&#34;&#34;
+    def __init__(self,name,author):
+        self.name = name
+        self.author = author
+        
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the FileHeader
+
+        &#34;&#34;&#34;
+        return {&#39;decription&#39;:self.name,&#39;author&#39;:self.author,&#39;revMajor&#39;:&#39;1&#39;,&#39;revMinor&#39;:&#39;0&#39;,&#39;date&#39;:str(dt.datetime.now())}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the FileHeader
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;FileHeader&#39;,attrib=self.get_attributes())
+
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.FileHeader.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the FileHeader</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the FileHeader
+
+    &#34;&#34;&#34;
+    return {&#39;decription&#39;:self.name,&#39;author&#39;:self.author,&#39;revMajor&#39;:&#39;1&#39;,&#39;revMinor&#39;:&#39;0&#39;,&#39;date&#39;:str(dt.datetime.now())}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.FileHeader.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the FileHeader</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the FileHeader
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;FileHeader&#39;,attrib=self.get_attributes())
+
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.Orientation"><code class="flex name class">
+<span>class <span class="ident">Orientation</span></span>
+<span>(</span><span>h=None, p=None, r=None, reference=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Orientation describes the angular orientation of an entity</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>h (float): header
+
+p (float): pitch
+
+r (float): roll
+
+reference (ReferenceContext): absolute or relative
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>h (float): header
+
+p (float): pitch
+
+r (float): roll
+
+reference (ReferenceContext): absolute or relative
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>is_filled()
+    check is any orientations are set
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize Orientation </p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>h (float): header
+
+p (float): pitch
+
+r (float): roll
+
+reference (ReferenceContext): absolute or relative
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Orientation():
+    &#34;&#34;&#34; Orientation describes the angular orientation of an entity
+        
+        Parameters
+        ----------
+            h (float): header 
+
+            p (float): pitch
+
+            r (float): roll
+
+            reference (ReferenceContext): absolute or relative
+
+        Attributes
+        ----------
+            h (float): header 
+
+            p (float): pitch
+
+            r (float): roll
+
+            reference (ReferenceContext): absolute or relative
+
+        Methods
+        -------
+            is_filled()
+                check is any orientations are set
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,h=None,p=None,r=None,reference = None):
+        &#34;&#34;&#34; initalize Orientation 
+        
+            Parameters
+            ----------
+                h (float): header 
+
+                p (float): pitch
+
+                r (float): roll
+
+                reference (ReferenceContext): absolute or relative
+        &#34;&#34;&#34;
+        self.h = h
+        self.p = p
+        self.r = r
+
+        if (reference not in ReferenceContext) and (reference != None):
+            raise ValueError(str(reference) + &#39;; is not a valid reference type.&#39;)
+        self.ref = reference
+
+    def is_filled(self):
+        &#34;&#34;&#34; is_filled check is any orientations are  set
+
+            Returns: boolean
+
+        &#34;&#34;&#34;
+        if self.h or self.p or self.r or self.ref:
+            return True
+        else:
+            return False
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the DynamicsConstrains as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        if self.h:
+            retdict[&#39;h&#39;] = str(self.h)
+
+        if self.p:
+            retdict[&#39;p&#39;] = str(self.p)
+
+        if self.r:
+            retdict[&#39;r&#39;] = str(self.r)
+
+        if self.ref:
+            retdict[&#39;type&#39;] = self.ref.name
+        
+        return retdict
+    
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the DynamicsConstrains
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;Orientation&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.Orientation.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the DynamicsConstrains as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the DynamicsConstrains as a dict
+
+    &#34;&#34;&#34;
+    retdict = {}
+    if self.h:
+        retdict[&#39;h&#39;] = str(self.h)
+
+    if self.p:
+        retdict[&#39;p&#39;] = str(self.p)
+
+    if self.r:
+        retdict[&#39;r&#39;] = str(self.r)
+
+    if self.ref:
+        retdict[&#39;type&#39;] = self.ref.name
+    
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Orientation.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the DynamicsConstrains</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the DynamicsConstrains
+
+    &#34;&#34;&#34;
+    return ET.Element(&#39;Orientation&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Orientation.is_filled"><code class="name flex">
+<span>def <span class="ident">is_filled</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>is_filled check is any orientations are
+set</p>
+<p>Returns: boolean</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_filled(self):
+    &#34;&#34;&#34; is_filled check is any orientations are  set
+
+        Returns: boolean
+
+    &#34;&#34;&#34;
+    if self.h or self.p or self.r or self.ref:
+        return True
+    else:
+        return False</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.Parameter"><code class="flex name class">
+<span>class <span class="ident">Parameter</span></span>
+<span>(</span><span>name, parameter_type, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parameter is a declaration of a ParameterDeclaration for declarations</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of parameter
+
+parameter_type (ParameterType): type of the parameter
+
+value (str): value of the parameter
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of parameter
+
+parameter_type (str): type of the parameter
+
+value (str): value of the parameter
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_parameter ???
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the Parameter </p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of parameter
+
+parameter_type (str): type of the parameter
+
+value (str): value of the parameter
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Parameter():
+    &#34;&#34;&#34; Parameter is a declaration of a ParameterDeclaration for declarations
+        
+        Parameters
+        ----------
+            name (str): name of parameter
+
+            parameter_type (ParameterType): type of the parameter 
+
+            value (str): value of the parameter
+
+        Attributes
+        ----------
+            name (str): name of parameter
+
+            parameter_type (str): type of the parameter
+
+            value (str): value of the parameter
+
+        Methods
+        -------
+            add_parameter ???
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    
+    def __init__(self,name,parameter_type,value):
+        &#34;&#34;&#34; initalize the Parameter 
+
+            Parameters
+            ----------
+                name (str): name of parameter
+
+                parameter_type (str): type of the parameter
+
+                value (str): value of the parameter
+
+        &#34;&#34;&#34;
+        self.name = name
+        if parameter_type not in ParameterType:
+            raise ValueError(&#39;parameter_type not a valid type.&#39;)
+        self.parameter_type = parameter_type
+        self.value = value
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Parameter as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name,&#39;parameterType&#39;:self.parameter_type.name,&#39;value&#39;:str(self.value)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Parameter
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;ParameterDeclaration&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.Parameter.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the Parameter as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the Parameter as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:self.name,&#39;parameterType&#39;:self.parameter_type.name,&#39;value&#39;:str(self.value)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Parameter.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Parameter</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Parameter
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;ParameterDeclaration&#39;,attrib=self.get_attributes())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.ParameterDeclarations"><code class="flex name class">
+<span>class <span class="ident">ParameterDeclarations</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>The ParameterDeclarations class creates the ParameterDeclaration of OpenScenario</p>
+<h2 id="attributes">Attributes</h2>
+<pre><code>parameters: list of Parameter objects
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+add_parameter(Parameter)
+    adds a Parameter to the ParameterDeclarations
+</code></pre>
+<p>initalizes the ParameterDeclarations</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ParameterDeclarations():
+    &#34;&#34;&#34; The ParameterDeclarations class creates the ParameterDeclaration of OpenScenario
+                    
+        Attributes
+        ----------
+            parameters: list of Parameter objects
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            add_parameter(Parameter)
+                adds a Parameter to the ParameterDeclarations
+
+    &#34;&#34;&#34;
+    def __init__(self):
+        &#34;&#34;&#34; initalizes the ParameterDeclarations
+
+        &#34;&#34;&#34;
+        self.parameters = []
+
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; add_parameter adds a Parameter to the ParameterDeclarations
+
+        Parameters
+        ----------
+            parameter (Parameter): a new parameter
+
+
+        &#34;&#34;&#34;
+        self.parameters.append(parameter)
+    
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the ParameterDeclarations
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;ParameterDeclarations&#39;)
+        for p in self.parameters:
+            element.append(p.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.ParameterDeclarations.add_parameter"><code class="name flex">
+<span>def <span class="ident">add_parameter</span></span>(<span>self, parameter)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>add_parameter adds a Parameter to the ParameterDeclarations</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>parameter (Parameter): a new parameter
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_parameter(self,parameter):
+    &#34;&#34;&#34; add_parameter adds a Parameter to the ParameterDeclarations
+
+    Parameters
+    ----------
+        parameter (Parameter): a new parameter
+
+
+    &#34;&#34;&#34;
+    self.parameters.append(parameter)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.ParameterDeclarations.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the ParameterDeclarations</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the ParameterDeclarations
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;ParameterDeclarations&#39;)
+    for p in self.parameters:
+        element.append(p.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.Polyline"><code class="flex name class">
+<span>class <span class="ident">Polyline</span></span>
+<span>(</span><span>time, positions)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Polyline class creates a polyline of (minimum 2) positions</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>time (list of double): a list of timings for the positions
+
+positions (list of positions): list of positions to create the polyline
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>time (*Position): any position for the route
+
+positions (str): routing strategy for this waypoint
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+</code></pre>
+<p>initalize the Polyline</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>time (list of double): a list of timings for the positions
+
+positions (list of positions): list of positions to create the polyline
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Polyline():
+    &#34;&#34;&#34; the Polyline class creates a polyline of (minimum 2) positions
+        
+        Parameters
+        ----------
+            time (list of double): a list of timings for the positions
+
+            positions (list of positions): list of positions to create the polyline
+
+        Attributes
+        ----------
+            time (*Position): any position for the route
+
+            positions (str): routing strategy for this waypoint
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self, time, positions):
+        &#34;&#34;&#34; initalize the Polyline
+
+            Parameters
+            ----------
+                time (list of double): a list of timings for the positions
+
+                positions (list of positions): list of positions to create the polyline
+
+        &#34;&#34;&#34;
+        if len(time) &lt; 2:
+            ValueError(&#39;not enough time inputs&#39;)
+        if len(positions)&lt;2:
+            ValueError(&#39;not enough position inputs&#39;)
+        if len(time) != len(positions):
+            ValueError(&#39;time and positions are not the same lenght&#39;)
+        
+        self.positions = positions
+        self.time = time
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Polyline
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Polyline&#39;)
+        for i in range(len(self.time)):
+            vert = ET.SubElement(element,&#39;Vertex&#39;,attrib={&#39;time&#39;:str(self.time[i])})
+            vert.append(self.positions[i].get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.Polyline.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Polyline</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Polyline
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Polyline&#39;)
+    for i in range(len(self.time)):
+        vert = ET.SubElement(element,&#39;Vertex&#39;,attrib={&#39;time&#39;:str(self.time[i])})
+        vert.append(self.positions[i].get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.Route"><code class="flex name class">
+<span>class <span class="ident">Route</span></span>
+<span>(</span><span>name, closed=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Route class creates a route, needs atleast two waypoints to be valid</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the Route
+
+closed (boolean): if the waypoints forms a loop
+    Default: False
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the Route
+
+closed (boolean): if the waypoints forms a loop
+
+waypoints (list of Waypoint): a list of waypoints
+
+parameters (ParameterDeclarations)
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_waypoint(waypoint)
+    adds a waypoint to the route (minimum two)
+
+add_parameter(Parameter)
+    adds a parameter to the route
+
+append_to_catalog(filename)
+    adds the Route to an existing catalog
+
+dump_to_catalog(filename,name,description,author)
+    crates a new catalog with the Route
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize Route</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the Route
+
+closed (boolean): if the waypoints forms a loop
+    Default: False
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Route():
+    &#34;&#34;&#34; the Route class creates a route, needs atleast two waypoints to be valid
+        
+        Parameters
+        ----------
+            name (str): name of the Route
+
+            closed (boolean): if the waypoints forms a loop
+                Default: False
+
+        Attributes
+        ----------
+            name (str): name of the Route
+
+            closed (boolean): if the waypoints forms a loop
+            
+            waypoints (list of Waypoint): a list of waypoints
+
+            parameters (ParameterDeclarations)
+
+        Methods
+        -------
+            add_waypoint(waypoint)
+                adds a waypoint to the route (minimum two)
+
+            add_parameter(Parameter)
+                adds a parameter to the route
+
+            append_to_catalog(filename)
+                adds the Route to an existing catalog
+
+            dump_to_catalog(filename,name,description,author)
+                crates a new catalog with the Route
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self, name, closed=False):
+        &#34;&#34;&#34; initalize Route
+
+            Parameters
+            ----------
+                name (str): name of the Route
+
+                closed (boolean): if the waypoints forms a loop
+                    Default: False
+
+        &#34;&#34;&#34;
+        self.name = name
+        self.closed = closed
+        self.waypoints = []
+        self.parameters = ParameterDeclarations()
+
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the Controller to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; adds a parameter to the Route
+
+            Parameters
+            ----------
+                parameter (Parameter): the parameter to add
+
+        &#34;&#34;&#34;
+        self.parameters.add_parameter(parameter)
+
+    def add_waypoint(self,position,routestrategy):
+        &#34;&#34;&#34; adds a waypoint to the Route
+
+            Parameters
+            ----------
+                position (*Position): any position for the route
+
+                routestrategy (RouteStrategy): routing strategy for this waypoint
+
+        &#34;&#34;&#34;
+        self.waypoints.append(Waypoint(position,routestrategy))
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Route as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;name&#39;] = self.name
+        retdict[&#39;closed&#39;] = str(self.closed)
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Route
+
+        &#34;&#34;&#34;
+        if len(self.waypoints) &lt;2:
+            ValueError(&#39;Too few waypoints&#39;)
+        element = ET.Element(&#39;Route&#39;,attrib=self.get_attributes())
+        element.append(self.parameters.get_element())
+        for w in self.waypoints:
+            element.append(w.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.Route.add_parameter"><code class="name flex">
+<span>def <span class="ident">add_parameter</span></span>(<span>self, parameter)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a parameter to the Route</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>parameter (Parameter): the parameter to add
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_parameter(self,parameter):
+    &#34;&#34;&#34; adds a parameter to the Route
+
+        Parameters
+        ----------
+            parameter (Parameter): the parameter to add
+
+    &#34;&#34;&#34;
+    self.parameters.add_parameter(parameter)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Route.add_waypoint"><code class="name flex">
+<span>def <span class="ident">add_waypoint</span></span>(<span>self, position, routestrategy)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a waypoint to the Route</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>position (*Position): any position for the route
+
+routestrategy (RouteStrategy): routing strategy for this waypoint
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_waypoint(self,position,routestrategy):
+    &#34;&#34;&#34; adds a waypoint to the Route
+
+        Parameters
+        ----------
+            position (*Position): any position for the route
+
+            routestrategy (RouteStrategy): routing strategy for this waypoint
+
+    &#34;&#34;&#34;
+    self.waypoints.append(Waypoint(position,routestrategy))</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Route.append_to_catalog"><code class="name flex">
+<span>def <span class="ident">append_to_catalog</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds the Controller to an existing catalog</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path to the catalog file
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_to_catalog(self,filename):
+    &#34;&#34;&#34; adds the Controller to an existing catalog
+
+        Parameters
+        ----------
+            filename (str): path to the catalog file
+
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.open_catalog(filename)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Route.dump_to_catalog"><code class="name flex">
+<span>def <span class="ident">dump_to_catalog</span></span>(<span>self, filename, catalogtype, description, author)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dump_to_catalog creates a new catalog and adds the Controller to it</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path of the new catalog file
+
+catalogtype (str): name of the catalog
+
+description (str): description of the catalog
+
+author (str): author of the catalog
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dump_to_catalog(self,filename,catalogtype,description,author):
+    &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+        
+        Parameters
+        ----------
+            filename (str): path of the new catalog file
+
+            catalogtype (str): name of the catalog
+
+            description (str): description of the catalog
+
+            author (str): author of the catalog
+    
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.create_catalog(filename,catalogtype,description,author)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Route.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the Route as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the Route as a dict
+
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;name&#39;] = self.name
+    retdict[&#39;closed&#39;] = str(self.closed)
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Route.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Route</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Route
+
+    &#34;&#34;&#34;
+    if len(self.waypoints) &lt;2:
+        ValueError(&#39;Too few waypoints&#39;)
+    element = ET.Element(&#39;Route&#39;,attrib=self.get_attributes())
+    element.append(self.parameters.get_element())
+    for w in self.waypoints:
+        element.append(w.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.TimeReference"><code class="flex name class">
+<span>class <span class="ident">TimeReference</span></span>
+<span>(</span><span>referece_domain=None, scale=None, offset=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the TimeReference class creates a TimeReference, </p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>referece_domain (ReferenceContext): absolute or relative time reference (must be combined with scale and offset)
+    Default: None
+scale (double): scalefactor of the timeings (must be combined with referece_domain and offset)
+    Default: None
+offset (double): offset for time values (must be combined with referece_domain and scale)
+    Default: None
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>referece_domain (str): absolute or relative time reference
+
+scale (double): scalefactor of the timeings
+
+offset (double): offset for time values
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the TimeReference</p>
+<h2 id="parameters_1">Parameters</h2>
+<p>name (str): name of the trajectory</p>
+<p>closed (boolean): if the trajectory is closed at the end</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TimeReference():
+    &#34;&#34;&#34; the TimeReference class creates a TimeReference, 
+        
+        Parameters
+        ----------
+            referece_domain (ReferenceContext): absolute or relative time reference (must be combined with scale and offset)
+                Default: None
+            scale (double): scalefactor of the timeings (must be combined with referece_domain and offset)
+                Default: None
+            offset (double): offset for time values (must be combined with referece_domain and scale)
+                Default: None
+
+        Attributes
+        ----------
+            referece_domain (str): absolute or relative time reference 
+
+            scale (double): scalefactor of the timeings 
+
+            offset (double): offset for time values 
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+    &#34;&#34;&#34;
+
+    def __init__(self, referece_domain=None,scale=None,offset=None):
+        &#34;&#34;&#34; initalize the TimeReference
+
+            Parameters
+            ----------
+            name (str): name of the trajectory
+
+            closed (boolean): if the trajectory is closed at the end
+
+        &#34;&#34;&#34;
+        nones = [referece_domain == None, scale == None, offset == None]
+        if sum(nones) == 3:
+            self._only_nones = True
+        elif sum(nones) == 0:
+            self._only_nones = False
+        else:
+            ValueError(&#39;missing inputs for time reference&#39;)
+        if referece_domain not in ReferenceContext:
+            ValueError(&#39;not a valid reference domain&#39;)
+        self.referece_domain = referece_domain
+        self.scale = scale
+        self.offset = offset
+        
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TimeReference as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;domainAbsoluteRelative&#39;] = self.referece_domain.name
+        retdict[&#39;scale&#39;] = str(self.scale)
+        retdict[&#39;offset&#39;] = str(self.offset)
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TimeReference
+
+        &#34;&#34;&#34;
+
+        element = ET.Element(&#39;TimeReference&#39;)
+        if self._only_nones:
+            ET.SubElement(element,&#39;None&#39;)
+        else:
+            ET.SubElement(element,&#39;Timing&#39;,self.get_attributes())
+        
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.TimeReference.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the TimeReference as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the TimeReference as a dict
+
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;domainAbsoluteRelative&#39;] = self.referece_domain.name
+    retdict[&#39;scale&#39;] = str(self.scale)
+    retdict[&#39;offset&#39;] = str(self.offset)
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.TimeReference.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the TimeReference</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the TimeReference
+
+    &#34;&#34;&#34;
+
+    element = ET.Element(&#39;TimeReference&#39;)
+    if self._only_nones:
+        ET.SubElement(element,&#39;None&#39;)
+    else:
+        ET.SubElement(element,&#39;Timing&#39;,self.get_attributes())
+    
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.Trajectory"><code class="flex name class">
+<span>class <span class="ident">Trajectory</span></span>
+<span>(</span><span>name, closed)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Trajectory class creates a Trajectory, </p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the trajectory
+
+closed (boolean): if the trajectory is closed at the end
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the trajectory
+
+closed (boolean): if the trajectory is closed at the end
+
+parameters (ParameterDeclaration): parameters for the trajectory
+
+shapes (list of Polyline, Clothoid, or Nurbs): list of the different shapes building the trajectory
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_shape(Polyline, Clothoid, or Nurbs):
+    adds a shape to the trajectory (only the same shape can be used)
+
+add_parameter(Parameter)
+    adds a parameter to the route
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the Trajectory</p>
+<h2 id="parameters_1">Parameters</h2>
+<p>name (str): name of the trajectory</p>
+<p>closed (boolean): if the trajectory is closed at the end</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Trajectory():
+    &#34;&#34;&#34; the Trajectory class creates a Trajectory, 
+        
+        Parameters
+        ----------
+            name (str): name of the trajectory
+
+            closed (boolean): if the trajectory is closed at the end
+
+        Attributes
+        ----------
+            name (str): name of the trajectory
+
+            closed (boolean): if the trajectory is closed at the end
+
+            parameters (ParameterDeclaration): parameters for the trajectory
+
+            shapes (list of Polyline, Clothoid, or Nurbs): list of the different shapes building the trajectory
+
+        Methods
+        -------
+            add_shape(Polyline, Clothoid, or Nurbs):
+                adds a shape to the trajectory (only the same shape can be used)
+            
+            add_parameter(Parameter)
+                adds a parameter to the route
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self, name, closed):
+        &#34;&#34;&#34; initalize the Trajectory
+
+            Parameters
+            ----------
+            name (str): name of the trajectory
+
+            closed (boolean): if the trajectory is closed at the end
+
+        &#34;&#34;&#34;
+
+        self.name = name
+        self.closed = closed
+        self.parameters = ParameterDeclarations()
+        self.shapes = []
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the Controller to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+    def add_shape(self,shape):
+        &#34;&#34;&#34; adds a shape to the trajectory (only the same shape can be used)
+
+            Parameters
+            ----------
+            shape (Polyline, Clothoid, or Nurbs): the shape to be added to the trajectory
+
+        &#34;&#34;&#34;
+        self.shapes.append(shape)
+
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; adds a parameter to the Trajectory
+
+            Parameters
+            ----------
+                parameter (Parameter): the parameter to add
+
+        &#34;&#34;&#34;
+        self.parameters.add_parameter(parameter)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Trajectory as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;name&#39;] = self.name
+        retdict[&#39;closed&#39;] = str(self.closed)
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Trajectory
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Trajectory&#39;,attrib=self.get_attributes())
+        element.append(self.parameters.get_element())
+        shape = ET.SubElement(element,&#39;Shape&#39;)
+        for sh in self.shapes:
+            shape.append(sh.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.Trajectory.add_parameter"><code class="name flex">
+<span>def <span class="ident">add_parameter</span></span>(<span>self, parameter)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a parameter to the Trajectory</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>parameter (Parameter): the parameter to add
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_parameter(self,parameter):
+    &#34;&#34;&#34; adds a parameter to the Trajectory
+
+        Parameters
+        ----------
+            parameter (Parameter): the parameter to add
+
+    &#34;&#34;&#34;
+    self.parameters.add_parameter(parameter)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Trajectory.add_shape"><code class="name flex">
+<span>def <span class="ident">add_shape</span></span>(<span>self, shape)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a shape to the trajectory (only the same shape can be used)</p>
+<h2 id="parameters">Parameters</h2>
+<p>shape (Polyline, Clothoid, or Nurbs): the shape to be added to the trajectory</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_shape(self,shape):
+    &#34;&#34;&#34; adds a shape to the trajectory (only the same shape can be used)
+
+        Parameters
+        ----------
+        shape (Polyline, Clothoid, or Nurbs): the shape to be added to the trajectory
+
+    &#34;&#34;&#34;
+    self.shapes.append(shape)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Trajectory.append_to_catalog"><code class="name flex">
+<span>def <span class="ident">append_to_catalog</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds the Controller to an existing catalog</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path to the catalog file
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_to_catalog(self,filename):
+    &#34;&#34;&#34; adds the Controller to an existing catalog
+
+        Parameters
+        ----------
+            filename (str): path to the catalog file
+
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.open_catalog(filename)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Trajectory.dump_to_catalog"><code class="name flex">
+<span>def <span class="ident">dump_to_catalog</span></span>(<span>self, filename, catalogtype, description, author)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dump_to_catalog creates a new catalog and adds the Controller to it</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path of the new catalog file
+
+catalogtype (str): name of the catalog
+
+description (str): description of the catalog
+
+author (str): author of the catalog
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dump_to_catalog(self,filename,catalogtype,description,author):
+    &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+        
+        Parameters
+        ----------
+            filename (str): path of the new catalog file
+
+            catalogtype (str): name of the catalog
+
+            description (str): description of the catalog
+
+            author (str): author of the catalog
+    
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.create_catalog(filename,catalogtype,description,author)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Trajectory.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the Trajectory as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the Trajectory as a dict
+
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;name&#39;] = self.name
+    retdict[&#39;closed&#39;] = str(self.closed)
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Trajectory.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Trajectory</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Trajectory
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Trajectory&#39;,attrib=self.get_attributes())
+    element.append(self.parameters.get_element())
+    shape = ET.SubElement(element,&#39;Shape&#39;)
+    for sh in self.shapes:
+        shape.append(sh.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.TransitionDynamics"><code class="flex name class">
+<span>class <span class="ident">TransitionDynamics</span></span>
+<span>(</span><span>shape, dimension, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TransitionDynamics is used to define how the dynamics of a change</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>shape (DynamicsShapes): shape of the transition
+
+dimension (DynamicsDimension): the dimension of the transition (rate, time or distance)
+
+value (float): the value of the dynamics (time rate or distance)
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>shape (DynamicsShapes): shape of the transition
+
+dimension (DynamicsDimension): the dimension of the transition (rate, time or distance)
+
+value (float): the value of the dynamics (time rate or distance)
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>shape (str): shape of the transition
+
+dimension (str): the dimension of the transition (rate, time or distance)
+
+value (float): the value of the dynamics (time rate or distance)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TransitionDynamics():
+    &#34;&#34;&#34; TransitionDynamics is used to define how the dynamics of a change
+        
+        Parameters
+        ----------
+            shape (DynamicsShapes): shape of the transition
+
+            dimension (DynamicsDimension): the dimension of the transition (rate, time or distance)
+
+            value (float): the value of the dynamics (time rate or distance)
+
+
+        Attributes
+        ----------
+            shape (DynamicsShapes): shape of the transition
+
+            dimension (DynamicsDimension): the dimension of the transition (rate, time or distance)
+
+            value (float): the value of the dynamics (time rate or distance)
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,shape,dimension,value):
+        &#34;&#34;&#34;
+            Parameters
+            ----------
+                shape (str): shape of the transition
+
+                dimension (str): the dimension of the transition (rate, time or distance)
+
+                value (float): the value of the dynamics (time rate or distance)
+
+        &#34;&#34;&#34;
+        if shape not in DynamicsShapes:
+            raise ValueError(shape + &#39;; is not a valid shape.&#39;)
+        
+        self.shape = shape
+        if dimension not in DynamicsDimension:
+            raise ValueError(dimension + &#39; is not a valid dynamics dimension&#39;)
+        self.dimension = dimension
+        self.value = value
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the DynamicsConstrains as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;dynamicsShape&#39;:self.shape.name,&#39;value&#39;:str(self.value),&#39;dynamicsDimension&#39;:self.dimension.name}
+
+    def get_element(self,name=&#39;TransitionDynamics&#39;):
+        &#34;&#34;&#34; returns the elementTree of the DynamicsConstrains
+
+        &#34;&#34;&#34;
+        return ET.Element(name,self.get_attributes())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.TransitionDynamics.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the DynamicsConstrains as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the DynamicsConstrains as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;dynamicsShape&#39;:self.shape.name,&#39;value&#39;:str(self.value),&#39;dynamicsDimension&#39;:self.dimension.name}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.TransitionDynamics.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self, name='TransitionDynamics')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the DynamicsConstrains</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self,name=&#39;TransitionDynamics&#39;):
+    &#34;&#34;&#34; returns the elementTree of the DynamicsConstrains
+
+    &#34;&#34;&#34;
+    return ET.Element(name,self.get_attributes())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.Waypoint"><code class="flex name class">
+<span>class <span class="ident">Waypoint</span></span>
+<span>(</span><span>position, routestrategy)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Route class creates a route, needs atleast two waypoints to be valid</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>position (*Position): any position for the route
+
+routestrategy (RouteStrategy): routing strategy for this waypoint
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>position (*Position): any position for the route
+
+routestrategy (RouteStrategy): routing strategy for this waypoint
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the Waypoint</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>position (*Position): any position for the route
+
+routestrategy (RouteStrategy): routing strategy for this waypoint
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Waypoint():
+    &#34;&#34;&#34; the Route class creates a route, needs atleast two waypoints to be valid
+        
+        Parameters
+        ----------
+            position (*Position): any position for the route
+
+            routestrategy (RouteStrategy): routing strategy for this waypoint
+
+        Attributes
+        ----------
+            position (*Position): any position for the route
+
+            routestrategy (RouteStrategy): routing strategy for this waypoint
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self, position, routestrategy):
+        &#34;&#34;&#34; initalize the Waypoint
+
+            Parameters
+            ----------
+                position (*Position): any position for the route
+
+                routestrategy (RouteStrategy): routing strategy for this waypoint
+
+        &#34;&#34;&#34;
+        self.position = position
+        if routestrategy not in RouteStrategy:
+            ValueError(&#39;not a valid RouteStrategy&#39;)
+        self.routestrategy = routestrategy
+
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Waypoint as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;routeStrategy&#39;:self.routestrategy.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Waypoint
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Waypoint&#39;,attrib=self.get_attributes())
+        element.append(self.position.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.Waypoint.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the Waypoint as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the Waypoint as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;routeStrategy&#39;:self.routestrategy.name}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Waypoint.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Waypoint</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Waypoint
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Waypoint&#39;,attrib=self.get_attributes())
+    element.append(self.position.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyoscx" href="index.html">pyoscx</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pyoscx.utils.merge_dicts" href="#pyoscx.utils.merge_dicts">merge_dicts</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyoscx.utils.DynamicsConstrains" href="#pyoscx.utils.DynamicsConstrains">DynamicsConstrains</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.DynamicsConstrains.get_attributes" href="#pyoscx.utils.DynamicsConstrains.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.DynamicsConstrains.get_element" href="#pyoscx.utils.DynamicsConstrains.get_element">get_element</a></code></li>
+<li><code><a title="pyoscx.utils.DynamicsConstrains.is_filled" href="#pyoscx.utils.DynamicsConstrains.is_filled">is_filled</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.EntityRef" href="#pyoscx.utils.EntityRef">EntityRef</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.EntityRef.get_attributes" href="#pyoscx.utils.EntityRef.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.EntityRef.get_element" href="#pyoscx.utils.EntityRef.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.FileHeader" href="#pyoscx.utils.FileHeader">FileHeader</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.FileHeader.get_attributes" href="#pyoscx.utils.FileHeader.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.FileHeader.get_element" href="#pyoscx.utils.FileHeader.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.Orientation" href="#pyoscx.utils.Orientation">Orientation</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.Orientation.get_attributes" href="#pyoscx.utils.Orientation.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.Orientation.get_element" href="#pyoscx.utils.Orientation.get_element">get_element</a></code></li>
+<li><code><a title="pyoscx.utils.Orientation.is_filled" href="#pyoscx.utils.Orientation.is_filled">is_filled</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.Parameter" href="#pyoscx.utils.Parameter">Parameter</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.Parameter.get_attributes" href="#pyoscx.utils.Parameter.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.Parameter.get_element" href="#pyoscx.utils.Parameter.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.ParameterDeclarations" href="#pyoscx.utils.ParameterDeclarations">ParameterDeclarations</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.ParameterDeclarations.add_parameter" href="#pyoscx.utils.ParameterDeclarations.add_parameter">add_parameter</a></code></li>
+<li><code><a title="pyoscx.utils.ParameterDeclarations.get_element" href="#pyoscx.utils.ParameterDeclarations.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.Polyline" href="#pyoscx.utils.Polyline">Polyline</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.Polyline.get_element" href="#pyoscx.utils.Polyline.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.Route" href="#pyoscx.utils.Route">Route</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pyoscx.utils.Route.add_parameter" href="#pyoscx.utils.Route.add_parameter">add_parameter</a></code></li>
+<li><code><a title="pyoscx.utils.Route.add_waypoint" href="#pyoscx.utils.Route.add_waypoint">add_waypoint</a></code></li>
+<li><code><a title="pyoscx.utils.Route.append_to_catalog" href="#pyoscx.utils.Route.append_to_catalog">append_to_catalog</a></code></li>
+<li><code><a title="pyoscx.utils.Route.dump_to_catalog" href="#pyoscx.utils.Route.dump_to_catalog">dump_to_catalog</a></code></li>
+<li><code><a title="pyoscx.utils.Route.get_attributes" href="#pyoscx.utils.Route.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.Route.get_element" href="#pyoscx.utils.Route.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.TimeReference" href="#pyoscx.utils.TimeReference">TimeReference</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.TimeReference.get_attributes" href="#pyoscx.utils.TimeReference.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.TimeReference.get_element" href="#pyoscx.utils.TimeReference.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.Trajectory" href="#pyoscx.utils.Trajectory">Trajectory</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pyoscx.utils.Trajectory.add_parameter" href="#pyoscx.utils.Trajectory.add_parameter">add_parameter</a></code></li>
+<li><code><a title="pyoscx.utils.Trajectory.add_shape" href="#pyoscx.utils.Trajectory.add_shape">add_shape</a></code></li>
+<li><code><a title="pyoscx.utils.Trajectory.append_to_catalog" href="#pyoscx.utils.Trajectory.append_to_catalog">append_to_catalog</a></code></li>
+<li><code><a title="pyoscx.utils.Trajectory.dump_to_catalog" href="#pyoscx.utils.Trajectory.dump_to_catalog">dump_to_catalog</a></code></li>
+<li><code><a title="pyoscx.utils.Trajectory.get_attributes" href="#pyoscx.utils.Trajectory.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.Trajectory.get_element" href="#pyoscx.utils.Trajectory.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.TransitionDynamics" href="#pyoscx.utils.TransitionDynamics">TransitionDynamics</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.TransitionDynamics.get_attributes" href="#pyoscx.utils.TransitionDynamics.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.TransitionDynamics.get_element" href="#pyoscx.utils.TransitionDynamics.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.Waypoint" href="#pyoscx.utils.Waypoint">Waypoint</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.Waypoint.get_attributes" href="#pyoscx.utils.Waypoint.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.Waypoint.get_element" href="#pyoscx.utils.Waypoint.get_element">get_element</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
