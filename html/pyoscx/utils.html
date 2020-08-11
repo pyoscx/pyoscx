@@ -3,15 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.8.1" />
+<meta name="generator" content="pdoc 0.8.4" />
 <title>pyoscx.utils API documentation</title>
 <meta name="description" content="" />
-<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
-<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
-<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js" integrity="sha256-eOgo0OtLL4cdq7RdwRUiGKLX9XsIJ7nGhWEKbohmVAQ=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
 </head>
 <body>
 <main>
@@ -24,11 +26,12 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import xml.etree.ElementTree as ET
-
-from .enumerations import ConditionEdge, ObjectType, ParameterType, Rule, ReferenceContext, DynamicsShapes, DynamicsDimension, RouteStrategy
+<pre><code class="python">import os
+import xml.etree.ElementTree as ET
+from .helpers import printToFile
+from .enumerations import ConditionEdge, ObjectType, ParameterType, Rule, ReferenceContext, DynamicsShapes, DynamicsDimension, RouteStrategy,XSI,XMLNS
 import datetime as dt
-
+# from .catalog import CatalogFile
 
 class ParameterDeclarations():
     &#34;&#34;&#34; The ParameterDeclarations class creates the ParameterDeclaration of OpenScenario
@@ -113,44 +116,6 @@ class EntityRef():
 
         &#34;&#34;&#34;
         return ET.Element(&#39;EntityRef&#39;,attrib=self.get_attributes())
-
-# class ObjectType():
-#     &#34;&#34;&#34; creates an objecttype of openscenario
-        
-#         Parameters
-#         ----------
-#             obj_type (ObjectType): the type of object
-            
-#         Attributes
-#         ----------
-#             obj_type (str): the typ of object
-
-#         Methods
-#         -------
-
-#             get_attributes()
-#                 Returns a dictionary of all attributes of the class
-
-#     &#34;&#34;&#34;
-#     def __init__(self,obj_type):
-#         &#34;&#34;&#34; initalize the ObjectType
-
-#             Parameters
-#             ----------
-#                 obj_type (str): the typ of object, vehicle, pedestrian or miscellaneous
-
-#         &#34;&#34;&#34;
-#         if obj_type not in ObjectType:
-#             raise ValueError(&#39;not a valid object type&#39;)
-
-#         self.obj_type = obj_type
-
-#     def get_attributes(self):
-#         &#34;&#34;&#34; returns the attributes of the Parameter as a dict
-
-#         &#34;&#34;&#34;
-#         return {&#39;value&#39;:self.obj_type.name}
-
 
 class Parameter():
     &#34;&#34;&#34; Parameter is a declaration of a ParameterDeclaration for declarations
@@ -266,8 +231,8 @@ class Orientation():
         self.p = p
         self.r = r
 
-        if (reference not in ReferenceContext) and (reference != None):
-            raise ValueError(str(reference) + &#39;; is not a valid reference type.&#39;)
+        # if (reference not in ReferenceContext) and (reference != None):
+        #     raise ValueError(str(reference) + &#39;; is not a valid reference type.&#39;)
         self.ref = reference
 
     def is_filled(self):
@@ -346,12 +311,12 @@ class TransitionDynamics():
                 value (float): the value of the dynamics (time rate or distance)
 
         &#34;&#34;&#34;
-        if shape not in DynamicsShapes:
-            raise ValueError(shape + &#39;; is not a valid shape.&#39;)
+        # if shape not in DynamicsShapes:
+        #     raise ValueError(shape + &#39;; is not a valid shape.&#39;)
         
         self.shape = shape
-        if dimension not in DynamicsDimension:
-            raise ValueError(dimension + &#39; is not a valid dynamics dimension&#39;)
+        # if dimension not in DynamicsDimension:
+        #     raise ValueError(dimension + &#39; is not a valid dynamics dimension&#39;)
         self.dimension = dimension
         self.value = value
 
@@ -797,8 +762,8 @@ class TimeReference():
             self._only_nones = False
         else:
             ValueError(&#39;missing inputs for time reference&#39;)
-        if referece_domain not in ReferenceContext:
-            ValueError(&#39;not a valid reference domain&#39;)
+        # if referece_domain not in ReferenceContext:
+        #     ValueError(&#39;not a valid reference domain&#39;)
         self.referece_domain = referece_domain
         self.scale = scale
         self.offset = offset
@@ -922,6 +887,567 @@ class FileHeader():
 
         return element
 
+
+
+class _TrafficSignalState():
+    &#34;&#34;&#34; crates a _TrafficSignalState used by Phase
+        
+        Parameters
+        ----------
+            signal_id (str): id of the traffic signal
+
+            state (str): state of the signal
+                
+        Attributes
+        ----------
+            signal_id (str): id of the traffic signal
+
+            state (str): state of the signal
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+
+    
+    def __init__(self, signal_id, state):
+        &#34;&#34;&#34; initalize the _TrafficSignalState 
+        
+        Parameters
+        ----------
+            signal_id (str): id of the traffic signal
+
+            state (str): state of the signal
+
+        &#34;&#34;&#34;
+        
+        self.signal_id = signal_id
+        self.state = state
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the _TrafficSignalState
+        
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;id&#39;] = self.signal_id
+        retdict[&#39;state&#39;] = self.state
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the _TrafficSignalState
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;TrafficSignalState&#39;,attrib=self.get_attributes())
+        
+
+    
+class Phase():
+    &#34;&#34;&#34; crates a Traffic light phase
+        
+        Parameters
+        ----------
+            name (str): if of the phase
+
+            duration (float): duration of the phase
+                
+        Attributes
+        ----------
+            name (str): if of the phase
+
+            duration (float): duration of the phase
+
+            signalstates (list of _TrafficSignalState): traffic signal states
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+            add_stignal_state(signal_id,state)
+                add a traffic signal state
+    &#34;&#34;&#34;
+
+    def __init__(self, name, duration):
+        &#34;&#34;&#34; initalize the Phase 
+        
+        Parameters
+        ----------
+            name (str): if of the phase
+
+            duration (float): duration of the phase
+
+        &#34;&#34;&#34;
+        
+        self.name = name
+        self.duration = duration
+        self.signalstates = []
+
+
+    def add_signal_state(self,signal_id,state):
+        &#34;&#34;&#34; Adds a phase of the traffic signal
+
+            Parameters
+            ----------
+                signal_id (str): id of the traffic signal in the road network
+
+                state (str): state of the signal defined in the road network
+
+        &#34;&#34;&#34;
+        self.signalstates.append(_TrafficSignalState(signal_id,state))
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TrafficSignalController
+        
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;name&#39;] = self.name
+        retdict[&#39;duration&#39;] = str(self.duration)
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Polyline
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Phase&#39;,attrib=self.get_attributes())
+        for s in self.signalstates: 
+            element.append(s.get_element())
+        return element
+
+
+class TrafficSignalController():
+    &#34;&#34;&#34; the TrafficSignalController class creates a polyline of (minimum 2) positions
+        
+        Parameters
+        ----------
+            name (str): if of the trafic signal
+
+            delay (float): delay of the phase shift
+                Default: None
+            reference (string): id to the controller in the roadnetwork
+                Default: None
+
+        Attributes
+        ----------
+            name (str): if of the trafic signal
+
+            delay (float): delay of the phase shift
+                Default: None
+            reference (string): id to the controller in the roadnetwork
+                Default: None
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+            add_phase(Phase)
+                add a phase to the trafficsitnal controller
+    &#34;&#34;&#34;
+
+    def __init__(self, name, delay = None,reference = None):
+        &#34;&#34;&#34; initalize the TrafficSignalController 
+        
+        Parameters
+        ----------
+            name (str): if of the trafic signal
+
+            delay (float): delay of the phase shift
+                Default: None
+            reference (string): id to the controller in the RoadNetwork
+                Default: None
+
+        &#34;&#34;&#34;
+        
+        self.name = name
+        self.delay = delay
+        self.reference = reference
+        self.phases = []
+
+
+    def add_phase(self,phase):
+        &#34;&#34;&#34; Adds a phase of the traffic signal
+
+            Parameters
+            ----------
+                phase (Phase): a phase of the trafficsignal
+
+        &#34;&#34;&#34;
+        self.phases.append(phase)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TrafficSignalController
+        
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;name&#39;] = self.name
+        if self.delay:
+            retdict[&#39;delay&#39;] = str(self.delay)
+        if self.reference:
+            retdict[&#39;reference&#39;] = self.reference
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TrafficSignalController
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;TrafficSignalController&#39;,attrib=self.get_attributes())
+        for ph in self.phases: 
+            element.append(ph.get_element())
+        return element
+
+
+
+class TrafficDefinition():
+    &#34;&#34;&#34; the TrafficDefinition class creates a TrafficDefinition used by the different TrafficActions
+        
+        Parameters
+        ----------
+            name (str): name of the traffic definition
+       
+
+        Attributes
+        ----------
+            name (str): name of the traffic definition
+
+            vehicleweights (list of floats): The weights of the vehicle categories (VehicleCategoryDistribution-wight)
+
+            vehiclecategories (list of VehicleCategory): the vehicle category ((VehicleCategoryDistribution-category))
+
+            controllerweights (list of floats): The weights of the controllers
+
+            controllers (list of Controller/CatalogReference): The controllers for the traffic
+
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+            add_vehicle(vehiclecategory,weight)
+                Adds a vehicle to the traffic definition
+
+            add_controller(controller,weight)
+                Adds a controller to the traffic definition
+                
+    &#34;&#34;&#34;
+
+    def __init__(self, name):
+        &#34;&#34;&#34; initalize the TrafficDefinition 
+        
+        Parameters
+        ----------
+            name (str): name of the traffic definition
+
+        &#34;&#34;&#34;            
+        
+        self.name = name
+        self.vehicleweights = [] 
+        self.vehiclecategories = [] 
+        self.controllerweights = []
+        self.controllers = []
+        
+
+
+
+    def add_vehicle(self,vehiclecategory,weight):
+        &#34;&#34;&#34; Adds a vehicle to the traffic distribution
+
+            Parameters
+            ----------
+                vehiclecategory (VehicleCategory): vehicle category of the entity in the traffic
+
+                weight (float): the corresponding weight for the distribution of the vehicle category
+
+        &#34;&#34;&#34;
+
+        self.vehiclecategories.append(vehiclecategory)
+        self.vehicleweights.append(weight)
+
+    def add_controller(self,controller,weight):
+        &#34;&#34;&#34; Adds a controller to the traffic distribution
+
+            Parameters
+            ----------
+                controller (Controller or CatalogReference): a controller or catalog reference to a controller
+
+                weight (float): the corresponding weight for the controller
+
+        &#34;&#34;&#34;
+        self.controllers.append(controller)
+        self.controllerweights.append(weight)
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TrafficDefinition
+        
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;name&#39;] = self.name
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TrafficDefinition
+
+        &#34;&#34;&#34;
+        if not self.controllers:
+            ValueError(&#39;No controllers defined for the TrafficDefinition&#39;)
+        if not self.vehiclecategories:
+            ValueError(&#39;No Vehicles defined for the TrafficDefinition&#39;)
+                
+        element = ET.Element(&#39;TrafficDefinition&#39;,attrib=self.get_attributes())
+        
+        veh_element = ET.SubElement(element,&#39;VehicleCategoryDistribution&#39;)
+        for i in range(len(self.vehiclecategories)):
+            ET.SubElement(veh_element,&#39;VehicleCategoryDistributionEntry&#39;,attrib={&#39;category&#39;: self.vehiclecategories[i].name,&#39;weight&#39;: str(self.vehicleweights[i])})
+
+        cnt_element = ET.SubElement(element,&#39;ControllerDistribution&#39;)
+        for i in range(len(self.controllers)):
+            tmp_controller = ET.SubElement(cnt_element,&#39;ControllerDistributionEntry&#39;,attrib={&#39;weight&#39;:str(self.controllerweights[i])})
+            tmp_controller.append(self.controllers[i].get_element())
+
+        return element
+
+
+
+
+class CatalogFile():
+    &#34;&#34;&#34; The CatalogFile class handles any catalogs in open scenario, such as writing, and updating them
+        
+        Parameters
+        ----------
+            prettyprint (boolean): if the final file should have prettyprint or not
+                Default: True
+
+        Attributes
+        ----------
+            prettyprint: if the final file should have prettyprint or not
+
+            catalog_element (Element): the element that is worked with
+
+            filename (str): path to the file to be written to
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            add_catalog(catalogname, path)
+                Adds a new catalog 
+    &#34;&#34;&#34;
+
+    def __init__(self,prettyprint = True):
+        &#34;&#34;&#34; initalize the CatalogFile class
+
+            Parameters
+            ----------
+                prettyprint (boolean): if the final file should have prettyprint or not
+                    Default: True
+        &#34;&#34;&#34;
+        self.prettyprint = prettyprint
+        self.catalog_element = None
+        self.filename = &#39;&#39;
+
+    def add_to_catalog(self,obj):
+        &#34;&#34;&#34; add_to_catalog adds an element to the catalog
+            
+            Parameters
+            ----------
+                obj (*pyoscx): any pyoscx object (should be matching with the catalog)
+        
+        &#34;&#34;&#34;
+        if self.catalog_element == None:
+            OSError(&#39;No file has been created or opened&#39;)
+        catalogs = self.catalog_element.find(&#39;Catalog&#39;)
+        catalogs.append(obj.get_element())
+
+    def open_catalog(self,filename):
+        &#34;&#34;&#34; open_catalog reads an existing catalog file
+            
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        self.filename = filename
+        tree = ET.parse(self.filename)
+        self.catalog_element = tree.getroot()
+
+    def create_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; create_catalog_element creates an empty catalog of a desiered type, 
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        self.filename = filename
+        self.catalog_element = self.create_catalog_element(catalogtype,description,author)
+
+
+    def create_catalog_element(self,catalogtype,description,author):
+        &#34;&#34;&#34; create_catalog_element creates an empty catalog of a desiered type, 
+            
+            Parameters
+            ----------
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:XMLNS,&#39;xsi:noNamespaceShemaLocation&#39;:&#39;../../&#39;+XSI})
+        header = FileHeader(description,author)
+        element.append(header.get_element())
+        ET.SubElement(element,&#39;Catalog&#39;,attrib={&#39;name&#39;:catalogtype})
+
+        return element
+
+    def dump(self):
+        &#34;&#34;&#34; writes the new/updated catalog file
+
+        &#34;&#34;&#34;
+        printToFile(self.catalog_element,self.filename,self.prettyprint)
+
+class Catalog():
+    &#34;&#34;&#34; The Catalog class creates the CatalogLocation of the OpenScenario input
+        
+        Parameters
+        ----------
+
+        Attributes
+        ----------
+            catalogs: dict of catalogs to add, and their path
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            add_catalog(catalogname, path)
+                Adds a new catalog 
+    &#34;&#34;&#34;
+    _CATALOGS = [\
+        &#39;VehicleCatalog&#39;,
+        &#39;ControllerCatalog&#39;,
+        &#39;PedestrianCatalog&#39;,
+        &#39;MiscObjectCatalog&#39;,
+        &#39;EnvironmentCatalog&#39;,
+        &#39;ManeuverCatalog&#39;,
+        &#39;TrajectoryCatalog&#39;,
+        &#39;RouteCatalog&#39;]
+
+    def __init__(self):
+        &#34;&#34;&#34; initalize the Catalog class
+
+        &#34;&#34;&#34;
+        self.catalogs = {}
+
+    def add_catalog(self,catalogname,path):
+        &#34;&#34;&#34; add new catalog to be used
+
+        Parameters
+        ----------
+            catalogname (str): name of the catalog
+
+            path (str): path to the catalog
+        
+        &#34;&#34;&#34;
+
+
+        if catalogname not in self._CATALOGS:
+            raise ValueError(&#39;Not a correct catalog, approved catalogs are:&#39; &#39;&#39;.join(self._CATALOGS))
+        
+        self.catalogs[catalogname] = path
+
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Catalog
+
+        &#34;&#34;&#34;
+        
+        catloc = ET.Element(&#39;CatalogLocations&#39;)
+        
+        for i in self.catalogs:
+            tmpel = ET.SubElement(catloc,i)
+            ET.SubElement(tmpel,&#39;Directory&#39;,{&#39;path&#39;: self.catalogs[i]})
+        return catloc
+
+class CatalogReference():
+    &#34;&#34;&#34; CatalogReference creates an CatalogReference element of openscenario
+        
+        Parameters
+        ----------
+            catalogname (str): name of the catalog
+
+            entryname (str): name of the entry in the catalog            
+
+        Attributes
+        ----------
+            catalogname (str): name of the catalog
+
+            entryname (str): name of the entry in the catalog 
+
+            parameter (Parameter) ???
+
+        Methods
+        -------
+            add_parameter_assignment(parameter,value)
+                Assigns a parameter with a value
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,catalogname,entryname):
+        &#34;&#34;&#34; initalize the CatalogReference
+
+            Parameters
+            ----------
+                catalogname (str): name of the catalog
+
+                entryname (str): name of the entry in the catalog    
+                
+        &#34;&#34;&#34;
+        self.catalogname = catalogname
+        self.entryname = entryname
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the CatalogReference as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;catalogName&#39;:self.catalogname,&#39;entryName&#39;:self.entryname}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the CatalogReference
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;CatalogReference&#39;,attrib=self.get_attributes())
+    
+
+
+
 def merge_dicts(*dict_args):
     &#34;&#34;&#34; Funciton to merge dicts 
     
@@ -965,6 +1491,557 @@ def merge_dicts(*dict_args):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="pyoscx.utils.Catalog"><code class="flex name class">
+<span>class <span class="ident">Catalog</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>The Catalog class creates the CatalogLocation of the OpenScenario input</p>
+<h2 id="parameters">Parameters</h2>
+<h2 id="attributes">Attributes</h2>
+<pre><code>catalogs: dict of catalogs to add, and their path
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+add_catalog(catalogname, path)
+    Adds a new catalog
+</code></pre>
+<p>initalize the Catalog class</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Catalog():
+    &#34;&#34;&#34; The Catalog class creates the CatalogLocation of the OpenScenario input
+        
+        Parameters
+        ----------
+
+        Attributes
+        ----------
+            catalogs: dict of catalogs to add, and their path
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            add_catalog(catalogname, path)
+                Adds a new catalog 
+    &#34;&#34;&#34;
+    _CATALOGS = [\
+        &#39;VehicleCatalog&#39;,
+        &#39;ControllerCatalog&#39;,
+        &#39;PedestrianCatalog&#39;,
+        &#39;MiscObjectCatalog&#39;,
+        &#39;EnvironmentCatalog&#39;,
+        &#39;ManeuverCatalog&#39;,
+        &#39;TrajectoryCatalog&#39;,
+        &#39;RouteCatalog&#39;]
+
+    def __init__(self):
+        &#34;&#34;&#34; initalize the Catalog class
+
+        &#34;&#34;&#34;
+        self.catalogs = {}
+
+    def add_catalog(self,catalogname,path):
+        &#34;&#34;&#34; add new catalog to be used
+
+        Parameters
+        ----------
+            catalogname (str): name of the catalog
+
+            path (str): path to the catalog
+        
+        &#34;&#34;&#34;
+
+
+        if catalogname not in self._CATALOGS:
+            raise ValueError(&#39;Not a correct catalog, approved catalogs are:&#39; &#39;&#39;.join(self._CATALOGS))
+        
+        self.catalogs[catalogname] = path
+
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Catalog
+
+        &#34;&#34;&#34;
+        
+        catloc = ET.Element(&#39;CatalogLocations&#39;)
+        
+        for i in self.catalogs:
+            tmpel = ET.SubElement(catloc,i)
+            ET.SubElement(tmpel,&#39;Directory&#39;,{&#39;path&#39;: self.catalogs[i]})
+        return catloc</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.Catalog.add_catalog"><code class="name flex">
+<span>def <span class="ident">add_catalog</span></span>(<span>self, catalogname, path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>add new catalog to be used</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>catalogname (str): name of the catalog
+
+path (str): path to the catalog
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_catalog(self,catalogname,path):
+    &#34;&#34;&#34; add new catalog to be used
+
+    Parameters
+    ----------
+        catalogname (str): name of the catalog
+
+        path (str): path to the catalog
+    
+    &#34;&#34;&#34;
+
+
+    if catalogname not in self._CATALOGS:
+        raise ValueError(&#39;Not a correct catalog, approved catalogs are:&#39; &#39;&#39;.join(self._CATALOGS))
+    
+    self.catalogs[catalogname] = path</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Catalog.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Catalog</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Catalog
+
+    &#34;&#34;&#34;
+    
+    catloc = ET.Element(&#39;CatalogLocations&#39;)
+    
+    for i in self.catalogs:
+        tmpel = ET.SubElement(catloc,i)
+        ET.SubElement(tmpel,&#39;Directory&#39;,{&#39;path&#39;: self.catalogs[i]})
+    return catloc</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.CatalogFile"><code class="flex name class">
+<span>class <span class="ident">CatalogFile</span></span>
+<span>(</span><span>prettyprint=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The CatalogFile class handles any catalogs in open scenario, such as writing, and updating them</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>prettyprint (boolean): if the final file should have prettyprint or not
+    Default: True
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>prettyprint: if the final file should have prettyprint or not
+
+catalog_element (Element): the element that is worked with
+
+filename (str): path to the file to be written to
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+add_catalog(catalogname, path)
+    Adds a new catalog
+</code></pre>
+<p>initalize the CatalogFile class</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>prettyprint (boolean): if the final file should have prettyprint or not
+    Default: True
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CatalogFile():
+    &#34;&#34;&#34; The CatalogFile class handles any catalogs in open scenario, such as writing, and updating them
+        
+        Parameters
+        ----------
+            prettyprint (boolean): if the final file should have prettyprint or not
+                Default: True
+
+        Attributes
+        ----------
+            prettyprint: if the final file should have prettyprint or not
+
+            catalog_element (Element): the element that is worked with
+
+            filename (str): path to the file to be written to
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            add_catalog(catalogname, path)
+                Adds a new catalog 
+    &#34;&#34;&#34;
+
+    def __init__(self,prettyprint = True):
+        &#34;&#34;&#34; initalize the CatalogFile class
+
+            Parameters
+            ----------
+                prettyprint (boolean): if the final file should have prettyprint or not
+                    Default: True
+        &#34;&#34;&#34;
+        self.prettyprint = prettyprint
+        self.catalog_element = None
+        self.filename = &#39;&#39;
+
+    def add_to_catalog(self,obj):
+        &#34;&#34;&#34; add_to_catalog adds an element to the catalog
+            
+            Parameters
+            ----------
+                obj (*pyoscx): any pyoscx object (should be matching with the catalog)
+        
+        &#34;&#34;&#34;
+        if self.catalog_element == None:
+            OSError(&#39;No file has been created or opened&#39;)
+        catalogs = self.catalog_element.find(&#39;Catalog&#39;)
+        catalogs.append(obj.get_element())
+
+    def open_catalog(self,filename):
+        &#34;&#34;&#34; open_catalog reads an existing catalog file
+            
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        self.filename = filename
+        tree = ET.parse(self.filename)
+        self.catalog_element = tree.getroot()
+
+    def create_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; create_catalog_element creates an empty catalog of a desiered type, 
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        self.filename = filename
+        self.catalog_element = self.create_catalog_element(catalogtype,description,author)
+
+
+    def create_catalog_element(self,catalogtype,description,author):
+        &#34;&#34;&#34; create_catalog_element creates an empty catalog of a desiered type, 
+            
+            Parameters
+            ----------
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:XMLNS,&#39;xsi:noNamespaceShemaLocation&#39;:&#39;../../&#39;+XSI})
+        header = FileHeader(description,author)
+        element.append(header.get_element())
+        ET.SubElement(element,&#39;Catalog&#39;,attrib={&#39;name&#39;:catalogtype})
+
+        return element
+
+    def dump(self):
+        &#34;&#34;&#34; writes the new/updated catalog file
+
+        &#34;&#34;&#34;
+        printToFile(self.catalog_element,self.filename,self.prettyprint)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.CatalogFile.add_to_catalog"><code class="name flex">
+<span>def <span class="ident">add_to_catalog</span></span>(<span>self, obj)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>add_to_catalog adds an element to the catalog</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>obj (*pyoscx): any pyoscx object (should be matching with the catalog)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_to_catalog(self,obj):
+    &#34;&#34;&#34; add_to_catalog adds an element to the catalog
+        
+        Parameters
+        ----------
+            obj (*pyoscx): any pyoscx object (should be matching with the catalog)
+    
+    &#34;&#34;&#34;
+    if self.catalog_element == None:
+        OSError(&#39;No file has been created or opened&#39;)
+    catalogs = self.catalog_element.find(&#39;Catalog&#39;)
+    catalogs.append(obj.get_element())</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.CatalogFile.create_catalog"><code class="name flex">
+<span>def <span class="ident">create_catalog</span></span>(<span>self, filename, catalogtype, description, author)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>create_catalog_element creates an empty catalog of a desiered type, </p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path of the new catalog file
+
+catalogtype (str): name of the catalog
+
+description (str): description of the catalog
+
+author (str): author of the catalog
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_catalog(self,filename,catalogtype,description,author):
+    &#34;&#34;&#34; create_catalog_element creates an empty catalog of a desiered type, 
+        
+        Parameters
+        ----------
+            filename (str): path of the new catalog file
+
+            catalogtype (str): name of the catalog
+
+            description (str): description of the catalog
+
+            author (str): author of the catalog
+    
+    &#34;&#34;&#34;
+    self.filename = filename
+    self.catalog_element = self.create_catalog_element(catalogtype,description,author)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.CatalogFile.create_catalog_element"><code class="name flex">
+<span>def <span class="ident">create_catalog_element</span></span>(<span>self, catalogtype, description, author)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>create_catalog_element creates an empty catalog of a desiered type, </p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>catalogtype (str): name of the catalog
+
+description (str): description of the catalog
+
+author (str): author of the catalog
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_catalog_element(self,catalogtype,description,author):
+    &#34;&#34;&#34; create_catalog_element creates an empty catalog of a desiered type, 
+        
+        Parameters
+        ----------
+            catalogtype (str): name of the catalog
+
+            description (str): description of the catalog
+
+            author (str): author of the catalog
+    
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:XMLNS,&#39;xsi:noNamespaceShemaLocation&#39;:&#39;../../&#39;+XSI})
+    header = FileHeader(description,author)
+    element.append(header.get_element())
+    ET.SubElement(element,&#39;Catalog&#39;,attrib={&#39;name&#39;:catalogtype})
+
+    return element</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.CatalogFile.dump"><code class="name flex">
+<span>def <span class="ident">dump</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>writes the new/updated catalog file</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dump(self):
+    &#34;&#34;&#34; writes the new/updated catalog file
+
+    &#34;&#34;&#34;
+    printToFile(self.catalog_element,self.filename,self.prettyprint)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.CatalogFile.open_catalog"><code class="name flex">
+<span>def <span class="ident">open_catalog</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>open_catalog reads an existing catalog file</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path to the catalog file
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_catalog(self,filename):
+    &#34;&#34;&#34; open_catalog reads an existing catalog file
+        
+        Parameters
+        ----------
+            filename (str): path to the catalog file
+
+    &#34;&#34;&#34;
+    self.filename = filename
+    tree = ET.parse(self.filename)
+    self.catalog_element = tree.getroot()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.CatalogReference"><code class="flex name class">
+<span>class <span class="ident">CatalogReference</span></span>
+<span>(</span><span>catalogname, entryname)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CatalogReference creates an CatalogReference element of openscenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>catalogname (str): name of the catalog
+
+entryname (str): name of the entry in the catalog
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>catalogname (str): name of the catalog
+
+entryname (str): name of the entry in the catalog
+
+parameter (Parameter) ???
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_parameter_assignment(parameter,value)
+    Assigns a parameter with a value
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the CatalogReference</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>catalogname (str): name of the catalog
+
+entryname (str): name of the entry in the catalog
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CatalogReference():
+    &#34;&#34;&#34; CatalogReference creates an CatalogReference element of openscenario
+        
+        Parameters
+        ----------
+            catalogname (str): name of the catalog
+
+            entryname (str): name of the entry in the catalog            
+
+        Attributes
+        ----------
+            catalogname (str): name of the catalog
+
+            entryname (str): name of the entry in the catalog 
+
+            parameter (Parameter) ???
+
+        Methods
+        -------
+            add_parameter_assignment(parameter,value)
+                Assigns a parameter with a value
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,catalogname,entryname):
+        &#34;&#34;&#34; initalize the CatalogReference
+
+            Parameters
+            ----------
+                catalogname (str): name of the catalog
+
+                entryname (str): name of the entry in the catalog    
+                
+        &#34;&#34;&#34;
+        self.catalogname = catalogname
+        self.entryname = entryname
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the CatalogReference as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;catalogName&#39;:self.catalogname,&#39;entryName&#39;:self.entryname}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the CatalogReference
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;CatalogReference&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.CatalogReference.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the CatalogReference as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the CatalogReference as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;catalogName&#39;:self.catalogname,&#39;entryName&#39;:self.entryname}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.CatalogReference.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the CatalogReference</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the CatalogReference
+
+    &#34;&#34;&#34;
+    return ET.Element(&#39;CatalogReference&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="pyoscx.utils.DynamicsConstrains"><code class="flex name class">
 <span>class <span class="ident">DynamicsConstrains</span></span>
 <span>(</span><span>max_acceleration=None, max_deceleration=None, max_speed=None)</span>
@@ -1451,8 +2528,8 @@ reference (ReferenceContext): absolute or relative
         self.p = p
         self.r = r
 
-        if (reference not in ReferenceContext) and (reference != None):
-            raise ValueError(str(reference) + &#39;; is not a valid reference type.&#39;)
+        # if (reference not in ReferenceContext) and (reference != None):
+        #     raise ValueError(str(reference) + &#39;; is not a valid reference type.&#39;)
         self.ref = reference
 
     def is_filled(self):
@@ -1807,6 +2884,188 @@ add_parameter(Parameter)
     element = ET.Element(&#39;ParameterDeclarations&#39;)
     for p in self.parameters:
         element.append(p.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.Phase"><code class="flex name class">
+<span>class <span class="ident">Phase</span></span>
+<span>(</span><span>name, duration)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>crates a Traffic light phase</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): if of the phase
+
+duration (float): duration of the phase
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): if of the phase
+
+duration (float): duration of the phase
+
+signalstates (list of _TrafficSignalState): traffic signal states
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+
+add_stignal_state(signal_id,state)
+    add a traffic signal state
+</code></pre>
+<p>initalize the Phase </p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): if of the phase
+
+duration (float): duration of the phase
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Phase():
+    &#34;&#34;&#34; crates a Traffic light phase
+        
+        Parameters
+        ----------
+            name (str): if of the phase
+
+            duration (float): duration of the phase
+                
+        Attributes
+        ----------
+            name (str): if of the phase
+
+            duration (float): duration of the phase
+
+            signalstates (list of _TrafficSignalState): traffic signal states
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+            add_stignal_state(signal_id,state)
+                add a traffic signal state
+    &#34;&#34;&#34;
+
+    def __init__(self, name, duration):
+        &#34;&#34;&#34; initalize the Phase 
+        
+        Parameters
+        ----------
+            name (str): if of the phase
+
+            duration (float): duration of the phase
+
+        &#34;&#34;&#34;
+        
+        self.name = name
+        self.duration = duration
+        self.signalstates = []
+
+
+    def add_signal_state(self,signal_id,state):
+        &#34;&#34;&#34; Adds a phase of the traffic signal
+
+            Parameters
+            ----------
+                signal_id (str): id of the traffic signal in the road network
+
+                state (str): state of the signal defined in the road network
+
+        &#34;&#34;&#34;
+        self.signalstates.append(_TrafficSignalState(signal_id,state))
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TrafficSignalController
+        
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;name&#39;] = self.name
+        retdict[&#39;duration&#39;] = str(self.duration)
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Polyline
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Phase&#39;,attrib=self.get_attributes())
+        for s in self.signalstates: 
+            element.append(s.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.Phase.add_signal_state"><code class="name flex">
+<span>def <span class="ident">add_signal_state</span></span>(<span>self, signal_id, state)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds a phase of the traffic signal</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>signal_id (str): id of the traffic signal in the road network
+
+state (str): state of the signal defined in the road network
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_signal_state(self,signal_id,state):
+    &#34;&#34;&#34; Adds a phase of the traffic signal
+
+        Parameters
+        ----------
+            signal_id (str): id of the traffic signal in the road network
+
+            state (str): state of the signal defined in the road network
+
+    &#34;&#34;&#34;
+    self.signalstates.append(_TrafficSignalState(signal_id,state))</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Phase.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the TrafficSignalController</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the TrafficSignalController
+    
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;name&#39;] = self.name
+    retdict[&#39;duration&#39;] = str(self.duration)
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Phase.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Polyline</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Polyline
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Phase&#39;,attrib=self.get_attributes())
+    for s in self.signalstates: 
+        element.append(s.get_element())
     return element</code></pre>
 </details>
 </dd>
@@ -2343,8 +3602,8 @@ get_attributes()
             self._only_nones = False
         else:
             ValueError(&#39;missing inputs for time reference&#39;)
-        if referece_domain not in ReferenceContext:
-            ValueError(&#39;not a valid reference domain&#39;)
+        # if referece_domain not in ReferenceContext:
+        #     ValueError(&#39;not a valid reference domain&#39;)
         self.referece_domain = referece_domain
         self.scale = scale
         self.offset = offset
@@ -2414,6 +3673,467 @@ get_attributes()
     else:
         ET.SubElement(element,&#39;Timing&#39;,self.get_attributes())
     
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.TrafficDefinition"><code class="flex name class">
+<span>class <span class="ident">TrafficDefinition</span></span>
+<span>(</span><span>name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the TrafficDefinition class creates a TrafficDefinition used by the different TrafficActions</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the traffic definition
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the traffic definition
+
+vehicleweights (list of floats): The weights of the vehicle categories (VehicleCategoryDistribution-wight)
+
+vehiclecategories (list of VehicleCategory): the vehicle category ((VehicleCategoryDistribution-category))
+
+controllerweights (list of floats): The weights of the controllers
+
+controllers (list of Controller/CatalogReference): The controllers for the traffic
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+
+add_vehicle(vehiclecategory,weight)
+    Adds a vehicle to the traffic definition
+
+add_controller(controller,weight)
+    Adds a controller to the traffic definition
+</code></pre>
+<p>initalize the TrafficDefinition </p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the traffic definition
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TrafficDefinition():
+    &#34;&#34;&#34; the TrafficDefinition class creates a TrafficDefinition used by the different TrafficActions
+        
+        Parameters
+        ----------
+            name (str): name of the traffic definition
+       
+
+        Attributes
+        ----------
+            name (str): name of the traffic definition
+
+            vehicleweights (list of floats): The weights of the vehicle categories (VehicleCategoryDistribution-wight)
+
+            vehiclecategories (list of VehicleCategory): the vehicle category ((VehicleCategoryDistribution-category))
+
+            controllerweights (list of floats): The weights of the controllers
+
+            controllers (list of Controller/CatalogReference): The controllers for the traffic
+
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+            add_vehicle(vehiclecategory,weight)
+                Adds a vehicle to the traffic definition
+
+            add_controller(controller,weight)
+                Adds a controller to the traffic definition
+                
+    &#34;&#34;&#34;
+
+    def __init__(self, name):
+        &#34;&#34;&#34; initalize the TrafficDefinition 
+        
+        Parameters
+        ----------
+            name (str): name of the traffic definition
+
+        &#34;&#34;&#34;            
+        
+        self.name = name
+        self.vehicleweights = [] 
+        self.vehiclecategories = [] 
+        self.controllerweights = []
+        self.controllers = []
+        
+
+
+
+    def add_vehicle(self,vehiclecategory,weight):
+        &#34;&#34;&#34; Adds a vehicle to the traffic distribution
+
+            Parameters
+            ----------
+                vehiclecategory (VehicleCategory): vehicle category of the entity in the traffic
+
+                weight (float): the corresponding weight for the distribution of the vehicle category
+
+        &#34;&#34;&#34;
+
+        self.vehiclecategories.append(vehiclecategory)
+        self.vehicleweights.append(weight)
+
+    def add_controller(self,controller,weight):
+        &#34;&#34;&#34; Adds a controller to the traffic distribution
+
+            Parameters
+            ----------
+                controller (Controller or CatalogReference): a controller or catalog reference to a controller
+
+                weight (float): the corresponding weight for the controller
+
+        &#34;&#34;&#34;
+        self.controllers.append(controller)
+        self.controllerweights.append(weight)
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TrafficDefinition
+        
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;name&#39;] = self.name
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TrafficDefinition
+
+        &#34;&#34;&#34;
+        if not self.controllers:
+            ValueError(&#39;No controllers defined for the TrafficDefinition&#39;)
+        if not self.vehiclecategories:
+            ValueError(&#39;No Vehicles defined for the TrafficDefinition&#39;)
+                
+        element = ET.Element(&#39;TrafficDefinition&#39;,attrib=self.get_attributes())
+        
+        veh_element = ET.SubElement(element,&#39;VehicleCategoryDistribution&#39;)
+        for i in range(len(self.vehiclecategories)):
+            ET.SubElement(veh_element,&#39;VehicleCategoryDistributionEntry&#39;,attrib={&#39;category&#39;: self.vehiclecategories[i].name,&#39;weight&#39;: str(self.vehicleweights[i])})
+
+        cnt_element = ET.SubElement(element,&#39;ControllerDistribution&#39;)
+        for i in range(len(self.controllers)):
+            tmp_controller = ET.SubElement(cnt_element,&#39;ControllerDistributionEntry&#39;,attrib={&#39;weight&#39;:str(self.controllerweights[i])})
+            tmp_controller.append(self.controllers[i].get_element())
+
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.TrafficDefinition.add_controller"><code class="name flex">
+<span>def <span class="ident">add_controller</span></span>(<span>self, controller, weight)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds a controller to the traffic distribution</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>controller (Controller or CatalogReference): a controller or catalog reference to a controller
+
+weight (float): the corresponding weight for the controller
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_controller(self,controller,weight):
+    &#34;&#34;&#34; Adds a controller to the traffic distribution
+
+        Parameters
+        ----------
+            controller (Controller or CatalogReference): a controller or catalog reference to a controller
+
+            weight (float): the corresponding weight for the controller
+
+    &#34;&#34;&#34;
+    self.controllers.append(controller)
+    self.controllerweights.append(weight)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.TrafficDefinition.add_vehicle"><code class="name flex">
+<span>def <span class="ident">add_vehicle</span></span>(<span>self, vehiclecategory, weight)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds a vehicle to the traffic distribution</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>vehiclecategory (VehicleCategory): vehicle category of the entity in the traffic
+
+weight (float): the corresponding weight for the distribution of the vehicle category
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_vehicle(self,vehiclecategory,weight):
+    &#34;&#34;&#34; Adds a vehicle to the traffic distribution
+
+        Parameters
+        ----------
+            vehiclecategory (VehicleCategory): vehicle category of the entity in the traffic
+
+            weight (float): the corresponding weight for the distribution of the vehicle category
+
+    &#34;&#34;&#34;
+
+    self.vehiclecategories.append(vehiclecategory)
+    self.vehicleweights.append(weight)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.TrafficDefinition.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the TrafficDefinition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the TrafficDefinition
+    
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;name&#39;] = self.name
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.TrafficDefinition.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the TrafficDefinition</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the TrafficDefinition
+
+    &#34;&#34;&#34;
+    if not self.controllers:
+        ValueError(&#39;No controllers defined for the TrafficDefinition&#39;)
+    if not self.vehiclecategories:
+        ValueError(&#39;No Vehicles defined for the TrafficDefinition&#39;)
+            
+    element = ET.Element(&#39;TrafficDefinition&#39;,attrib=self.get_attributes())
+    
+    veh_element = ET.SubElement(element,&#39;VehicleCategoryDistribution&#39;)
+    for i in range(len(self.vehiclecategories)):
+        ET.SubElement(veh_element,&#39;VehicleCategoryDistributionEntry&#39;,attrib={&#39;category&#39;: self.vehiclecategories[i].name,&#39;weight&#39;: str(self.vehicleweights[i])})
+
+    cnt_element = ET.SubElement(element,&#39;ControllerDistribution&#39;)
+    for i in range(len(self.controllers)):
+        tmp_controller = ET.SubElement(cnt_element,&#39;ControllerDistributionEntry&#39;,attrib={&#39;weight&#39;:str(self.controllerweights[i])})
+        tmp_controller.append(self.controllers[i].get_element())
+
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.TrafficSignalController"><code class="flex name class">
+<span>class <span class="ident">TrafficSignalController</span></span>
+<span>(</span><span>name, delay=None, reference=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the TrafficSignalController class creates a polyline of (minimum 2) positions</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): if of the trafic signal
+
+delay (float): delay of the phase shift
+    Default: None
+reference (string): id to the controller in the roadnetwork
+    Default: None
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): if of the trafic signal
+
+delay (float): delay of the phase shift
+    Default: None
+reference (string): id to the controller in the roadnetwork
+    Default: None
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+
+add_phase(Phase)
+    add a phase to the trafficsitnal controller
+</code></pre>
+<p>initalize the TrafficSignalController </p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): if of the trafic signal
+
+delay (float): delay of the phase shift
+    Default: None
+reference (string): id to the controller in the RoadNetwork
+    Default: None
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TrafficSignalController():
+    &#34;&#34;&#34; the TrafficSignalController class creates a polyline of (minimum 2) positions
+        
+        Parameters
+        ----------
+            name (str): if of the trafic signal
+
+            delay (float): delay of the phase shift
+                Default: None
+            reference (string): id to the controller in the roadnetwork
+                Default: None
+
+        Attributes
+        ----------
+            name (str): if of the trafic signal
+
+            delay (float): delay of the phase shift
+                Default: None
+            reference (string): id to the controller in the roadnetwork
+                Default: None
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+            add_phase(Phase)
+                add a phase to the trafficsitnal controller
+    &#34;&#34;&#34;
+
+    def __init__(self, name, delay = None,reference = None):
+        &#34;&#34;&#34; initalize the TrafficSignalController 
+        
+        Parameters
+        ----------
+            name (str): if of the trafic signal
+
+            delay (float): delay of the phase shift
+                Default: None
+            reference (string): id to the controller in the RoadNetwork
+                Default: None
+
+        &#34;&#34;&#34;
+        
+        self.name = name
+        self.delay = delay
+        self.reference = reference
+        self.phases = []
+
+
+    def add_phase(self,phase):
+        &#34;&#34;&#34; Adds a phase of the traffic signal
+
+            Parameters
+            ----------
+                phase (Phase): a phase of the trafficsignal
+
+        &#34;&#34;&#34;
+        self.phases.append(phase)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the TrafficSignalController
+        
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;name&#39;] = self.name
+        if self.delay:
+            retdict[&#39;delay&#39;] = str(self.delay)
+        if self.reference:
+            retdict[&#39;reference&#39;] = self.reference
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the TrafficSignalController
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;TrafficSignalController&#39;,attrib=self.get_attributes())
+        for ph in self.phases: 
+            element.append(ph.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.TrafficSignalController.add_phase"><code class="name flex">
+<span>def <span class="ident">add_phase</span></span>(<span>self, phase)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds a phase of the traffic signal</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>phase (Phase): a phase of the trafficsignal
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_phase(self,phase):
+    &#34;&#34;&#34; Adds a phase of the traffic signal
+
+        Parameters
+        ----------
+            phase (Phase): a phase of the trafficsignal
+
+    &#34;&#34;&#34;
+    self.phases.append(phase)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.TrafficSignalController.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the TrafficSignalController</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the TrafficSignalController
+    
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;name&#39;] = self.name
+    if self.delay:
+        retdict[&#39;delay&#39;] = str(self.delay)
+    if self.reference:
+        retdict[&#39;reference&#39;] = self.reference
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.TrafficSignalController.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the TrafficSignalController</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the TrafficSignalController
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;TrafficSignalController&#39;,attrib=self.get_attributes())
+    for ph in self.phases: 
+        element.append(ph.get_element())
     return element</code></pre>
 </details>
 </dd>
@@ -2812,12 +4532,12 @@ value (float): the value of the dynamics (time rate or distance)
                 value (float): the value of the dynamics (time rate or distance)
 
         &#34;&#34;&#34;
-        if shape not in DynamicsShapes:
-            raise ValueError(shape + &#39;; is not a valid shape.&#39;)
+        # if shape not in DynamicsShapes:
+        #     raise ValueError(shape + &#39;; is not a valid shape.&#39;)
         
         self.shape = shape
-        if dimension not in DynamicsDimension:
-            raise ValueError(dimension + &#39; is not a valid dynamics dimension&#39;)
+        # if dimension not in DynamicsDimension:
+        #     raise ValueError(dimension + &#39; is not a valid dynamics dimension&#39;)
         self.dimension = dimension
         self.value = value
 
@@ -3017,6 +4737,30 @@ routestrategy (RouteStrategy): routing strategy for this waypoint
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="pyoscx.utils.Catalog" href="#pyoscx.utils.Catalog">Catalog</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.Catalog.add_catalog" href="#pyoscx.utils.Catalog.add_catalog">add_catalog</a></code></li>
+<li><code><a title="pyoscx.utils.Catalog.get_element" href="#pyoscx.utils.Catalog.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.CatalogFile" href="#pyoscx.utils.CatalogFile">CatalogFile</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.CatalogFile.add_to_catalog" href="#pyoscx.utils.CatalogFile.add_to_catalog">add_to_catalog</a></code></li>
+<li><code><a title="pyoscx.utils.CatalogFile.create_catalog" href="#pyoscx.utils.CatalogFile.create_catalog">create_catalog</a></code></li>
+<li><code><a title="pyoscx.utils.CatalogFile.create_catalog_element" href="#pyoscx.utils.CatalogFile.create_catalog_element">create_catalog_element</a></code></li>
+<li><code><a title="pyoscx.utils.CatalogFile.dump" href="#pyoscx.utils.CatalogFile.dump">dump</a></code></li>
+<li><code><a title="pyoscx.utils.CatalogFile.open_catalog" href="#pyoscx.utils.CatalogFile.open_catalog">open_catalog</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.CatalogReference" href="#pyoscx.utils.CatalogReference">CatalogReference</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.CatalogReference.get_attributes" href="#pyoscx.utils.CatalogReference.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.CatalogReference.get_element" href="#pyoscx.utils.CatalogReference.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pyoscx.utils.DynamicsConstrains" href="#pyoscx.utils.DynamicsConstrains">DynamicsConstrains</a></code></h4>
 <ul class="">
 <li><code><a title="pyoscx.utils.DynamicsConstrains.get_attributes" href="#pyoscx.utils.DynamicsConstrains.get_attributes">get_attributes</a></code></li>
@@ -3061,6 +4805,14 @@ routestrategy (RouteStrategy): routing strategy for this waypoint
 </ul>
 </li>
 <li>
+<h4><code><a title="pyoscx.utils.Phase" href="#pyoscx.utils.Phase">Phase</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.Phase.add_signal_state" href="#pyoscx.utils.Phase.add_signal_state">add_signal_state</a></code></li>
+<li><code><a title="pyoscx.utils.Phase.get_attributes" href="#pyoscx.utils.Phase.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.Phase.get_element" href="#pyoscx.utils.Phase.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pyoscx.utils.Polyline" href="#pyoscx.utils.Polyline">Polyline</a></code></h4>
 <ul class="">
 <li><code><a title="pyoscx.utils.Polyline.get_element" href="#pyoscx.utils.Polyline.get_element">get_element</a></code></li>
@@ -3082,6 +4834,23 @@ routestrategy (RouteStrategy): routing strategy for this waypoint
 <ul class="">
 <li><code><a title="pyoscx.utils.TimeReference.get_attributes" href="#pyoscx.utils.TimeReference.get_attributes">get_attributes</a></code></li>
 <li><code><a title="pyoscx.utils.TimeReference.get_element" href="#pyoscx.utils.TimeReference.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.TrafficDefinition" href="#pyoscx.utils.TrafficDefinition">TrafficDefinition</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.TrafficDefinition.add_controller" href="#pyoscx.utils.TrafficDefinition.add_controller">add_controller</a></code></li>
+<li><code><a title="pyoscx.utils.TrafficDefinition.add_vehicle" href="#pyoscx.utils.TrafficDefinition.add_vehicle">add_vehicle</a></code></li>
+<li><code><a title="pyoscx.utils.TrafficDefinition.get_attributes" href="#pyoscx.utils.TrafficDefinition.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.TrafficDefinition.get_element" href="#pyoscx.utils.TrafficDefinition.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.TrafficSignalController" href="#pyoscx.utils.TrafficSignalController">TrafficSignalController</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.TrafficSignalController.add_phase" href="#pyoscx.utils.TrafficSignalController.add_phase">add_phase</a></code></li>
+<li><code><a title="pyoscx.utils.TrafficSignalController.get_attributes" href="#pyoscx.utils.TrafficSignalController.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.TrafficSignalController.get_element" href="#pyoscx.utils.TrafficSignalController.get_element">get_element</a></code></li>
 </ul>
 </li>
 <li>
@@ -3115,9 +4884,7 @@ routestrategy (RouteStrategy): routing strategy for this waypoint
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.4</a>.</p>
 </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad()</script>
 </body>
 </html>
