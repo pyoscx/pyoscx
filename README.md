@@ -17,7 +17,7 @@ Been tested with Python 3.6.9
 Go to the pyoscx folder and use
 
 ```
-pip install .
+pip3 install .
 ```
 
 ### Running with esmini
@@ -30,6 +30,9 @@ To view the scenario created, esmini can be used. Visit https://github.com/esmin
 ### esmini
 [esmini](https://github.com/esmini/esmini) is a basic OpenSCENARIO player
 
+### pyodrx
+[pyoscx](https://github.com/pyoscx/pyoscx) basic python wrapper for OpenDRIVE
+ 
 ## Authors
 
 * **Mikael Andersson** - *Initial work* - [MandolinMicke](https://github.com/MandolinMicke)
