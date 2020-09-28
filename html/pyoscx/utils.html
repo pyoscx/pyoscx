@@ -921,7 +921,7 @@ class Clothoid():
             raise ValueError(&#39;Both start and stoptime has to be set, or none of them&#39;)
     
     def get_attributes(self):
-        &#34;&#34;&#34; returns the attributes as a dict of the FileHeader
+        &#34;&#34;&#34; returns the attributes as a dict of the Clothoid
 
         &#34;&#34;&#34;
         retdict = {}
@@ -942,7 +942,160 @@ class Clothoid():
 
         return element
 
+class ControlPoint():
+    &#34;&#34;&#34; the ControlPoint class is used by Nurbs to define points 
+        
+        Parameters
+        ----------
+            position (*Position): a position for the point
 
+            time (float): optional time specification of the point
+                Default: None
+
+            weight (float): optional weight of the point
+                Default: None
+
+        Attributes
+        ----------
+            position (*Position): a position for the point
+
+            time (float): optional time specification of the point
+
+            weight (float): optional weight of the point
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self, position, time = None, weight = None):
+        &#34;&#34;&#34; initalize the ControlPoint
+
+        Parameters
+        ----------
+            position (*Position): a position for the point
+
+            time (float): optional time specification of the point
+                Default: None
+
+            weight (float): optional weight of the point
+                Default: None
+
+        &#34;&#34;&#34;
+
+        
+        self.position = position
+        self.time = time
+        self.weight = weight
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the ControlPoint
+
+        &#34;&#34;&#34;
+        retdict = {}
+        if self.time:
+            retdict[&#39;time&#39;] = str(self.time)
+        if self.weight:
+            retdict[&#39;weight&#39;] = str(self.weight)
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the ControlPoint
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;ControlPoint&#39;,attrib=self.get_attributes())
+        element.append(self.position.get_element())
+        return element
+
+class Nurbs():
+    &#34;&#34;&#34; the Nurbs class creates a Nurbs shape
+        
+        Parameters
+        ----------
+            order (int): order of the nurbs
+
+        Attributes
+        ----------
+            order (int): order of the nurbs
+
+            controlpoints (list of *ControlPoint): a list of control point createing the nurbs 
+
+            knots (list of double): knots of the nurbs (must be order + len(controlpoints)) in decending order
+
+        Methods
+        -------
+            add_knots(knots)
+                Adds the knots to the nurbs
+
+            add_control_point(controlpoint)
+                Adds a control point to the nurbs
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self, order):
+        &#34;&#34;&#34; initalize the Nurbs
+
+        Parameters
+        ----------
+            order (int): order of the nurbs
+
+        &#34;&#34;&#34;
+
+        
+        self.order = order
+        self.controlpoints = []
+        self.knots = []
+    
+    def add_knots(self,knots):
+        &#34;&#34;&#34; adds a list of knots to the Nurbs
+
+            Parameters
+            ----------
+                knots (list of double): knots of the nurbs (must be order + len(controlpoints)) in decending order
+        &#34;&#34;&#34;
+        self.knots = knots
+    def add_control_point(self,controlpoint):
+        &#34;&#34;&#34; adds a controlpoint to the Nurbs
+
+            Parameters
+            ----------
+                controlpoint (ControlPoint): a contact point to add to the nurbs
+        &#34;&#34;&#34;
+        self.controlpoints.append(controlpoint)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Nurbs
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;order&#39;] = str(self.order)
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Nurbs
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Nurbs&#39;,attrib=self.get_attributes())
+        if (len(self.controlpoints) + self.order) != len(self.knots):
+            raise ValueError(&#39;Number of knots is not equal to the number of contactpoints + order&#39;)
+        for c in self.controlpoints:
+            element.append(c.get_element())
+        for k in self.knots:
+            ET.SubElement(element,&#39;Knot&#39;,attrib={&#39;value&#39;:str(k)})
+        
+
+        return element
 
 
 
@@ -2635,7 +2788,7 @@ stoptime (float): (optional) end time of the clothoid
             raise ValueError(&#39;Both start and stoptime has to be set, or none of them&#39;)
     
     def get_attributes(self):
-        &#34;&#34;&#34; returns the attributes as a dict of the FileHeader
+        &#34;&#34;&#34; returns the attributes as a dict of the Clothoid
 
         &#34;&#34;&#34;
         retdict = {}
@@ -2662,13 +2815,13 @@ stoptime (float): (optional) end time of the clothoid
 <span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>returns the attributes as a dict of the FileHeader</p></div>
+<div class="desc"><p>returns the attributes as a dict of the Clothoid</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_attributes(self):
-    &#34;&#34;&#34; returns the attributes as a dict of the FileHeader
+    &#34;&#34;&#34; returns the attributes as a dict of the Clothoid
 
     &#34;&#34;&#34;
     retdict = {}
@@ -2697,6 +2850,162 @@ stoptime (float): (optional) end time of the clothoid
     element = ET.Element(&#39;Clothoid&#39;,attrib=self.get_attributes())
     element.append(self.startposition.get_element())
 
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.ControlPoint"><code class="flex name class">
+<span>class <span class="ident">ControlPoint</span></span>
+<span>(</span><span>position, time=None, weight=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the ControlPoint class is used by Nurbs to define points </p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>position (*Position): a position for the point
+
+time (float): optional time specification of the point
+    Default: None
+
+weight (float): optional weight of the point
+    Default: None
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>position (*Position): a position for the point
+
+time (float): optional time specification of the point
+
+weight (float): optional weight of the point
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the ControlPoint</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>position (*Position): a position for the point
+
+time (float): optional time specification of the point
+    Default: None
+
+weight (float): optional weight of the point
+    Default: None
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ControlPoint():
+    &#34;&#34;&#34; the ControlPoint class is used by Nurbs to define points 
+        
+        Parameters
+        ----------
+            position (*Position): a position for the point
+
+            time (float): optional time specification of the point
+                Default: None
+
+            weight (float): optional weight of the point
+                Default: None
+
+        Attributes
+        ----------
+            position (*Position): a position for the point
+
+            time (float): optional time specification of the point
+
+            weight (float): optional weight of the point
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self, position, time = None, weight = None):
+        &#34;&#34;&#34; initalize the ControlPoint
+
+        Parameters
+        ----------
+            position (*Position): a position for the point
+
+            time (float): optional time specification of the point
+                Default: None
+
+            weight (float): optional weight of the point
+                Default: None
+
+        &#34;&#34;&#34;
+
+        
+        self.position = position
+        self.time = time
+        self.weight = weight
+    
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the ControlPoint
+
+        &#34;&#34;&#34;
+        retdict = {}
+        if self.time:
+            retdict[&#39;time&#39;] = str(self.time)
+        if self.weight:
+            retdict[&#39;weight&#39;] = str(self.weight)
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the ControlPoint
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;ControlPoint&#39;,attrib=self.get_attributes())
+        element.append(self.position.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.ControlPoint.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the ControlPoint</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the ControlPoint
+
+    &#34;&#34;&#34;
+    retdict = {}
+    if self.time:
+        retdict[&#39;time&#39;] = str(self.time)
+    if self.weight:
+        retdict[&#39;weight&#39;] = str(self.weight)
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.ControlPoint.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the ControlPoint</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the ControlPoint
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;ControlPoint&#39;,attrib=self.get_attributes())
+    element.append(self.position.get_element())
     return element</code></pre>
 </details>
 </dd>
@@ -3323,6 +3632,219 @@ get_attributes()
 
     &#34;&#34;&#34;
     element = ET.Element(&#39;FileHeader&#39;,attrib=self.get_attributes())
+
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.Nurbs"><code class="flex name class">
+<span>class <span class="ident">Nurbs</span></span>
+<span>(</span><span>order)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Nurbs class creates a Nurbs shape</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>order (int): order of the nurbs
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>order (int): order of the nurbs
+
+controlpoints (list of *ControlPoint): a list of control point createing the nurbs
+
+knots (list of double): knots of the nurbs (must be order + len(controlpoints)) in decending order
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_knots(knots)
+    Adds the knots to the nurbs
+
+add_control_point(controlpoint)
+    Adds a control point to the nurbs
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the Nurbs</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>order (int): order of the nurbs
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Nurbs():
+    &#34;&#34;&#34; the Nurbs class creates a Nurbs shape
+        
+        Parameters
+        ----------
+            order (int): order of the nurbs
+
+        Attributes
+        ----------
+            order (int): order of the nurbs
+
+            controlpoints (list of *ControlPoint): a list of control point createing the nurbs 
+
+            knots (list of double): knots of the nurbs (must be order + len(controlpoints)) in decending order
+
+        Methods
+        -------
+            add_knots(knots)
+                Adds the knots to the nurbs
+
+            add_control_point(controlpoint)
+                Adds a control point to the nurbs
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self, order):
+        &#34;&#34;&#34; initalize the Nurbs
+
+        Parameters
+        ----------
+            order (int): order of the nurbs
+
+        &#34;&#34;&#34;
+
+        
+        self.order = order
+        self.controlpoints = []
+        self.knots = []
+    
+    def add_knots(self,knots):
+        &#34;&#34;&#34; adds a list of knots to the Nurbs
+
+            Parameters
+            ----------
+                knots (list of double): knots of the nurbs (must be order + len(controlpoints)) in decending order
+        &#34;&#34;&#34;
+        self.knots = knots
+    def add_control_point(self,controlpoint):
+        &#34;&#34;&#34; adds a controlpoint to the Nurbs
+
+            Parameters
+            ----------
+                controlpoint (ControlPoint): a contact point to add to the nurbs
+        &#34;&#34;&#34;
+        self.controlpoints.append(controlpoint)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Nurbs
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;order&#39;] = str(self.order)
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Nurbs
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Nurbs&#39;,attrib=self.get_attributes())
+        if (len(self.controlpoints) + self.order) != len(self.knots):
+            raise ValueError(&#39;Number of knots is not equal to the number of contactpoints + order&#39;)
+        for c in self.controlpoints:
+            element.append(c.get_element())
+        for k in self.knots:
+            ET.SubElement(element,&#39;Knot&#39;,attrib={&#39;value&#39;:str(k)})
+        
+
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.Nurbs.add_control_point"><code class="name flex">
+<span>def <span class="ident">add_control_point</span></span>(<span>self, controlpoint)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a controlpoint to the Nurbs</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>controlpoint (ControlPoint): a contact point to add to the nurbs
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_control_point(self,controlpoint):
+    &#34;&#34;&#34; adds a controlpoint to the Nurbs
+
+        Parameters
+        ----------
+            controlpoint (ControlPoint): a contact point to add to the nurbs
+    &#34;&#34;&#34;
+    self.controlpoints.append(controlpoint)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Nurbs.add_knots"><code class="name flex">
+<span>def <span class="ident">add_knots</span></span>(<span>self, knots)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a list of knots to the Nurbs</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>knots (list of double): knots of the nurbs (must be order + len(controlpoints)) in decending order
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_knots(self,knots):
+    &#34;&#34;&#34; adds a list of knots to the Nurbs
+
+        Parameters
+        ----------
+            knots (list of double): knots of the nurbs (must be order + len(controlpoints)) in decending order
+    &#34;&#34;&#34;
+    self.knots = knots</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Nurbs.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the Nurbs</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the Nurbs
+
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;order&#39;] = str(self.order)
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Nurbs.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Nurbs</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Nurbs
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Nurbs&#39;,attrib=self.get_attributes())
+    if (len(self.controlpoints) + self.order) != len(self.knots):
+        raise ValueError(&#39;Number of knots is not equal to the number of contactpoints + order&#39;)
+    for c in self.controlpoints:
+        element.append(c.get_element())
+    for k in self.knots:
+        ET.SubElement(element,&#39;Knot&#39;,attrib={&#39;value&#39;:str(k)})
+    
 
     return element</code></pre>
 </details>
@@ -6212,6 +6734,13 @@ fog_bounding_box (BoundingBox): bounding box of fog
 </ul>
 </li>
 <li>
+<h4><code><a title="pyoscx.utils.ControlPoint" href="#pyoscx.utils.ControlPoint">ControlPoint</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.ControlPoint.get_attributes" href="#pyoscx.utils.ControlPoint.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.ControlPoint.get_element" href="#pyoscx.utils.ControlPoint.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pyoscx.utils.DynamicsConstrains" href="#pyoscx.utils.DynamicsConstrains">DynamicsConstrains</a></code></h4>
 <ul class="">
 <li><code><a title="pyoscx.utils.DynamicsConstrains.get_attributes" href="#pyoscx.utils.DynamicsConstrains.get_attributes">get_attributes</a></code></li>
@@ -6239,6 +6768,15 @@ fog_bounding_box (BoundingBox): bounding box of fog
 <ul class="">
 <li><code><a title="pyoscx.utils.FileHeader.get_attributes" href="#pyoscx.utils.FileHeader.get_attributes">get_attributes</a></code></li>
 <li><code><a title="pyoscx.utils.FileHeader.get_element" href="#pyoscx.utils.FileHeader.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.Nurbs" href="#pyoscx.utils.Nurbs">Nurbs</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.Nurbs.add_control_point" href="#pyoscx.utils.Nurbs.add_control_point">add_control_point</a></code></li>
+<li><code><a title="pyoscx.utils.Nurbs.add_knots" href="#pyoscx.utils.Nurbs.add_knots">add_knots</a></code></li>
+<li><code><a title="pyoscx.utils.Nurbs.get_attributes" href="#pyoscx.utils.Nurbs.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.Nurbs.get_element" href="#pyoscx.utils.Nurbs.get_element">get_element</a></code></li>
 </ul>
 </li>
 <li>
