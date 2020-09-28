@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.8.4" />
+<meta name="generator" content="pdoc 0.9.1" />
 <title>pyoscx.actions API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
 <style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js" integrity="sha256-eOgo0OtLL4cdq7RdwRUiGKLX9XsIJ7nGhWEKbohmVAQ=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
 </head>
 <body>
@@ -637,8 +637,8 @@ class AbsoluteLaneOffsetAction():
         &#34;&#34;&#34;
         self.continious = continious
         self.value = value
-        # if shape not in DynamicsShapes:
-        #     raise ValueError(shape + &#39;; is not a valid shape.&#39;)
+        if shape not in DynamicsShapes:
+            raise ValueError(shape + &#39;; is not a valid shape.&#39;)
         self.dynshape = shape
         self.maxlatacc = maxlatacc
 
@@ -929,7 +929,7 @@ class AssingRouteAction():
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
         routeaction = ET.SubElement(element,&#39;RoutingAction&#39;)
-        assignrouteaction = ET.SubElement(routeaction,&#39;AssignRoutingAction&#39;)
+        assignrouteaction = ET.SubElement(routeaction,&#39;AssignRouteAction&#39;)
         assignrouteaction.append(self.route.get_element())
 
         return element
@@ -1012,7 +1012,7 @@ class FollowTrajectoryAction():
             ----------
                 trajectory (Trajectory, or CatalogReference): the trajectory to follow
 
-                following_mode (str): the following mode of the action
+                following_mode (FollowMode): the following mode of the action
 
                 referece_domain (str): absolute or relative time reference (must be combined with scale and offset)
                     Default: None
@@ -1021,8 +1021,8 @@ class FollowTrajectoryAction():
                 offset (double): offset for time values (must be combined with referece_domain and scale)
                     Default: None
         &#34;&#34;&#34;
-        if following_mode not in FollowMode:
-            ValueError(str(following_mode) + &#39; is not a valied following mode.&#39;)
+        # if following_mode not in FollowMode:
+        #     ValueError(str(following_mode) + &#39; is not a valied following mode.&#39;)
         self.trajectory = trajectory
         self.following_mode = following_mode
 
@@ -1651,7 +1651,7 @@ class RelativeSynchronizeAction():
         self.target_position = target_position
         self.speed = speed
         # if speed_target_type not in SpeedTargetValueType:
-        #     ValueError(speed_target_type + &#39; is not a valid speed_target_type&#39;)
+            # ValueError(speed_target_type + &#39; is not a valid speed_target_type&#39;)
         self.speed_target_type = speed_target_type
 
     def get_attributes(self):
@@ -2011,7 +2011,7 @@ class DeleteEntityAction():
         return element
 
 
-### TODO ###
+
 class TrafficSignalControllerAction():
     &#34;&#34;&#34; The TrafficSignalControllerAction class creates a Infrastructure action which activates a controller of a traffic signal
         
@@ -2047,9 +2047,8 @@ class TrafficSignalControllerAction():
             state (str): the state to set to the traffic light
 
         &#34;&#34;&#34;
-        NotImplementedError(&#39;TrafficSignalControllerAction is not implemented yet.&#39;)
-        # self.name = name
-        # self.state = state
+        self.name = name
+        self.state = state
 
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the AbsoluteSpeedAction as a dict
@@ -2067,8 +2066,6 @@ class TrafficSignalControllerAction():
         ET.SubElement(tsa,&#39;TrafficSignalStateAction&#39;,self.get_attributes())
         
         return element
-
-
 
 
 class TrafficSourceAction():
@@ -2149,8 +2146,9 @@ class TrafficSourceAction():
         &#34;&#34;&#34; returns the elementTree of the TrafficSourceAction
 
         &#34;&#34;&#34;
-        element = ET.Element(&#39;TrafficAction&#39;)
-        sourceaction = ET.SubElement(element,&#39;TrafficSourceAction&#39;,attrib=self.get_attributes())
+        element = ET.Element(&#39;GlobalAction&#39;)
+        trafficaction = ET.SubElement(element, &#39;TrafficAction&#39;)
+        sourceaction = ET.SubElement(trafficaction,&#39;TrafficSourceAction&#39;,attrib=self.get_attributes())
         sourceaction.append(self.position.get_element())
         sourceaction.append(self.trafficdefinition.get_element())
 
@@ -2225,8 +2223,10 @@ class TrafficSinkAction():
         &#34;&#34;&#34; returns the elementTree of the TrafficSinkAction
 
         &#34;&#34;&#34;
-        element = ET.Element(&#39;TrafficAction&#39;)
-        sinkaction = ET.SubElement(element,&#39;TrafficSinkAction&#39;,attrib=self.get_attributes())
+
+        element = ET.Element(&#39;GlobalAction&#39;)
+        trafficaction = ET.SubElement(element, &#39;TrafficAction&#39;)
+        sinkaction = ET.SubElement(trafficaction,&#39;TrafficSinkAction&#39;,attrib=self.get_attributes())
         sinkaction.append(self.position.get_element())
         sinkaction.append(self.trafficdefinition.get_element())
 
@@ -2332,10 +2332,119 @@ class TrafficSwarmAction():
         &#34;&#34;&#34; returns the elementTree of the TrafficSinkAction
 
         &#34;&#34;&#34;
-        element = ET.Element(&#39;TrafficAction&#39;)
-        swarmaction = ET.SubElement(element,&#39;TrafficSwarmAction&#39;,attrib=self.get_attributes())
+        element = ET.Element(&#39;GlobalAction&#39;)
+        trafficaction = ET.SubElement(element, &#39;TrafficAction&#39;)
+        swarmaction = ET.SubElement(trafficaction,&#39;TrafficSwarmAction&#39;,attrib=self.get_attributes())
         swarmaction.append(self.trafficdefinition.get_element())
         ET.SubElement(swarmaction,&#39;CentralSwarmObject&#39;,attrib={&#39;entityRef&#39;:self.centralobject})
+
+        return element
+
+
+class EnvironmentAction():
+    &#34;&#34;&#34; The EnvironmentAction class creates a GlobalAction of the typ EnvironmentAction
+        
+        Parameters
+        ----------
+            name (str): name of the action
+
+            environment (Environment or CatalogReference): the environment to change to
+
+        Attributes
+        ----------
+
+            name (str): name of the action
+
+            environment (Environment or CatalogReference): the environment to change to
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+    &#34;&#34;&#34;
+    def __init__(self, name, environment):
+        &#34;&#34;&#34; initalize the EnvironmentAction
+
+            Parameters
+            ----------
+                name (str): name of the action
+
+                environment (Environment or CatalogReference): the environment to change to
+
+        &#34;&#34;&#34;
+        self.name = name
+        self.environment = environment
+
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the EnvironmentAction as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;name&#39;] = self.name
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the EnvironmentAction
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;GlobalAction&#39;)
+        envaction = ET.SubElement(element, &#39;EnvironmentAction&#39;)
+        envaction.append(self.environment.get_element())
+        
+        return element
+
+
+class CustomCommandAction():
+    &#34;&#34;&#34; The CustomCommandAction creates a simulator defined action, can add any number of xml.etree.ElementTree to an Action
+
+        NOTE: this is a very crude implementation, and the element has to be created by the user.
+        
+        Parameters
+        ----------
+            
+        Attributes
+        ----------
+
+            elements (list of xml.etree.ElementTree): elements to add to the action
+
+        Methods
+        -------
+            add_element(element)
+                Adds an element to the action
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self,semimajoraxis,semiminoraxis,innerradius,offset,numberofvehicles,centralobject,trafficdefinition,velocity = None):
+        &#34;&#34;&#34; initalize the CustomCommandAction
+
+            Parameters
+            ----------
+
+        &#34;&#34;&#34;
+        self.elements = []
+
+    def add_element(self,element):
+        &#34;&#34;&#34; adds an element to the CustomCommandAction
+
+            Parameters
+            ----------
+                element (xml.etree.ElementTree): the element to add
+        &#34;&#34;&#34;
+        self.elements.append(element)
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the CustomCommandAction
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;UserDefinedAction&#39;)
+        for e in self.elements:
+            element.append(e)
 
         return element</code></pre>
 </details>
@@ -2613,8 +2722,8 @@ continious (bool): if the controller tries to keep the relative speed
         &#34;&#34;&#34;
         self.continious = continious
         self.value = value
-        # if shape not in DynamicsShapes:
-        #     raise ValueError(shape + &#39;; is not a valid shape.&#39;)
+        if shape not in DynamicsShapes:
+            raise ValueError(shape + &#39;; is not a valid shape.&#39;)
         self.dynshape = shape
         self.maxlatacc = maxlatacc
 
@@ -3464,7 +3573,7 @@ position (*Position): position where the vehicle should be added
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
         routeaction = ET.SubElement(element,&#39;RoutingAction&#39;)
-        assignrouteaction = ET.SubElement(routeaction,&#39;AssignRoutingAction&#39;)
+        assignrouteaction = ET.SubElement(routeaction,&#39;AssignRouteAction&#39;)
         assignrouteaction.append(self.route.get_element())
 
         return element</code></pre>
@@ -3486,8 +3595,127 @@ position (*Position): position where the vehicle should be added
     &#34;&#34;&#34;
     element = ET.Element(&#39;PrivateAction&#39;)
     routeaction = ET.SubElement(element,&#39;RoutingAction&#39;)
-    assignrouteaction = ET.SubElement(routeaction,&#39;AssignRoutingAction&#39;)
+    assignrouteaction = ET.SubElement(routeaction,&#39;AssignRouteAction&#39;)
     assignrouteaction.append(self.route.get_element())
+
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.actions.CustomCommandAction"><code class="flex name class">
+<span>class <span class="ident">CustomCommandAction</span></span>
+<span>(</span><span>semimajoraxis, semiminoraxis, innerradius, offset, numberofvehicles, centralobject, trafficdefinition, velocity=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The CustomCommandAction creates a simulator defined action, can add any number of xml.etree.ElementTree to an Action</p>
+<p>NOTE: this is a very crude implementation, and the element has to be created by the user.</p>
+<h2 id="parameters">Parameters</h2>
+<h2 id="attributes">Attributes</h2>
+<pre><code>elements (list of xml.etree.ElementTree): elements to add to the action
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_element(element)
+    Adds an element to the action
+get_element()
+    Returns the full ElementTree of the class
+</code></pre>
+<p>initalize the CustomCommandAction</p>
+<h2 id="parameters_1">Parameters</h2></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CustomCommandAction():
+    &#34;&#34;&#34; The CustomCommandAction creates a simulator defined action, can add any number of xml.etree.ElementTree to an Action
+
+        NOTE: this is a very crude implementation, and the element has to be created by the user.
+        
+        Parameters
+        ----------
+            
+        Attributes
+        ----------
+
+            elements (list of xml.etree.ElementTree): elements to add to the action
+
+        Methods
+        -------
+            add_element(element)
+                Adds an element to the action
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+
+    def __init__(self,semimajoraxis,semiminoraxis,innerradius,offset,numberofvehicles,centralobject,trafficdefinition,velocity = None):
+        &#34;&#34;&#34; initalize the CustomCommandAction
+
+            Parameters
+            ----------
+
+        &#34;&#34;&#34;
+        self.elements = []
+
+    def add_element(self,element):
+        &#34;&#34;&#34; adds an element to the CustomCommandAction
+
+            Parameters
+            ----------
+                element (xml.etree.ElementTree): the element to add
+        &#34;&#34;&#34;
+        self.elements.append(element)
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the CustomCommandAction
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;UserDefinedAction&#39;)
+        for e in self.elements:
+            element.append(e)
+
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.actions.CustomCommandAction.add_element"><code class="name flex">
+<span>def <span class="ident">add_element</span></span>(<span>self, element)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds an element to the CustomCommandAction</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>element (xml.etree.ElementTree): the element to add
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_element(self,element):
+    &#34;&#34;&#34; adds an element to the CustomCommandAction
+
+        Parameters
+        ----------
+            element (xml.etree.ElementTree): the element to add
+    &#34;&#34;&#34;
+    self.elements.append(element)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.actions.CustomCommandAction.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the CustomCommandAction</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the CustomCommandAction
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;UserDefinedAction&#39;)
+    for e in self.elements:
+        element.append(e)
 
     return element</code></pre>
 </details>
@@ -3614,6 +3842,137 @@ get_attributes()
 </dd>
 </dl>
 </dd>
+<dt id="pyoscx.actions.EnvironmentAction"><code class="flex name class">
+<span>class <span class="ident">EnvironmentAction</span></span>
+<span>(</span><span>name, environment)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The EnvironmentAction class creates a GlobalAction of the typ EnvironmentAction</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the action
+
+environment (Environment or CatalogReference): the environment to change to
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>name (str): name of the action
+
+environment (Environment or CatalogReference): the environment to change to
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the EnvironmentAction</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the action
+
+environment (Environment or CatalogReference): the environment to change to
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EnvironmentAction():
+    &#34;&#34;&#34; The EnvironmentAction class creates a GlobalAction of the typ EnvironmentAction
+        
+        Parameters
+        ----------
+            name (str): name of the action
+
+            environment (Environment or CatalogReference): the environment to change to
+
+        Attributes
+        ----------
+
+            name (str): name of the action
+
+            environment (Environment or CatalogReference): the environment to change to
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+    &#34;&#34;&#34;
+    def __init__(self, name, environment):
+        &#34;&#34;&#34; initalize the EnvironmentAction
+
+            Parameters
+            ----------
+                name (str): name of the action
+
+                environment (Environment or CatalogReference): the environment to change to
+
+        &#34;&#34;&#34;
+        self.name = name
+        self.environment = environment
+
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the EnvironmentAction as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;name&#39;] = self.name
+        return retdict
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the EnvironmentAction
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;GlobalAction&#39;)
+        envaction = ET.SubElement(element, &#39;EnvironmentAction&#39;)
+        envaction.append(self.environment.get_element())
+        
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.actions.EnvironmentAction.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the EnvironmentAction as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the EnvironmentAction as a dict
+
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;name&#39;] = self.name
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.actions.EnvironmentAction.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the EnvironmentAction</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the EnvironmentAction
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;GlobalAction&#39;)
+    envaction = ET.SubElement(element, &#39;EnvironmentAction&#39;)
+    envaction.append(self.environment.get_element())
+    
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="pyoscx.actions.FollowTrajectoryAction"><code class="flex name class">
 <span>class <span class="ident">FollowTrajectoryAction</span></span>
 <span>(</span><span>trajectory, following_mode, referece_domain=None, scale=None, offset=None)</span>
@@ -3647,7 +4006,7 @@ timeref (TimeReference): the time reference of the trajectory
 <h2 id="parameters_1">Parameters</h2>
 <pre><code>trajectory (Trajectory, or CatalogReference): the trajectory to follow
 
-following_mode (str): the following mode of the action
+following_mode (FollowMode): the following mode of the action
 
 referece_domain (str): absolute or relative time reference (must be combined with scale and offset)
     Default: None
@@ -3697,7 +4056,7 @@ offset (double): offset for time values (must be combined with referece_domain a
             ----------
                 trajectory (Trajectory, or CatalogReference): the trajectory to follow
 
-                following_mode (str): the following mode of the action
+                following_mode (FollowMode): the following mode of the action
 
                 referece_domain (str): absolute or relative time reference (must be combined with scale and offset)
                     Default: None
@@ -3706,8 +4065,8 @@ offset (double): offset for time values (must be combined with referece_domain a
                 offset (double): offset for time values (must be combined with referece_domain and scale)
                     Default: None
         &#34;&#34;&#34;
-        if following_mode not in FollowMode:
-            ValueError(str(following_mode) + &#39; is not a valied following mode.&#39;)
+        # if following_mode not in FollowMode:
+        #     ValueError(str(following_mode) + &#39; is not a valied following mode.&#39;)
         self.trajectory = trajectory
         self.following_mode = following_mode
 
@@ -6196,7 +6555,7 @@ speed_target_type (str): the semantics of the value (delta, factor)
         self.target_position = target_position
         self.speed = speed
         # if speed_target_type not in SpeedTargetValueType:
-        #     ValueError(speed_target_type + &#39; is not a valid speed_target_type&#39;)
+            # ValueError(speed_target_type + &#39; is not a valid speed_target_type&#39;)
         self.speed_target_type = speed_target_type
 
     def get_attributes(self):
@@ -6413,9 +6772,8 @@ state (str): the state to set to the traffic light
             state (str): the state to set to the traffic light
 
         &#34;&#34;&#34;
-        NotImplementedError(&#39;TrafficSignalControllerAction is not implemented yet.&#39;)
-        # self.name = name
-        # self.state = state
+        self.name = name
+        self.state = state
 
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the AbsoluteSpeedAction as a dict
@@ -6715,8 +7073,10 @@ trafficdefinition (TrafficDefinition): definition of the traffic
         &#34;&#34;&#34; returns the elementTree of the TrafficSinkAction
 
         &#34;&#34;&#34;
-        element = ET.Element(&#39;TrafficAction&#39;)
-        sinkaction = ET.SubElement(element,&#39;TrafficSinkAction&#39;,attrib=self.get_attributes())
+
+        element = ET.Element(&#39;GlobalAction&#39;)
+        trafficaction = ET.SubElement(element, &#39;TrafficAction&#39;)
+        sinkaction = ET.SubElement(trafficaction,&#39;TrafficSinkAction&#39;,attrib=self.get_attributes())
         sinkaction.append(self.position.get_element())
         sinkaction.append(self.trafficdefinition.get_element())
 
@@ -6756,8 +7116,10 @@ trafficdefinition (TrafficDefinition): definition of the traffic
     &#34;&#34;&#34; returns the elementTree of the TrafficSinkAction
 
     &#34;&#34;&#34;
-    element = ET.Element(&#39;TrafficAction&#39;)
-    sinkaction = ET.SubElement(element,&#39;TrafficSinkAction&#39;,attrib=self.get_attributes())
+
+    element = ET.Element(&#39;GlobalAction&#39;)
+    trafficaction = ET.SubElement(element, &#39;TrafficAction&#39;)
+    sinkaction = ET.SubElement(trafficaction,&#39;TrafficSinkAction&#39;,attrib=self.get_attributes())
     sinkaction.append(self.position.get_element())
     sinkaction.append(self.trafficdefinition.get_element())
 
@@ -6898,8 +7260,9 @@ velocity (float): optional starting velocity of the traffic
         &#34;&#34;&#34; returns the elementTree of the TrafficSourceAction
 
         &#34;&#34;&#34;
-        element = ET.Element(&#39;TrafficAction&#39;)
-        sourceaction = ET.SubElement(element,&#39;TrafficSourceAction&#39;,attrib=self.get_attributes())
+        element = ET.Element(&#39;GlobalAction&#39;)
+        trafficaction = ET.SubElement(element, &#39;TrafficAction&#39;)
+        sourceaction = ET.SubElement(trafficaction,&#39;TrafficSourceAction&#39;,attrib=self.get_attributes())
         sourceaction.append(self.position.get_element())
         sourceaction.append(self.trafficdefinition.get_element())
 
@@ -6943,8 +7306,9 @@ velocity (float): optional starting velocity of the traffic
     &#34;&#34;&#34; returns the elementTree of the TrafficSourceAction
 
     &#34;&#34;&#34;
-    element = ET.Element(&#39;TrafficAction&#39;)
-    sourceaction = ET.SubElement(element,&#39;TrafficSourceAction&#39;,attrib=self.get_attributes())
+    element = ET.Element(&#39;GlobalAction&#39;)
+    trafficaction = ET.SubElement(element, &#39;TrafficAction&#39;)
+    sourceaction = ET.SubElement(trafficaction,&#39;TrafficSourceAction&#39;,attrib=self.get_attributes())
     sourceaction.append(self.position.get_element())
     sourceaction.append(self.trafficdefinition.get_element())
 
@@ -7126,8 +7490,9 @@ velocity (float): optional starting velocity
         &#34;&#34;&#34; returns the elementTree of the TrafficSinkAction
 
         &#34;&#34;&#34;
-        element = ET.Element(&#39;TrafficAction&#39;)
-        swarmaction = ET.SubElement(element,&#39;TrafficSwarmAction&#39;,attrib=self.get_attributes())
+        element = ET.Element(&#39;GlobalAction&#39;)
+        trafficaction = ET.SubElement(element, &#39;TrafficAction&#39;)
+        swarmaction = ET.SubElement(trafficaction,&#39;TrafficSwarmAction&#39;,attrib=self.get_attributes())
         swarmaction.append(self.trafficdefinition.get_element())
         ET.SubElement(swarmaction,&#39;CentralSwarmObject&#39;,attrib={&#39;entityRef&#39;:self.centralobject})
 
@@ -7172,8 +7537,9 @@ velocity (float): optional starting velocity
     &#34;&#34;&#34; returns the elementTree of the TrafficSinkAction
 
     &#34;&#34;&#34;
-    element = ET.Element(&#39;TrafficAction&#39;)
-    swarmaction = ET.SubElement(element,&#39;TrafficSwarmAction&#39;,attrib=self.get_attributes())
+    element = ET.Element(&#39;GlobalAction&#39;)
+    trafficaction = ET.SubElement(element, &#39;TrafficAction&#39;)
+    swarmaction = ET.SubElement(trafficaction,&#39;TrafficSwarmAction&#39;,attrib=self.get_attributes())
     swarmaction.append(self.trafficdefinition.get_element())
     ET.SubElement(swarmaction,&#39;CentralSwarmObject&#39;,attrib={&#39;entityRef&#39;:self.centralobject})
 
@@ -7391,10 +7757,24 @@ get_attributes()
 </ul>
 </li>
 <li>
+<h4><code><a title="pyoscx.actions.CustomCommandAction" href="#pyoscx.actions.CustomCommandAction">CustomCommandAction</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.actions.CustomCommandAction.add_element" href="#pyoscx.actions.CustomCommandAction.add_element">add_element</a></code></li>
+<li><code><a title="pyoscx.actions.CustomCommandAction.get_element" href="#pyoscx.actions.CustomCommandAction.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pyoscx.actions.DeleteEntityAction" href="#pyoscx.actions.DeleteEntityAction">DeleteEntityAction</a></code></h4>
 <ul class="">
 <li><code><a title="pyoscx.actions.DeleteEntityAction.get_attributes" href="#pyoscx.actions.DeleteEntityAction.get_attributes">get_attributes</a></code></li>
 <li><code><a title="pyoscx.actions.DeleteEntityAction.get_element" href="#pyoscx.actions.DeleteEntityAction.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.actions.EnvironmentAction" href="#pyoscx.actions.EnvironmentAction">EnvironmentAction</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.actions.EnvironmentAction.get_attributes" href="#pyoscx.actions.EnvironmentAction.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.actions.EnvironmentAction.get_element" href="#pyoscx.actions.EnvironmentAction.get_element">get_element</a></code></li>
 </ul>
 </li>
 <li>
@@ -7569,7 +7949,7 @@ get_attributes()
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.4</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
 </footer>
 </body>
 </html>
