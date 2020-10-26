@@ -32,7 +32,7 @@ from .actions import _Action
 
 from .triggers import EmptyTrigger, ValueTrigger, SimulationTimeCondition
 from .utils import EntityRef
-from .utils import ParameterDeclarations, CatalogFile
+from .utils import ParameterDeclarations, CatalogFile, convert_bool
 from .enumerations import Priority, Rule, ConditionEdge
 
 
@@ -51,7 +51,13 @@ class Init():
                 Returns the full ElementTree of the class
 
             add_init_action(entityname, action):
-                adds an action to the init
+                adds a private action to the init
+
+            add_global_action(action):
+                adds a global action to the init
+
+            add_user_defined_action(action):
+                adds a user defined action to the init
 
     &#34;&#34;&#34;
     def __init__(self):
@@ -59,20 +65,42 @@ class Init():
 
         &#34;&#34;&#34;
         self.initactions = {}
+        self.global_actions = []
+        self.user_defined_actions = []
 
     def add_init_action(self,entityname,action):
-        &#34;&#34;&#34; add_init_action adds an Action to the init.
+        &#34;&#34;&#34; add_init_action adds an Private Action to the init.
 
         Parameters
         ----------
             entityname (str): name of the entity to add the action to
-            Action (*Action): Any action to be added (like TeleportAction)
+            action (*Action): Any private action to be added (like TeleportAction)
             
         &#34;&#34;&#34;
         if entityname not in self.initactions:
             self.initactions[entityname] = []
 
         self.initactions[entityname].append(action)
+
+    def add_global_action(self,action):
+        &#34;&#34;&#34; add_global_action adds a global action to the init
+
+        Parameters
+        ----------
+            action (*Action): any global action to add to the init
+
+        &#34;&#34;&#34;
+        self.global_actions.append(action)
+    
+    def add_user_defined_action(self,action):
+        &#34;&#34;&#34; add_user_defined_action adds a userDefined action to the init
+
+        Parameters
+        ----------
+            action (CustomCommandAction): a custom command action (NOTE: a very crude implementation see actions.py)
+
+        &#34;&#34;&#34;
+        self.user_defined_actions.append(action)
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the Init
@@ -81,11 +109,17 @@ class Init():
         element = ET.Element(&#39;Init&#39;)
         actions = ET.SubElement(element,&#39;Actions&#39;)
         
+        # add private actions
         for i in self.initactions:
             private = ET.SubElement(actions,&#39;Private&#39;,attrib={&#39;entityRef&#39;:i})
             for j in self.initactions[i]:
                 private.append(j.get_element())
-
+        
+        for i in self.global_actions:
+            actions.append(i.get_element())
+        
+        for i in self.user_defined_actions:
+            actions.append(i.get_element())
 
         return element
 
@@ -319,6 +353,7 @@ class Act():
             name (str): name of the act
 
             starttrigger (*Trigger): starttrigger of the act
+                Default: ValueTrigger(&#39;act_start&#39;,0,ConditionEdge.none,SimulationTimeCondition(0,Rule.greaterThan))
 
             stoptrigger (*Trigger): stoptrigger of the act (optional)
             
@@ -344,7 +379,7 @@ class Act():
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,name,starttrigger,stoptrigger=None):
+    def __init__(self,name,starttrigger=None,stoptrigger=None):
         &#34;&#34;&#34; Initalize the Act
 
         Parameters
@@ -352,13 +387,17 @@ class Act():
             name (str): name of the act
 
             starttrigger (*Trigger): starttrigger of the act
+                Default: ValueTrigger(&#39;act_start&#39;,0,ConditionEdge.none,SimulationTimeCondition(0,Rule.greaterThan))
 
             stoptrigger (*Trigger): stoptrigger of the act (optional)
                 Default: Emptytrigger
 
         &#34;&#34;&#34;
         self.name = name
-        self.starttrigger = starttrigger
+        if starttrigger == None:
+            self.starttrigger = starttrigger = ValueTrigger(&#39;act_start&#39;,0,ConditionEdge.none,SimulationTimeCondition(0,Rule.greaterThan))
+        else:
+            self.starttrigger = starttrigger
         if stoptrigger == None:
             self.stoptrigger = EmptyTrigger(&#39;stop&#39;)
         else:
@@ -544,7 +583,7 @@ class _Actors():
         &#34;&#34;&#34; returns the attributes of the _Actors as a dict
 
         &#34;&#34;&#34;
-        return {&#39;selectTriggeringEntities&#39;:str(self.select)}
+        return {&#39;selectTriggeringEntities&#39;:convert_bool(self.select)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the _Actors
@@ -552,7 +591,8 @@ class _Actors():
         &#34;&#34;&#34;
         # if not self.actors:
         #     raise ValueError(&#39;no actors are set&#39;)
-
+        if len(self.actors) == 0:
+            Warning(&#39;No Actors are defined&#39;)
         element = ET.Element(&#39;Actors&#39;,attrib=self.get_attributes())
         for ent in self.actors:
             element.append(ent.get_element())
@@ -763,7 +803,7 @@ class Event():
 <dl>
 <dt id="pyoscx.storyboard.Act"><code class="flex name class">
 <span>class <span class="ident">Act</span></span>
-<span>(</span><span>name, starttrigger, stoptrigger=None)</span>
+<span>(</span><span>name, starttrigger=None, stoptrigger=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>the Act class creates the Act of the OpenScenario</p>
@@ -771,6 +811,7 @@ class Event():
 <pre><code>name (str): name of the act
 
 starttrigger (*Trigger): starttrigger of the act
+    Default: ValueTrigger('act_start',0,ConditionEdge.none,SimulationTimeCondition(0,Rule.greaterThan))
 
 stoptrigger (*Trigger): stoptrigger of the act (optional)
 </code></pre>
@@ -798,6 +839,7 @@ get_attributes()
 <pre><code>name (str): name of the act
 
 starttrigger (*Trigger): starttrigger of the act
+    Default: ValueTrigger('act_start',0,ConditionEdge.none,SimulationTimeCondition(0,Rule.greaterThan))
 
 stoptrigger (*Trigger): stoptrigger of the act (optional)
     Default: Emptytrigger
@@ -814,6 +856,7 @@ stoptrigger (*Trigger): stoptrigger of the act (optional)
             name (str): name of the act
 
             starttrigger (*Trigger): starttrigger of the act
+                Default: ValueTrigger(&#39;act_start&#39;,0,ConditionEdge.none,SimulationTimeCondition(0,Rule.greaterThan))
 
             stoptrigger (*Trigger): stoptrigger of the act (optional)
             
@@ -839,7 +882,7 @@ stoptrigger (*Trigger): stoptrigger of the act (optional)
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,name,starttrigger,stoptrigger=None):
+    def __init__(self,name,starttrigger=None,stoptrigger=None):
         &#34;&#34;&#34; Initalize the Act
 
         Parameters
@@ -847,13 +890,17 @@ stoptrigger (*Trigger): stoptrigger of the act (optional)
             name (str): name of the act
 
             starttrigger (*Trigger): starttrigger of the act
+                Default: ValueTrigger(&#39;act_start&#39;,0,ConditionEdge.none,SimulationTimeCondition(0,Rule.greaterThan))
 
             stoptrigger (*Trigger): stoptrigger of the act (optional)
                 Default: Emptytrigger
 
         &#34;&#34;&#34;
         self.name = name
-        self.starttrigger = starttrigger
+        if starttrigger == None:
+            self.starttrigger = starttrigger = ValueTrigger(&#39;act_start&#39;,0,ConditionEdge.none,SimulationTimeCondition(0,Rule.greaterThan))
+        else:
+            self.starttrigger = starttrigger
         if stoptrigger == None:
             self.stoptrigger = EmptyTrigger(&#39;stop&#39;)
         else:
@@ -1195,7 +1242,13 @@ get_attributes()
     Returns the full ElementTree of the class
 
 add_init_action(entityname, action):
-    adds an action to the init
+    adds a private action to the init
+
+add_global_action(action):
+    adds a global action to the init
+
+add_user_defined_action(action):
+    adds a user defined action to the init
 </code></pre>
 <p>initalize the Init class</p></div>
 <details class="source">
@@ -1216,7 +1269,13 @@ add_init_action(entityname, action):
                 Returns the full ElementTree of the class
 
             add_init_action(entityname, action):
-                adds an action to the init
+                adds a private action to the init
+
+            add_global_action(action):
+                adds a global action to the init
+
+            add_user_defined_action(action):
+                adds a user defined action to the init
 
     &#34;&#34;&#34;
     def __init__(self):
@@ -1224,20 +1283,42 @@ add_init_action(entityname, action):
 
         &#34;&#34;&#34;
         self.initactions = {}
+        self.global_actions = []
+        self.user_defined_actions = []
 
     def add_init_action(self,entityname,action):
-        &#34;&#34;&#34; add_init_action adds an Action to the init.
+        &#34;&#34;&#34; add_init_action adds an Private Action to the init.
 
         Parameters
         ----------
             entityname (str): name of the entity to add the action to
-            Action (*Action): Any action to be added (like TeleportAction)
+            action (*Action): Any private action to be added (like TeleportAction)
             
         &#34;&#34;&#34;
         if entityname not in self.initactions:
             self.initactions[entityname] = []
 
         self.initactions[entityname].append(action)
+
+    def add_global_action(self,action):
+        &#34;&#34;&#34; add_global_action adds a global action to the init
+
+        Parameters
+        ----------
+            action (*Action): any global action to add to the init
+
+        &#34;&#34;&#34;
+        self.global_actions.append(action)
+    
+    def add_user_defined_action(self,action):
+        &#34;&#34;&#34; add_user_defined_action adds a userDefined action to the init
+
+        Parameters
+        ----------
+            action (CustomCommandAction): a custom command action (NOTE: a very crude implementation see actions.py)
+
+        &#34;&#34;&#34;
+        self.user_defined_actions.append(action)
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the Init
@@ -1246,42 +1327,94 @@ add_init_action(entityname, action):
         element = ET.Element(&#39;Init&#39;)
         actions = ET.SubElement(element,&#39;Actions&#39;)
         
+        # add private actions
         for i in self.initactions:
             private = ET.SubElement(actions,&#39;Private&#39;,attrib={&#39;entityRef&#39;:i})
             for j in self.initactions[i]:
                 private.append(j.get_element())
-
+        
+        for i in self.global_actions:
+            actions.append(i.get_element())
+        
+        for i in self.user_defined_actions:
+            actions.append(i.get_element())
 
         return element</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
+<dt id="pyoscx.storyboard.Init.add_global_action"><code class="name flex">
+<span>def <span class="ident">add_global_action</span></span>(<span>self, action)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>add_global_action adds a global action to the init</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>action (*Action): any global action to add to the init
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_global_action(self,action):
+    &#34;&#34;&#34; add_global_action adds a global action to the init
+
+    Parameters
+    ----------
+        action (*Action): any global action to add to the init
+
+    &#34;&#34;&#34;
+    self.global_actions.append(action)</code></pre>
+</details>
+</dd>
 <dt id="pyoscx.storyboard.Init.add_init_action"><code class="name flex">
 <span>def <span class="ident">add_init_action</span></span>(<span>self, entityname, action)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>add_init_action adds an Action to the init.</p>
+<div class="desc"><p>add_init_action adds an Private Action to the init.</p>
 <h2 id="parameters">Parameters</h2>
 <pre><code>entityname (str): name of the entity to add the action to
-Action (*Action): Any action to be added (like TeleportAction)
+action (*Action): Any private action to be added (like TeleportAction)
 </code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add_init_action(self,entityname,action):
-    &#34;&#34;&#34; add_init_action adds an Action to the init.
+    &#34;&#34;&#34; add_init_action adds an Private Action to the init.
 
     Parameters
     ----------
         entityname (str): name of the entity to add the action to
-        Action (*Action): Any action to be added (like TeleportAction)
+        action (*Action): Any private action to be added (like TeleportAction)
         
     &#34;&#34;&#34;
     if entityname not in self.initactions:
         self.initactions[entityname] = []
 
     self.initactions[entityname].append(action)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.storyboard.Init.add_user_defined_action"><code class="name flex">
+<span>def <span class="ident">add_user_defined_action</span></span>(<span>self, action)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>add_user_defined_action adds a userDefined action to the init</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>action (CustomCommandAction): a custom command action (NOTE: a very crude implementation see actions.py)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_user_defined_action(self,action):
+    &#34;&#34;&#34; add_user_defined_action adds a userDefined action to the init
+
+    Parameters
+    ----------
+        action (CustomCommandAction): a custom command action (NOTE: a very crude implementation see actions.py)
+
+    &#34;&#34;&#34;
+    self.user_defined_actions.append(action)</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.storyboard.Init.get_element"><code class="name flex">
@@ -1300,11 +1433,17 @@ Action (*Action): Any action to be added (like TeleportAction)
     element = ET.Element(&#39;Init&#39;)
     actions = ET.SubElement(element,&#39;Actions&#39;)
     
+    # add private actions
     for i in self.initactions:
         private = ET.SubElement(actions,&#39;Private&#39;,attrib={&#39;entityRef&#39;:i})
         for j in self.initactions[i]:
             private.append(j.get_element())
-
+    
+    for i in self.global_actions:
+        actions.append(i.get_element())
+    
+    for i in self.user_defined_actions:
+        actions.append(i.get_element())
 
     return element</code></pre>
 </details>
@@ -2402,7 +2541,9 @@ parameters (ParameterDeclarations): the parameters of the story (optional)
 <li>
 <h4><code><a title="pyoscx.storyboard.Init" href="#pyoscx.storyboard.Init">Init</a></code></h4>
 <ul class="">
+<li><code><a title="pyoscx.storyboard.Init.add_global_action" href="#pyoscx.storyboard.Init.add_global_action">add_global_action</a></code></li>
 <li><code><a title="pyoscx.storyboard.Init.add_init_action" href="#pyoscx.storyboard.Init.add_init_action">add_init_action</a></code></li>
+<li><code><a title="pyoscx.storyboard.Init.add_user_defined_action" href="#pyoscx.storyboard.Init.add_user_defined_action">add_user_defined_action</a></code></li>
 <li><code><a title="pyoscx.storyboard.Init.get_element" href="#pyoscx.storyboard.Init.get_element">get_element</a></code></li>
 </ul>
 </li>

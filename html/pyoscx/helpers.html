@@ -46,9 +46,9 @@ def esminiRunner(scenario,esminipath = &#39;esmini&#39;):
     scenario.write_xml(os.path.join(_scenariopath,&#39;pythonscenario2.xosc&#39;),True)
     
     if os.name == &#39;posix&#39;:
-        os.system(os.path.join(&#39;.&#39;, esminipath, &#39;bin&#39;,&#39;EnvironmentSimulator&#39;) + &#39; --osc &#39;+esminipath+&#39;/resources/xosc/pythonscenario2.xosc --threads --window 50 50 800 400&#39; )
+        os.system(os.path.join(&#39;.&#39;, esminipath, &#39;bin&#39;,&#39;esmini&#39;) + &#39; --osc &#39;+esminipath+&#39;/resources/xosc/pythonscenario2.xosc --window 50 50 800 400&#39; )
     elif os.name == &#39;nt&#39;:
-        os.system(os.path.join(esminipath,&#39;bin&#39;,&#39;EnvironmentSimulator.exe&#39;) + &#39; --osc &#39;+esminipath+&#39;/resources/xosc/pythonscenario2.xosc --threads --window 50 50 800 400&#39; )
+        os.system(os.path.join(esminipath,&#39;bin&#39;,&#39;esmini.exe&#39;) + &#39; --osc &#39;+esminipath+&#39;/resources/xosc/pythonscenario2.xosc --window 50 50 800 400&#39; )
     
 
 def prettyprint(element):
@@ -124,9 +124,9 @@ esminipath (str): the path to esmini
     scenario.write_xml(os.path.join(_scenariopath,&#39;pythonscenario2.xosc&#39;),True)
     
     if os.name == &#39;posix&#39;:
-        os.system(os.path.join(&#39;.&#39;, esminipath, &#39;bin&#39;,&#39;EnvironmentSimulator&#39;) + &#39; --osc &#39;+esminipath+&#39;/resources/xosc/pythonscenario2.xosc --threads --window 50 50 800 400&#39; )
+        os.system(os.path.join(&#39;.&#39;, esminipath, &#39;bin&#39;,&#39;esmini&#39;) + &#39; --osc &#39;+esminipath+&#39;/resources/xosc/pythonscenario2.xosc --window 50 50 800 400&#39; )
     elif os.name == &#39;nt&#39;:
-        os.system(os.path.join(esminipath,&#39;bin&#39;,&#39;EnvironmentSimulator.exe&#39;) + &#39; --osc &#39;+esminipath+&#39;/resources/xosc/pythonscenario2.xosc --threads --window 50 50 800 400&#39; )</code></pre>
+        os.system(os.path.join(esminipath,&#39;bin&#39;,&#39;esmini.exe&#39;) + &#39; --osc &#39;+esminipath+&#39;/resources/xosc/pythonscenario2.xosc --window 50 50 800 400&#39; )</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.helpers.prettyprint"><code class="name flex">

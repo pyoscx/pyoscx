@@ -28,7 +28,7 @@
 </summary>
 <pre><code class="python">import xml.etree.ElementTree as ET
 
-from .utils import DynamicsConstrains, TimeReference
+from .utils import DynamicsConstrains, TimeReference, convert_bool
 
 from .enumerations import DynamicsShapes, SpeedTargetValueType, FollowMode
 
@@ -213,7 +213,7 @@ class RelativeSpeedAction():
         &#34;&#34;&#34; returns the attributes of the RelativeSpeedAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;entityRef&#39;:self.target,&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.valuetype,&#39;continious&#39;:str(self.continious)}
+        return {&#39;entityRef&#39;:self.target,&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.valuetype,&#39;continious&#39;:convert_bool(self.continious)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the RelativeSpeedAction
@@ -312,8 +312,8 @@ class LongitudinalDistanceAction():
         &#34;&#34;&#34;
         retdict = {}
         retdict[&#39;entityRef&#39;] = self.target
-        retdict[&#39;freespace&#39;] = str(self.freespace)
-        retdict[&#39;continious&#39;] = str(self.continious)
+        retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
+        retdict[&#39;continious&#39;] = convert_bool(self.continious)
         retdict[&#39;distance&#39;] = str(self.distance)
         return retdict
 
@@ -413,8 +413,8 @@ class LongitudinalTimegapAction():
         &#34;&#34;&#34;
         retdict = {}
         retdict[&#39;entityRef&#39;] = self.target
-        retdict[&#39;freespace&#39;] = str(self.freespace)
-        retdict[&#39;continious&#39;] = str(self.continious)
+        retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
+        retdict[&#39;continious&#39;] = convert_bool(self.continious)
         retdict[&#39;timeGap&#39;] = str(self.timegap)
         return retdict
 
@@ -656,7 +656,7 @@ class AbsoluteLaneOffsetAction():
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
         lataction = ET.SubElement(element,&#39;LateralAction&#39;)
-        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:str(self.continious)})
+        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:convert_bool(self.continious)})
         ET.SubElement(laneoffsetaction,&#39;LaneOffsetActionDynamics&#39;,{&#39;maxLateralAcc&#39;:str(self.maxlatacc),&#39;dynamicsShape&#39;:self.dynshape.name})
         laneoftarget = ET.SubElement(laneoffsetaction,&#39;LaneOffsetTarget&#39;)
         ET.SubElement(laneoftarget,&#39;AbsoluteTargetLaneOffset&#39;,self.get_attributes())
@@ -739,7 +739,7 @@ class RelativeLaneOffsetAction():
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
         lataction = ET.SubElement(element,&#39;LateralAction&#39;)
-        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:str(self.continious)})
+        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:convert_bool(self.continious)})
         ET.SubElement(laneoffsetaction,&#39;LaneOffsetActionDynamics&#39;,{&#39;maxLateralAcc&#39;:str(self.maxlatacc),&#39;dynamicsShape&#39;:self.dynshape.name})
         laneoftarget = ET.SubElement(laneoffsetaction,&#39;LaneOffsetTarget&#39;)
         ET.SubElement(laneoftarget,&#39;RelativeTargetLaneOffset&#39;,attrib=self.get_attributes())
@@ -833,8 +833,8 @@ class LateralDistanceAction():
         &#34;&#34;&#34;
         retdict = {}
         retdict[&#39;entityRef&#39;] = self.target
-        retdict[&#39;freespace&#39;] = str(self.freespace)
-        retdict[&#39;continious&#39;] = str(self.continious)
+        retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
+        retdict[&#39;continious&#39;] = convert_bool(self.continious)
         if self.distance:
             retdict[&#39;distance&#39;] = str(self.distance)
         return retdict
@@ -1086,7 +1086,7 @@ class ActivateControllerAction():
         &#34;&#34;&#34; returns the attributes of the ActivateControllerAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;lateral&#39;:str(self.lateral),&#39;longitudinal&#39;:str(self.longitudinal)}
+        return {&#39;lateral&#39;:convert_bool(self.lateral),&#39;longitudinal&#39;:convert_bool(self.longitudinal)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the ActivateControllerAction
@@ -1177,7 +1177,7 @@ class OverrideThrottleAction():
         &#34;&#34;&#34; returns the attributes of the OverrideThrottleAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}
+        return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the OverrideThrottleAction
@@ -1231,7 +1231,7 @@ class OverrideBrakeAction():
         &#34;&#34;&#34; returns the attributes of the OverrideBrakeAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}
+        return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the OverrideBrakeAction
@@ -1285,7 +1285,7 @@ class OverrideClutchAction():
         &#34;&#34;&#34; returns the attributes of the OverrideClutchAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}
+        return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the OverrideClutchAction
@@ -1340,7 +1340,7 @@ class OverrideParkingBrakeAction():
         &#34;&#34;&#34; returns the attributes of the OverrideParkingBrakeAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}
+        return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the OverrideParkingBrakeAction
@@ -1396,7 +1396,7 @@ class OverrideSteeringWheelAction():
         &#34;&#34;&#34; returns the attributes of the OverrideSteeringWheelAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}
+        return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the OverrideSteeringWheelAction
@@ -1451,7 +1451,7 @@ class OverrideGearAction():
         &#34;&#34;&#34; returns the attributes of the OverrideGearAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}
+        return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the OverrideGearAction
@@ -1513,7 +1513,7 @@ class VisibilityAction():
         &#34;&#34;&#34; returns the attributes of the VisibilityAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;graphics&#39;:str(self.graphics),&#39;active&#39;:str(self.traffic),&#39;sensors&#39;:str(self.sensors)}
+        return {&#39;graphics&#39;:convert_bool(self.graphics),&#39;active&#39;:convert_bool(self.traffic),&#39;sensors&#39;:convert_bool(self.sensors)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the VisibilityAction
@@ -1585,7 +1585,7 @@ class AbsoluteSynchronizeAction():
 
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
-        syncaction = ET.SubElement(element,&#39;SyncronizeAction&#39;,self.get_attributes())
+        syncaction = ET.SubElement(element,&#39;SynchronizeAction&#39;,self.get_attributes())
         syncaction.append(self.entity_position.get_element(&#39;TargetPositionMaster&#39;))
         syncaction.append(self.target_position.get_element(&#39;TargetPosition&#39;))
         finalspeed = ET.SubElement(syncaction,&#39;FinalSpeed&#39;)
@@ -1665,7 +1665,7 @@ class RelativeSynchronizeAction():
 
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
-        syncaction = ET.SubElement(element,&#39;SyncronizeAction&#39;,self.get_attributes())
+        syncaction = ET.SubElement(element,&#39;SynchronizeAction&#39;,self.get_attributes())
         syncaction.append(self.entity_position.get_element(&#39;TargetPositionMaster&#39;))
         syncaction.append(self.target_position.get_element(&#39;TargetPosition&#39;))
         finalspeed = ET.SubElement(syncaction,&#39;FinalSpeed&#39;)
@@ -2741,7 +2741,7 @@ continious (bool): if the controller tries to keep the relative speed
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
         lataction = ET.SubElement(element,&#39;LateralAction&#39;)
-        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:str(self.continious)})
+        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:convert_bool(self.continious)})
         ET.SubElement(laneoffsetaction,&#39;LaneOffsetActionDynamics&#39;,{&#39;maxLateralAcc&#39;:str(self.maxlatacc),&#39;dynamicsShape&#39;:self.dynshape.name})
         laneoftarget = ET.SubElement(laneoffsetaction,&#39;LaneOffsetTarget&#39;)
         ET.SubElement(laneoftarget,&#39;AbsoluteTargetLaneOffset&#39;,self.get_attributes())
@@ -2783,7 +2783,7 @@ continious (bool): if the controller tries to keep the relative speed
     &#34;&#34;&#34;
     element = ET.Element(&#39;PrivateAction&#39;)
     lataction = ET.SubElement(element,&#39;LateralAction&#39;)
-    laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:str(self.continious)})
+    laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:convert_bool(self.continious)})
     ET.SubElement(laneoffsetaction,&#39;LaneOffsetActionDynamics&#39;,{&#39;maxLateralAcc&#39;:str(self.maxlatacc),&#39;dynamicsShape&#39;:self.dynshape.name})
     laneoftarget = ET.SubElement(laneoffsetaction,&#39;LaneOffsetTarget&#39;)
     ET.SubElement(laneoftarget,&#39;AbsoluteTargetLaneOffset&#39;,self.get_attributes())
@@ -3036,7 +3036,7 @@ speed (double): the absolute speed of the target that should syncronize
 
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
-        syncaction = ET.SubElement(element,&#39;SyncronizeAction&#39;,self.get_attributes())
+        syncaction = ET.SubElement(element,&#39;SynchronizeAction&#39;,self.get_attributes())
         syncaction.append(self.entity_position.get_element(&#39;TargetPositionMaster&#39;))
         syncaction.append(self.target_position.get_element(&#39;TargetPosition&#39;))
         finalspeed = ET.SubElement(syncaction,&#39;FinalSpeed&#39;)
@@ -3076,7 +3076,7 @@ speed (double): the absolute speed of the target that should syncronize
 
     &#34;&#34;&#34;
     element = ET.Element(&#39;PrivateAction&#39;)
-    syncaction = ET.SubElement(element,&#39;SyncronizeAction&#39;,self.get_attributes())
+    syncaction = ET.SubElement(element,&#39;SynchronizeAction&#39;,self.get_attributes())
     syncaction.append(self.entity_position.get_element(&#39;TargetPositionMaster&#39;))
     syncaction.append(self.target_position.get_element(&#39;TargetPosition&#39;))
     finalspeed = ET.SubElement(syncaction,&#39;FinalSpeed&#39;)
@@ -3248,7 +3248,7 @@ longitudinal (boolean): activate or deactivate the controller
         &#34;&#34;&#34; returns the attributes of the ActivateControllerAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;lateral&#39;:str(self.lateral),&#39;longitudinal&#39;:str(self.longitudinal)}
+        return {&#39;lateral&#39;:convert_bool(self.lateral),&#39;longitudinal&#39;:convert_bool(self.longitudinal)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the ActivateControllerAction
@@ -3274,7 +3274,7 @@ longitudinal (boolean): activate or deactivate the controller
     &#34;&#34;&#34; returns the attributes of the ActivateControllerAction as a dict
 
     &#34;&#34;&#34;
-    return {&#39;lateral&#39;:str(self.lateral),&#39;longitudinal&#39;:str(self.longitudinal)}</code></pre>
+    return {&#39;lateral&#39;:convert_bool(self.lateral),&#39;longitudinal&#39;:convert_bool(self.longitudinal)}</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.actions.ActivateControllerAction.get_element"><code class="name flex">
@@ -4270,8 +4270,8 @@ max_speed (float): maximum speed allowed
         &#34;&#34;&#34;
         retdict = {}
         retdict[&#39;entityRef&#39;] = self.target
-        retdict[&#39;freespace&#39;] = str(self.freespace)
-        retdict[&#39;continious&#39;] = str(self.continious)
+        retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
+        retdict[&#39;continious&#39;] = convert_bool(self.continious)
         if self.distance:
             retdict[&#39;distance&#39;] = str(self.distance)
         return retdict
@@ -4305,8 +4305,8 @@ max_speed (float): maximum speed allowed
     &#34;&#34;&#34;
     retdict = {}
     retdict[&#39;entityRef&#39;] = self.target
-    retdict[&#39;freespace&#39;] = str(self.freespace)
-    retdict[&#39;continious&#39;] = str(self.continious)
+    retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
+    retdict[&#39;continious&#39;] = convert_bool(self.continious)
     if self.distance:
         retdict[&#39;distance&#39;] = str(self.distance)
     return retdict</code></pre>
@@ -4488,8 +4488,8 @@ max_speed (float): maximum speed allowed
         &#34;&#34;&#34;
         retdict = {}
         retdict[&#39;entityRef&#39;] = self.target
-        retdict[&#39;freespace&#39;] = str(self.freespace)
-        retdict[&#39;continious&#39;] = str(self.continious)
+        retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
+        retdict[&#39;continious&#39;] = convert_bool(self.continious)
         retdict[&#39;distance&#39;] = str(self.distance)
         return retdict
 
@@ -4522,8 +4522,8 @@ max_speed (float): maximum speed allowed
     &#34;&#34;&#34;
     retdict = {}
     retdict[&#39;entityRef&#39;] = self.target
-    retdict[&#39;freespace&#39;] = str(self.freespace)
-    retdict[&#39;continious&#39;] = str(self.continious)
+    retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
+    retdict[&#39;continious&#39;] = convert_bool(self.continious)
     retdict[&#39;distance&#39;] = str(self.distance)
     return retdict</code></pre>
 </details>
@@ -4705,8 +4705,8 @@ max_speed (float): maximum speed allowed
         &#34;&#34;&#34;
         retdict = {}
         retdict[&#39;entityRef&#39;] = self.target
-        retdict[&#39;freespace&#39;] = str(self.freespace)
-        retdict[&#39;continious&#39;] = str(self.continious)
+        retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
+        retdict[&#39;continious&#39;] = convert_bool(self.continious)
         retdict[&#39;timeGap&#39;] = str(self.timegap)
         return retdict
 
@@ -4739,8 +4739,8 @@ max_speed (float): maximum speed allowed
     &#34;&#34;&#34;
     retdict = {}
     retdict[&#39;entityRef&#39;] = self.target
-    retdict[&#39;freespace&#39;] = str(self.freespace)
-    retdict[&#39;continious&#39;] = str(self.continious)
+    retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
+    retdict[&#39;continious&#39;] = convert_bool(self.continious)
     retdict[&#39;timeGap&#39;] = str(self.timegap)
     return retdict</code></pre>
 </details>
@@ -4843,7 +4843,7 @@ active (boolean): overide (True) or stop override (False)
         &#34;&#34;&#34; returns the attributes of the OverrideBrakeAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}
+        return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the OverrideBrakeAction
@@ -4870,7 +4870,7 @@ active (boolean): overide (True) or stop override (False)
     &#34;&#34;&#34; returns the attributes of the OverrideBrakeAction as a dict
 
     &#34;&#34;&#34;
-    return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}</code></pre>
+    return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.actions.OverrideBrakeAction.get_element"><code class="name flex">
@@ -4969,7 +4969,7 @@ active (boolean): overide (True) or stop override (False)
         &#34;&#34;&#34; returns the attributes of the OverrideClutchAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}
+        return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the OverrideClutchAction
@@ -4996,7 +4996,7 @@ active (boolean): overide (True) or stop override (False)
     &#34;&#34;&#34; returns the attributes of the OverrideClutchAction as a dict
 
     &#34;&#34;&#34;
-    return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}</code></pre>
+    return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.actions.OverrideClutchAction.get_element"><code class="name flex">
@@ -5095,7 +5095,7 @@ active (boolean): overide (True) or stop override (False)
         &#34;&#34;&#34; returns the attributes of the OverrideGearAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}
+        return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the OverrideGearAction
@@ -5122,7 +5122,7 @@ active (boolean): overide (True) or stop override (False)
     &#34;&#34;&#34; returns the attributes of the OverrideGearAction as a dict
 
     &#34;&#34;&#34;
-    return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}</code></pre>
+    return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.actions.OverrideGearAction.get_element"><code class="name flex">
@@ -5221,7 +5221,7 @@ active (boolean): overide (True) or stop override (False)
         &#34;&#34;&#34; returns the attributes of the OverrideParkingBrakeAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}
+        return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the OverrideParkingBrakeAction
@@ -5248,7 +5248,7 @@ active (boolean): overide (True) or stop override (False)
     &#34;&#34;&#34; returns the attributes of the OverrideParkingBrakeAction as a dict
 
     &#34;&#34;&#34;
-    return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}</code></pre>
+    return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.actions.OverrideParkingBrakeAction.get_element"><code class="name flex">
@@ -5347,7 +5347,7 @@ active (boolean): overide (True) or stop override (False)
         &#34;&#34;&#34; returns the attributes of the OverrideSteeringWheelAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}
+        return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the OverrideSteeringWheelAction
@@ -5374,7 +5374,7 @@ active (boolean): overide (True) or stop override (False)
     &#34;&#34;&#34; returns the attributes of the OverrideSteeringWheelAction as a dict
 
     &#34;&#34;&#34;
-    return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}</code></pre>
+    return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.actions.OverrideSteeringWheelAction.get_element"><code class="name flex">
@@ -5473,7 +5473,7 @@ active (boolean): overide (True) or stop override (False)
         &#34;&#34;&#34; returns the attributes of the OverrideThrottleAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}
+        return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the OverrideThrottleAction
@@ -5500,7 +5500,7 @@ active (boolean): overide (True) or stop override (False)
     &#34;&#34;&#34; returns the attributes of the OverrideThrottleAction as a dict
 
     &#34;&#34;&#34;
-    return {&#39;value&#39;:str(self.value),&#39;active&#39;:str(self.activate)}</code></pre>
+    return {&#39;value&#39;:str(self.value),&#39;active&#39;:convert_bool(self.activate)}</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.actions.OverrideThrottleAction.get_element"><code class="name flex">
@@ -6220,7 +6220,7 @@ continious (bool): if the controller tries to keep the relative speed
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
         lataction = ET.SubElement(element,&#39;LateralAction&#39;)
-        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:str(self.continious)})
+        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:convert_bool(self.continious)})
         ET.SubElement(laneoffsetaction,&#39;LaneOffsetActionDynamics&#39;,{&#39;maxLateralAcc&#39;:str(self.maxlatacc),&#39;dynamicsShape&#39;:self.dynshape.name})
         laneoftarget = ET.SubElement(laneoffsetaction,&#39;LaneOffsetTarget&#39;)
         ET.SubElement(laneoftarget,&#39;RelativeTargetLaneOffset&#39;,attrib=self.get_attributes())
@@ -6263,7 +6263,7 @@ continious (bool): if the controller tries to keep the relative speed
     &#34;&#34;&#34;
     element = ET.Element(&#39;PrivateAction&#39;)
     lataction = ET.SubElement(element,&#39;LateralAction&#39;)
-    laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:str(self.continious)})
+    laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:convert_bool(self.continious)})
     ET.SubElement(laneoffsetaction,&#39;LaneOffsetActionDynamics&#39;,{&#39;maxLateralAcc&#39;:str(self.maxlatacc),&#39;dynamicsShape&#39;:self.dynshape.name})
     laneoftarget = ET.SubElement(laneoffsetaction,&#39;LaneOffsetTarget&#39;)
     ET.SubElement(laneoftarget,&#39;RelativeTargetLaneOffset&#39;,attrib=self.get_attributes())
@@ -6387,7 +6387,7 @@ continious (bool): if the controller tries to keep the relative speed
         &#34;&#34;&#34; returns the attributes of the RelativeSpeedAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;entityRef&#39;:self.target,&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.valuetype,&#39;continious&#39;:str(self.continious)}
+        return {&#39;entityRef&#39;:self.target,&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.valuetype,&#39;continious&#39;:convert_bool(self.continious)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the RelativeSpeedAction
@@ -6418,7 +6418,7 @@ continious (bool): if the controller tries to keep the relative speed
     &#34;&#34;&#34; returns the attributes of the RelativeSpeedAction as a dict
 
     &#34;&#34;&#34;
-    return {&#39;entityRef&#39;:self.target,&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.valuetype,&#39;continious&#39;:str(self.continious)}</code></pre>
+    return {&#39;entityRef&#39;:self.target,&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.valuetype,&#39;continious&#39;:convert_bool(self.continious)}</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.actions.RelativeSpeedAction.get_element"><code class="name flex">
@@ -6569,7 +6569,7 @@ speed_target_type (str): the semantics of the value (delta, factor)
 
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
-        syncaction = ET.SubElement(element,&#39;SyncronizeAction&#39;,self.get_attributes())
+        syncaction = ET.SubElement(element,&#39;SynchronizeAction&#39;,self.get_attributes())
         syncaction.append(self.entity_position.get_element(&#39;TargetPositionMaster&#39;))
         syncaction.append(self.target_position.get_element(&#39;TargetPosition&#39;))
         finalspeed = ET.SubElement(syncaction,&#39;FinalSpeed&#39;)
@@ -6609,7 +6609,7 @@ speed_target_type (str): the semantics of the value (delta, factor)
 
     &#34;&#34;&#34;
     element = ET.Element(&#39;PrivateAction&#39;)
-    syncaction = ET.SubElement(element,&#39;SyncronizeAction&#39;,self.get_attributes())
+    syncaction = ET.SubElement(element,&#39;SynchronizeAction&#39;,self.get_attributes())
     syncaction.append(self.entity_position.get_element(&#39;TargetPositionMaster&#39;))
     syncaction.append(self.target_position.get_element(&#39;TargetPosition&#39;))
     finalspeed = ET.SubElement(syncaction,&#39;FinalSpeed&#39;)
@@ -7632,7 +7632,7 @@ get_attributes()
         &#34;&#34;&#34; returns the attributes of the VisibilityAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;graphics&#39;:str(self.graphics),&#39;active&#39;:str(self.traffic),&#39;sensors&#39;:str(self.sensors)}
+        return {&#39;graphics&#39;:convert_bool(self.graphics),&#39;active&#39;:convert_bool(self.traffic),&#39;sensors&#39;:convert_bool(self.sensors)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the VisibilityAction
@@ -7657,7 +7657,7 @@ get_attributes()
     &#34;&#34;&#34; returns the attributes of the VisibilityAction as a dict
 
     &#34;&#34;&#34;
-    return {&#39;graphics&#39;:str(self.graphics),&#39;active&#39;:str(self.traffic),&#39;sensors&#39;:str(self.sensors)}</code></pre>
+    return {&#39;graphics&#39;:convert_bool(self.graphics),&#39;active&#39;:convert_bool(self.traffic),&#39;sensors&#39;:convert_bool(self.sensors)}</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.actions.VisibilityAction.get_element"><code class="name flex">

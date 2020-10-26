@@ -70,7 +70,7 @@ class WorldPosition():
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,x=0,y=0,z=0,h=0,p=0,r=0):
+    def __init__(self,x=0,y=0,z=None,h=None,p=None,r=None):
         &#34;&#34;&#34; initalizes the WorldPosition
 
         Parameters
@@ -98,8 +98,16 @@ class WorldPosition():
         &#34;&#34;&#34; returns the attributes of the WorldPostion as a dict
 
         &#34;&#34;&#34;
-        return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z),&#39;h&#39;:str(self.h),&#39;p&#39;:str(self.p),&#39;r&#39;:str(self.r)}
-
+        retdict = {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y)}
+        if self.z:
+            retdict[&#39;z&#39;] = str(self.z)
+        if self.h:
+            retdict[&#39;h&#39;] = str(self.h)
+        if self.p:
+            retdict[&#39;p&#39;] = str(self.p)
+        if self.r:
+            retdict[&#39;r&#39;] = str(self.r)
+        return retdict
     def get_element(self,elementname = &#39;Position&#39;):
         &#34;&#34;&#34; returns the elementTree of the WorldPostion
 
@@ -459,9 +467,9 @@ class LanePosition():
 
             offset (float): offset from center of lane
 
-            road_id (int): id of the road
-
             lane_id (int): lane of the road
+
+            road_id (int): id of the road           
 
             orientation (Orientation): the angular orientation of the entity
                 Default: Orientation()    
@@ -548,9 +556,9 @@ class RelativeLanePosition():
 
             offset (float): offset from center of lane
 
-            entity (str): id of the entity
-
             lane_id (str): lane of the road
+
+            entity (str): id of the entity    
 
             orientation (Orientation): the angular orientation of the entity
                 Default: Orientation()    
@@ -586,9 +594,9 @@ class RelativeLanePosition():
 
             offset (float): offset from center of lane
 
-            entity (str): id of the entity
-
             lane_id (str): lane of the road
+
+            entity (str): id of the entity           
 
             orientation (Orientation): the angular orientation of the entity
                 Default: Orientation()  
@@ -837,9 +845,9 @@ class RoutePositionInLaneCoordinates():
 
 offset (float): offset from center of lane
 
-road_id (int): id of the road
-
 lane_id (int): lane of the road
+
+road_id (int): id of the road
 
 orientation (Orientation): the angular orientation of the entity
     Default: Orientation()
@@ -889,9 +897,9 @@ orientation (Orientation): the angular orientation of the entity
 
             offset (float): offset from center of lane
 
-            road_id (int): id of the road
-
             lane_id (int): lane of the road
+
+            road_id (int): id of the road           
 
             orientation (Orientation): the angular orientation of the entity
                 Default: Orientation()    
@@ -1034,9 +1042,9 @@ orientation (Orientation): the angular orientation of the entity
 
 offset (float): offset from center of lane
 
-entity (str): id of the entity
-
 lane_id (str): lane of the road
+
+entity (str): id of the entity
 
 orientation (Orientation): the angular orientation of the entity
     Default: Orientation()
@@ -1066,9 +1074,9 @@ get_attributes()
 
 offset (float): offset from center of lane
 
-entity (str): id of the entity
-
 lane_id (str): lane of the road
+
+entity (str): id of the entity
 
 orientation (Orientation): the angular orientation of the entity
     Default: Orientation()
@@ -1086,9 +1094,9 @@ orientation (Orientation): the angular orientation of the entity
 
             offset (float): offset from center of lane
 
-            entity (str): id of the entity
-
             lane_id (str): lane of the road
+
+            entity (str): id of the entity    
 
             orientation (Orientation): the angular orientation of the entity
                 Default: Orientation()    
@@ -1124,9 +1132,9 @@ orientation (Orientation): the angular orientation of the entity
 
             offset (float): offset from center of lane
 
-            entity (str): id of the entity
-
             lane_id (str): lane of the road
+
+            entity (str): id of the entity           
 
             orientation (Orientation): the angular orientation of the entity
                 Default: Orientation()  
@@ -2371,7 +2379,7 @@ orientation (Orientation): Oritation of the entity
 </dd>
 <dt id="pyoscx.position.WorldPosition"><code class="flex name class">
 <span>class <span class="ident">WorldPosition</span></span>
-<span>(</span><span>x=0, y=0, z=0, h=0, p=0, r=0)</span>
+<span>(</span><span>x=0, y=0, z=None, h=None, p=None, r=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>the WorldPostion creates a worldposition of openScenario</p>
@@ -2466,7 +2474,7 @@ r (float): roll of the entity
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,x=0,y=0,z=0,h=0,p=0,r=0):
+    def __init__(self,x=0,y=0,z=None,h=None,p=None,r=None):
         &#34;&#34;&#34; initalizes the WorldPosition
 
         Parameters
@@ -2494,8 +2502,16 @@ r (float): roll of the entity
         &#34;&#34;&#34; returns the attributes of the WorldPostion as a dict
 
         &#34;&#34;&#34;
-        return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z),&#39;h&#39;:str(self.h),&#39;p&#39;:str(self.p),&#39;r&#39;:str(self.r)}
-
+        retdict = {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y)}
+        if self.z:
+            retdict[&#39;z&#39;] = str(self.z)
+        if self.h:
+            retdict[&#39;h&#39;] = str(self.h)
+        if self.p:
+            retdict[&#39;p&#39;] = str(self.p)
+        if self.r:
+            retdict[&#39;r&#39;] = str(self.r)
+        return retdict
     def get_element(self,elementname = &#39;Position&#39;):
         &#34;&#34;&#34; returns the elementTree of the WorldPostion
 
@@ -2523,7 +2539,16 @@ r (float): roll of the entity
     &#34;&#34;&#34; returns the attributes of the WorldPostion as a dict
 
     &#34;&#34;&#34;
-    return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z),&#39;h&#39;:str(self.h),&#39;p&#39;:str(self.p),&#39;r&#39;:str(self.r)}</code></pre>
+    retdict = {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y)}
+    if self.z:
+        retdict[&#39;z&#39;] = str(self.z)
+    if self.h:
+        retdict[&#39;h&#39;] = str(self.h)
+    if self.p:
+        retdict[&#39;p&#39;] = str(self.p)
+    if self.r:
+        retdict[&#39;r&#39;] = str(self.r)
+    return retdict</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.position.WorldPosition.get_element"><code class="name flex">

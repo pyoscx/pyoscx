@@ -28,7 +28,7 @@
 </summary>
 <pre><code class="python">import xml.etree.ElementTree as ET
 
-from .utils import EntityRef
+from .utils import EntityRef, convert_bool
 from .enumerations import Rule, ConditionEdge
 
 
@@ -224,7 +224,7 @@ class EntityTrigger():
 
             entitycondotion (*Condition): an entity condition
 
-            triggeringentity (str): the entity of the trigger 
+            triggeringentity (str): the entity of the trigger
 
             triggeringrule (str): rule of the trigger
                 Default: &#39;any&#39;
@@ -286,7 +286,8 @@ class EntityTrigger():
             raise ValueError(&#39;not a valid condition edge&#39;)
         self.conditionedge = conditionedge
         self.entitycondition = entitycondition
-        self.triggerentity = TriggeringEntities(triggerentity,triggeringrule)
+        self.triggerentity = TriggeringEntities(triggeringrule)
+        self.triggerentity.add_entity(triggerentity)
         
         self._used_by_parent = False
 
@@ -296,6 +297,14 @@ class EntityTrigger():
         &#34;&#34;&#34;
         self._used_by_parent = True
 
+    def add_triggering_entity(self,triggerentity):
+        &#34;&#34;&#34; adds additional triggering entities to a trigger
+
+        Parameters
+        ----------
+            triggeringentity (str)
+        &#34;&#34;&#34;
+        self.triggerentity.add_entity(triggerentity)
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
 
@@ -435,18 +444,19 @@ class TriggeringEntities():
         
         Parameters
         ----------
-            entity (str): name of the entity
-
             triggeringrule (str): all or any
 
         Attributes
         ----------
-            entity (EntityRef): refernce to the entity
+            entity (list of EntityRef): refernce to the entity
 
             triggeringrule (str): all or any
 
         Methods
         -------
+            add_entity(entity)
+                adds a entityref to the triggering entities
+                
             get_element()
                 Returns the full ElementTree of the class
 
@@ -454,7 +464,7 @@ class TriggeringEntities():
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,entity,triggeringrule):
+    def __init__(self,triggeringrule):
         &#34;&#34;&#34; initalize the TriggeringEntities
         
         Parameters
@@ -466,8 +476,18 @@ class TriggeringEntities():
         &#34;&#34;&#34;
         if triggeringrule not in [&#39;any&#39;,&#39;all&#39;]:
             raise ValueError(&#39;not a vaild triggering rule&#39;)
-        self.entity = EntityRef(entity)
+        self.entity = [] 
         self.triggeringrule = triggeringrule
+
+    def add_entity(self,entity):
+        &#34;&#34;&#34; add_entity adds an entity to the TriggeringEntities
+
+        Parameters
+        ----------
+            entity (str): name of the entity to add
+        
+        &#34;&#34;&#34;
+        self.entity.append(EntityRef(entity))
 
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
@@ -480,7 +500,8 @@ class TriggeringEntities():
 
         &#34;&#34;&#34;
         element = ET.Element(&#39;TriggeringEntities&#39;,attrib=self.get_attributes())
-        element.append(self.entity.get_element())
+        for ent in self.entity:
+            element.append(ent.get_element())
         return element
 
 
@@ -692,8 +713,8 @@ class TimeHeadwayCondition():
         basedict = {}
         basedict[&#39;entityRef&#39;] = self.entity
         basedict[&#39;value&#39;] = str(self.value)
-        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
-        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;alongRoute&#39;] = convert_bool(self.alongroute)
+        basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
         basedict[&#39;rule&#39;] = self.rule.name
         return basedict
 
@@ -795,8 +816,8 @@ class TimeToCollisionCondition():
         &#34;&#34;&#34;
         basedict = {}
         basedict[&#39;value&#39;] = str(self.value)
-        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
-        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;alongRoute&#39;] = convert_bool(self.alongroute)
+        basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
         basedict[&#39;rule&#39;] = self.rule.name
         return basedict
         
@@ -808,12 +829,13 @@ class TimeToCollisionCondition():
         element = ET.Element(&#39;EntityCondition&#39;)
         collisionevent = ET.SubElement(element,&#39;TimeToCollisionCondition&#39;,attrib=self.get_attributes())
         
+        targetelement = ET.SubElement(collisionevent,&#39;TimeToCollisionConditionTarget&#39;)
         if self.use_entity == None:
             raise ValueError(&#39;neither position or entity was set.&#39;)
         elif self.use_entity:
-            collisionevent.append(self.entity.get_element())
+            targetelement.append(self.entity.get_element())
         else: 
-            collisionevent.append(self.position.get_element())
+            targetelement.append(self.position.get_element())
         
         
         return element
@@ -1186,8 +1208,8 @@ class DistanceCondition():
         &#34;&#34;&#34;
         basedict = {}
         basedict[&#39;value&#39;] = str(self.value)
-        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
-        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;alongRoute&#39;] = convert_bool(self.alongroute)
+        basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
         basedict[&#39;rule&#39;] = self.rule.name
         return basedict
 
@@ -1211,6 +1233,8 @@ class RelativeDistanceCondition():
 
             entity (str): name of the entity fore relative distance
 
+            dist_type (RelativeDistanceType): type of relative distance
+
             alongroute (bool): if the route should count
                 Default: True
 
@@ -1225,6 +1249,8 @@ class RelativeDistanceCondition():
 
             entity (str): name of the entity fore relative distance
 
+            dist_type (RelativeDistanceType): type of relative distance
+
             alongroute (bool): if the route should count
 
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
@@ -1238,7 +1264,7 @@ class RelativeDistanceCondition():
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,value,rule,entity,alongroute=True,freespace=True):
+    def __init__(self,value,rule,dist_type,entity,alongroute=True,freespace=True):
         &#34;&#34;&#34; initalize the RelativeDistanceCondition
         
         Parameters
@@ -1248,6 +1274,8 @@ class RelativeDistanceCondition():
             rule (Rule): condition rule of triggering 
 
             entity (str): name of the entity fore relative distance
+
+            dist_type (RelativeDistanceType): type of relative distance
 
             alongroute (bool): if the route should count
                 Default: True
@@ -1259,6 +1287,7 @@ class RelativeDistanceCondition():
         self.value = value
         self.alongroute = alongroute
         self.freespace = freespace
+        self.dist_type = dist_type
         if rule not in Rule:
             raise ValueError(rule + &#39;; is not a valid rule.&#39;)
         self.rule = rule
@@ -1270,10 +1299,11 @@ class RelativeDistanceCondition():
         &#34;&#34;&#34;
         basedict = {}
         basedict[&#39;value&#39;] = str(self.value)
-        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
-        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;alongRoute&#39;] = convert_bool(self.alongroute)
+        basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
         basedict[&#39;entityRef&#39;] = self.entity
         basedict[&#39;rule&#39;] = self.rule.name
+        basedict[&#39;relativeDistancetype&#39;] = self.dist_type.name
         return basedict
 
     def get_element(self):
@@ -1462,19 +1492,19 @@ class StoryboardElementStateCondition():
         
         Parameters
         ----------
-            element (str): the element to trigger on
+            element (StoryboardElementType): the element to trigger on
 
             reference (str): reference of the parameter
 
-            state (str): state to trigger on
+            state (StoryboardElementState): state to trigger on
 
         Attributes
         ----------
-            element (str): the element to trigger on
+            element (StoryboardElementType): the element to trigger on
 
             reference (str): reference of the parameter
 
-            state (str): state to trigger on
+            state (StoryboardElementState): state to trigger on
 
         Methods
         -------
@@ -1490,11 +1520,11 @@ class StoryboardElementStateCondition():
 
             Parameters
             ----------
-                element (str): the element to trigger on
+                element (StoryboardElementType): the element to trigger on
 
                 reference (str): reference of the parameter
 
-                state (str): state to trigger on
+                state (StoryboardElementType): state to trigger on
         &#34;&#34;&#34;
         self.element = element
         self.reference = reference
@@ -1504,7 +1534,7 @@ class StoryboardElementStateCondition():
         &#34;&#34;&#34; returns the attributes of the StoryboardElementStateCondition as a dict
 
         &#34;&#34;&#34;
-        return {&#39;storyboardElementType&#39;:self.element,&#39;storyboardElementRef&#39;:self.reference,&#39;state&#39;:self.state}
+        return {&#39;storyboardElementType&#39;:self.element.name,&#39;storyboardElementRef&#39;:self.reference,&#39;state&#39;:self.state.name}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the StoryboardElementStateCondition
@@ -2156,8 +2186,8 @@ get_attributes()
         &#34;&#34;&#34;
         basedict = {}
         basedict[&#39;value&#39;] = str(self.value)
-        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
-        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;alongRoute&#39;] = convert_bool(self.alongroute)
+        basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
         basedict[&#39;rule&#39;] = self.rule.name
         return basedict
 
@@ -2187,8 +2217,8 @@ get_attributes()
     &#34;&#34;&#34;
     basedict = {}
     basedict[&#39;value&#39;] = str(self.value)
-    basedict[&#39;alongRoute&#39;] = str(self.alongroute)
-    basedict[&#39;freespace&#39;] = str(self.freespace)
+    basedict[&#39;alongRoute&#39;] = convert_bool(self.alongroute)
+    basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
     basedict[&#39;rule&#39;] = self.rule.name
     return basedict</code></pre>
 </details>
@@ -2476,7 +2506,7 @@ triggeringpoint (str): start or stop
 
             entitycondotion (*Condition): an entity condition
 
-            triggeringentity (str): the entity of the trigger 
+            triggeringentity (str): the entity of the trigger
 
             triggeringrule (str): rule of the trigger
                 Default: &#39;any&#39;
@@ -2538,7 +2568,8 @@ triggeringpoint (str): start or stop
             raise ValueError(&#39;not a valid condition edge&#39;)
         self.conditionedge = conditionedge
         self.entitycondition = entitycondition
-        self.triggerentity = TriggeringEntities(triggerentity,triggeringrule)
+        self.triggerentity = TriggeringEntities(triggeringrule)
+        self.triggerentity.add_entity(triggerentity)
         
         self._used_by_parent = False
 
@@ -2548,6 +2579,14 @@ triggeringpoint (str): start or stop
         &#34;&#34;&#34;
         self._used_by_parent = True
 
+    def add_triggering_entity(self,triggerentity):
+        &#34;&#34;&#34; adds additional triggering entities to a trigger
+
+        Parameters
+        ----------
+            triggeringentity (str)
+        &#34;&#34;&#34;
+        self.triggerentity.add_entity(triggerentity)
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
 
@@ -2575,6 +2614,28 @@ triggeringpoint (str): start or stop
 </details>
 <h3>Methods</h3>
 <dl>
+<dt id="pyoscx.triggers.EntityTrigger.add_triggering_entity"><code class="name flex">
+<span>def <span class="ident">add_triggering_entity</span></span>(<span>self, triggerentity)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds additional triggering entities to a trigger</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>triggeringentity (str)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_triggering_entity(self,triggerentity):
+    &#34;&#34;&#34; adds additional triggering entities to a trigger
+
+    Parameters
+    ----------
+        triggeringentity (str)
+    &#34;&#34;&#34;
+    self.triggerentity.add_entity(triggerentity)</code></pre>
+</details>
+</dd>
 <dt id="pyoscx.triggers.EntityTrigger.get_attributes"><code class="name flex">
 <span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
 </code></dt>
@@ -2995,7 +3056,7 @@ tolerance (float): tolerance of the position
 </dd>
 <dt id="pyoscx.triggers.RelativeDistanceCondition"><code class="flex name class">
 <span>class <span class="ident">RelativeDistanceCondition</span></span>
-<span>(</span><span>value, rule, entity, alongroute=True, freespace=True)</span>
+<span>(</span><span>value, rule, dist_type, entity, alongroute=True, freespace=True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>the RelativeDistanceCondition class is an Entity Condition used by the EntityTrigger</p>
@@ -3005,6 +3066,8 @@ tolerance (float): tolerance of the position
 rule (Rule): condition rule of triggering
 
 entity (str): name of the entity fore relative distance
+
+dist_type (RelativeDistanceType): type of relative distance
 
 alongroute (bool): if the route should count
     Default: True
@@ -3018,6 +3081,8 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
 rule (Rule): condition rule of triggering
 
 entity (str): name of the entity fore relative distance
+
+dist_type (RelativeDistanceType): type of relative distance
 
 alongroute (bool): if the route should count
 
@@ -3037,6 +3102,8 @@ get_attributes()
 rule (Rule): condition rule of triggering
 
 entity (str): name of the entity fore relative distance
+
+dist_type (RelativeDistanceType): type of relative distance
 
 alongroute (bool): if the route should count
     Default: True
@@ -3059,6 +3126,8 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
 
             entity (str): name of the entity fore relative distance
 
+            dist_type (RelativeDistanceType): type of relative distance
+
             alongroute (bool): if the route should count
                 Default: True
 
@@ -3073,6 +3142,8 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
 
             entity (str): name of the entity fore relative distance
 
+            dist_type (RelativeDistanceType): type of relative distance
+
             alongroute (bool): if the route should count
 
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
@@ -3086,7 +3157,7 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,value,rule,entity,alongroute=True,freespace=True):
+    def __init__(self,value,rule,dist_type,entity,alongroute=True,freespace=True):
         &#34;&#34;&#34; initalize the RelativeDistanceCondition
         
         Parameters
@@ -3096,6 +3167,8 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
             rule (Rule): condition rule of triggering 
 
             entity (str): name of the entity fore relative distance
+
+            dist_type (RelativeDistanceType): type of relative distance
 
             alongroute (bool): if the route should count
                 Default: True
@@ -3107,6 +3180,7 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
         self.value = value
         self.alongroute = alongroute
         self.freespace = freespace
+        self.dist_type = dist_type
         if rule not in Rule:
             raise ValueError(rule + &#39;; is not a valid rule.&#39;)
         self.rule = rule
@@ -3118,10 +3192,11 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
         &#34;&#34;&#34;
         basedict = {}
         basedict[&#39;value&#39;] = str(self.value)
-        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
-        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;alongRoute&#39;] = convert_bool(self.alongroute)
+        basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
         basedict[&#39;entityRef&#39;] = self.entity
         basedict[&#39;rule&#39;] = self.rule.name
+        basedict[&#39;relativeDistancetype&#39;] = self.dist_type.name
         return basedict
 
     def get_element(self):
@@ -3149,10 +3224,11 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
     &#34;&#34;&#34;
     basedict = {}
     basedict[&#39;value&#39;] = str(self.value)
-    basedict[&#39;alongRoute&#39;] = str(self.alongroute)
-    basedict[&#39;freespace&#39;] = str(self.freespace)
+    basedict[&#39;alongRoute&#39;] = convert_bool(self.alongroute)
+    basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
     basedict[&#39;entityRef&#39;] = self.entity
     basedict[&#39;rule&#39;] = self.rule.name
+    basedict[&#39;relativeDistancetype&#39;] = self.dist_type.name
     return basedict</code></pre>
 </details>
 </dd>
@@ -3689,18 +3765,18 @@ get_attributes()
 <dd>
 <div class="desc"><p>the StoryboardElementStateCondition class is an Value Condition used by the ValueTrigger</p>
 <h2 id="parameters">Parameters</h2>
-<pre><code>element (str): the element to trigger on
+<pre><code>element (StoryboardElementType): the element to trigger on
 
 reference (str): reference of the parameter
 
-state (str): state to trigger on
+state (StoryboardElementState): state to trigger on
 </code></pre>
 <h2 id="attributes">Attributes</h2>
-<pre><code>element (str): the element to trigger on
+<pre><code>element (StoryboardElementType): the element to trigger on
 
 reference (str): reference of the parameter
 
-state (str): state to trigger on
+state (StoryboardElementState): state to trigger on
 </code></pre>
 <h2 id="methods">Methods</h2>
 <pre><code>get_element()
@@ -3711,11 +3787,11 @@ get_attributes()
 </code></pre>
 <p>initalize the StoryboardElementStateCondition</p>
 <h2 id="parameters_1">Parameters</h2>
-<pre><code>element (str): the element to trigger on
+<pre><code>element (StoryboardElementType): the element to trigger on
 
 reference (str): reference of the parameter
 
-state (str): state to trigger on
+state (StoryboardElementType): state to trigger on
 </code></pre></div>
 <details class="source">
 <summary>
@@ -3726,19 +3802,19 @@ state (str): state to trigger on
         
         Parameters
         ----------
-            element (str): the element to trigger on
+            element (StoryboardElementType): the element to trigger on
 
             reference (str): reference of the parameter
 
-            state (str): state to trigger on
+            state (StoryboardElementState): state to trigger on
 
         Attributes
         ----------
-            element (str): the element to trigger on
+            element (StoryboardElementType): the element to trigger on
 
             reference (str): reference of the parameter
 
-            state (str): state to trigger on
+            state (StoryboardElementState): state to trigger on
 
         Methods
         -------
@@ -3754,11 +3830,11 @@ state (str): state to trigger on
 
             Parameters
             ----------
-                element (str): the element to trigger on
+                element (StoryboardElementType): the element to trigger on
 
                 reference (str): reference of the parameter
 
-                state (str): state to trigger on
+                state (StoryboardElementType): state to trigger on
         &#34;&#34;&#34;
         self.element = element
         self.reference = reference
@@ -3768,7 +3844,7 @@ state (str): state to trigger on
         &#34;&#34;&#34; returns the attributes of the StoryboardElementStateCondition as a dict
 
         &#34;&#34;&#34;
-        return {&#39;storyboardElementType&#39;:self.element,&#39;storyboardElementRef&#39;:self.reference,&#39;state&#39;:self.state}
+        return {&#39;storyboardElementType&#39;:self.element.name,&#39;storyboardElementRef&#39;:self.reference,&#39;state&#39;:self.state.name}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the StoryboardElementStateCondition
@@ -3791,7 +3867,7 @@ state (str): state to trigger on
     &#34;&#34;&#34; returns the attributes of the StoryboardElementStateCondition as a dict
 
     &#34;&#34;&#34;
-    return {&#39;storyboardElementType&#39;:self.element,&#39;storyboardElementRef&#39;:self.reference,&#39;state&#39;:self.state}</code></pre>
+    return {&#39;storyboardElementType&#39;:self.element.name,&#39;storyboardElementRef&#39;:self.reference,&#39;state&#39;:self.state.name}</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.triggers.StoryboardElementStateCondition.get_element"><code class="name flex">
@@ -3938,8 +4014,8 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
         basedict = {}
         basedict[&#39;entityRef&#39;] = self.entity
         basedict[&#39;value&#39;] = str(self.value)
-        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
-        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;alongRoute&#39;] = convert_bool(self.alongroute)
+        basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
         basedict[&#39;rule&#39;] = self.rule.name
         return basedict
 
@@ -3969,8 +4045,8 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
     basedict = {}
     basedict[&#39;entityRef&#39;] = self.entity
     basedict[&#39;value&#39;] = str(self.value)
-    basedict[&#39;alongRoute&#39;] = str(self.alongroute)
-    basedict[&#39;freespace&#39;] = str(self.freespace)
+    basedict[&#39;alongRoute&#39;] = convert_bool(self.alongroute)
+    basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
     basedict[&#39;rule&#39;] = self.rule.name
     return basedict</code></pre>
 </details>
@@ -4275,8 +4351,8 @@ optionals:
         &#34;&#34;&#34;
         basedict = {}
         basedict[&#39;value&#39;] = str(self.value)
-        basedict[&#39;alongRoute&#39;] = str(self.alongroute)
-        basedict[&#39;freespace&#39;] = str(self.freespace)
+        basedict[&#39;alongRoute&#39;] = convert_bool(self.alongroute)
+        basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
         basedict[&#39;rule&#39;] = self.rule.name
         return basedict
         
@@ -4288,12 +4364,13 @@ optionals:
         element = ET.Element(&#39;EntityCondition&#39;)
         collisionevent = ET.SubElement(element,&#39;TimeToCollisionCondition&#39;,attrib=self.get_attributes())
         
+        targetelement = ET.SubElement(collisionevent,&#39;TimeToCollisionConditionTarget&#39;)
         if self.use_entity == None:
             raise ValueError(&#39;neither position or entity was set.&#39;)
         elif self.use_entity:
-            collisionevent.append(self.entity.get_element())
+            targetelement.append(self.entity.get_element())
         else: 
-            collisionevent.append(self.position.get_element())
+            targetelement.append(self.position.get_element())
         
         
         return element</code></pre>
@@ -4315,8 +4392,8 @@ optionals:
     &#34;&#34;&#34;
     basedict = {}
     basedict[&#39;value&#39;] = str(self.value)
-    basedict[&#39;alongRoute&#39;] = str(self.alongroute)
-    basedict[&#39;freespace&#39;] = str(self.freespace)
+    basedict[&#39;alongRoute&#39;] = convert_bool(self.alongroute)
+    basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
     basedict[&#39;rule&#39;] = self.rule.name
     return basedict</code></pre>
 </details>
@@ -4337,12 +4414,13 @@ optionals:
     element = ET.Element(&#39;EntityCondition&#39;)
     collisionevent = ET.SubElement(element,&#39;TimeToCollisionCondition&#39;,attrib=self.get_attributes())
     
+    targetelement = ET.SubElement(collisionevent,&#39;TimeToCollisionConditionTarget&#39;)
     if self.use_entity == None:
         raise ValueError(&#39;neither position or entity was set.&#39;)
     elif self.use_entity:
-        collisionevent.append(self.entity.get_element())
+        targetelement.append(self.entity.get_element())
     else: 
-        collisionevent.append(self.position.get_element())
+        targetelement.append(self.position.get_element())
     
     
     return element</code></pre>
@@ -4837,22 +4915,23 @@ add_conditiongroup(conditiongroup)
 </dd>
 <dt id="pyoscx.triggers.TriggeringEntities"><code class="flex name class">
 <span>class <span class="ident">TriggeringEntities</span></span>
-<span>(</span><span>entity, triggeringrule)</span>
+<span>(</span><span>triggeringrule)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>the TriggeringEntities class is used by Value and Entity Triggers to defined the trigger entity</p>
 <h2 id="parameters">Parameters</h2>
-<pre><code>entity (str): name of the entity
-
-triggeringrule (str): all or any
+<pre><code>triggeringrule (str): all or any
 </code></pre>
 <h2 id="attributes">Attributes</h2>
-<pre><code>entity (EntityRef): refernce to the entity
+<pre><code>entity (list of EntityRef): refernce to the entity
 
 triggeringrule (str): all or any
 </code></pre>
 <h2 id="methods">Methods</h2>
-<pre><code>get_element()
+<pre><code>add_entity(entity)
+    adds a entityref to the triggering entities
+
+get_element()
     Returns the full ElementTree of the class
 
 get_attributes()
@@ -4873,18 +4952,19 @@ triggeringrule (str): all or any
         
         Parameters
         ----------
-            entity (str): name of the entity
-
             triggeringrule (str): all or any
 
         Attributes
         ----------
-            entity (EntityRef): refernce to the entity
+            entity (list of EntityRef): refernce to the entity
 
             triggeringrule (str): all or any
 
         Methods
         -------
+            add_entity(entity)
+                adds a entityref to the triggering entities
+                
             get_element()
                 Returns the full ElementTree of the class
 
@@ -4892,7 +4972,7 @@ triggeringrule (str): all or any
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,entity,triggeringrule):
+    def __init__(self,triggeringrule):
         &#34;&#34;&#34; initalize the TriggeringEntities
         
         Parameters
@@ -4904,8 +4984,18 @@ triggeringrule (str): all or any
         &#34;&#34;&#34;
         if triggeringrule not in [&#39;any&#39;,&#39;all&#39;]:
             raise ValueError(&#39;not a vaild triggering rule&#39;)
-        self.entity = EntityRef(entity)
+        self.entity = [] 
         self.triggeringrule = triggeringrule
+
+    def add_entity(self,entity):
+        &#34;&#34;&#34; add_entity adds an entity to the TriggeringEntities
+
+        Parameters
+        ----------
+            entity (str): name of the entity to add
+        
+        &#34;&#34;&#34;
+        self.entity.append(EntityRef(entity))
 
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
@@ -4918,11 +5008,35 @@ triggeringrule (str): all or any
 
         &#34;&#34;&#34;
         element = ET.Element(&#39;TriggeringEntities&#39;,attrib=self.get_attributes())
-        element.append(self.entity.get_element())
+        for ent in self.entity:
+            element.append(ent.get_element())
         return element</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
+<dt id="pyoscx.triggers.TriggeringEntities.add_entity"><code class="name flex">
+<span>def <span class="ident">add_entity</span></span>(<span>self, entity)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>add_entity adds an entity to the TriggeringEntities</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>entity (str): name of the entity to add
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_entity(self,entity):
+    &#34;&#34;&#34; add_entity adds an entity to the TriggeringEntities
+
+    Parameters
+    ----------
+        entity (str): name of the entity to add
+    
+    &#34;&#34;&#34;
+    self.entity.append(EntityRef(entity))</code></pre>
+</details>
+</dd>
 <dt id="pyoscx.triggers.TriggeringEntities.get_attributes"><code class="name flex">
 <span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
 </code></dt>
@@ -4953,7 +5067,8 @@ triggeringrule (str): all or any
 
     &#34;&#34;&#34;
     element = ET.Element(&#39;TriggeringEntities&#39;,attrib=self.get_attributes())
-    element.append(self.entity.get_element())
+    for ent in self.entity:
+        element.append(ent.get_element())
     return element</code></pre>
 </details>
 </dd>
@@ -5365,6 +5480,7 @@ triggeringpoint (str): start or stop
 <li>
 <h4><code><a title="pyoscx.triggers.EntityTrigger" href="#pyoscx.triggers.EntityTrigger">EntityTrigger</a></code></h4>
 <ul class="">
+<li><code><a title="pyoscx.triggers.EntityTrigger.add_triggering_entity" href="#pyoscx.triggers.EntityTrigger.add_triggering_entity">add_triggering_entity</a></code></li>
 <li><code><a title="pyoscx.triggers.EntityTrigger.get_attributes" href="#pyoscx.triggers.EntityTrigger.get_attributes">get_attributes</a></code></li>
 <li><code><a title="pyoscx.triggers.EntityTrigger.get_element" href="#pyoscx.triggers.EntityTrigger.get_element">get_element</a></code></li>
 </ul>
@@ -5484,6 +5600,7 @@ triggeringpoint (str): start or stop
 <li>
 <h4><code><a title="pyoscx.triggers.TriggeringEntities" href="#pyoscx.triggers.TriggeringEntities">TriggeringEntities</a></code></h4>
 <ul class="">
+<li><code><a title="pyoscx.triggers.TriggeringEntities.add_entity" href="#pyoscx.triggers.TriggeringEntities.add_entity">add_entity</a></code></li>
 <li><code><a title="pyoscx.triggers.TriggeringEntities.get_attributes" href="#pyoscx.triggers.TriggeringEntities.get_attributes">get_attributes</a></code></li>
 <li><code><a title="pyoscx.triggers.TriggeringEntities.get_element" href="#pyoscx.triggers.TriggeringEntities.get_element">get_element</a></code></li>
 </ul>
