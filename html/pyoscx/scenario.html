@@ -92,7 +92,7 @@ class Scenario():
         &#34;&#34;&#34; returns the elementTree of the Scenario
 
         &#34;&#34;&#34;
-        element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:self._XMLNS,&#39;xsi:noNamespaceShemaLocation&#39;:self._XSI})
+        element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:self._XMLNS,&#39;xsi:noNamespaceSchemaLocation&#39;:self._XSI})
         element.append(self.header.get_element())
         element.append(self.parameters.get_element())
         element.append(self.catalog.get_element())
@@ -441,7 +441,7 @@ catalog (Catalog): the catalogs used in the scenario
         &#34;&#34;&#34; returns the elementTree of the Scenario
 
         &#34;&#34;&#34;
-        element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:self._XMLNS,&#39;xsi:noNamespaceShemaLocation&#39;:self._XSI})
+        element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:self._XMLNS,&#39;xsi:noNamespaceSchemaLocation&#39;:self._XSI})
         element.append(self.header.get_element())
         element.append(self.parameters.get_element())
         element.append(self.catalog.get_element())
@@ -479,7 +479,7 @@ catalog (Catalog): the catalogs used in the scenario
     &#34;&#34;&#34; returns the elementTree of the Scenario
 
     &#34;&#34;&#34;
-    element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:self._XMLNS,&#39;xsi:noNamespaceShemaLocation&#39;:self._XSI})
+    element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:self._XMLNS,&#39;xsi:noNamespaceSchemaLocation&#39;:self._XSI})
     element.append(self.header.get_element())
     element.append(self.parameters.get_element())
     element.append(self.catalog.get_element())

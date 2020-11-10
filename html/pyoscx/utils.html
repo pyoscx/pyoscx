@@ -1142,7 +1142,7 @@ class FileHeader():
         &#34;&#34;&#34; returns the attributes as a dict of the FileHeader
 
         &#34;&#34;&#34;
-        return {&#39;decription&#39;:self.name,&#39;author&#39;:self.author,&#39;revMajor&#39;:&#39;1&#39;,&#39;revMinor&#39;:&#39;0&#39;,&#39;date&#39;:str(dt.datetime.now())}
+        return {&#39;description&#39;:self.name,&#39;author&#39;:self.author,&#39;revMajor&#39;:&#39;1&#39;,&#39;revMinor&#39;:&#39;0&#39;,&#39;date&#39;:dt.datetime.now().isoformat()}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the FileHeader
@@ -1580,7 +1580,7 @@ class CatalogFile():
                 author (str): author of the catalog
         
         &#34;&#34;&#34;
-        element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:XMLNS,&#39;xsi:noNamespaceShemaLocation&#39;:&#39;../../&#39;+XSI})
+        element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:XMLNS,&#39;xsi:noNamespaceSchemaLocation&#39;:&#39;../../&#39;+XSI})
         header = FileHeader(description,author)
         element.append(header.get_element())
         ET.SubElement(element,&#39;Catalog&#39;,attrib={&#39;name&#39;:catalogtype})
@@ -2397,7 +2397,7 @@ add_catalog(catalogname, path)
                 author (str): author of the catalog
         
         &#34;&#34;&#34;
-        element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:XMLNS,&#39;xsi:noNamespaceShemaLocation&#39;:&#39;../../&#39;+XSI})
+        element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:XMLNS,&#39;xsi:noNamespaceSchemaLocation&#39;:&#39;../../&#39;+XSI})
         header = FileHeader(description,author)
         element.append(header.get_element())
         ET.SubElement(element,&#39;Catalog&#39;,attrib={&#39;name&#39;:catalogtype})
@@ -2502,7 +2502,7 @@ author (str): author of the catalog
             author (str): author of the catalog
     
     &#34;&#34;&#34;
-    element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:XMLNS,&#39;xsi:noNamespaceShemaLocation&#39;:&#39;../../&#39;+XSI})
+    element = ET.Element(&#39;OpenSCENARIO&#39;,attrib={&#39;xmlns:xsi&#39;:XMLNS,&#39;xsi:noNamespaceSchemaLocation&#39;:&#39;../../&#39;+XSI})
     header = FileHeader(description,author)
     element.append(header.get_element())
     ET.SubElement(element,&#39;Catalog&#39;,attrib={&#39;name&#39;:catalogtype})
@@ -3612,7 +3612,7 @@ get_attributes()
         &#34;&#34;&#34; returns the attributes as a dict of the FileHeader
 
         &#34;&#34;&#34;
-        return {&#39;decription&#39;:self.name,&#39;author&#39;:self.author,&#39;revMajor&#39;:&#39;1&#39;,&#39;revMinor&#39;:&#39;0&#39;,&#39;date&#39;:str(dt.datetime.now())}
+        return {&#39;description&#39;:self.name,&#39;author&#39;:self.author,&#39;revMajor&#39;:&#39;1&#39;,&#39;revMinor&#39;:&#39;0&#39;,&#39;date&#39;:dt.datetime.now().isoformat()}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the FileHeader
@@ -3637,7 +3637,7 @@ get_attributes()
     &#34;&#34;&#34; returns the attributes as a dict of the FileHeader
 
     &#34;&#34;&#34;
-    return {&#39;decription&#39;:self.name,&#39;author&#39;:self.author,&#39;revMajor&#39;:&#39;1&#39;,&#39;revMinor&#39;:&#39;0&#39;,&#39;date&#39;:str(dt.datetime.now())}</code></pre>
+    return {&#39;description&#39;:self.name,&#39;author&#39;:self.author,&#39;revMajor&#39;:&#39;1&#39;,&#39;revMinor&#39;:&#39;0&#39;,&#39;date&#39;:dt.datetime.now().isoformat()}</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.utils.FileHeader.get_element"><code class="name flex">
