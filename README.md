@@ -36,7 +36,7 @@ To view the scenario created, esmini can be used. Visit https://github.com/esmin
 [esmini](https://github.com/esmini/esmini) is a basic OpenSCENARIO player
 
 ### pyodrx
-[pyodrx](https://github.com/pyosx/pyodrx) basic python wrapper for OpenDRIVE
+[pyodrx](https://github.com/pyoscx/pyodrx) basic python wrapper for OpenDRIVE
  
 ## Authors
 
