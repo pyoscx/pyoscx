@@ -29,9 +29,29 @@
 <pre><code class="python">import os
 import xml.etree.ElementTree as ET
 from .helpers import printToFile
-from .enumerations import ConditionEdge, ObjectType, ParameterType, Rule, ReferenceContext, DynamicsShapes, DynamicsDimension, RouteStrategy,XSI,XMLNS
+
+from .enumerations import ParameterType, Rule, ReferenceContext, DynamicsShapes, DynamicsDimension, RouteStrategy,XSI,XMLNS, VehicleCategory,PrecipitationType,CloudState
 import datetime as dt
 
+class _PositionType():
+    &#34;&#34;&#34; helper class for typesetting
+    &#34;&#34;&#34;
+    pass
+
+class _TriggerType():
+    &#34;&#34;&#34; helper class for typesetting
+    &#34;&#34;&#34;
+    pass
+
+class _ValueTriggerType():
+    &#34;&#34;&#34; helper class for typesetting
+    &#34;&#34;&#34;
+    pass
+
+class _EntityTriggerType():
+    &#34;&#34;&#34; helper class for typesetting
+    &#34;&#34;&#34;
+    pass
 
 class ParameterDeclarations():
     &#34;&#34;&#34; The ParameterDeclarations class creates the ParameterDeclaration of OpenScenario
@@ -64,6 +84,8 @@ class ParameterDeclarations():
 
 
         &#34;&#34;&#34;
+        if not isinstance(parameter,Parameter):
+            raise TypeError(&#39;parameter input is not of type Parameter&#39;)
         self.parameters.append(parameter)
     
     def get_element(self):
@@ -132,7 +154,7 @@ class Parameter():
         ----------
             name (str): name of parameter
 
-            parameter_type (str): type of the parameter
+            parameter_type (ParameterType): type of the parameter
 
             value (str): value of the parameter
 
@@ -155,7 +177,7 @@ class Parameter():
             ----------
                 name (str): name of parameter
 
-                parameter_type (str): type of the parameter
+                parameter_type (ParameterType): type of the parameter
 
                 value (str): value of the parameter
 
@@ -230,9 +252,8 @@ class Orientation():
         self.h = h
         self.p = p
         self.r = r
-
-        # if (reference not in ReferenceContext.__members__) and (reference is not None):
-        #     raise ValueError(str(reference) + &#39;; is not a valid reference type.&#39;)
+        if reference is not None and reference not in ReferenceContext:
+            raise TypeError(&#39;reference input is not of type ReferenceContext&#39;)
         self.ref = reference
 
     def is_filled(self):
@@ -304,19 +325,19 @@ class TransitionDynamics():
         &#34;&#34;&#34;
             Parameters
             ----------
-                shape (str): shape of the transition
+                shape (DynamicsShapes): shape of the transition
 
-                dimension (str): the dimension of the transition (rate, time or distance)
+                dimension (DynamicsDimension): the dimension of the transition (rate, time or distance)
 
                 value (float): the value of the dynamics (time rate or distance)
 
         &#34;&#34;&#34;
-        # if shape not in DynamicsShapes:
-        #     raise ValueError(shape + &#39;; is not a valid shape.&#39;)
+        if shape not in DynamicsShapes:
+            raise TypeError(shape + &#39;; is not a valid shape.&#39;)
         
         self.shape = shape
-        # if dimension not in DynamicsDimension:
-        #     raise ValueError(dimension + &#39; is not a valid dynamics dimension&#39;)
+        if dimension not in DynamicsDimension:
+            raise ValueError(dimension + &#39; is not a valid dynamics dimension&#39;)
         self.dimension = dimension
         self.value = value
 
@@ -459,6 +480,8 @@ class Route():
 
         &#34;&#34;&#34;
         self.name = name
+        if not isinstance(closed,bool):
+            raise TypeError(&#39;closed input is not of type bool&#39;)
         self.closed = closed
         self.waypoints = []
         self.parameters = ParameterDeclarations()
@@ -503,6 +526,8 @@ class Route():
                 parameter (Parameter): the parameter to add
 
         &#34;&#34;&#34;
+        if not isinstance(parameter,Parameter):
+            raise TypeError(&#39;parameter input is not of type Parameter&#39;)
         self.parameters.add_parameter(parameter)
 
     def add_waypoint(self,position,routestrategy):
@@ -515,6 +540,7 @@ class Route():
                 routestrategy (RouteStrategy): routing strategy for this waypoint
 
         &#34;&#34;&#34;
+        # note: the checks for types are done in Waypoint
         self.waypoints.append(Waypoint(position,routestrategy))
 
     def get_attributes(self):
@@ -573,6 +599,8 @@ class Waypoint():
                 routestrategy (RouteStrategy): routing strategy for this waypoint
 
         &#34;&#34;&#34;
+        if not isinstance(position,_PositionType):
+            raise TypeError(&#39;position input not a valid Position&#39;)
         self.position = position
         if routestrategy not in RouteStrategy:
             ValueError(&#39;not a valid RouteStrategy&#39;)
@@ -647,6 +675,8 @@ class Trajectory():
         &#34;&#34;&#34;
 
         self.name = name
+        if not isinstance(closed,bool):
+            raise TypeError(&#39;closed input is not boolean&#39;)
         self.closed = closed
         self.parameters = ParameterDeclarations()
         self.shapes = []
@@ -681,6 +711,7 @@ class Trajectory():
         cf.open_catalog(filename)
         cf.add_to_catalog(self)
         cf.dump()
+
     def add_shape(self,shape):
         &#34;&#34;&#34; adds a shape to the trajectory (only the same shape can be used)
 
@@ -689,6 +720,8 @@ class Trajectory():
             shape (Polyline, Clothoid, or Nurbs): the shape to be added to the trajectory
 
         &#34;&#34;&#34;
+        if not (isinstance(shape,Polyline) or isinstance(shape,Clothoid) or isinstance(shape,Nurbs)):
+            raise TypeError(&#39;shape input neither of type Polyline, Clothoid, or Nurbs&#39;)
         self.shapes.append(shape)
 
     def add_parameter(self,parameter):
@@ -699,6 +732,8 @@ class Trajectory():
                 parameter (Parameter): the parameter to add
 
         &#34;&#34;&#34;
+        if not isinstance(parameter,Parameter):
+            raise TypeError(&#39;input parameter is not of type Parameter&#39;)
         self.parameters.add_parameter(parameter)
 
     def get_attributes(self):
@@ -751,35 +786,40 @@ class TimeReference():
                 Returns a dictionary of all attributes of the class
     &#34;&#34;&#34;
 
-    def __init__(self, referece_domain=None,scale=None,offset=None):
+    def __init__(self, reference_domain=None,scale=None,offset=None):
         &#34;&#34;&#34; initalize the TimeReference
 
             Parameters
             ----------
-            name (str): name of the trajectory
-
-            closed (boolean): if the trajectory is closed at the end
+            referece_domain (ReferenceContext): absolute or relative time reference (must be combined with scale and offset)
+                Default: None
+            scale (double): scalefactor of the timeings (must be combined with referece_domain and offset)
+                Default: None
+            offset (double): offset for time values (must be combined with referece_domain and scale)
+                Default: None
 
         &#34;&#34;&#34;
-        nones = [referece_domain == None, scale == None, offset == None]
+        nones = [reference_domain == None, scale == None, offset == None]
         if sum(nones) == 3:
             self._only_nones = True
         elif sum(nones) == 0:
             self._only_nones = False
         else:
-            ValueError(&#39;missing inputs for time reference&#39;)
-        # if referece_domain not in ReferenceContext:
-        #     ValueError(&#39;not a valid reference domain&#39;)
-        self.referece_domain = referece_domain
+            print(&#39;reference_domain={}, scale={}, offset={}&#39;.format(reference_domain, scale, offset))
+            raise ValueError(&#39;missing inputs for time reference&#39;)
+        if reference_domain is not None and reference_domain not in ReferenceContext:
+            raise TypeError(&#39;input reference_domain is not of type ReferenceContext&#39;)
+        
+        self.reference_domain = reference_domain
         self.scale = scale
         self.offset = offset
-        
+
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the TimeReference as a dict
 
         &#34;&#34;&#34;
         retdict = {}
-        retdict[&#39;domainAbsoluteRelative&#39;] = self.referece_domain.name
+        retdict[&#39;domainAbsoluteRelative&#39;] = self.reference_domain.name
         retdict[&#39;scale&#39;] = str(self.scale)
         retdict[&#39;offset&#39;] = str(self.offset)
         return retdict
@@ -830,12 +870,14 @@ class Polyline():
 
         &#34;&#34;&#34;
         if len(time) &lt; 2:
-            ValueError(&#39;not enough time inputs&#39;)
+            raise ValueError(&#39;not enough time inputs&#39;)
         if len(positions)&lt;2:
-            ValueError(&#39;not enough position inputs&#39;)
+            raise ValueError(&#39;not enough position inputs&#39;)
         if len(time) != len(positions):
-            ValueError(&#39;time and positions are not the same lenght&#39;)
-        
+            raise ValueError(&#39;time and positions are not the same lenght&#39;)
+        for p in positions:
+            if not isinstance(p,_PositionType):
+                raise TypeError(&#39;position input is not a valid position&#39;)
         self.positions = positions
         self.time = time
 
@@ -913,6 +955,8 @@ class Clothoid():
         self.curvature = curvature
         self.curvature_change = curvature_change
         self.length = length
+        if not isinstance(startposition,_PositionType):
+            raise TypeError(&#39;position input is not a valid position&#39;)
         self.startposition = startposition
         
         self.starttime = starttime
@@ -988,7 +1032,8 @@ class ControlPoint():
 
         &#34;&#34;&#34;
 
-        
+        if not isinstance(position,_PositionType):
+            raise TypeError(&#39;position input is not a valid position&#39;)
         self.position = position
         self.time = time
         self.weight = weight
@@ -1072,6 +1117,8 @@ class Nurbs():
             ----------
                 controlpoint (ControlPoint): a contact point to add to the nurbs
         &#34;&#34;&#34;
+        if not isinstance(controlpoint,ControlPoint):
+            raise TypeError(&#39;controlpoint input is not of type ControlPoint&#39;)
         self.controlpoints.append(controlpoint)
 
     def get_attributes(self):
@@ -1096,15 +1143,6 @@ class Nurbs():
         
 
         return element
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1296,6 +1334,7 @@ class TrafficSignalController():
 
             delay (float): delay of the phase shift
                 Default: None
+
             reference (string): id to the controller in the roadnetwork
                 Default: None
 
@@ -1329,6 +1368,7 @@ class TrafficSignalController():
 
             delay (float): delay of the phase shift
                 Default: None
+
             reference (string): id to the controller in the RoadNetwork
                 Default: None
 
@@ -1348,6 +1388,8 @@ class TrafficSignalController():
                 phase (Phase): a phase of the trafficsignal
 
         &#34;&#34;&#34;
+        if not isinstance(phase,Phase):
+            raise TypeError(&#39;phase input is not of type Phase&#39;)
         self.phases.append(phase)
 
     def get_attributes(self):
@@ -1438,7 +1480,8 @@ class TrafficDefinition():
                 weight (float): the corresponding weight for the distribution of the vehicle category
 
         &#34;&#34;&#34;
-
+        if vehiclecategory not in VehicleCategory:
+            raise TypeError(&#39;vehcilecategory input is not of type VehcileCategory&#39;)
         self.vehiclecategories.append(vehiclecategory)
         self.vehicleweights.append(weight)
 
@@ -1452,6 +1495,8 @@ class TrafficDefinition():
                 weight (float): the corresponding weight for the controller
 
         &#34;&#34;&#34;
+        if not ( isinstance(controller,Controller) or isinstance(controller,CatalogReference)):
+            raise TypeError(&#39;controller input not of type Controller or CatalogReference&#39;)
         self.controllers.append(controller)
         self.controllerweights.append(weight)
     
@@ -1671,11 +1716,11 @@ class CatalogReference():
 
             entryname (str): name of the entry in the catalog 
 
-            parameter (Parameter) ???
+            parameterassignments (list of ParameterAssignment): the parameter assignments for the given catalogreference
 
         Methods
         -------
-            add_parameter_assignment(parameter,value)
+            add_parameter_assignment(parameterref,value)
                 Assigns a parameter with a value
 
             get_element()
@@ -1697,6 +1742,18 @@ class CatalogReference():
         &#34;&#34;&#34;
         self.catalogname = catalogname
         self.entryname = entryname
+        self.parameterassignments = []
+
+    def add_parameter_assignment(self,parameterref,value):
+        &#34;&#34;&#34; add_parameter_assignment adds a parameter and value to the catalog reference
+
+            Parameters
+            ----------
+                parameterref (str): name of the parameter
+
+                value (str): assigned value of the parameter
+        &#34;&#34;&#34;
+        self.parameterassignments.append(ParameterAssignment(parameterref,value))
 
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the CatalogReference as a dict
@@ -1708,11 +1765,65 @@ class CatalogReference():
         &#34;&#34;&#34; returns the elementTree of the CatalogReference
 
         &#34;&#34;&#34;
-        return ET.Element(&#39;CatalogReference&#39;,attrib=self.get_attributes())
+        element = ET.Element(&#39;CatalogReference&#39;,attrib=self.get_attributes())
+        for parass in self.parameterassignments:
+            element.append(parass.get_element())
+        return element
     
 
+class ParameterAssignment():
+    &#34;&#34;&#34; ParameterAssignment creates an ParameterAssignment element of openscenario
+        
+        Parameters
+        ----------
+            parameterref (str): name of the parameter
+
+            value (str): assigned value of the parameter
 
 
+        Attributes
+        ----------
+            parameterref (str): name of the parameter
+
+            value (str): assigned value of the parameter
+
+        Methods
+        -------
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,parameterref,value):
+        &#34;&#34;&#34; initalize the ParameterAssignment
+
+            Parameters
+            ----------
+                parameterref (str): name of the parameter
+
+                value (str): assigned value of the parameter   
+                
+        &#34;&#34;&#34;
+        self.parameterref = parameterref
+        self.value = value
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the ParameterAssignment as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;parameterRef&#39;] = self.parameterref
+        retdict[&#39;value&#39;] = str(self.value)
+        return retdict
+    
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the ParameterAssignment
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;ParameterAssignment&#39;,attrib=self.get_attributes())
 
 class TimeOfDay():
     &#34;&#34;&#34; TimeOfDay creates an TimeOfDay element of openscenario
@@ -1877,6 +1988,12 @@ class Weather():
                     Default: None  
                 
         &#34;&#34;&#34;
+        if cloudstate not in CloudState:
+            raise TypeError(&#39;cloudstate input is not of type CloudState&#39;)
+        if precipitation not in PrecipitationType:
+            raise TypeError(&#39;precipitation input is not of type PrecipitationType&#39;)
+        if fog_bounding_box != None and not isinstance(fog_bounding_box, BoundingBox):
+            raise TypeError(&#39;fog_bounding_box input is not of type BoundingBox&#39;)
         self.cloudstate = cloudstate 
         self.sun_intensity = sun_intensity
         self.sun_azimuth = sun_azimuth
@@ -1942,6 +2059,8 @@ class RoadCondition():
                 
         &#34;&#34;&#34;
         self.friction_scale_factor = friction_scale_factor 
+        if properties is not None and not isinstance(properties,Properties):
+            raise TypeError(&#39;properties input is not of type Properties&#39;)
         self.properties = properties
 
     def get_attributes(self):
@@ -2014,6 +2133,14 @@ class Environment():
                 parameters (ParameterDeclarations): the parameters to be used in the scenario
                     Default: None
         &#34;&#34;&#34;
+        if not isinstance(timeofday,TimeOfDay):
+            raise TypeError(&#39;timeofday input is not of type TypeOfDay&#39;)
+        if not isinstance(weather,Weather):
+            raise TypeError(&#39;weather input is not of type Weather&#39;)
+        if not isinstance(roadcondition,RoadCondition):
+            raise TypeError(&#39;roadcondition input is not of type RoadCondition&#39;)
+        if parameters is not None and not isinstance(parameters,ParameterDeclarations):
+            raise TypeError(&#39;parameters input is not of type ParameterDeclarations&#39;)    
         self.timeofday = timeofday
         self.weather = weather
         self.roadcondition = roadcondition
@@ -2061,6 +2188,358 @@ class Environment():
         element.append(self.roadcondition.get_element())
         if self.parameters:
             element.append(self.parameters.get_element())
+        return element
+
+
+
+class Controller():
+    &#34;&#34;&#34; the Controller class creates a controller of openScenario
+
+        Parameters
+        ----------
+            name (str): name of the object
+
+            properties (Properties): properties of the controller
+                
+        Attributes
+        ----------
+            parameters (ParameterDeclaration): Parameter declarations of the vehicle
+
+            properties (Properties): additional properties of the vehicle
+
+        Methods
+        -------
+            add_parameter(parameter)
+                adds a parameter declaration to the Controller
+
+            append_to_catalog(filename)
+                adds the vehicle to an existing catalog
+
+            dump_to_catalog(filename,name,description,author)
+                crates a new catalog with the vehicle
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self ,name ,properties):
+        &#34;&#34;&#34; initalzie the Controller Class
+
+        Parameters
+        ----------
+            name (str): name of the object
+
+            properties (Properties): properties of the Controller
+        
+        &#34;&#34;&#34;
+        self.name = name
+        
+        self.parameters = ParameterDeclarations()
+        if not isinstance(properties,Properties):
+            raise TypeError(&#39;properties input is not of type Properties&#39;)
+        self.properties = properties
+
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the Controller to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; adds a parameter declaration to the Controller
+
+            Parameters
+            ----------
+                parameter (Parameter): A new parameter declaration for the Controller
+
+        &#34;&#34;&#34;
+        if not isinstance(parameter,Parameter):
+            raise TypeError(&#39;parameter input is not of type Parameter&#39;)
+        self.parameters.add_parameter(parameter)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Controller as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Controller
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Controller&#39;,attrib=self.get_attributes())
+        element.append(self.parameters.get_element())
+        element.append(self.properties.get_element())
+        
+        return element
+
+
+class BoundingBox():
+    &#34;&#34;&#34; the Dimensions describes the size of an entity
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+
+            x_center (float): x distance from back axel to center
+
+            y_center (float): y distance from back axel to center
+
+            z_center (float): z distance from back axel to center
+                
+
+        Attributes
+        ----------
+            boundingbox (BoundingBox): the bounding box of the entity
+
+            center (Center): the center of the object relative the the back axel
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,width,length,height,x_center,y_center,z_center):
+        &#34;&#34;&#34; initalzie the Dimensions
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+
+            x_center (float): x distance from back axel to center
+
+            y_center (float): y distance from back axel to center
+
+            z_center (float): z distance from back axel to center
+        
+        &#34;&#34;&#34;
+        self.boundingbox = Dimensions(width,length,height)
+        self.center = Center(x_center,y_center,z_center)
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Dimensions
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;BoundingBox&#39;)
+        element.append(self.center.get_element())
+        element.append(self.boundingbox.get_element())
+        return element
+
+class Center():
+    &#34;&#34;&#34; the Center Class creates a centerpoint for a bounding box, reference point of a vehicle is the back axel
+
+        Parameters
+        ----------
+            x (float): x distance from back axel to center
+
+            y (float): y distance from back axel to center
+
+            z (float): z distance from back axel to center
+                
+
+        Attributes
+        ----------
+            x (float): x distance from back axel to center
+
+            y (float): y distance from back axel to center
+
+            z (float): z distance from back axel to center
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,x,y,z):
+        &#34;&#34;&#34; initalzie the Center Class
+
+        Parameters
+        ----------
+            x (float): x distance from back axel to center
+
+            y (float): y distance from back axel to center
+
+            z (float): z distance from back axel to center
+        
+        &#34;&#34;&#34;
+        self.x = x
+        self.y = y
+        self.z = z
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Center
+
+        &#34;&#34;&#34;
+        return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Center
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Center&#39;,attrib=self.get_attributes())
+        return element
+
+class Dimensions():
+    &#34;&#34;&#34; the Dimensions describes the size of an entity
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+                
+
+        Attributes
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,width,length,height):
+        &#34;&#34;&#34; initalzie the Dimensions
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+        
+        &#34;&#34;&#34;
+        self.width = width
+        self.length = length
+        self.height = height
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Dimensions
+
+        &#34;&#34;&#34;
+        return {&#39;width&#39;:str(self.width),&#39;length&#39;:str(self.length),&#39;height&#39;:str(self.height)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Dimensions
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Dimensions&#39;,attrib=self.get_attributes())
+        return element
+
+class Properties():
+    &#34;&#34;&#34; the Properties contains are for user defined properties of an object               
+
+        Attributes
+        ----------
+            files (list of str): arbitrary files with properties
+
+            properties (list of tuple(str,str)): properties in name/value pairs
+
+        Methods
+        -------
+            add_file(file)
+                adds a file with properties
+
+            add_property(name,value)
+                adds a property pair, with name and value
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            
+    &#34;&#34;&#34;
+    def __init__(self):
+        &#34;&#34;&#34; initalzie the Properties
+
+        &#34;&#34;&#34;
+        self.files = []
+        self.properties = []
+
+    def add_file(self,filename):
+        &#34;&#34;&#34; adds a property file
+
+        Parameters
+        ----------
+            filename (str): name of the file
+
+        &#34;&#34;&#34;
+
+        self.files.append(filename)
+
+    def add_property(self,name,value):
+        &#34;&#34;&#34; adds a property pair
+
+        Parameters
+        ----------
+            name (str): name of the property
+
+            value (str): value of the property
+
+        &#34;&#34;&#34;
+        self.properties.append((name,value))
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Properties
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Properties&#39;)
+        for p in self.properties:
+            ET.SubElement(element,&#39;Property&#39;,attrib={&#39;name&#39;:p[0],&#39;value&#39;:p[1]})
+        for f in self.files:
+            ET.SubElement(element,&#39;File&#39;,attrib={&#39;filepath&#39;:f})
+        
+        
         return element
 
 
@@ -2130,6 +2609,135 @@ def convert_bool(value):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="pyoscx.utils.BoundingBox"><code class="flex name class">
+<span>class <span class="ident">BoundingBox</span></span>
+<span>(</span><span>width, length, height, x_center, y_center, z_center)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Dimensions describes the size of an entity</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>width (float): the width of the entity
+
+length (float): the lenght of the entity
+
+height (float): the height of the entity
+
+x_center (float): x distance from back axel to center
+
+y_center (float): y distance from back axel to center
+
+z_center (float): z distance from back axel to center
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>boundingbox (BoundingBox): the bounding box of the entity
+
+center (Center): the center of the object relative the the back axel
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+</code></pre>
+<p>initalzie the Dimensions</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>width (float): the width of the entity
+
+length (float): the lenght of the entity
+
+height (float): the height of the entity
+
+x_center (float): x distance from back axel to center
+
+y_center (float): y distance from back axel to center
+
+z_center (float): z distance from back axel to center
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BoundingBox():
+    &#34;&#34;&#34; the Dimensions describes the size of an entity
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+
+            x_center (float): x distance from back axel to center
+
+            y_center (float): y distance from back axel to center
+
+            z_center (float): z distance from back axel to center
+                
+
+        Attributes
+        ----------
+            boundingbox (BoundingBox): the bounding box of the entity
+
+            center (Center): the center of the object relative the the back axel
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,width,length,height,x_center,y_center,z_center):
+        &#34;&#34;&#34; initalzie the Dimensions
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+
+            x_center (float): x distance from back axel to center
+
+            y_center (float): y distance from back axel to center
+
+            z_center (float): z distance from back axel to center
+        
+        &#34;&#34;&#34;
+        self.boundingbox = Dimensions(width,length,height)
+        self.center = Center(x_center,y_center,z_center)
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Dimensions
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;BoundingBox&#39;)
+        element.append(self.center.get_element())
+        element.append(self.boundingbox.get_element())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.BoundingBox.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Dimensions</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Dimensions
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;BoundingBox&#39;)
+    element.append(self.center.get_element())
+    element.append(self.boundingbox.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="pyoscx.utils.Catalog"><code class="flex name class">
 <span>class <span class="ident">Catalog</span></span>
 </code></dt>
@@ -2569,10 +3177,10 @@ entryname (str): name of the entry in the catalog
 
 entryname (str): name of the entry in the catalog
 
-parameter (Parameter) ???
+parameterassignments (list of ParameterAssignment): the parameter assignments for the given catalogreference
 </code></pre>
 <h2 id="methods">Methods</h2>
-<pre><code>add_parameter_assignment(parameter,value)
+<pre><code>add_parameter_assignment(parameterref,value)
     Assigns a parameter with a value
 
 get_element()
@@ -2606,11 +3214,11 @@ entryname (str): name of the entry in the catalog
 
             entryname (str): name of the entry in the catalog 
 
-            parameter (Parameter) ???
+            parameterassignments (list of ParameterAssignment): the parameter assignments for the given catalogreference
 
         Methods
         -------
-            add_parameter_assignment(parameter,value)
+            add_parameter_assignment(parameterref,value)
                 Assigns a parameter with a value
 
             get_element()
@@ -2632,6 +3240,18 @@ entryname (str): name of the entry in the catalog
         &#34;&#34;&#34;
         self.catalogname = catalogname
         self.entryname = entryname
+        self.parameterassignments = []
+
+    def add_parameter_assignment(self,parameterref,value):
+        &#34;&#34;&#34; add_parameter_assignment adds a parameter and value to the catalog reference
+
+            Parameters
+            ----------
+                parameterref (str): name of the parameter
+
+                value (str): assigned value of the parameter
+        &#34;&#34;&#34;
+        self.parameterassignments.append(ParameterAssignment(parameterref,value))
 
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the CatalogReference as a dict
@@ -2643,10 +3263,39 @@ entryname (str): name of the entry in the catalog
         &#34;&#34;&#34; returns the elementTree of the CatalogReference
 
         &#34;&#34;&#34;
-        return ET.Element(&#39;CatalogReference&#39;,attrib=self.get_attributes())</code></pre>
+        element = ET.Element(&#39;CatalogReference&#39;,attrib=self.get_attributes())
+        for parass in self.parameterassignments:
+            element.append(parass.get_element())
+        return element</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
+<dt id="pyoscx.utils.CatalogReference.add_parameter_assignment"><code class="name flex">
+<span>def <span class="ident">add_parameter_assignment</span></span>(<span>self, parameterref, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>add_parameter_assignment adds a parameter and value to the catalog reference</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>parameterref (str): name of the parameter
+
+value (str): assigned value of the parameter
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_parameter_assignment(self,parameterref,value):
+    &#34;&#34;&#34; add_parameter_assignment adds a parameter and value to the catalog reference
+
+        Parameters
+        ----------
+            parameterref (str): name of the parameter
+
+            value (str): assigned value of the parameter
+    &#34;&#34;&#34;
+    self.parameterassignments.append(ParameterAssignment(parameterref,value))</code></pre>
+</details>
+</dd>
 <dt id="pyoscx.utils.CatalogReference.get_attributes"><code class="name flex">
 <span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
 </code></dt>
@@ -2676,7 +3325,143 @@ entryname (str): name of the entry in the catalog
     &#34;&#34;&#34; returns the elementTree of the CatalogReference
 
     &#34;&#34;&#34;
-    return ET.Element(&#39;CatalogReference&#39;,attrib=self.get_attributes())</code></pre>
+    element = ET.Element(&#39;CatalogReference&#39;,attrib=self.get_attributes())
+    for parass in self.parameterassignments:
+        element.append(parass.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.Center"><code class="flex name class">
+<span>class <span class="ident">Center</span></span>
+<span>(</span><span>x, y, z)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Center Class creates a centerpoint for a bounding box, reference point of a vehicle is the back axel</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>x (float): x distance from back axel to center
+
+y (float): y distance from back axel to center
+
+z (float): z distance from back axel to center
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>x (float): x distance from back axel to center
+
+y (float): y distance from back axel to center
+
+z (float): z distance from back axel to center
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalzie the Center Class</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>x (float): x distance from back axel to center
+
+y (float): y distance from back axel to center
+
+z (float): z distance from back axel to center
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Center():
+    &#34;&#34;&#34; the Center Class creates a centerpoint for a bounding box, reference point of a vehicle is the back axel
+
+        Parameters
+        ----------
+            x (float): x distance from back axel to center
+
+            y (float): y distance from back axel to center
+
+            z (float): z distance from back axel to center
+                
+
+        Attributes
+        ----------
+            x (float): x distance from back axel to center
+
+            y (float): y distance from back axel to center
+
+            z (float): z distance from back axel to center
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,x,y,z):
+        &#34;&#34;&#34; initalzie the Center Class
+
+        Parameters
+        ----------
+            x (float): x distance from back axel to center
+
+            y (float): y distance from back axel to center
+
+            z (float): z distance from back axel to center
+        
+        &#34;&#34;&#34;
+        self.x = x
+        self.y = y
+        self.z = z
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Center
+
+        &#34;&#34;&#34;
+        return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Center
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Center&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.Center.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the Center</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the Center
+
+    &#34;&#34;&#34;
+    return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Center.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Center</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Center
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Center&#39;,attrib=self.get_attributes())
+    return element</code></pre>
 </details>
 </dd>
 </dl>
@@ -2802,6 +3587,8 @@ stoptime (float): (optional) end time of the clothoid
         self.curvature = curvature
         self.curvature_change = curvature_change
         self.length = length
+        if not isinstance(startposition,_PositionType):
+            raise TypeError(&#39;position input is not a valid position&#39;)
         self.startposition = startposition
         
         self.starttime = starttime
@@ -2966,7 +3753,8 @@ weight (float): optional weight of the point
 
         &#34;&#34;&#34;
 
-        
+        if not isinstance(position,_PositionType):
+            raise TypeError(&#39;position input is not a valid position&#39;)
         self.position = position
         self.time = time
         self.weight = weight
@@ -3028,6 +3816,420 @@ weight (float): optional weight of the point
     &#34;&#34;&#34;
     element = ET.Element(&#39;ControlPoint&#39;,attrib=self.get_attributes())
     element.append(self.position.get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.Controller"><code class="flex name class">
+<span>class <span class="ident">Controller</span></span>
+<span>(</span><span>name, properties)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Controller class creates a controller of openScenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the object
+
+properties (Properties): properties of the controller
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>parameters (ParameterDeclaration): Parameter declarations of the vehicle
+
+properties (Properties): additional properties of the vehicle
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_parameter(parameter)
+    adds a parameter declaration to the Controller
+
+append_to_catalog(filename)
+    adds the vehicle to an existing catalog
+
+dump_to_catalog(filename,name,description,author)
+    crates a new catalog with the vehicle
+
+get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalzie the Controller Class</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>name (str): name of the object
+
+properties (Properties): properties of the Controller
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Controller():
+    &#34;&#34;&#34; the Controller class creates a controller of openScenario
+
+        Parameters
+        ----------
+            name (str): name of the object
+
+            properties (Properties): properties of the controller
+                
+        Attributes
+        ----------
+            parameters (ParameterDeclaration): Parameter declarations of the vehicle
+
+            properties (Properties): additional properties of the vehicle
+
+        Methods
+        -------
+            add_parameter(parameter)
+                adds a parameter declaration to the Controller
+
+            append_to_catalog(filename)
+                adds the vehicle to an existing catalog
+
+            dump_to_catalog(filename,name,description,author)
+                crates a new catalog with the vehicle
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self ,name ,properties):
+        &#34;&#34;&#34; initalzie the Controller Class
+
+        Parameters
+        ----------
+            name (str): name of the object
+
+            properties (Properties): properties of the Controller
+        
+        &#34;&#34;&#34;
+        self.name = name
+        
+        self.parameters = ParameterDeclarations()
+        if not isinstance(properties,Properties):
+            raise TypeError(&#39;properties input is not of type Properties&#39;)
+        self.properties = properties
+
+    def dump_to_catalog(self,filename,catalogtype,description,author):
+        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+            
+            Parameters
+            ----------
+                filename (str): path of the new catalog file
+
+                catalogtype (str): name of the catalog
+
+                description (str): description of the catalog
+
+                author (str): author of the catalog
+        
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.create_catalog(filename,catalogtype,description,author)
+        cf.add_to_catalog(self)
+        cf.dump()
+        
+    def append_to_catalog(self,filename):
+        &#34;&#34;&#34; adds the Controller to an existing catalog
+
+            Parameters
+            ----------
+                filename (str): path to the catalog file
+
+        &#34;&#34;&#34;
+        cf = CatalogFile()
+        cf.open_catalog(filename)
+        cf.add_to_catalog(self)
+        cf.dump()
+
+    def add_parameter(self,parameter):
+        &#34;&#34;&#34; adds a parameter declaration to the Controller
+
+            Parameters
+            ----------
+                parameter (Parameter): A new parameter declaration for the Controller
+
+        &#34;&#34;&#34;
+        if not isinstance(parameter,Parameter):
+            raise TypeError(&#39;parameter input is not of type Parameter&#39;)
+        self.parameters.add_parameter(parameter)
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the Controller as a dict
+
+        &#34;&#34;&#34;
+        return {&#39;name&#39;:self.name}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Controller
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Controller&#39;,attrib=self.get_attributes())
+        element.append(self.parameters.get_element())
+        element.append(self.properties.get_element())
+        
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.Controller.add_parameter"><code class="name flex">
+<span>def <span class="ident">add_parameter</span></span>(<span>self, parameter)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a parameter declaration to the Controller</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>parameter (Parameter): A new parameter declaration for the Controller
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_parameter(self,parameter):
+    &#34;&#34;&#34; adds a parameter declaration to the Controller
+
+        Parameters
+        ----------
+            parameter (Parameter): A new parameter declaration for the Controller
+
+    &#34;&#34;&#34;
+    if not isinstance(parameter,Parameter):
+        raise TypeError(&#39;parameter input is not of type Parameter&#39;)
+    self.parameters.add_parameter(parameter)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Controller.append_to_catalog"><code class="name flex">
+<span>def <span class="ident">append_to_catalog</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds the Controller to an existing catalog</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path to the catalog file
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_to_catalog(self,filename):
+    &#34;&#34;&#34; adds the Controller to an existing catalog
+
+        Parameters
+        ----------
+            filename (str): path to the catalog file
+
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.open_catalog(filename)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Controller.dump_to_catalog"><code class="name flex">
+<span>def <span class="ident">dump_to_catalog</span></span>(<span>self, filename, catalogtype, description, author)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dump_to_catalog creates a new catalog and adds the Controller to it</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): path of the new catalog file
+
+catalogtype (str): name of the catalog
+
+description (str): description of the catalog
+
+author (str): author of the catalog
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dump_to_catalog(self,filename,catalogtype,description,author):
+    &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
+        
+        Parameters
+        ----------
+            filename (str): path of the new catalog file
+
+            catalogtype (str): name of the catalog
+
+            description (str): description of the catalog
+
+            author (str): author of the catalog
+    
+    &#34;&#34;&#34;
+    cf = CatalogFile()
+    cf.create_catalog(filename,catalogtype,description,author)
+    cf.add_to_catalog(self)
+    cf.dump()</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Controller.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the Controller as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the Controller as a dict
+
+    &#34;&#34;&#34;
+    return {&#39;name&#39;:self.name}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Controller.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Controller</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Controller
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Controller&#39;,attrib=self.get_attributes())
+    element.append(self.parameters.get_element())
+    element.append(self.properties.get_element())
+    
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.Dimensions"><code class="flex name class">
+<span>class <span class="ident">Dimensions</span></span>
+<span>(</span><span>width, length, height)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Dimensions describes the size of an entity</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>width (float): the width of the entity
+
+length (float): the lenght of the entity
+
+height (float): the height of the entity
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>width (float): the width of the entity
+
+length (float): the lenght of the entity
+
+height (float): the height of the entity
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalzie the Dimensions</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>width (float): the width of the entity
+
+length (float): the lenght of the entity
+
+height (float): the height of the entity
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Dimensions():
+    &#34;&#34;&#34; the Dimensions describes the size of an entity
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+                
+
+        Attributes
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+
+        Methods
+        -------
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,width,length,height):
+        &#34;&#34;&#34; initalzie the Dimensions
+
+        Parameters
+        ----------
+            width (float): the width of the entity
+
+            length (float): the lenght of the entity
+
+            height (float): the height of the entity
+        
+        &#34;&#34;&#34;
+        self.width = width
+        self.length = length
+        self.height = height
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes as a dict of the Dimensions
+
+        &#34;&#34;&#34;
+        return {&#39;width&#39;:str(self.width),&#39;length&#39;:str(self.length),&#39;height&#39;:str(self.height)}
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Dimensions
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Dimensions&#39;,attrib=self.get_attributes())
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.Dimensions.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes as a dict of the Dimensions</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes as a dict of the Dimensions
+
+    &#34;&#34;&#34;
+    return {&#39;width&#39;:str(self.width),&#39;length&#39;:str(self.length),&#39;height&#39;:str(self.height)}</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Dimensions.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Dimensions</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Dimensions
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Dimensions&#39;,attrib=self.get_attributes())
     return element</code></pre>
 </details>
 </dd>
@@ -3413,6 +4615,14 @@ parameters (ParameterDeclarations): the parameters to be used in the scenario
                 parameters (ParameterDeclarations): the parameters to be used in the scenario
                     Default: None
         &#34;&#34;&#34;
+        if not isinstance(timeofday,TimeOfDay):
+            raise TypeError(&#39;timeofday input is not of type TypeOfDay&#39;)
+        if not isinstance(weather,Weather):
+            raise TypeError(&#39;weather input is not of type Weather&#39;)
+        if not isinstance(roadcondition,RoadCondition):
+            raise TypeError(&#39;roadcondition input is not of type RoadCondition&#39;)
+        if parameters is not None and not isinstance(parameters,ParameterDeclarations):
+            raise TypeError(&#39;parameters input is not of type ParameterDeclarations&#39;)    
         self.timeofday = timeofday
         self.weather = weather
         self.roadcondition = roadcondition
@@ -3757,6 +4967,8 @@ get_attributes()
             ----------
                 controlpoint (ControlPoint): a contact point to add to the nurbs
         &#34;&#34;&#34;
+        if not isinstance(controlpoint,ControlPoint):
+            raise TypeError(&#39;controlpoint input is not of type ControlPoint&#39;)
         self.controlpoints.append(controlpoint)
 
     def get_attributes(self):
@@ -3803,6 +5015,8 @@ get_attributes()
         ----------
             controlpoint (ControlPoint): a contact point to add to the nurbs
     &#34;&#34;&#34;
+    if not isinstance(controlpoint,ControlPoint):
+        raise TypeError(&#39;controlpoint input is not of type ControlPoint&#39;)
     self.controlpoints.append(controlpoint)</code></pre>
 </details>
 </dd>
@@ -3972,9 +5186,8 @@ reference (ReferenceContext): absolute or relative
         self.h = h
         self.p = p
         self.r = r
-
-        # if (reference not in ReferenceContext.__members__) and (reference is not None):
-        #     raise ValueError(str(reference) + &#39;; is not a valid reference type.&#39;)
+        if reference is not None and reference not in ReferenceContext:
+            raise TypeError(&#39;reference input is not of type ReferenceContext&#39;)
         self.ref = reference
 
     def is_filled(self):
@@ -4101,7 +5314,7 @@ value (str): value of the parameter
 <h2 id="attributes">Attributes</h2>
 <pre><code>name (str): name of parameter
 
-parameter_type (str): type of the parameter
+parameter_type (ParameterType): type of the parameter
 
 value (str): value of the parameter
 </code></pre>
@@ -4118,7 +5331,7 @@ get_attributes()
 <h2 id="parameters_1">Parameters</h2>
 <pre><code>name (str): name of parameter
 
-parameter_type (str): type of the parameter
+parameter_type (ParameterType): type of the parameter
 
 value (str): value of the parameter
 </code></pre></div>
@@ -4141,7 +5354,7 @@ value (str): value of the parameter
         ----------
             name (str): name of parameter
 
-            parameter_type (str): type of the parameter
+            parameter_type (ParameterType): type of the parameter
 
             value (str): value of the parameter
 
@@ -4164,7 +5377,7 @@ value (str): value of the parameter
             ----------
                 name (str): name of parameter
 
-                parameter_type (str): type of the parameter
+                parameter_type (ParameterType): type of the parameter
 
                 value (str): value of the parameter
 
@@ -4225,6 +5438,132 @@ value (str): value of the parameter
 </dd>
 </dl>
 </dd>
+<dt id="pyoscx.utils.ParameterAssignment"><code class="flex name class">
+<span>class <span class="ident">ParameterAssignment</span></span>
+<span>(</span><span>parameterref, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ParameterAssignment creates an ParameterAssignment element of openscenario</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>parameterref (str): name of the parameter
+
+value (str): assigned value of the parameter
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<pre><code>parameterref (str): name of the parameter
+
+value (str): assigned value of the parameter
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>get_element()
+    Returns the full ElementTree of the class
+
+get_attributes()
+    Returns a dictionary of all attributes of the class
+</code></pre>
+<p>initalize the ParameterAssignment</p>
+<h2 id="parameters_1">Parameters</h2>
+<pre><code>parameterref (str): name of the parameter
+
+value (str): assigned value of the parameter
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ParameterAssignment():
+    &#34;&#34;&#34; ParameterAssignment creates an ParameterAssignment element of openscenario
+        
+        Parameters
+        ----------
+            parameterref (str): name of the parameter
+
+            value (str): assigned value of the parameter
+
+
+        Attributes
+        ----------
+            parameterref (str): name of the parameter
+
+            value (str): assigned value of the parameter
+
+        Methods
+        -------
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            get_attributes()
+                Returns a dictionary of all attributes of the class
+
+    &#34;&#34;&#34;
+    def __init__(self,parameterref,value):
+        &#34;&#34;&#34; initalize the ParameterAssignment
+
+            Parameters
+            ----------
+                parameterref (str): name of the parameter
+
+                value (str): assigned value of the parameter   
+                
+        &#34;&#34;&#34;
+        self.parameterref = parameterref
+        self.value = value
+
+    def get_attributes(self):
+        &#34;&#34;&#34; returns the attributes of the ParameterAssignment as a dict
+
+        &#34;&#34;&#34;
+        retdict = {}
+        retdict[&#39;parameterRef&#39;] = self.parameterref
+        retdict[&#39;value&#39;] = str(self.value)
+        return retdict
+    
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the ParameterAssignment
+
+        &#34;&#34;&#34;
+        return ET.Element(&#39;ParameterAssignment&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.ParameterAssignment.get_attributes"><code class="name flex">
+<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the attributes of the ParameterAssignment as a dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_attributes(self):
+    &#34;&#34;&#34; returns the attributes of the ParameterAssignment as a dict
+
+    &#34;&#34;&#34;
+    retdict = {}
+    retdict[&#39;parameterRef&#39;] = self.parameterref
+    retdict[&#39;value&#39;] = str(self.value)
+    return retdict</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.ParameterAssignment.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the ParameterAssignment</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the ParameterAssignment
+
+    &#34;&#34;&#34;
+    return ET.Element(&#39;ParameterAssignment&#39;,attrib=self.get_attributes())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="pyoscx.utils.ParameterDeclarations"><code class="flex name class">
 <span>class <span class="ident">ParameterDeclarations</span></span>
 </code></dt>
@@ -4276,6 +5615,8 @@ add_parameter(Parameter)
 
 
         &#34;&#34;&#34;
+        if not isinstance(parameter,Parameter):
+            raise TypeError(&#39;parameter input is not of type Parameter&#39;)
         self.parameters.append(parameter)
     
     def get_element(self):
@@ -4310,6 +5651,8 @@ add_parameter(Parameter)
 
 
     &#34;&#34;&#34;
+    if not isinstance(parameter,Parameter):
+        raise TypeError(&#39;parameter input is not of type Parameter&#39;)
     self.parameters.append(parameter)</code></pre>
 </details>
 </dd>
@@ -4579,12 +5922,14 @@ positions (list of positions): list of positions to create the polyline
 
         &#34;&#34;&#34;
         if len(time) &lt; 2:
-            ValueError(&#39;not enough time inputs&#39;)
+            raise ValueError(&#39;not enough time inputs&#39;)
         if len(positions)&lt;2:
-            ValueError(&#39;not enough position inputs&#39;)
+            raise ValueError(&#39;not enough position inputs&#39;)
         if len(time) != len(positions):
-            ValueError(&#39;time and positions are not the same lenght&#39;)
-        
+            raise ValueError(&#39;time and positions are not the same lenght&#39;)
+        for p in positions:
+            if not isinstance(p,_PositionType):
+                raise TypeError(&#39;position input is not a valid position&#39;)
         self.positions = positions
         self.time = time
 
@@ -4617,6 +5962,175 @@ positions (list of positions): list of positions to create the polyline
     for i in range(len(self.time)):
         vert = ET.SubElement(element,&#39;Vertex&#39;,attrib={&#39;time&#39;:str(self.time[i])})
         vert.append(self.positions[i].get_element())
+    return element</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyoscx.utils.Properties"><code class="flex name class">
+<span>class <span class="ident">Properties</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>the Properties contains are for user defined properties of an object
+</p>
+<h2 id="attributes">Attributes</h2>
+<pre><code>files (list of str): arbitrary files with properties
+
+properties (list of tuple(str,str)): properties in name/value pairs
+</code></pre>
+<h2 id="methods">Methods</h2>
+<pre><code>add_file(file)
+    adds a file with properties
+
+add_property(name,value)
+    adds a property pair, with name and value
+
+get_element()
+    Returns the full ElementTree of the class
+</code></pre>
+<p>initalzie the Properties</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Properties():
+    &#34;&#34;&#34; the Properties contains are for user defined properties of an object               
+
+        Attributes
+        ----------
+            files (list of str): arbitrary files with properties
+
+            properties (list of tuple(str,str)): properties in name/value pairs
+
+        Methods
+        -------
+            add_file(file)
+                adds a file with properties
+
+            add_property(name,value)
+                adds a property pair, with name and value
+
+            get_element()
+                Returns the full ElementTree of the class
+
+            
+    &#34;&#34;&#34;
+    def __init__(self):
+        &#34;&#34;&#34; initalzie the Properties
+
+        &#34;&#34;&#34;
+        self.files = []
+        self.properties = []
+
+    def add_file(self,filename):
+        &#34;&#34;&#34; adds a property file
+
+        Parameters
+        ----------
+            filename (str): name of the file
+
+        &#34;&#34;&#34;
+
+        self.files.append(filename)
+
+    def add_property(self,name,value):
+        &#34;&#34;&#34; adds a property pair
+
+        Parameters
+        ----------
+            name (str): name of the property
+
+            value (str): value of the property
+
+        &#34;&#34;&#34;
+        self.properties.append((name,value))
+
+    def get_element(self):
+        &#34;&#34;&#34; returns the elementTree of the Properties
+
+        &#34;&#34;&#34;
+        element = ET.Element(&#39;Properties&#39;)
+        for p in self.properties:
+            ET.SubElement(element,&#39;Property&#39;,attrib={&#39;name&#39;:p[0],&#39;value&#39;:p[1]})
+        for f in self.files:
+            ET.SubElement(element,&#39;File&#39;,attrib={&#39;filepath&#39;:f})
+        
+        
+        return element</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyoscx.utils.Properties.add_file"><code class="name flex">
+<span>def <span class="ident">add_file</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a property file</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>filename (str): name of the file
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_file(self,filename):
+    &#34;&#34;&#34; adds a property file
+
+    Parameters
+    ----------
+        filename (str): name of the file
+
+    &#34;&#34;&#34;
+
+    self.files.append(filename)</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Properties.add_property"><code class="name flex">
+<span>def <span class="ident">add_property</span></span>(<span>self, name, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>adds a property pair</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>name (str): name of the property
+
+value (str): value of the property
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_property(self,name,value):
+    &#34;&#34;&#34; adds a property pair
+
+    Parameters
+    ----------
+        name (str): name of the property
+
+        value (str): value of the property
+
+    &#34;&#34;&#34;
+    self.properties.append((name,value))</code></pre>
+</details>
+</dd>
+<dt id="pyoscx.utils.Properties.get_element"><code class="name flex">
+<span>def <span class="ident">get_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the elementTree of the Properties</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_element(self):
+    &#34;&#34;&#34; returns the elementTree of the Properties
+
+    &#34;&#34;&#34;
+    element = ET.Element(&#39;Properties&#39;)
+    for p in self.properties:
+        ET.SubElement(element,&#39;Property&#39;,attrib={&#39;name&#39;:p[0],&#39;value&#39;:p[1]})
+    for f in self.files:
+        ET.SubElement(element,&#39;File&#39;,attrib={&#39;filepath&#39;:f})
+    
+    
     return element</code></pre>
 </details>
 </dd>
@@ -4694,6 +6208,8 @@ properties (Properties): properties of the roadcondition
                 
         &#34;&#34;&#34;
         self.friction_scale_factor = friction_scale_factor 
+        if properties is not None and not isinstance(properties,Properties):
+            raise TypeError(&#39;properties input is not of type Properties&#39;)
         self.properties = properties
 
     def get_attributes(self):
@@ -4855,6 +6371,8 @@ closed (boolean): if the waypoints forms a loop
 
         &#34;&#34;&#34;
         self.name = name
+        if not isinstance(closed,bool):
+            raise TypeError(&#39;closed input is not of type bool&#39;)
         self.closed = closed
         self.waypoints = []
         self.parameters = ParameterDeclarations()
@@ -4899,6 +6417,8 @@ closed (boolean): if the waypoints forms a loop
                 parameter (Parameter): the parameter to add
 
         &#34;&#34;&#34;
+        if not isinstance(parameter,Parameter):
+            raise TypeError(&#39;parameter input is not of type Parameter&#39;)
         self.parameters.add_parameter(parameter)
 
     def add_waypoint(self,position,routestrategy):
@@ -4911,6 +6431,7 @@ closed (boolean): if the waypoints forms a loop
                 routestrategy (RouteStrategy): routing strategy for this waypoint
 
         &#34;&#34;&#34;
+        # note: the checks for types are done in Waypoint
         self.waypoints.append(Waypoint(position,routestrategy))
 
     def get_attributes(self):
@@ -4956,6 +6477,8 @@ closed (boolean): if the waypoints forms a loop
             parameter (Parameter): the parameter to add
 
     &#34;&#34;&#34;
+    if not isinstance(parameter,Parameter):
+        raise TypeError(&#39;parameter input is not of type Parameter&#39;)
     self.parameters.add_parameter(parameter)</code></pre>
 </details>
 </dd>
@@ -4983,6 +6506,7 @@ routestrategy (RouteStrategy): routing strategy for this waypoint
             routestrategy (RouteStrategy): routing strategy for this waypoint
 
     &#34;&#34;&#34;
+    # note: the checks for types are done in Waypoint
     self.waypoints.append(Waypoint(position,routestrategy))</code></pre>
 </details>
 </dd>
@@ -5281,7 +6805,7 @@ second (int): second
 </dd>
 <dt id="pyoscx.utils.TimeReference"><code class="flex name class">
 <span>class <span class="ident">TimeReference</span></span>
-<span>(</span><span>referece_domain=None, scale=None, offset=None)</span>
+<span>(</span><span>reference_domain=None, scale=None, offset=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>the TimeReference class creates a TimeReference, </p>
@@ -5309,8 +6833,12 @@ get_attributes()
 </code></pre>
 <p>initalize the TimeReference</p>
 <h2 id="parameters_1">Parameters</h2>
-<p>name (str): name of the trajectory</p>
-<p>closed (boolean): if the trajectory is closed at the end</p></div>
+<p>referece_domain (ReferenceContext): absolute or relative time reference (must be combined with scale and offset)
+Default: None
+scale (double): scalefactor of the timeings (must be combined with referece_domain and offset)
+Default: None
+offset (double): offset for time values (must be combined with referece_domain and scale)
+Default: None</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5344,35 +6872,40 @@ get_attributes()
                 Returns a dictionary of all attributes of the class
     &#34;&#34;&#34;
 
-    def __init__(self, referece_domain=None,scale=None,offset=None):
+    def __init__(self, reference_domain=None,scale=None,offset=None):
         &#34;&#34;&#34; initalize the TimeReference
 
             Parameters
             ----------
-            name (str): name of the trajectory
-
-            closed (boolean): if the trajectory is closed at the end
+            referece_domain (ReferenceContext): absolute or relative time reference (must be combined with scale and offset)
+                Default: None
+            scale (double): scalefactor of the timeings (must be combined with referece_domain and offset)
+                Default: None
+            offset (double): offset for time values (must be combined with referece_domain and scale)
+                Default: None
 
         &#34;&#34;&#34;
-        nones = [referece_domain == None, scale == None, offset == None]
+        nones = [reference_domain == None, scale == None, offset == None]
         if sum(nones) == 3:
             self._only_nones = True
         elif sum(nones) == 0:
             self._only_nones = False
         else:
-            ValueError(&#39;missing inputs for time reference&#39;)
-        # if referece_domain not in ReferenceContext:
-        #     ValueError(&#39;not a valid reference domain&#39;)
-        self.referece_domain = referece_domain
+            print(&#39;reference_domain={}, scale={}, offset={}&#39;.format(reference_domain, scale, offset))
+            raise ValueError(&#39;missing inputs for time reference&#39;)
+        if reference_domain is not None and reference_domain not in ReferenceContext:
+            raise TypeError(&#39;input reference_domain is not of type ReferenceContext&#39;)
+        
+        self.reference_domain = reference_domain
         self.scale = scale
         self.offset = offset
-        
+
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the TimeReference as a dict
 
         &#34;&#34;&#34;
         retdict = {}
-        retdict[&#39;domainAbsoluteRelative&#39;] = self.referece_domain.name
+        retdict[&#39;domainAbsoluteRelative&#39;] = self.reference_domain.name
         retdict[&#39;scale&#39;] = str(self.scale)
         retdict[&#39;offset&#39;] = str(self.offset)
         return retdict
@@ -5406,7 +6939,7 @@ get_attributes()
 
     &#34;&#34;&#34;
     retdict = {}
-    retdict[&#39;domainAbsoluteRelative&#39;] = self.referece_domain.name
+    retdict[&#39;domainAbsoluteRelative&#39;] = self.reference_domain.name
     retdict[&#39;scale&#39;] = str(self.scale)
     retdict[&#39;offset&#39;] = str(self.offset)
     return retdict</code></pre>
@@ -5543,7 +7076,8 @@ add_controller(controller,weight)
                 weight (float): the corresponding weight for the distribution of the vehicle category
 
         &#34;&#34;&#34;
-
+        if vehiclecategory not in VehicleCategory:
+            raise TypeError(&#39;vehcilecategory input is not of type VehcileCategory&#39;)
         self.vehiclecategories.append(vehiclecategory)
         self.vehicleweights.append(weight)
 
@@ -5557,6 +7091,8 @@ add_controller(controller,weight)
                 weight (float): the corresponding weight for the controller
 
         &#34;&#34;&#34;
+        if not ( isinstance(controller,Controller) or isinstance(controller,CatalogReference)):
+            raise TypeError(&#39;controller input not of type Controller or CatalogReference&#39;)
         self.controllers.append(controller)
         self.controllerweights.append(weight)
     
@@ -5616,6 +7152,8 @@ weight (float): the corresponding weight for the controller
             weight (float): the corresponding weight for the controller
 
     &#34;&#34;&#34;
+    if not ( isinstance(controller,Controller) or isinstance(controller,CatalogReference)):
+        raise TypeError(&#39;controller input not of type Controller or CatalogReference&#39;)
     self.controllers.append(controller)
     self.controllerweights.append(weight)</code></pre>
 </details>
@@ -5644,7 +7182,8 @@ weight (float): the corresponding weight for the distribution of the vehicle cat
             weight (float): the corresponding weight for the distribution of the vehicle category
 
     &#34;&#34;&#34;
-
+    if vehiclecategory not in VehicleCategory:
+        raise TypeError(&#39;vehcilecategory input is not of type VehcileCategory&#39;)
     self.vehiclecategories.append(vehiclecategory)
     self.vehicleweights.append(weight)</code></pre>
 </details>
@@ -5712,6 +7251,7 @@ weight (float): the corresponding weight for the distribution of the vehicle cat
 
 delay (float): delay of the phase shift
     Default: None
+
 reference (string): id to the controller in the roadnetwork
     Default: None
 </code></pre>
@@ -5739,6 +7279,7 @@ add_phase(Phase)
 
 delay (float): delay of the phase shift
     Default: None
+
 reference (string): id to the controller in the RoadNetwork
     Default: None
 </code></pre></div>
@@ -5755,6 +7296,7 @@ reference (string): id to the controller in the RoadNetwork
 
             delay (float): delay of the phase shift
                 Default: None
+
             reference (string): id to the controller in the roadnetwork
                 Default: None
 
@@ -5788,6 +7330,7 @@ reference (string): id to the controller in the RoadNetwork
 
             delay (float): delay of the phase shift
                 Default: None
+
             reference (string): id to the controller in the RoadNetwork
                 Default: None
 
@@ -5807,6 +7350,8 @@ reference (string): id to the controller in the RoadNetwork
                 phase (Phase): a phase of the trafficsignal
 
         &#34;&#34;&#34;
+        if not isinstance(phase,Phase):
+            raise TypeError(&#39;phase input is not of type Phase&#39;)
         self.phases.append(phase)
 
     def get_attributes(self):
@@ -5852,6 +7397,8 @@ reference (string): id to the controller in the RoadNetwork
             phase (Phase): a phase of the trafficsignal
 
     &#34;&#34;&#34;
+    if not isinstance(phase,Phase):
+        raise TypeError(&#39;phase input is not of type Phase&#39;)
     self.phases.append(phase)</code></pre>
 </details>
 </dd>
@@ -5998,6 +7545,8 @@ get_attributes()
         &#34;&#34;&#34;
 
         self.name = name
+        if not isinstance(closed,bool):
+            raise TypeError(&#39;closed input is not boolean&#39;)
         self.closed = closed
         self.parameters = ParameterDeclarations()
         self.shapes = []
@@ -6032,6 +7581,7 @@ get_attributes()
         cf.open_catalog(filename)
         cf.add_to_catalog(self)
         cf.dump()
+
     def add_shape(self,shape):
         &#34;&#34;&#34; adds a shape to the trajectory (only the same shape can be used)
 
@@ -6040,6 +7590,8 @@ get_attributes()
             shape (Polyline, Clothoid, or Nurbs): the shape to be added to the trajectory
 
         &#34;&#34;&#34;
+        if not (isinstance(shape,Polyline) or isinstance(shape,Clothoid) or isinstance(shape,Nurbs)):
+            raise TypeError(&#39;shape input neither of type Polyline, Clothoid, or Nurbs&#39;)
         self.shapes.append(shape)
 
     def add_parameter(self,parameter):
@@ -6050,6 +7602,8 @@ get_attributes()
                 parameter (Parameter): the parameter to add
 
         &#34;&#34;&#34;
+        if not isinstance(parameter,Parameter):
+            raise TypeError(&#39;input parameter is not of type Parameter&#39;)
         self.parameters.add_parameter(parameter)
 
     def get_attributes(self):
@@ -6094,6 +7648,8 @@ get_attributes()
             parameter (Parameter): the parameter to add
 
     &#34;&#34;&#34;
+    if not isinstance(parameter,Parameter):
+        raise TypeError(&#39;input parameter is not of type Parameter&#39;)
     self.parameters.add_parameter(parameter)</code></pre>
 </details>
 </dd>
@@ -6116,6 +7672,8 @@ get_attributes()
         shape (Polyline, Clothoid, or Nurbs): the shape to be added to the trajectory
 
     &#34;&#34;&#34;
+    if not (isinstance(shape,Polyline) or isinstance(shape,Clothoid) or isinstance(shape,Nurbs)):
+        raise TypeError(&#39;shape input neither of type Polyline, Clothoid, or Nurbs&#39;)
     self.shapes.append(shape)</code></pre>
 </details>
 </dd>
@@ -6253,9 +7811,9 @@ get_attributes()
     Returns a dictionary of all attributes of the class
 </code></pre>
 <h2 id="parameters_1">Parameters</h2>
-<pre><code>shape (str): shape of the transition
+<pre><code>shape (DynamicsShapes): shape of the transition
 
-dimension (str): the dimension of the transition (rate, time or distance)
+dimension (DynamicsDimension): the dimension of the transition (rate, time or distance)
 
 value (float): the value of the dynamics (time rate or distance)
 </code></pre></div>
@@ -6296,19 +7854,19 @@ value (float): the value of the dynamics (time rate or distance)
         &#34;&#34;&#34;
             Parameters
             ----------
-                shape (str): shape of the transition
+                shape (DynamicsShapes): shape of the transition
 
-                dimension (str): the dimension of the transition (rate, time or distance)
+                dimension (DynamicsDimension): the dimension of the transition (rate, time or distance)
 
                 value (float): the value of the dynamics (time rate or distance)
 
         &#34;&#34;&#34;
-        # if shape not in DynamicsShapes:
-        #     raise ValueError(shape + &#39;; is not a valid shape.&#39;)
+        if shape not in DynamicsShapes:
+            raise TypeError(shape + &#39;; is not a valid shape.&#39;)
         
         self.shape = shape
-        # if dimension not in DynamicsDimension:
-        #     raise ValueError(dimension + &#39; is not a valid dynamics dimension&#39;)
+        if dimension not in DynamicsDimension:
+            raise ValueError(dimension + &#39; is not a valid dynamics dimension&#39;)
         self.dimension = dimension
         self.value = value
 
@@ -6428,6 +7986,8 @@ routestrategy (RouteStrategy): routing strategy for this waypoint
                 routestrategy (RouteStrategy): routing strategy for this waypoint
 
         &#34;&#34;&#34;
+        if not isinstance(position,_PositionType):
+            raise TypeError(&#39;position input not a valid Position&#39;)
         self.position = position
         if routestrategy not in RouteStrategy:
             ValueError(&#39;not a valid RouteStrategy&#39;)
@@ -6634,6 +8194,12 @@ fog_bounding_box (BoundingBox): bounding box of fog
                     Default: None  
                 
         &#34;&#34;&#34;
+        if cloudstate not in CloudState:
+            raise TypeError(&#39;cloudstate input is not of type CloudState&#39;)
+        if precipitation not in PrecipitationType:
+            raise TypeError(&#39;precipitation input is not of type PrecipitationType&#39;)
+        if fog_bounding_box != None and not isinstance(fog_bounding_box, BoundingBox):
+            raise TypeError(&#39;fog_bounding_box input is not of type BoundingBox&#39;)
         self.cloudstate = cloudstate 
         self.sun_intensity = sun_intensity
         self.sun_azimuth = sun_azimuth
@@ -6726,6 +8292,12 @@ fog_bounding_box (BoundingBox): bounding box of fog
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="pyoscx.utils.BoundingBox" href="#pyoscx.utils.BoundingBox">BoundingBox</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.BoundingBox.get_element" href="#pyoscx.utils.BoundingBox.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pyoscx.utils.Catalog" href="#pyoscx.utils.Catalog">Catalog</a></code></h4>
 <ul class="">
 <li><code><a title="pyoscx.utils.Catalog.add_catalog" href="#pyoscx.utils.Catalog.add_catalog">add_catalog</a></code></li>
@@ -6745,8 +8317,16 @@ fog_bounding_box (BoundingBox): bounding box of fog
 <li>
 <h4><code><a title="pyoscx.utils.CatalogReference" href="#pyoscx.utils.CatalogReference">CatalogReference</a></code></h4>
 <ul class="">
+<li><code><a title="pyoscx.utils.CatalogReference.add_parameter_assignment" href="#pyoscx.utils.CatalogReference.add_parameter_assignment">add_parameter_assignment</a></code></li>
 <li><code><a title="pyoscx.utils.CatalogReference.get_attributes" href="#pyoscx.utils.CatalogReference.get_attributes">get_attributes</a></code></li>
 <li><code><a title="pyoscx.utils.CatalogReference.get_element" href="#pyoscx.utils.CatalogReference.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.Center" href="#pyoscx.utils.Center">Center</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.Center.get_attributes" href="#pyoscx.utils.Center.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.Center.get_element" href="#pyoscx.utils.Center.get_element">get_element</a></code></li>
 </ul>
 </li>
 <li>
@@ -6761,6 +8341,23 @@ fog_bounding_box (BoundingBox): bounding box of fog
 <ul class="">
 <li><code><a title="pyoscx.utils.ControlPoint.get_attributes" href="#pyoscx.utils.ControlPoint.get_attributes">get_attributes</a></code></li>
 <li><code><a title="pyoscx.utils.ControlPoint.get_element" href="#pyoscx.utils.ControlPoint.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.Controller" href="#pyoscx.utils.Controller">Controller</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.Controller.add_parameter" href="#pyoscx.utils.Controller.add_parameter">add_parameter</a></code></li>
+<li><code><a title="pyoscx.utils.Controller.append_to_catalog" href="#pyoscx.utils.Controller.append_to_catalog">append_to_catalog</a></code></li>
+<li><code><a title="pyoscx.utils.Controller.dump_to_catalog" href="#pyoscx.utils.Controller.dump_to_catalog">dump_to_catalog</a></code></li>
+<li><code><a title="pyoscx.utils.Controller.get_attributes" href="#pyoscx.utils.Controller.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.Controller.get_element" href="#pyoscx.utils.Controller.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.Dimensions" href="#pyoscx.utils.Dimensions">Dimensions</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.Dimensions.get_attributes" href="#pyoscx.utils.Dimensions.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.Dimensions.get_element" href="#pyoscx.utils.Dimensions.get_element">get_element</a></code></li>
 </ul>
 </li>
 <li>
@@ -6818,6 +8415,13 @@ fog_bounding_box (BoundingBox): bounding box of fog
 </ul>
 </li>
 <li>
+<h4><code><a title="pyoscx.utils.ParameterAssignment" href="#pyoscx.utils.ParameterAssignment">ParameterAssignment</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.ParameterAssignment.get_attributes" href="#pyoscx.utils.ParameterAssignment.get_attributes">get_attributes</a></code></li>
+<li><code><a title="pyoscx.utils.ParameterAssignment.get_element" href="#pyoscx.utils.ParameterAssignment.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pyoscx.utils.ParameterDeclarations" href="#pyoscx.utils.ParameterDeclarations">ParameterDeclarations</a></code></h4>
 <ul class="">
 <li><code><a title="pyoscx.utils.ParameterDeclarations.add_parameter" href="#pyoscx.utils.ParameterDeclarations.add_parameter">add_parameter</a></code></li>
@@ -6836,6 +8440,14 @@ fog_bounding_box (BoundingBox): bounding box of fog
 <h4><code><a title="pyoscx.utils.Polyline" href="#pyoscx.utils.Polyline">Polyline</a></code></h4>
 <ul class="">
 <li><code><a title="pyoscx.utils.Polyline.get_element" href="#pyoscx.utils.Polyline.get_element">get_element</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyoscx.utils.Properties" href="#pyoscx.utils.Properties">Properties</a></code></h4>
+<ul class="">
+<li><code><a title="pyoscx.utils.Properties.add_file" href="#pyoscx.utils.Properties.add_file">add_file</a></code></li>
+<li><code><a title="pyoscx.utils.Properties.add_property" href="#pyoscx.utils.Properties.add_property">add_property</a></code></li>
+<li><code><a title="pyoscx.utils.Properties.get_element" href="#pyoscx.utils.Properties.get_element">get_element</a></code></li>
 </ul>
 </li>
 <li>

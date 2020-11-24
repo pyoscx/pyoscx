@@ -28,9 +28,9 @@
 </summary>
 <pre><code class="python">import xml.etree.ElementTree as ET
 
-from .utils import Orientation
+from .utils import Orientation, CatalogReference, Route, _PositionType
 
-class WorldPosition():
+class WorldPosition(_PositionType):
     &#34;&#34;&#34; the WorldPostion creates a worldposition of openScenario
         
         Parameters
@@ -120,7 +120,7 @@ class WorldPosition():
         ET.SubElement(element,&#39;WorldPosition&#39;,attrib=self.get_attributes())
         return element
 
-class RelativeWorldPosition():
+class RelativeWorldPosition(_PositionType):
     &#34;&#34;&#34; the WorldRelativePosition creates a RelativePosition with the option of world as reference
         
         Parameters
@@ -179,6 +179,8 @@ class RelativeWorldPosition():
         self.dx = dx
         self.dy = dy
         self.dz = dz
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orient = orientation
 
     def get_attributes(self):
@@ -208,7 +210,7 @@ class RelativeWorldPosition():
         return element
 
 
-class RelativeObjectPosition():
+class RelativeObjectPosition(_PositionType):
     &#34;&#34;&#34; the RelativeObjectPosition creates a RelativePosition with the option of object as reference
         
         Parameters
@@ -268,6 +270,8 @@ class RelativeObjectPosition():
         self.dx = dx
         self.dy = dy
         self.dz = dz
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orient = orientation
 
     def get_attributes(self):
@@ -299,7 +303,7 @@ class RelativeObjectPosition():
 
 
 
-class RoadPosition():
+class RoadPosition(_PositionType):
     &#34;&#34;&#34;  the RoadPosition creates a RoadPosition of openScenario
         
         Parameters
@@ -351,6 +355,8 @@ class RoadPosition():
         self.s = s
         self.t = t
         self.id = reference_id
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orient = orientation
     
     def get_attributes(self):
@@ -379,7 +385,7 @@ class RoadPosition():
         return element
 
 
-class RelativeRoadPosition():
+class RelativeRoadPosition(_PositionType):
     &#34;&#34;&#34;  the RelativeRoadPosition creates a RelativeRoadPosition of openScenario
         
         Parameters
@@ -431,6 +437,8 @@ class RelativeRoadPosition():
         self.s = s
         self.t = t
         self.target = entity
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orient = orientation
     
     def get_attributes(self):
@@ -458,7 +466,7 @@ class RelativeRoadPosition():
             roadpos.append(self.orient.get_element())
         return element
 
-class LanePosition():
+class LanePosition(_PositionType):
     &#34;&#34;&#34; the LanePosition creates a LanePosition of openScenario
         
         Parameters
@@ -517,6 +525,8 @@ class LanePosition():
         self.lane_id = lane_id
         self.offset = offset
         self.road_id = road_id
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orient = orientation
     
     def get_attributes(self):
@@ -547,7 +557,7 @@ class LanePosition():
         return element
 
 
-class RelativeLanePosition():
+class RelativeLanePosition(_PositionType):
     &#34;&#34;&#34; the RelativeLanePosition creates a RelativeLanePosition of openScenario
         
         Parameters
@@ -606,6 +616,8 @@ class RelativeLanePosition():
         self.lane_id = lane_id
         self.offset = offset
         self.entity = entity
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orient = orientation
     
     def get_attributes(self):
@@ -635,7 +647,7 @@ class RelativeLanePosition():
         return element
 
 
-class RoutePositionOfCurrentEntity():
+class RoutePositionOfCurrentEntity(_PositionType):
     &#34;&#34;&#34; RoutePositionOfCurrentEntity creates a RoutePosition with the InRoutePosition of type PositionOfCurrentEntity
         
         Parameters
@@ -673,8 +685,12 @@ class RoutePositionOfCurrentEntity():
                 orientation (Orientation): Oritation of the entity
                     Default: Orientation()
         &#34;&#34;&#34;
+        if not ( isinstance(route_ref,Route) or isinstance(route_ref,CatalogReference)):
+            raise TypeError(&#39;route input not of type Route or CatalogReference&#39;) 
         self.route_ref = route_ref
         self.entity = entity
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orientation = orientation
     
     def get_element(self):
@@ -691,7 +707,7 @@ class RoutePositionOfCurrentEntity():
 
 
 
-class RoutePositionInRoadCoordinates():
+class RoutePositionInRoadCoordinates(_PositionType):
     &#34;&#34;&#34; RoutePositionInRoadCoordinates creates a RoutePosition with the InRoutePosition of type PositionInRoadCooardinates
         
         Parameters
@@ -735,9 +751,13 @@ class RoutePositionInRoadCoordinates():
                 orientation (Orientation): Oritation of the entity
                     Default: Orientation()
         &#34;&#34;&#34;
+        if not ( isinstance(route_ref,Route) or isinstance(route_ref,CatalogReference)):
+            raise TypeError(&#39;route input not of type Route or CatalogReference&#39;) 
         self.route_ref = route_ref
         self.s = s
         self.t = t
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orientation = orientation
     
     def get_element(self):
@@ -753,7 +773,7 @@ class RoutePositionInRoadCoordinates():
         return element
 
 
-class RoutePositionInLaneCoordinates():
+class RoutePositionInLaneCoordinates(_PositionType):
     &#34;&#34;&#34; RoutePositionInLaneCoordinates creates a RoutePosition with the InRoutePosition of type PositionInLaneCoordinates
         
         Parameters
@@ -806,10 +826,14 @@ class RoutePositionInLaneCoordinates():
                 orientation (Orientation): Oritation of the entity
                     Default: Orientation()
         &#34;&#34;&#34;
+        if not ( isinstance(route_ref,Route) or isinstance(route_ref,CatalogReference)):
+            raise TypeError(&#39;route input not of type Route or CatalogReference&#39;) 
         self.route_ref = route_ref
         self.s = s
         self.laneid = laneid
         self.offset = offset
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orientation = orientation
     
     def get_element(self):
@@ -888,7 +912,7 @@ orientation (Orientation): the angular orientation of the entity
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class LanePosition():
+<pre><code class="python">class LanePosition(_PositionType):
     &#34;&#34;&#34; the LanePosition creates a LanePosition of openScenario
         
         Parameters
@@ -947,6 +971,8 @@ orientation (Orientation): the angular orientation of the entity
         self.lane_id = lane_id
         self.offset = offset
         self.road_id = road_id
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orient = orientation
     
     def get_attributes(self):
@@ -976,6 +1002,10 @@ orientation (Orientation): the angular orientation of the entity
             lanepos.append(self.orient.get_element())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._PositionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.position.LanePosition.get_attributes"><code class="name flex">
@@ -1085,7 +1115,7 @@ orientation (Orientation): the angular orientation of the entity
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RelativeLanePosition():
+<pre><code class="python">class RelativeLanePosition(_PositionType):
     &#34;&#34;&#34; the RelativeLanePosition creates a RelativeLanePosition of openScenario
         
         Parameters
@@ -1144,6 +1174,8 @@ orientation (Orientation): the angular orientation of the entity
         self.lane_id = lane_id
         self.offset = offset
         self.entity = entity
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orient = orientation
     
     def get_attributes(self):
@@ -1172,6 +1204,10 @@ orientation (Orientation): the angular orientation of the entity
             lanepos.append(self.orient.get_element())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._PositionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.position.RelativeLanePosition.get_attributes"><code class="name flex">
@@ -1280,7 +1316,7 @@ orientation (Orientation): the angular orientation of the entity
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RelativeObjectPosition():
+<pre><code class="python">class RelativeObjectPosition(_PositionType):
     &#34;&#34;&#34; the RelativeObjectPosition creates a RelativePosition with the option of object as reference
         
         Parameters
@@ -1340,6 +1376,8 @@ orientation (Orientation): the angular orientation of the entity
         self.dx = dx
         self.dy = dy
         self.dz = dz
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orient = orientation
 
     def get_attributes(self):
@@ -1369,6 +1407,10 @@ orientation (Orientation): the angular orientation of the entity
             relpos.append(self.orient.get_element())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._PositionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.position.RelativeObjectPosition.get_attributes"><code class="name flex">
@@ -1472,7 +1514,7 @@ orientation (Orientation): the angular orientation of the entity
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RelativeRoadPosition():
+<pre><code class="python">class RelativeRoadPosition(_PositionType):
     &#34;&#34;&#34;  the RelativeRoadPosition creates a RelativeRoadPosition of openScenario
         
         Parameters
@@ -1524,6 +1566,8 @@ orientation (Orientation): the angular orientation of the entity
         self.s = s
         self.t = t
         self.target = entity
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orient = orientation
     
     def get_attributes(self):
@@ -1551,6 +1595,10 @@ orientation (Orientation): the angular orientation of the entity
             roadpos.append(self.orient.get_element())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._PositionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.position.RelativeRoadPosition.get_attributes"><code class="name flex">
@@ -1657,7 +1705,7 @@ orientation (Orientation): the angular orientation of the entity
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RelativeWorldPosition():
+<pre><code class="python">class RelativeWorldPosition(_PositionType):
     &#34;&#34;&#34; the WorldRelativePosition creates a RelativePosition with the option of world as reference
         
         Parameters
@@ -1716,6 +1764,8 @@ orientation (Orientation): the angular orientation of the entity
         self.dx = dx
         self.dy = dy
         self.dz = dz
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orient = orientation
 
     def get_attributes(self):
@@ -1744,6 +1794,10 @@ orientation (Orientation): the angular orientation of the entity
             relpos.append(self.orient.get_element())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._PositionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.position.RelativeWorldPosition.get_attributes"><code class="name flex">
@@ -1846,7 +1900,7 @@ orientation (Orientation): the angular orientation of the entity
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RoadPosition():
+<pre><code class="python">class RoadPosition(_PositionType):
     &#34;&#34;&#34;  the RoadPosition creates a RoadPosition of openScenario
         
         Parameters
@@ -1898,6 +1952,8 @@ orientation (Orientation): the angular orientation of the entity
         self.s = s
         self.t = t
         self.id = reference_id
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orient = orientation
     
     def get_attributes(self):
@@ -1925,6 +1981,10 @@ orientation (Orientation): the angular orientation of the entity
             roadpos.append(self.orient.get_element())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._PositionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.position.RoadPosition.get_attributes"><code class="name flex">
@@ -2031,7 +2091,7 @@ orientation (Orientation): Oritation of the entity
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RoutePositionInLaneCoordinates():
+<pre><code class="python">class RoutePositionInLaneCoordinates(_PositionType):
     &#34;&#34;&#34; RoutePositionInLaneCoordinates creates a RoutePosition with the InRoutePosition of type PositionInLaneCoordinates
         
         Parameters
@@ -2084,10 +2144,14 @@ orientation (Orientation): Oritation of the entity
                 orientation (Orientation): Oritation of the entity
                     Default: Orientation()
         &#34;&#34;&#34;
+        if not ( isinstance(route_ref,Route) or isinstance(route_ref,CatalogReference)):
+            raise TypeError(&#39;route input not of type Route or CatalogReference&#39;) 
         self.route_ref = route_ref
         self.s = s
         self.laneid = laneid
         self.offset = offset
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orientation = orientation
     
     def get_element(self):
@@ -2102,6 +2166,10 @@ orientation (Orientation): Oritation of the entity
         ET.SubElement(inroute,&#39;PositionInLaneCoordinates&#39;,attrib={&#39;pathS&#39;:str(self.s),&#39;laneId&#39;:self.laneid,&#39;laneOffset&#39;:str(self.offset)})
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._PositionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.position.RoutePositionInLaneCoordinates.get_element"><code class="name flex">
@@ -2172,7 +2240,7 @@ orientation (Orientation): Oritation of the entity
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RoutePositionInRoadCoordinates():
+<pre><code class="python">class RoutePositionInRoadCoordinates(_PositionType):
     &#34;&#34;&#34; RoutePositionInRoadCoordinates creates a RoutePosition with the InRoutePosition of type PositionInRoadCooardinates
         
         Parameters
@@ -2216,9 +2284,13 @@ orientation (Orientation): Oritation of the entity
                 orientation (Orientation): Oritation of the entity
                     Default: Orientation()
         &#34;&#34;&#34;
+        if not ( isinstance(route_ref,Route) or isinstance(route_ref,CatalogReference)):
+            raise TypeError(&#39;route input not of type Route or CatalogReference&#39;) 
         self.route_ref = route_ref
         self.s = s
         self.t = t
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orientation = orientation
     
     def get_element(self):
@@ -2233,6 +2305,10 @@ orientation (Orientation): Oritation of the entity
         ET.SubElement(inroute,&#39;PositionInRoadCoordinates&#39;,attrib={&#39;pathS&#39;:str(self.s),&#39;t&#39;:str(self.t)})
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._PositionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.position.RoutePositionInRoadCoordinates.get_element"><code class="name flex">
@@ -2297,7 +2373,7 @@ orientation (Orientation): Oritation of the entity
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RoutePositionOfCurrentEntity():
+<pre><code class="python">class RoutePositionOfCurrentEntity(_PositionType):
     &#34;&#34;&#34; RoutePositionOfCurrentEntity creates a RoutePosition with the InRoutePosition of type PositionOfCurrentEntity
         
         Parameters
@@ -2335,8 +2411,12 @@ orientation (Orientation): Oritation of the entity
                 orientation (Orientation): Oritation of the entity
                     Default: Orientation()
         &#34;&#34;&#34;
+        if not ( isinstance(route_ref,Route) or isinstance(route_ref,CatalogReference)):
+            raise TypeError(&#39;route input not of type Route or CatalogReference&#39;) 
         self.route_ref = route_ref
         self.entity = entity
+        if not isinstance(orientation,Orientation):
+            raise TypeError(&#39;input orientation is not of type Orientation&#39;)
         self.orientation = orientation
     
     def get_element(self):
@@ -2351,6 +2431,10 @@ orientation (Orientation): Oritation of the entity
         ET.SubElement(inroute,&#39;PositionOfCurrentEntity&#39;,attrib={&#39;entityRef&#39;:self.entity})
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._PositionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.position.RoutePositionOfCurrentEntity.get_element"><code class="name flex">
@@ -2434,7 +2518,7 @@ r (float): roll of the entity
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class WorldPosition():
+<pre><code class="python">class WorldPosition(_PositionType):
     &#34;&#34;&#34; the WorldPostion creates a worldposition of openScenario
         
         Parameters
@@ -2524,6 +2608,10 @@ r (float): roll of the entity
         ET.SubElement(element,&#39;WorldPosition&#39;,attrib=self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._PositionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.position.WorldPosition.get_attributes"><code class="name flex">

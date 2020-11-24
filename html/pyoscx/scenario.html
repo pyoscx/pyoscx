@@ -31,9 +31,10 @@ import xml.dom.minidom as mini
 
 
 from .helpers import printToFile
-from .utils import FileHeader, ParameterDeclarations
+from .utils import FileHeader, ParameterDeclarations, Catalog, TrafficSignalController
 from .enumerations import XMLNS, XSI
-
+from .entities import Entities
+from .storyboard import StoryBoard
 
 class Scenario():
     &#34;&#34;&#34; The Scenario class collects all parts of OpenScenario and creates a .xml file
@@ -81,6 +82,17 @@ class Scenario():
 
             catalog (Catalog): the catalogs used in the scenario
         &#34;&#34;&#34;
+        if not isinstance(entities,Entities):
+            raise TypeError(&#39;entities input is not of type Entities&#39;)
+        if not isinstance(storyboard,StoryBoard):
+            raise TypeError(&#39;storyboard input is not of type StoryBoard&#39;)
+        if not isinstance(roadnetwork,RoadNetwork):
+            raise TypeError(&#39;roadnetwork input is not of type RoadNetwork&#39;)
+        if not isinstance(catalog,Catalog):
+            raise TypeError(&#39;catalog input is not of type StorCatalogyBoard&#39;)
+        if not isinstance(parameters,ParameterDeclarations):
+            raise TypeError(&#39;parameters input is not of type ParameterDeclarations&#39;)
+
         self.entities = entities
         self.storyboard = storyboard
         self.roadnetwork = roadnetwork
@@ -129,11 +141,11 @@ class RoadNetwork():
 
         Attributes
         ----------
-            road_file: path to the opendrive file
+            road_file (str): path to the opendrive file
 
-            scene: path to the opensceengraph file 
+            scene (str): path to the opensceengraph file 
 
-            traffic_signals (TrafficSignalController)
+            traffic_signals (list of TrafficSignalController): all traffic signals in the roadnetwork
             
         Methods
         -------
@@ -165,6 +177,8 @@ class RoadNetwork():
                 traffic_signal_controller (TrafficSignalController): the traffic signal controller to add
 
         &#34;&#34;&#34;
+        if not isinstance(traffic_signal_controller,TrafficSignalController):
+            raise TypeError(&#39;traffic_signal_controller input is not of type TrafficSignalController&#39;)
         self.traffic_signals.append(traffic_signal_controller)
 
     def get_element(self):
@@ -204,11 +218,11 @@ class RoadNetwork():
 scenegraph (str): path to the opensceengraph file (optional)
 </code></pre>
 <h2 id="attributes">Attributes</h2>
-<pre><code>road_file: path to the opendrive file
+<pre><code>road_file (str): path to the opendrive file
 
-scene: path to the opensceengraph file
+scene (str): path to the opensceengraph file
 
-traffic_signals (TrafficSignalController)
+traffic_signals (list of TrafficSignalController): all traffic signals in the roadnetwork
 </code></pre>
 <h2 id="methods">Methods</h2>
 <pre><code>get_element()
@@ -235,11 +249,11 @@ scenegraph (str): path to the opensceengraph file (optional)
 
         Attributes
         ----------
-            road_file: path to the opendrive file
+            road_file (str): path to the opendrive file
 
-            scene: path to the opensceengraph file 
+            scene (str): path to the opensceengraph file 
 
-            traffic_signals (TrafficSignalController)
+            traffic_signals (list of TrafficSignalController): all traffic signals in the roadnetwork
             
         Methods
         -------
@@ -271,6 +285,8 @@ scenegraph (str): path to the opensceengraph file (optional)
                 traffic_signal_controller (TrafficSignalController): the traffic signal controller to add
 
         &#34;&#34;&#34;
+        if not isinstance(traffic_signal_controller,TrafficSignalController):
+            raise TypeError(&#39;traffic_signal_controller input is not of type TrafficSignalController&#39;)
         self.traffic_signals.append(traffic_signal_controller)
 
     def get_element(self):
@@ -309,6 +325,8 @@ scenegraph (str): path to the opensceengraph file (optional)
             traffic_signal_controller (TrafficSignalController): the traffic signal controller to add
 
     &#34;&#34;&#34;
+    if not isinstance(traffic_signal_controller,TrafficSignalController):
+        raise TypeError(&#39;traffic_signal_controller input is not of type TrafficSignalController&#39;)
     self.traffic_signals.append(traffic_signal_controller)</code></pre>
 </details>
 </dd>
@@ -430,6 +448,17 @@ catalog (Catalog): the catalogs used in the scenario
 
             catalog (Catalog): the catalogs used in the scenario
         &#34;&#34;&#34;
+        if not isinstance(entities,Entities):
+            raise TypeError(&#39;entities input is not of type Entities&#39;)
+        if not isinstance(storyboard,StoryBoard):
+            raise TypeError(&#39;storyboard input is not of type StoryBoard&#39;)
+        if not isinstance(roadnetwork,RoadNetwork):
+            raise TypeError(&#39;roadnetwork input is not of type RoadNetwork&#39;)
+        if not isinstance(catalog,Catalog):
+            raise TypeError(&#39;catalog input is not of type StorCatalogyBoard&#39;)
+        if not isinstance(parameters,ParameterDeclarations):
+            raise TypeError(&#39;parameters input is not of type ParameterDeclarations&#39;)
+
         self.entities = entities
         self.storyboard = storyboard
         self.roadnetwork = roadnetwork

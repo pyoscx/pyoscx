@@ -28,11 +28,10 @@
 </summary>
 <pre><code class="python">import xml.etree.ElementTree as ET
 import xml.dom.minidom as mini
-
-
 import os
 
-def esminiRunner(scenario,esminipath = &#39;esmini&#39;):
+
+def esminiRunner(scenario, esminipath=&#39;esmini&#39;, args=&#39;--window 50 50 800 400&#39;):
     &#34;&#34;&#34; write a scenario and runs it in esmini
         Parameters
         ----------
@@ -41,15 +40,54 @@ def esminiRunner(scenario,esminipath = &#39;esmini&#39;):
             esminipath (str): the path to esmini 
                 Default: pyoscx
 
+            args: pass through esmini launch commands
+
     &#34;&#34;&#34;
-    _scenariopath = os.path.join(esminipath,&#39;resources&#39;,&#39;xosc&#39;)
-    scenario.write_xml(os.path.join(_scenariopath,&#39;pythonscenario2.xosc&#39;),True)
-    
+    _scenariopath = os.path.join(esminipath, &#39;resources&#39;, &#39;xosc&#39;)
+    scenario.write_xml(os.path.join(_scenariopath, &#39;pythonscenario2.xosc&#39;), True)
+
     if os.name == &#39;posix&#39;:
-        os.system(os.path.join(&#39;.&#39;, esminipath, &#39;bin&#39;,&#39;esmini&#39;) + &#39; --osc &#39;+esminipath+&#39;/resources/xosc/pythonscenario2.xosc --window 50 50 800 400&#39; )
+        os.system(os.path.join(&#39;.&#39;,
+                               esminipath,
+                               &#39;bin&#39;,
+                               &#39;esmini&#39;) + &#39; --osc &#39; + esminipath + &#39;/resources/xosc/pythonscenario2.xosc &#39; + args)
     elif os.name == &#39;nt&#39;:
-        os.system(os.path.join(esminipath,&#39;bin&#39;,&#39;esmini.exe&#39;) + &#39; --osc &#39;+esminipath+&#39;/resources/xosc/pythonscenario2.xosc --window 50 50 800 400&#39; )
+        os.system(os.path.join(esminipath,
+                               &#39;bin&#39;,
+                               &#39;esmini.exe&#39;) + &#39; --osc &#39; + esminipath + &#39;/resources/xosc/pythonscenario2.xosc &#39; + args)
+
+def esminiRunViewer(scenario,esminipath=&#39;esmini&#39;,args=&#39; --window 100 100 1000 800&#39;):
+    &#34;&#34;&#34; writes and runs esmini in headless mode then launch the replayer for analysis of the scenario
+        Parameters
+        ----------
+            scenario (Scenario): the pypscx scenario to run
+
+            esminipath (str): the path to esmini 
+                Default: esmini
+
+            args: pass through replayer commands
+    &#34;&#34;&#34;
+    _scenariopath = os.path.join(esminipath, &#39;resources&#39;, &#39;xosc&#39;)
+    scenario.write_xml(os.path.join(_scenariopath, &#39;pythonscenario2.xosc&#39;), True)
+
+    if os.name == &#39;posix&#39;:
+        os.system(os.path.join(&#39;.&#39;,
+                               esminipath,
+                               &#39;bin&#39;,
+                               &#39;esmini&#39;) + &#39; --osc &#39; + esminipath + &#39;/resources/xosc/pythonscenario2.xosc --record python_replay --headless&#39;)
+
+        os.system(os.path.join(&#39;.&#39;,
+                               esminipath,
+                               &#39;bin&#39;,
+                               &#39;replayer&#39;) + &#39; --file python_replay --res_path &#39; + os.path.join(esminipath,&#39;resources&#39;) + args)
+
+                               
+    elif os.name == &#39;nt&#39;:
+        os.system(os.path.join(esminipath,
+                               &#39;bin&#39;,
+                               &#39;esmini.exe&#39;) + &#39; --osc &#39; + esminipath + &#39;/resources/xosc/pythonscenario2.xosc --record python_replay --headless&#39; + args)
     
+
 
 def prettyprint(element):
     &#34;&#34;&#34; prints the element to the commandline
@@ -59,11 +97,12 @@ def prettyprint(element):
             element (Element): element to print
 
     &#34;&#34;&#34;
-    rough = ET.tostring(element,&#39;utf-8&#39;)
+    rough = ET.tostring(element, &#39;utf-8&#39;)
     reparsed = mini.parseString(rough)
     print(reparsed.toprettyxml(indent=&#34;\t&#34;))
 
-def printToFile(element,filename,prettyprint=True):
+
+def printToFile(element, filename, prettyprint=True):
     &#34;&#34;&#34; prints the element to a xml file
 
         Parameters
@@ -75,15 +114,15 @@ def printToFile(element,filename,prettyprint=True):
             prettyprint (bool): pretty or &#34;ugly&#34; print
 
     &#34;&#34;&#34;
-    if prettyprint:    
-        rough = ET.tostring(element,&#39;utf-8&#39;).replace(b&#39;\n&#39;,b&#39;&#39;).replace(b&#39;\t&#39;,b&#39;&#39;)
+    if prettyprint:
+        rough = ET.tostring(element, &#39;utf-8&#39;).replace(b&#39;\n&#39;, b&#39;&#39;).replace(b&#39;\t&#39;, b&#39;&#39;)
         reparsed = mini.parseString(rough)
         towrite = reparsed.toprettyxml(indent=&#34;\t&#34;)
-        with open(filename,&#34;w&#34;) as file_handle:
+        with open(filename, &#34;w&#34;) as file_handle:
             file_handle.write(towrite)
     else:
         tree = ET.ElementTree(element)
-        with open(filename,&#34;wb&#34;) as file_handle:
+        with open(filename, &#34;wb&#34;) as file_handle:
             tree.write(file_handle)</code></pre>
 </details>
 </section>
@@ -94,8 +133,58 @@ def printToFile(element,filename,prettyprint=True):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="pyoscx.helpers.esminiRunViewer"><code class="name flex">
+<span>def <span class="ident">esminiRunViewer</span></span>(<span>scenario, esminipath='esmini', args=' --window 100 100 1000 800')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>writes and runs esmini in headless mode then launch the replayer for analysis of the scenario
+Parameters</p>
+<hr>
+<pre><code>scenario (Scenario): the pypscx scenario to run
+
+esminipath (str): the path to esmini 
+    Default: esmini
+
+args: pass through replayer commands
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def esminiRunViewer(scenario,esminipath=&#39;esmini&#39;,args=&#39; --window 100 100 1000 800&#39;):
+    &#34;&#34;&#34; writes and runs esmini in headless mode then launch the replayer for analysis of the scenario
+        Parameters
+        ----------
+            scenario (Scenario): the pypscx scenario to run
+
+            esminipath (str): the path to esmini 
+                Default: esmini
+
+            args: pass through replayer commands
+    &#34;&#34;&#34;
+    _scenariopath = os.path.join(esminipath, &#39;resources&#39;, &#39;xosc&#39;)
+    scenario.write_xml(os.path.join(_scenariopath, &#39;pythonscenario2.xosc&#39;), True)
+
+    if os.name == &#39;posix&#39;:
+        os.system(os.path.join(&#39;.&#39;,
+                               esminipath,
+                               &#39;bin&#39;,
+                               &#39;esmini&#39;) + &#39; --osc &#39; + esminipath + &#39;/resources/xosc/pythonscenario2.xosc --record python_replay --headless&#39;)
+
+        os.system(os.path.join(&#39;.&#39;,
+                               esminipath,
+                               &#39;bin&#39;,
+                               &#39;replayer&#39;) + &#39; --file python_replay --res_path &#39; + os.path.join(esminipath,&#39;resources&#39;) + args)
+
+                               
+    elif os.name == &#39;nt&#39;:
+        os.system(os.path.join(esminipath,
+                               &#39;bin&#39;,
+                               &#39;esmini.exe&#39;) + &#39; --osc &#39; + esminipath + &#39;/resources/xosc/pythonscenario2.xosc --record python_replay --headless&#39; + args)</code></pre>
+</details>
+</dd>
 <dt id="pyoscx.helpers.esminiRunner"><code class="name flex">
-<span>def <span class="ident">esminiRunner</span></span>(<span>scenario, esminipath='esmini')</span>
+<span>def <span class="ident">esminiRunner</span></span>(<span>scenario, esminipath='esmini', args='--window 50 50 800 400')</span>
 </code></dt>
 <dd>
 <div class="desc"><p>write a scenario and runs it in esmini
@@ -105,12 +194,14 @@ Parameters</p>
 
 esminipath (str): the path to esmini 
     Default: pyoscx
+
+args: pass through esmini launch commands
 </code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def esminiRunner(scenario,esminipath = &#39;esmini&#39;):
+<pre><code class="python">def esminiRunner(scenario, esminipath=&#39;esmini&#39;, args=&#39;--window 50 50 800 400&#39;):
     &#34;&#34;&#34; write a scenario and runs it in esmini
         Parameters
         ----------
@@ -119,14 +210,21 @@ esminipath (str): the path to esmini
             esminipath (str): the path to esmini 
                 Default: pyoscx
 
+            args: pass through esmini launch commands
+
     &#34;&#34;&#34;
-    _scenariopath = os.path.join(esminipath,&#39;resources&#39;,&#39;xosc&#39;)
-    scenario.write_xml(os.path.join(_scenariopath,&#39;pythonscenario2.xosc&#39;),True)
-    
+    _scenariopath = os.path.join(esminipath, &#39;resources&#39;, &#39;xosc&#39;)
+    scenario.write_xml(os.path.join(_scenariopath, &#39;pythonscenario2.xosc&#39;), True)
+
     if os.name == &#39;posix&#39;:
-        os.system(os.path.join(&#39;.&#39;, esminipath, &#39;bin&#39;,&#39;esmini&#39;) + &#39; --osc &#39;+esminipath+&#39;/resources/xosc/pythonscenario2.xosc --window 50 50 800 400&#39; )
+        os.system(os.path.join(&#39;.&#39;,
+                               esminipath,
+                               &#39;bin&#39;,
+                               &#39;esmini&#39;) + &#39; --osc &#39; + esminipath + &#39;/resources/xosc/pythonscenario2.xosc &#39; + args)
     elif os.name == &#39;nt&#39;:
-        os.system(os.path.join(esminipath,&#39;bin&#39;,&#39;esmini.exe&#39;) + &#39; --osc &#39;+esminipath+&#39;/resources/xosc/pythonscenario2.xosc --window 50 50 800 400&#39; )</code></pre>
+        os.system(os.path.join(esminipath,
+                               &#39;bin&#39;,
+                               &#39;esmini.exe&#39;) + &#39; --osc &#39; + esminipath + &#39;/resources/xosc/pythonscenario2.xosc &#39; + args)</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.helpers.prettyprint"><code class="name flex">
@@ -149,7 +247,7 @@ esminipath (str): the path to esmini
             element (Element): element to print
 
     &#34;&#34;&#34;
-    rough = ET.tostring(element,&#39;utf-8&#39;)
+    rough = ET.tostring(element, &#39;utf-8&#39;)
     reparsed = mini.parseString(rough)
     print(reparsed.toprettyxml(indent=&#34;\t&#34;))</code></pre>
 </details>
@@ -170,7 +268,7 @@ prettyprint (bool): pretty or "ugly" print
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def printToFile(element,filename,prettyprint=True):
+<pre><code class="python">def printToFile(element, filename, prettyprint=True):
     &#34;&#34;&#34; prints the element to a xml file
 
         Parameters
@@ -182,15 +280,15 @@ prettyprint (bool): pretty or "ugly" print
             prettyprint (bool): pretty or &#34;ugly&#34; print
 
     &#34;&#34;&#34;
-    if prettyprint:    
-        rough = ET.tostring(element,&#39;utf-8&#39;).replace(b&#39;\n&#39;,b&#39;&#39;).replace(b&#39;\t&#39;,b&#39;&#39;)
+    if prettyprint:
+        rough = ET.tostring(element, &#39;utf-8&#39;).replace(b&#39;\n&#39;, b&#39;&#39;).replace(b&#39;\t&#39;, b&#39;&#39;)
         reparsed = mini.parseString(rough)
         towrite = reparsed.toprettyxml(indent=&#34;\t&#34;)
-        with open(filename,&#34;w&#34;) as file_handle:
+        with open(filename, &#34;w&#34;) as file_handle:
             file_handle.write(towrite)
     else:
         tree = ET.ElementTree(element)
-        with open(filename,&#34;wb&#34;) as file_handle:
+        with open(filename, &#34;wb&#34;) as file_handle:
             tree.write(file_handle)</code></pre>
 </details>
 </dd>
@@ -212,6 +310,7 @@ prettyprint (bool): pretty or "ugly" print
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="pyoscx.helpers.esminiRunViewer" href="#pyoscx.helpers.esminiRunViewer">esminiRunViewer</a></code></li>
 <li><code><a title="pyoscx.helpers.esminiRunner" href="#pyoscx.helpers.esminiRunner">esminiRunner</a></code></li>
 <li><code><a title="pyoscx.helpers.prettyprint" href="#pyoscx.helpers.prettyprint">prettyprint</a></code></li>
 <li><code><a title="pyoscx.helpers.printToFile" href="#pyoscx.helpers.printToFile">printToFile</a></code></li>

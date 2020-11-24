@@ -28,11 +28,20 @@
 </summary>
 <pre><code class="python">import xml.etree.ElementTree as ET
 
-from .utils import DynamicsConstrains, TimeReference, convert_bool
+from .utils import DynamicsConstrains, TimeReference, convert_bool, TransitionDynamics, CatalogReference, Route, Trajectory, TrafficDefinition, Environment
+from .utils import Controller
+from .enumerations import DynamicsShapes, SpeedTargetValueType, FollowMode, ReferenceContext
 
-from .enumerations import DynamicsShapes, SpeedTargetValueType, FollowMode
+from .position import _PositionType
 
-
+class _ActionType():
+    &#34;&#34;&#34; helper class for typesetting
+    &#34;&#34;&#34;
+    pass
+class _PrivateActionType(_ActionType):
+    &#34;&#34;&#34; helper class for typesetting
+    &#34;&#34;&#34;
+    pass
 class _Action():
     &#34;&#34;&#34; Private class used to define an action, should not be used by the user.
         Used as a wrapper to create the extra elements needed
@@ -92,7 +101,7 @@ class _Action():
 
 #LongitudinalAction
 
-class AbsoluteSpeedAction():
+class AbsoluteSpeedAction(_PrivateActionType):
     &#34;&#34;&#34; The AbsoluteSpeedAction class specifies a LongitudinalAction of type SpeedAction with an abosulte target speed
         
         Parameters
@@ -128,6 +137,8 @@ class AbsoluteSpeedAction():
 
         &#34;&#34;&#34;
         self.speed = speed
+        if not isinstance(transition_dynamics,TransitionDynamics):
+            raise TypeError(&#39;transition_dynamics input not of type TransitionDynamics&#39;)
         self.transition_dynamics = transition_dynamics
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the AbsoluteSpeedAction as a dict
@@ -150,16 +161,16 @@ class AbsoluteSpeedAction():
         
         return element
 
-class RelativeSpeedAction():
+class RelativeSpeedAction(_PrivateActionType):
     &#34;&#34;&#34; The RelativeSpeedAction creates a LongitudinalAction of type SpeedAction with a relative target
         
         Parameters
         ----------
-            transition_dynamics (TransitionDynamics): how the change should be made
-
             speed (float): the speed wanted
 
             target (str): the name of the relative target (used for relative speed)
+
+            transition_dynamics (TransitionDynamics): how the change should be made
 
             valuetype (str): the type of relative speed wanted (used for relative speed)
 
@@ -205,8 +216,13 @@ class RelativeSpeedAction():
         self.speed = speed
         self.target = entity
         self.valuetype = valuetype
-        self.continious = continious
+        if not isinstance(continious,bool):
+            raise TypeError(&#39;continious input not of type bool&#39;)
+        
+        if not isinstance(transition_dynamics,TransitionDynamics):
+            raise TypeError(&#39;transition_dynamics input not of type TransitionDynamics&#39;)
         self.transition_dynamics = transition_dynamics
+        self.continious = continious
 
     
     def get_attributes(self):
@@ -229,7 +245,7 @@ class RelativeSpeedAction():
         
         return element
             
-class LongitudinalDistanceAction():
+class LongitudinalDistanceAction(_PrivateActionType):
     &#34;&#34;&#34; The LongitudinalDistanceAction creates a LongitudinalAction of type LongitudinalDistanceAction with a distance target
         
         Parameters
@@ -300,6 +316,13 @@ class LongitudinalDistanceAction():
 
         &#34;&#34;&#34;
         self.target = entity
+        if not isinstance(continious,bool):
+            raise TypeError(&#39;continious input not of type bool&#39;)
+        
+        if not isinstance(freespace,bool):
+            raise TypeError(&#39;freespace input not of type bool&#39;)
+
+
         self.freespace = freespace
         self.continious = continious
         self.dynamic_constraint = DynamicsConstrains(max_acceleration,max_deceleration,max_speed)
@@ -329,7 +352,7 @@ class LongitudinalDistanceAction():
             longdistaction.append(self.dynamic_constraint.get_element())
         return element
 
-class LongitudinalTimegapAction():
+class LongitudinalTimegapAction(_PrivateActionType):
     &#34;&#34;&#34; The LongitudinalTimegapAction creates a LongitudinalAction of type LongitudinalDistanceAction with the timegap option
         
         Parameters
@@ -400,6 +423,14 @@ class LongitudinalTimegapAction():
 
         &#34;&#34;&#34;
         self.target = entity
+        if not isinstance(continious,bool):
+            raise TypeError(&#39;continious input not of type bool&#39;)
+
+
+        if not isinstance(freespace,bool):
+            raise TypeError(&#39;freespace input not of type bool&#39;)
+
+
         self.freespace = freespace
         self.continious = continious
         self.timegap = timegap
@@ -432,7 +463,7 @@ class LongitudinalTimegapAction():
 
 # lateral actions
 
-class AbsoluteLaneChangeAction():
+class AbsoluteLaneChangeAction(_PrivateActionType):
     &#34;&#34;&#34; the AbsoluteLaneChangeAction creates a LateralAction of type LaneChangeAction with an absolute target
         
         Parameters
@@ -476,7 +507,9 @@ class AbsoluteLaneChangeAction():
         &#34;&#34;&#34;
 
         self.lane = lane
-        self.target_lane_offset = target_lane_offset
+        self.target_lane_offset = target_lane_offset       
+        if not isinstance(transition_dynamics,TransitionDynamics):
+            raise TypeError(&#39;transition_dynamics input not of type TransitionDynamics&#39;)
         self.transition_dynamics = transition_dynamics
 
     def get_attributes(self):
@@ -506,7 +539,7 @@ class AbsoluteLaneChangeAction():
         return element
 
 
-class RelativeLaneChangeAction():
+class RelativeLaneChangeAction(_PrivateActionType):
     &#34;&#34;&#34; the RelativeLaneChangeAction creates a LateralAction of type LaneChangeAction with a relative target
         
         Parameters
@@ -558,6 +591,8 @@ class RelativeLaneChangeAction():
         self.lane = lane
         self.target = entity
         self.target_lane_offset = target_lane_offset
+        if not isinstance(transition_dynamics,TransitionDynamics):
+            raise TypeError(&#39;transition_dynamics input not of type TransitionDynamics&#39;)
         self.transition_dynamics = transition_dynamics
 
 
@@ -587,7 +622,7 @@ class RelativeLaneChangeAction():
         ET.SubElement(lanchangetarget,&#39;RelativeTargetLane&#39;,self.get_attributes())
         return element
 
-class AbsoluteLaneOffsetAction():
+class AbsoluteLaneOffsetAction(_PrivateActionType):
     &#34;&#34;&#34; the AbsoluteLaneOffsetAction class creates a LateralAction of type LaneOffsetAction with an absolute target
         
         Parameters
@@ -635,6 +670,9 @@ class AbsoluteLaneOffsetAction():
                 continious (bool): if the controller tries to keep the relative speed 
                     Default: True
         &#34;&#34;&#34;
+        if not isinstance(continious,bool):
+            raise TypeError(&#39;continious input not of type bool&#39;)
+
         self.continious = continious
         self.value = value
         if shape not in DynamicsShapes:
@@ -663,7 +701,7 @@ class AbsoluteLaneOffsetAction():
 
         return element
 
-class RelativeLaneOffsetAction():
+class RelativeLaneOffsetAction(_PrivateActionType):
     &#34;&#34;&#34; the RelativeLaneOffsetAction class creates a LateralAction of type LaneOffsetAction with a relative target
         
         Parameters
@@ -716,6 +754,9 @@ class RelativeLaneOffsetAction():
                 continious (bool): if the controller tries to keep the relative speed 
                     Default: True
         &#34;&#34;&#34;
+        if not isinstance(continious,bool):
+            raise TypeError(&#39;continious input not of type bool&#39;)
+        
         self.continious = continious
         self.value = value
         self.target = entity
@@ -747,7 +788,7 @@ class RelativeLaneOffsetAction():
         return element
 
 
-class LateralDistanceAction():
+class LateralDistanceAction(_PrivateActionType):
     &#34;&#34;&#34; 
         
         Parameters
@@ -823,6 +864,12 @@ class LateralDistanceAction():
         &#34;&#34;&#34;
         self.distance = distance
         self.target = entity
+        if not isinstance(continious,bool):
+            raise TypeError(&#39;continious input not of type bool&#39;)
+
+        if not isinstance(freespace,bool):
+            raise TypeError(&#39;freespace input not of type bool&#39;)
+        
         self.freespace = freespace
         self.continious = continious
         self.dynamic_constraint = DynamicsConstrains(max_acceleration,max_deceleration,max_speed)
@@ -854,7 +901,7 @@ class LateralDistanceAction():
 
 
 # teleport
-class TeleportAction():
+class TeleportAction(_PrivateActionType):
     &#34;&#34;&#34; the TeleportAction creates the Teleport action of OpenScenario
         
         Parameters
@@ -880,6 +927,9 @@ class TeleportAction():
             position (*Position): any position object
 
         &#34;&#34;&#34;
+        if not isinstance(position,_PositionType):
+            raise TypeError(&#39;position input not a valid Position type&#39;)        
+
         self.position = position
 
     def get_element(self):
@@ -895,7 +945,7 @@ class TeleportAction():
 
 # Routing actions
 
-class AssingRouteAction():
+class AssingRouteAction(_PrivateActionType):
     &#34;&#34;&#34; AssingRouteAction creates a RouteAction of type AssingRouteAction
 
         Parameters
@@ -921,6 +971,9 @@ class AssingRouteAction():
                 route (Route, or CatalogReference): the route to follow
 
         &#34;&#34;&#34;
+        if not ( isinstance(route,Route) or isinstance(route,CatalogReference)):
+            raise TypeError(&#39;route input not of type Route or CatalogReference&#39;) 
+
         self.route = route
 
     def get_element(self):
@@ -935,7 +988,7 @@ class AssingRouteAction():
         return element
 
 
-class AcquirePositionAction():
+class AcquirePositionAction(_PrivateActionType):
     &#34;&#34;&#34; AcquirePositionAction creates a RouteAction of type AcquirePositionAction
         
         Parameters
@@ -960,6 +1013,9 @@ class AcquirePositionAction():
                 position (*Position): target position
 
         &#34;&#34;&#34;
+        if not isinstance(position,_PositionType):
+            raise TypeError(&#39;position input not a valid Position type&#39;)        
+
         self.position = position
 
     def get_element(self):
@@ -975,7 +1031,7 @@ class AcquirePositionAction():
 
 
 
-class FollowTrajectoryAction():
+class FollowTrajectoryAction(_PrivateActionType):
     &#34;&#34;&#34; FollowTrajectoryAction creates a RouteAction of type FollowTrajectoryAction
 
         Parameters
@@ -984,11 +1040,11 @@ class FollowTrajectoryAction():
 
             following_mode (FollowMode): the following mode of the action
 
-            referece_domain (ReferenceContext): how to follow
+            reference_domain (ReferenceContext): how to follow
                 Default: None
-            scale (double): scalefactor of the timeings (must be combined with referece_domain and offset)
+            scale (double): scalefactor of the timeings (must be combined with reference_domain and offset)
                 Default: None
-            offset (double): offset for time values (must be combined with referece_domain and scale)
+            offset (double): offset for time values (must be combined with reference_domain and scale)
                 Default: None
 
         Attributes
@@ -1005,7 +1061,7 @@ class FollowTrajectoryAction():
                 Returns the full ElementTree of the class
 
     &#34;&#34;&#34;
-    def __init__(self,trajectory,following_mode,referece_domain=None,scale=None,offset=None):
+    def __init__(self,trajectory,following_mode,reference_domain=None,scale=None,offset=None):
         &#34;&#34;&#34; initalize the FollowTrajectoryAction 
 
             Parameters
@@ -1014,19 +1070,21 @@ class FollowTrajectoryAction():
 
                 following_mode (FollowMode): the following mode of the action
 
-                referece_domain (str): absolute or relative time reference (must be combined with scale and offset)
+                reference_domain (str): absolute or relative time reference (must be combined with scale and offset)
                     Default: None
-                scale (double): scalefactor of the timeings (must be combined with referece_domain and offset)
+                scale (double): scalefactor of the timings (must be combined with reference_domain and offset)
                     Default: None
-                offset (double): offset for time values (must be combined with referece_domain and scale)
+                offset (double): offset for time values (must be combined with reference_domain and scale)
                     Default: None
         &#34;&#34;&#34;
         # if following_mode not in FollowMode:
         #     ValueError(str(following_mode) + &#39; is not a valied following mode.&#39;)
+        if not ( isinstance(trajectory,Trajectory) or isinstance(trajectory,CatalogReference)):
+            raise TypeError(&#39;route input not of type Route or CatalogReference&#39;) 
         self.trajectory = trajectory
         self.following_mode = following_mode
-
-        self.timeref = TimeReference(referece_domain,scale,offset)
+        # TODO: check reference_domain
+        self.timeref = TimeReference(reference_domain,scale,offset)
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the AssingRouteAction
@@ -1045,7 +1103,7 @@ class FollowTrajectoryAction():
 
 
 
-class ActivateControllerAction():
+class ActivateControllerAction(_PrivateActionType):
     &#34;&#34;&#34; ActivateControllerAction creates a ActivateControllerAction of open scenario
         
         Parameters
@@ -1079,6 +1137,10 @@ class ActivateControllerAction():
                 longitudinal (boolean): activate or deactivate the controller
 
         &#34;&#34;&#34;
+        if not isinstance(lateral,bool):
+            raise TypeError(&#39;lateral input is not of type bool&#39;) 
+        if not isinstance(longitudinal,bool):
+            raise TypeError(&#39;longitudinal input is not of type bool&#39;) 
         self.lateral = lateral
         self.longitudinal = longitudinal
 
@@ -1093,12 +1155,12 @@ class ActivateControllerAction():
 
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
-        routeaction = ET.SubElement(element,&#39;ActivateControllerAction&#39;,attrib=self.get_attributes())
+        ET.SubElement(element,&#39;ActivateControllerAction&#39;,attrib=self.get_attributes())
 
         return element
 
 
-class AssignControllerAction():
+class AssignControllerAction(_PrivateActionType):
     &#34;&#34;&#34; AssignControllerAction creates a ControllerAction of type AssignControllerAction
         
         Parameters
@@ -1123,6 +1185,8 @@ class AssignControllerAction():
                 controller (Controller or Catalogreference): a controller to assign
 
         &#34;&#34;&#34;
+        if not ( isinstance(controller,Controller) or isinstance(controller,CatalogReference)):
+            raise TypeError(&#39;route input not of type Route or CatalogReference&#39;) 
         self.controller = controller
 
     def get_element(self):
@@ -1136,7 +1200,7 @@ class AssignControllerAction():
         return element
 
 
-class OverrideThrottleAction():
+class OverrideThrottleAction(_PrivateActionType):
     &#34;&#34;&#34; OverrideThrottleAction creates a ControllerAction of type OverrideControllerValueAction and OverrideThrottleAction 
         
         Parameters
@@ -1171,6 +1235,8 @@ class OverrideThrottleAction():
 
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(activate,bool):
+            raise TypeError(&#39;activate input is not of type bool&#39;)
         self.activate = activate
 
     def get_attributes(self):
@@ -1190,7 +1256,7 @@ class OverrideThrottleAction():
         return element
 
 
-class OverrideBrakeAction():
+class OverrideBrakeAction(_PrivateActionType):
     &#34;&#34;&#34; OverrideBrakeAction creates a ControllerAction of type OverrideControllerValueAction and OverrideBrakeAction 
         
         Parameters
@@ -1225,6 +1291,8 @@ class OverrideBrakeAction():
 
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(activate,bool):
+            raise TypeError(&#39;activate input is not of type bool&#39;)
         self.activate = activate
 
     def get_attributes(self):
@@ -1244,7 +1312,7 @@ class OverrideBrakeAction():
         return element
 
 
-class OverrideClutchAction():
+class OverrideClutchAction(_PrivateActionType):
     &#34;&#34;&#34; OverrideClutchAction creates a ControllerAction of type OverrideControllerValueAction and OverrideClutchAction
         
         Parameters
@@ -1279,6 +1347,8 @@ class OverrideClutchAction():
 
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(activate,bool):
+            raise TypeError(&#39;activate input is not of type bool&#39;)
         self.activate = activate
 
     def get_attributes(self):
@@ -1299,7 +1369,7 @@ class OverrideClutchAction():
 
 
 
-class OverrideParkingBrakeAction():
+class OverrideParkingBrakeAction(_PrivateActionType):
     &#34;&#34;&#34; OverrideParkingBrakeAction creates a ControllerAction of type OverrideControllerValueAction and OverrideParkingBrakeAction 
         
         Parameters
@@ -1334,6 +1404,8 @@ class OverrideParkingBrakeAction():
 
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(activate,bool):
+            raise TypeError(&#39;activate input is not of type bool&#39;)
         self.activate = activate
 
     def get_attributes(self):
@@ -1355,7 +1427,7 @@ class OverrideParkingBrakeAction():
 
 
 
-class OverrideSteeringWheelAction():
+class OverrideSteeringWheelAction(_PrivateActionType):
     &#34;&#34;&#34; OverrideSteeringWheelAction creates a ControllerAction of type OverrideControllerValueAction and OverrideSteeringWheelAction 
         
         Parameters
@@ -1390,6 +1462,8 @@ class OverrideSteeringWheelAction():
 
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(activate,bool):
+            raise TypeError(&#39;activate input is not of type bool&#39;)
         self.activate = activate
 
     def get_attributes(self):
@@ -1410,7 +1484,7 @@ class OverrideSteeringWheelAction():
 
 
 
-class OverrideGearAction():
+class OverrideGearAction(_PrivateActionType):
     &#34;&#34;&#34; OverrideGearAction creates a ControllerAction of type OverrideControllerValueAction and OverrideGearAction 
         
         Parameters
@@ -1445,6 +1519,8 @@ class OverrideGearAction():
 
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(activate,bool):
+            raise TypeError(&#39;activate input is not of type bool&#39;)
         self.activate = activate
 
     def get_attributes(self):
@@ -1465,7 +1541,7 @@ class OverrideGearAction():
 
 
 
-class VisibilityAction():
+class VisibilityAction(_PrivateActionType):
     &#34;&#34;&#34; creates a VisibilityAction
         
         Parameters
@@ -1505,6 +1581,12 @@ class VisibilityAction():
             sensors (boolean): visible to sensors or not
 
         &#34;&#34;&#34;
+        if not isinstance(graphics,bool):
+            raise TypeError(&#39;graphics input is not of type bool&#39;)
+        if not isinstance(traffic,bool):
+            raise TypeError(&#39;traffic input is not of type bool&#39;)
+        if not isinstance(sensors,bool):
+            raise TypeError(&#39;sensors input is not of type bool&#39;)
         self.graphics = graphics
         self.traffic = traffic
         self.sensors = sensors
@@ -1523,16 +1605,16 @@ class VisibilityAction():
         ET.SubElement(element,&#39;VisibilityAction&#39;,self.get_attributes())
         return element
 
-class AbsoluteSynchronizeAction():
+class AbsoluteSynchronizeAction(_PrivateActionType):
     &#34;&#34;&#34; creates a SynchronizeAction with an absolute speed as target speed
         
         Parameters
         ----------
             entity (str): entity to syncronize with
 
-            entity_position (*Position): the position of the entity to syncronize to
+            entity_PositionType (*Position): the position of the entity to syncronize to
 
-            target_position (*Position): the position of the target that should syncronize
+            target_PositionType (*Position): the position of the target that should syncronize
 
             speed (double): the absolute speed of the target that should syncronize
 
@@ -1544,9 +1626,9 @@ class AbsoluteSynchronizeAction():
         ----------
             entity (str): entity to syncronize with
 
-            entity_position (*Position): the position of the entity to syncronize to
+            entity_PositionType (*Position): the position of the entity to syncronize to
 
-            target_position (*Position): the position of the target that should syncronize
+            target_PositionType (*Position): the position of the target that should syncronize
 
             speed (double): the absolute speed of the target that should syncronize
 
@@ -1563,16 +1645,16 @@ class AbsoluteSynchronizeAction():
                 Returns the the attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,entity,entity_position,target_position,speed,target_tolerance_master=None,target_tolerance=None):
+    def __init__(self,entity,entity_PositionType,target_PositionType,speed,target_tolerance_master=None,target_tolerance=None):
         &#34;&#34;&#34; initalize the AbsoluteSynchronizeAction
 
             Parameters
             ----------
                 entity (str): entity to syncronize with
 
-                entity_position (*Position): the position of the entity to syncronize to
+                entity_PositionType (*Position): the position of the entity to syncronize to
 
-                target_position (*Position): the position of the target that should syncronize
+                target_PositionType (*Position): the position of the target that should syncronize
 
                 speed (double): the absolute speed of the target that should syncronize
 
@@ -1582,8 +1664,13 @@ class AbsoluteSynchronizeAction():
         &#34;&#34;&#34;
 
         self.entity = entity
-        self.entity_position = entity_position
-        self.target_position = target_position
+        if not isinstance(entity_PositionType,_PositionType):
+            raise TypeError(&#39;entity_PositionType input is not a valid Position&#39;)
+        
+        if not isinstance(target_PositionType,_PositionType):
+            raise TypeError(&#39;target_PositionType input is not a valid Position&#39;)
+        self.entity_PositionType = entity_PositionType
+        self.target_PositionType = target_PositionType
         self.speed = speed
         self.target_tolerance_master = target_tolerance_master
         self.target_tolerance = target_tolerance
@@ -1605,24 +1692,24 @@ class AbsoluteSynchronizeAction():
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
         syncaction = ET.SubElement(element,&#39;SynchronizeAction&#39;,self.get_attributes())
-        syncaction.append(self.entity_position.get_element(&#39;TargetPositionMaster&#39;))
-        syncaction.append(self.target_position.get_element(&#39;TargetPosition&#39;))
+        syncaction.append(self.entity_PositionType.get_element(&#39;TargetPositionMaster&#39;))
+        syncaction.append(self.target_PositionType.get_element(&#39;TargetPosition&#39;))
         finalspeed = ET.SubElement(syncaction,&#39;FinalSpeed&#39;)
         ET.SubElement(finalspeed,&#39;AbsoluteSpeed&#39;,attrib={&#39;value&#39;:str(self.speed)})
         
         return element
 
 
-class RelativeSynchronizeAction():
+class RelativeSynchronizeAction(_PrivateActionType):
     &#34;&#34;&#34; creates a SynchronizeAction with a relative speed target
         
         Parameters
         ----------
             entity (str): entity to syncronize with
 
-            entity_position (*Position): the position of the entity to syncronize to
+            entity_PositionType (*Position): the position of the entity to syncronize to
 
-            target_position (*Position): the position of the target that should syncronize
+            target_PositionType (*Position): the position of the target that should syncronize
 
             speed (double): the relative speed of the target that should syncronize
 
@@ -1636,9 +1723,9 @@ class RelativeSynchronizeAction():
         ----------
             entity (str): entity to syncronize with
 
-            entity_position (*Position): the position of the entity to syncronize to
+            entity_PositionType (*Position): the position of the entity to syncronize to
 
-            target_position (*Position): the position of the target that should syncronize
+            target_PositionType (*Position): the position of the target that should syncronize
 
             speed (double): the relative speed of the target that should syncronize
 
@@ -1657,16 +1744,16 @@ class RelativeSynchronizeAction():
                 Returns the the attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,entity,entity_position,target_position,speed,speed_target_type,target_tolerance_master=None,target_tolerance=None):
+    def __init__(self,entity,entity_PositionType,target_PositionType,speed,speed_target_type,target_tolerance_master=None,target_tolerance=None):
         &#34;&#34;&#34; initalize the RelativeSynchronizeAction
     
             Parameters
             ----------
                 entity (str): entity to syncronize with
 
-                entity_position (*Position): the position of the entity to syncronize to
+                entity_PositionType (*Position): the position of the entity to syncronize to
 
-                target_position (*Position): the position of the target that should syncronize
+                target_PositionType (*Position): the position of the target that should syncronize
 
                 speed (double): the absolute speed of the target that should syncronize
 
@@ -1678,8 +1765,13 @@ class RelativeSynchronizeAction():
         &#34;&#34;&#34;
 
         self.entity = entity
-        self.entity_position = entity_position
-        self.target_position = target_position
+        if not isinstance(entity_PositionType,_PositionType):
+            raise TypeError(&#39;entity_PositionType input is not a valid Position&#39;)
+        
+        if not isinstance(target_PositionType,_PositionType):
+            raise TypeError(&#39;target_PositionType input is not a valid Position&#39;)
+        self.entity_PositionType = entity_PositionType
+        self.target_PositionType = target_PositionType
         self.speed = speed
         # if speed_target_type not in SpeedTargetValueType:
             # ValueError(speed_target_type + &#39; is not a valid speed_target_type&#39;)
@@ -1704,8 +1796,8 @@ class RelativeSynchronizeAction():
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
         syncaction = ET.SubElement(element,&#39;SynchronizeAction&#39;,self.get_attributes())
-        syncaction.append(self.entity_position.get_element(&#39;TargetPositionMaster&#39;))
-        syncaction.append(self.target_position.get_element(&#39;TargetPosition&#39;))
+        syncaction.append(self.entity_PositionType.get_element(&#39;TargetPositionMaster&#39;))
+        syncaction.append(self.target_PositionType.get_element(&#39;TargetPosition&#39;))
         finalspeed = ET.SubElement(syncaction,&#39;FinalSpeed&#39;)
         ET.SubElement(finalspeed,&#39;RelativeSpeedToMaster&#39;,attrib={&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.speed_target_type})
         
@@ -1715,7 +1807,7 @@ class RelativeSynchronizeAction():
 #### Global Actions ####
 
 
-class ParameterAddAction():
+class ParameterAddAction(_ActionType):
     &#34;&#34;&#34; The ParameterAddAction class creates a ParameterAction of type ParameterModifyAction which adds a value to an existing Parameter
         
         Parameters
@@ -1772,7 +1864,7 @@ class ParameterAddAction():
         return element
 
 
-class ParameterMultiplyAction():
+class ParameterMultiplyAction(_ActionType):
     &#34;&#34;&#34; The ParameterMultiplyAction class creates a ParameterAction of tyoe ParameterModifyAction which adds a value to an existing Parameter
         
         Parameters
@@ -1828,7 +1920,7 @@ class ParameterMultiplyAction():
         return element
 
 
-class ParameterSetAction():
+class ParameterSetAction(_ActionType):
     &#34;&#34;&#34; The ParameterSetAction class creates a ParameterAction which adds a value to an existing Parameter
         
         Parameters
@@ -1882,7 +1974,7 @@ class ParameterSetAction():
         return element
 
 
-class TrafficSignalStateAction():
+class TrafficSignalStateAction(_ActionType):
     &#34;&#34;&#34; The TrafficSignalStateAction class creates a Infrastructure action which controls the state of a traffic signal
         
         Parameters
@@ -1938,7 +2030,7 @@ class TrafficSignalStateAction():
         return element
 
 
-class AddEntityAction():
+class AddEntityAction(_ActionType):
     &#34;&#34;&#34; The AddEntityAction class creates a EntityAction which adds a entity to the scenario
         
         Parameters
@@ -1997,7 +2089,7 @@ class AddEntityAction():
 
 
 
-class DeleteEntityAction():
+class DeleteEntityAction(_ActionType):
     &#34;&#34;&#34; The DeleteEntityAction class creates a EntityAction which removes a entity to the scenario
         
         Parameters
@@ -2050,7 +2142,7 @@ class DeleteEntityAction():
 
 
 
-class TrafficSignalControllerAction():
+class TrafficSignalControllerAction(_ActionType):
     &#34;&#34;&#34; The TrafficSignalControllerAction class creates a Infrastructure action which activates a controller of a traffic signal
         
         Parameters
@@ -2106,7 +2198,7 @@ class TrafficSignalControllerAction():
         return element
 
 
-class TrafficSourceAction():
+class TrafficSourceAction(_ActionType):
     &#34;&#34;&#34; The TrafficSourceAction class creates a TrafficAction of the typ TrafficSourceAction
         
         Parameters
@@ -2165,6 +2257,11 @@ class TrafficSourceAction():
         &#34;&#34;&#34;
         self.rate = rate
         self.radius = radius
+        if not isinstance(position,_PositionType):
+            raise TypeError(&#39;position input is not a valid Position&#39;)
+        
+        if not isinstance(trafficdefinition,TrafficDefinition):
+            raise TypeError(&#39;trafficdefinition input is not of type TrafficDefinition&#39;)
         self.position = position
         self.trafficdefinition = trafficdefinition
         self.velocity = velocity
@@ -2195,7 +2292,7 @@ class TrafficSourceAction():
         return element
 
 
-class TrafficSinkAction():
+class TrafficSinkAction(_ActionType):
     &#34;&#34;&#34; The TrafficSinkAction class creates a TrafficAction of the typ TrafficSinkAction
         
         Parameters
@@ -2244,6 +2341,11 @@ class TrafficSinkAction():
         &#34;&#34;&#34;
         self.rate = rate
         self.radius = radius
+        if not isinstance(position,_PositionType):
+            raise TypeError(&#39;position input is not a valid Position&#39;)
+        
+        if not isinstance(trafficdefinition,TrafficDefinition):
+            raise TypeError(&#39;trafficdefinition input is not of type TrafficDefinition&#39;)
         self.position = position
         self.trafficdefinition = trafficdefinition
 
@@ -2271,7 +2373,7 @@ class TrafficSinkAction():
         return element
 
 
-class TrafficSwarmAction():
+class TrafficSwarmAction(_ActionType):
     &#34;&#34;&#34; The TrafficSwarmAction class creates a TrafficAction of the typ TrafficSwarmAction
         
         Parameters
@@ -2349,6 +2451,8 @@ class TrafficSwarmAction():
         self.offset = offset
         self.numberofvehicles = numberofvehicles
         self.centralobject = centralobject
+        if not isinstance(trafficdefinition,TrafficDefinition):
+            raise TypeError(&#39;trafficdefinition input is not of type TrafficDefinition&#39;)
         self.trafficdefinition = trafficdefinition
         self.velocity = velocity
 
@@ -2379,7 +2483,7 @@ class TrafficSwarmAction():
         return element
 
 
-class EnvironmentAction():
+class EnvironmentAction(_ActionType):
     &#34;&#34;&#34; The EnvironmentAction class creates a GlobalAction of the typ EnvironmentAction
         
         Parameters
@@ -2414,6 +2518,8 @@ class EnvironmentAction():
 
         &#34;&#34;&#34;
         self.name = name
+        if not ( isinstance(environment,Environment) or isinstance(environment,CatalogReference)):
+            raise TypeError(&#39;route input not of type Route or CatalogReference&#39;) 
         self.environment = environment
 
 
@@ -2436,7 +2542,7 @@ class EnvironmentAction():
         return element
 
 
-class CustomCommandAction():
+class CustomCommandAction(_ActionType):
     &#34;&#34;&#34; The CustomCommandAction creates a simulator defined action, can add any number of xml.etree.ElementTree to an Action
 
         NOTE: this is a very crude implementation, and the element has to be created by the user.
@@ -2537,7 +2643,7 @@ target_lane_offset (float): if a offset in the target lane is wanted
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class AbsoluteLaneChangeAction():
+<pre><code class="python">class AbsoluteLaneChangeAction(_PrivateActionType):
     &#34;&#34;&#34; the AbsoluteLaneChangeAction creates a LateralAction of type LaneChangeAction with an absolute target
         
         Parameters
@@ -2581,7 +2687,9 @@ target_lane_offset (float): if a offset in the target lane is wanted
         &#34;&#34;&#34;
 
         self.lane = lane
-        self.target_lane_offset = target_lane_offset
+        self.target_lane_offset = target_lane_offset       
+        if not isinstance(transition_dynamics,TransitionDynamics):
+            raise TypeError(&#39;transition_dynamics input not of type TransitionDynamics&#39;)
         self.transition_dynamics = transition_dynamics
 
     def get_attributes(self):
@@ -2610,6 +2718,11 @@ target_lane_offset (float): if a offset in the target lane is wanted
         ET.SubElement(lanchangetarget,&#39;AbsoluteTargetLane&#39;,self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.AbsoluteLaneChangeAction.get_attributes"><code class="name flex">
@@ -2710,7 +2823,7 @@ continious (bool): if the controller tries to keep the relative speed
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class AbsoluteLaneOffsetAction():
+<pre><code class="python">class AbsoluteLaneOffsetAction(_PrivateActionType):
     &#34;&#34;&#34; the AbsoluteLaneOffsetAction class creates a LateralAction of type LaneOffsetAction with an absolute target
         
         Parameters
@@ -2758,6 +2871,9 @@ continious (bool): if the controller tries to keep the relative speed
                 continious (bool): if the controller tries to keep the relative speed 
                     Default: True
         &#34;&#34;&#34;
+        if not isinstance(continious,bool):
+            raise TypeError(&#39;continious input not of type bool&#39;)
+
         self.continious = continious
         self.value = value
         if shape not in DynamicsShapes:
@@ -2786,6 +2902,11 @@ continious (bool): if the controller tries to keep the relative speed
 
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.AbsoluteLaneOffsetAction.get_attributes"><code class="name flex">
@@ -2864,7 +2985,7 @@ transition_dynamics (TransitionDynamics): how the change should be made
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class AbsoluteSpeedAction():
+<pre><code class="python">class AbsoluteSpeedAction(_PrivateActionType):
     &#34;&#34;&#34; The AbsoluteSpeedAction class specifies a LongitudinalAction of type SpeedAction with an abosulte target speed
         
         Parameters
@@ -2900,6 +3021,8 @@ transition_dynamics (TransitionDynamics): how the change should be made
 
         &#34;&#34;&#34;
         self.speed = speed
+        if not isinstance(transition_dynamics,TransitionDynamics):
+            raise TypeError(&#39;transition_dynamics input not of type TransitionDynamics&#39;)
         self.transition_dynamics = transition_dynamics
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the AbsoluteSpeedAction as a dict
@@ -2922,6 +3045,11 @@ transition_dynamics (TransitionDynamics): how the change should be made
         
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.AbsoluteSpeedAction.get_attributes"><code class="name flex">
@@ -2969,16 +3097,16 @@ transition_dynamics (TransitionDynamics): how the change should be made
 </dd>
 <dt id="pyoscx.actions.AbsoluteSynchronizeAction"><code class="flex name class">
 <span>class <span class="ident">AbsoluteSynchronizeAction</span></span>
-<span>(</span><span>entity, entity_position, target_position, speed, target_tolerance_master=None, target_tolerance=None)</span>
+<span>(</span><span>entity, entity_PositionType, target_PositionType, speed, target_tolerance_master=None, target_tolerance=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>creates a SynchronizeAction with an absolute speed as target speed</p>
 <h2 id="parameters">Parameters</h2>
 <pre><code>entity (str): entity to syncronize with
 
-entity_position (*Position): the position of the entity to syncronize to
+entity_PositionType (*Position): the position of the entity to syncronize to
 
-target_position (*Position): the position of the target that should syncronize
+target_PositionType (*Position): the position of the target that should syncronize
 
 speed (double): the absolute speed of the target that should syncronize
 
@@ -2989,9 +3117,9 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
 <h2 id="attributes">Attributes</h2>
 <pre><code>entity (str): entity to syncronize with
 
-entity_position (*Position): the position of the entity to syncronize to
+entity_PositionType (*Position): the position of the entity to syncronize to
 
-target_position (*Position): the position of the target that should syncronize
+target_PositionType (*Position): the position of the target that should syncronize
 
 speed (double): the absolute speed of the target that should syncronize
 
@@ -3010,9 +3138,9 @@ get_attributes()
 <h2 id="parameters_1">Parameters</h2>
 <pre><code>entity (str): entity to syncronize with
 
-entity_position (*Position): the position of the entity to syncronize to
+entity_PositionType (*Position): the position of the entity to syncronize to
 
-target_position (*Position): the position of the target that should syncronize
+target_PositionType (*Position): the position of the target that should syncronize
 
 speed (double): the absolute speed of the target that should syncronize
 
@@ -3024,16 +3152,16 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class AbsoluteSynchronizeAction():
+<pre><code class="python">class AbsoluteSynchronizeAction(_PrivateActionType):
     &#34;&#34;&#34; creates a SynchronizeAction with an absolute speed as target speed
         
         Parameters
         ----------
             entity (str): entity to syncronize with
 
-            entity_position (*Position): the position of the entity to syncronize to
+            entity_PositionType (*Position): the position of the entity to syncronize to
 
-            target_position (*Position): the position of the target that should syncronize
+            target_PositionType (*Position): the position of the target that should syncronize
 
             speed (double): the absolute speed of the target that should syncronize
 
@@ -3045,9 +3173,9 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
         ----------
             entity (str): entity to syncronize with
 
-            entity_position (*Position): the position of the entity to syncronize to
+            entity_PositionType (*Position): the position of the entity to syncronize to
 
-            target_position (*Position): the position of the target that should syncronize
+            target_PositionType (*Position): the position of the target that should syncronize
 
             speed (double): the absolute speed of the target that should syncronize
 
@@ -3064,16 +3192,16 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
                 Returns the the attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,entity,entity_position,target_position,speed,target_tolerance_master=None,target_tolerance=None):
+    def __init__(self,entity,entity_PositionType,target_PositionType,speed,target_tolerance_master=None,target_tolerance=None):
         &#34;&#34;&#34; initalize the AbsoluteSynchronizeAction
 
             Parameters
             ----------
                 entity (str): entity to syncronize with
 
-                entity_position (*Position): the position of the entity to syncronize to
+                entity_PositionType (*Position): the position of the entity to syncronize to
 
-                target_position (*Position): the position of the target that should syncronize
+                target_PositionType (*Position): the position of the target that should syncronize
 
                 speed (double): the absolute speed of the target that should syncronize
 
@@ -3083,8 +3211,13 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
         &#34;&#34;&#34;
 
         self.entity = entity
-        self.entity_position = entity_position
-        self.target_position = target_position
+        if not isinstance(entity_PositionType,_PositionType):
+            raise TypeError(&#39;entity_PositionType input is not a valid Position&#39;)
+        
+        if not isinstance(target_PositionType,_PositionType):
+            raise TypeError(&#39;target_PositionType input is not a valid Position&#39;)
+        self.entity_PositionType = entity_PositionType
+        self.target_PositionType = target_PositionType
         self.speed = speed
         self.target_tolerance_master = target_tolerance_master
         self.target_tolerance = target_tolerance
@@ -3106,13 +3239,18 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
         syncaction = ET.SubElement(element,&#39;SynchronizeAction&#39;,self.get_attributes())
-        syncaction.append(self.entity_position.get_element(&#39;TargetPositionMaster&#39;))
-        syncaction.append(self.target_position.get_element(&#39;TargetPosition&#39;))
+        syncaction.append(self.entity_PositionType.get_element(&#39;TargetPositionMaster&#39;))
+        syncaction.append(self.target_PositionType.get_element(&#39;TargetPosition&#39;))
         finalspeed = ET.SubElement(syncaction,&#39;FinalSpeed&#39;)
         ET.SubElement(finalspeed,&#39;AbsoluteSpeed&#39;,attrib={&#39;value&#39;:str(self.speed)})
         
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.AbsoluteSynchronizeAction.get_attributes"><code class="name flex">
@@ -3151,8 +3289,8 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
     &#34;&#34;&#34;
     element = ET.Element(&#39;PrivateAction&#39;)
     syncaction = ET.SubElement(element,&#39;SynchronizeAction&#39;,self.get_attributes())
-    syncaction.append(self.entity_position.get_element(&#39;TargetPositionMaster&#39;))
-    syncaction.append(self.target_position.get_element(&#39;TargetPosition&#39;))
+    syncaction.append(self.entity_PositionType.get_element(&#39;TargetPositionMaster&#39;))
+    syncaction.append(self.target_PositionType.get_element(&#39;TargetPosition&#39;))
     finalspeed = ET.SubElement(syncaction,&#39;FinalSpeed&#39;)
     ET.SubElement(finalspeed,&#39;AbsoluteSpeed&#39;,attrib={&#39;value&#39;:str(self.speed)})
     
@@ -3185,7 +3323,7 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class AcquirePositionAction():
+<pre><code class="python">class AcquirePositionAction(_PrivateActionType):
     &#34;&#34;&#34; AcquirePositionAction creates a RouteAction of type AcquirePositionAction
         
         Parameters
@@ -3210,6 +3348,9 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
                 position (*Position): target position
 
         &#34;&#34;&#34;
+        if not isinstance(position,_PositionType):
+            raise TypeError(&#39;position input not a valid Position type&#39;)        
+
         self.position = position
 
     def get_element(self):
@@ -3223,6 +3364,11 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
 
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.AcquirePositionAction.get_element"><code class="name flex">
@@ -3281,7 +3427,7 @@ longitudinal (boolean): activate or deactivate the controller
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ActivateControllerAction():
+<pre><code class="python">class ActivateControllerAction(_PrivateActionType):
     &#34;&#34;&#34; ActivateControllerAction creates a ActivateControllerAction of open scenario
         
         Parameters
@@ -3315,6 +3461,10 @@ longitudinal (boolean): activate or deactivate the controller
                 longitudinal (boolean): activate or deactivate the controller
 
         &#34;&#34;&#34;
+        if not isinstance(lateral,bool):
+            raise TypeError(&#39;lateral input is not of type bool&#39;) 
+        if not isinstance(longitudinal,bool):
+            raise TypeError(&#39;longitudinal input is not of type bool&#39;) 
         self.lateral = lateral
         self.longitudinal = longitudinal
 
@@ -3329,10 +3479,15 @@ longitudinal (boolean): activate or deactivate the controller
 
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
-        routeaction = ET.SubElement(element,&#39;ActivateControllerAction&#39;,attrib=self.get_attributes())
+        ET.SubElement(element,&#39;ActivateControllerAction&#39;,attrib=self.get_attributes())
 
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.ActivateControllerAction.get_attributes"><code class="name flex">
@@ -3365,7 +3520,7 @@ longitudinal (boolean): activate or deactivate the controller
 
     &#34;&#34;&#34;
     element = ET.Element(&#39;PrivateAction&#39;)
-    routeaction = ET.SubElement(element,&#39;ActivateControllerAction&#39;,attrib=self.get_attributes())
+    ET.SubElement(element,&#39;ActivateControllerAction&#39;,attrib=self.get_attributes())
 
     return element</code></pre>
 </details>
@@ -3405,7 +3560,7 @@ position (*Position): position where the vehicle should be added
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class AddEntityAction():
+<pre><code class="python">class AddEntityAction(_ActionType):
     &#34;&#34;&#34; The AddEntityAction class creates a EntityAction which adds a entity to the scenario
         
         Parameters
@@ -3462,6 +3617,10 @@ position (*Position): position where the vehicle should be added
         
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.AddEntityAction.get_attributes"><code class="name flex">
@@ -3528,7 +3687,7 @@ position (*Position): position where the vehicle should be added
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class AssignControllerAction():
+<pre><code class="python">class AssignControllerAction(_PrivateActionType):
     &#34;&#34;&#34; AssignControllerAction creates a ControllerAction of type AssignControllerAction
         
         Parameters
@@ -3553,6 +3712,8 @@ position (*Position): position where the vehicle should be added
                 controller (Controller or Catalogreference): a controller to assign
 
         &#34;&#34;&#34;
+        if not ( isinstance(controller,Controller) or isinstance(controller,CatalogReference)):
+            raise TypeError(&#39;route input not of type Route or CatalogReference&#39;) 
         self.controller = controller
 
     def get_element(self):
@@ -3565,6 +3726,11 @@ position (*Position): position where the vehicle should be added
 
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.AssignControllerAction.get_element"><code class="name flex">
@@ -3613,7 +3779,7 @@ position (*Position): position where the vehicle should be added
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class AssingRouteAction():
+<pre><code class="python">class AssingRouteAction(_PrivateActionType):
     &#34;&#34;&#34; AssingRouteAction creates a RouteAction of type AssingRouteAction
 
         Parameters
@@ -3639,6 +3805,9 @@ position (*Position): position where the vehicle should be added
                 route (Route, or CatalogReference): the route to follow
 
         &#34;&#34;&#34;
+        if not ( isinstance(route,Route) or isinstance(route,CatalogReference)):
+            raise TypeError(&#39;route input not of type Route or CatalogReference&#39;) 
+
         self.route = route
 
     def get_element(self):
@@ -3652,6 +3821,11 @@ position (*Position): position where the vehicle should be added
 
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.AssingRouteAction.get_element"><code class="name flex">
@@ -3700,7 +3874,7 @@ get_element()
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class CustomCommandAction():
+<pre><code class="python">class CustomCommandAction(_ActionType):
     &#34;&#34;&#34; The CustomCommandAction creates a simulator defined action, can add any number of xml.etree.ElementTree to an Action
 
         NOTE: this is a very crude implementation, and the element has to be created by the user.
@@ -3750,6 +3924,10 @@ get_element()
 
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.CustomCommandAction.add_element"><code class="name flex">
@@ -3823,7 +4001,7 @@ get_attributes()
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class DeleteEntityAction():
+<pre><code class="python">class DeleteEntityAction(_ActionType):
     &#34;&#34;&#34; The DeleteEntityAction class creates a EntityAction which removes a entity to the scenario
         
         Parameters
@@ -3874,6 +4052,10 @@ get_attributes()
         
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.DeleteEntityAction.get_attributes"><code class="name flex">
@@ -3949,7 +4131,7 @@ environment (Environment or CatalogReference): the environment to change to
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class EnvironmentAction():
+<pre><code class="python">class EnvironmentAction(_ActionType):
     &#34;&#34;&#34; The EnvironmentAction class creates a GlobalAction of the typ EnvironmentAction
         
         Parameters
@@ -3984,6 +4166,8 @@ environment (Environment or CatalogReference): the environment to change to
 
         &#34;&#34;&#34;
         self.name = name
+        if not ( isinstance(environment,Environment) or isinstance(environment,CatalogReference)):
+            raise TypeError(&#39;route input not of type Route or CatalogReference&#39;) 
         self.environment = environment
 
 
@@ -4005,6 +4189,10 @@ environment (Environment or CatalogReference): the environment to change to
         
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.EnvironmentAction.get_attributes"><code class="name flex">
@@ -4049,7 +4237,7 @@ environment (Environment or CatalogReference): the environment to change to
 </dd>
 <dt id="pyoscx.actions.FollowTrajectoryAction"><code class="flex name class">
 <span>class <span class="ident">FollowTrajectoryAction</span></span>
-<span>(</span><span>trajectory, following_mode, referece_domain=None, scale=None, offset=None)</span>
+<span>(</span><span>trajectory, following_mode, reference_domain=None, scale=None, offset=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>FollowTrajectoryAction creates a RouteAction of type FollowTrajectoryAction</p>
@@ -4058,11 +4246,11 @@ environment (Environment or CatalogReference): the environment to change to
 
 following_mode (FollowMode): the following mode of the action
 
-referece_domain (ReferenceContext): how to follow
+reference_domain (ReferenceContext): how to follow
     Default: None
-scale (double): scalefactor of the timeings (must be combined with referece_domain and offset)
+scale (double): scalefactor of the timeings (must be combined with reference_domain and offset)
     Default: None
-offset (double): offset for time values (must be combined with referece_domain and scale)
+offset (double): offset for time values (must be combined with reference_domain and scale)
     Default: None
 </code></pre>
 <h2 id="attributes">Attributes</h2>
@@ -4082,18 +4270,18 @@ timeref (TimeReference): the time reference of the trajectory
 
 following_mode (FollowMode): the following mode of the action
 
-referece_domain (str): absolute or relative time reference (must be combined with scale and offset)
+reference_domain (str): absolute or relative time reference (must be combined with scale and offset)
     Default: None
-scale (double): scalefactor of the timeings (must be combined with referece_domain and offset)
+scale (double): scalefactor of the timings (must be combined with reference_domain and offset)
     Default: None
-offset (double): offset for time values (must be combined with referece_domain and scale)
+offset (double): offset for time values (must be combined with reference_domain and scale)
     Default: None
 </code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class FollowTrajectoryAction():
+<pre><code class="python">class FollowTrajectoryAction(_PrivateActionType):
     &#34;&#34;&#34; FollowTrajectoryAction creates a RouteAction of type FollowTrajectoryAction
 
         Parameters
@@ -4102,11 +4290,11 @@ offset (double): offset for time values (must be combined with referece_domain a
 
             following_mode (FollowMode): the following mode of the action
 
-            referece_domain (ReferenceContext): how to follow
+            reference_domain (ReferenceContext): how to follow
                 Default: None
-            scale (double): scalefactor of the timeings (must be combined with referece_domain and offset)
+            scale (double): scalefactor of the timeings (must be combined with reference_domain and offset)
                 Default: None
-            offset (double): offset for time values (must be combined with referece_domain and scale)
+            offset (double): offset for time values (must be combined with reference_domain and scale)
                 Default: None
 
         Attributes
@@ -4123,7 +4311,7 @@ offset (double): offset for time values (must be combined with referece_domain a
                 Returns the full ElementTree of the class
 
     &#34;&#34;&#34;
-    def __init__(self,trajectory,following_mode,referece_domain=None,scale=None,offset=None):
+    def __init__(self,trajectory,following_mode,reference_domain=None,scale=None,offset=None):
         &#34;&#34;&#34; initalize the FollowTrajectoryAction 
 
             Parameters
@@ -4132,19 +4320,21 @@ offset (double): offset for time values (must be combined with referece_domain a
 
                 following_mode (FollowMode): the following mode of the action
 
-                referece_domain (str): absolute or relative time reference (must be combined with scale and offset)
+                reference_domain (str): absolute or relative time reference (must be combined with scale and offset)
                     Default: None
-                scale (double): scalefactor of the timeings (must be combined with referece_domain and offset)
+                scale (double): scalefactor of the timings (must be combined with reference_domain and offset)
                     Default: None
-                offset (double): offset for time values (must be combined with referece_domain and scale)
+                offset (double): offset for time values (must be combined with reference_domain and scale)
                     Default: None
         &#34;&#34;&#34;
         # if following_mode not in FollowMode:
         #     ValueError(str(following_mode) + &#39; is not a valied following mode.&#39;)
+        if not ( isinstance(trajectory,Trajectory) or isinstance(trajectory,CatalogReference)):
+            raise TypeError(&#39;route input not of type Route or CatalogReference&#39;) 
         self.trajectory = trajectory
         self.following_mode = following_mode
-
-        self.timeref = TimeReference(referece_domain,scale,offset)
+        # TODO: check reference_domain
+        self.timeref = TimeReference(reference_domain,scale,offset)
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the AssingRouteAction
@@ -4159,6 +4349,11 @@ offset (double): offset for time values (must be combined with referece_domain a
 
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.FollowTrajectoryAction.get_element"><code class="name flex">
@@ -4258,7 +4453,7 @@ max_speed (float): maximum speed allowed
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class LateralDistanceAction():
+<pre><code class="python">class LateralDistanceAction(_PrivateActionType):
     &#34;&#34;&#34; 
         
         Parameters
@@ -4334,6 +4529,12 @@ max_speed (float): maximum speed allowed
         &#34;&#34;&#34;
         self.distance = distance
         self.target = entity
+        if not isinstance(continious,bool):
+            raise TypeError(&#39;continious input not of type bool&#39;)
+
+        if not isinstance(freespace,bool):
+            raise TypeError(&#39;freespace input not of type bool&#39;)
+        
         self.freespace = freespace
         self.continious = continious
         self.dynamic_constraint = DynamicsConstrains(max_acceleration,max_deceleration,max_speed)
@@ -4362,6 +4563,11 @@ max_speed (float): maximum speed allowed
 
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.LateralDistanceAction.get_attributes"><code class="name flex">
@@ -4479,7 +4685,7 @@ max_speed (float): maximum speed allowed
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class LongitudinalDistanceAction():
+<pre><code class="python">class LongitudinalDistanceAction(_PrivateActionType):
     &#34;&#34;&#34; The LongitudinalDistanceAction creates a LongitudinalAction of type LongitudinalDistanceAction with a distance target
         
         Parameters
@@ -4550,6 +4756,13 @@ max_speed (float): maximum speed allowed
 
         &#34;&#34;&#34;
         self.target = entity
+        if not isinstance(continious,bool):
+            raise TypeError(&#39;continious input not of type bool&#39;)
+        
+        if not isinstance(freespace,bool):
+            raise TypeError(&#39;freespace input not of type bool&#39;)
+
+
         self.freespace = freespace
         self.continious = continious
         self.dynamic_constraint = DynamicsConstrains(max_acceleration,max_deceleration,max_speed)
@@ -4579,6 +4792,11 @@ max_speed (float): maximum speed allowed
             longdistaction.append(self.dynamic_constraint.get_element())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.LongitudinalDistanceAction.get_attributes"><code class="name flex">
@@ -4695,7 +4913,7 @@ max_speed (float): maximum speed allowed
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class LongitudinalTimegapAction():
+<pre><code class="python">class LongitudinalTimegapAction(_PrivateActionType):
     &#34;&#34;&#34; The LongitudinalTimegapAction creates a LongitudinalAction of type LongitudinalDistanceAction with the timegap option
         
         Parameters
@@ -4766,6 +4984,14 @@ max_speed (float): maximum speed allowed
 
         &#34;&#34;&#34;
         self.target = entity
+        if not isinstance(continious,bool):
+            raise TypeError(&#39;continious input not of type bool&#39;)
+
+
+        if not isinstance(freespace,bool):
+            raise TypeError(&#39;freespace input not of type bool&#39;)
+
+
         self.freespace = freespace
         self.continious = continious
         self.timegap = timegap
@@ -4796,6 +5022,11 @@ max_speed (float): maximum speed allowed
             longdistaction.append(self.dynamic_constraint.get_element())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.LongitudinalTimegapAction.get_attributes"><code class="name flex">
@@ -4876,7 +5107,7 @@ active (boolean): overide (True) or stop override (False)
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class OverrideBrakeAction():
+<pre><code class="python">class OverrideBrakeAction(_PrivateActionType):
     &#34;&#34;&#34; OverrideBrakeAction creates a ControllerAction of type OverrideControllerValueAction and OverrideBrakeAction 
         
         Parameters
@@ -4911,6 +5142,8 @@ active (boolean): overide (True) or stop override (False)
 
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(activate,bool):
+            raise TypeError(&#39;activate input is not of type bool&#39;)
         self.activate = activate
 
     def get_attributes(self):
@@ -4929,6 +5162,11 @@ active (boolean): overide (True) or stop override (False)
         ET.SubElement(overrideaction,&#39;OverrideBrakeAction&#39;,self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.OverrideBrakeAction.get_attributes"><code class="name flex">
@@ -5002,7 +5240,7 @@ active (boolean): overide (True) or stop override (False)
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class OverrideClutchAction():
+<pre><code class="python">class OverrideClutchAction(_PrivateActionType):
     &#34;&#34;&#34; OverrideClutchAction creates a ControllerAction of type OverrideControllerValueAction and OverrideClutchAction
         
         Parameters
@@ -5037,6 +5275,8 @@ active (boolean): overide (True) or stop override (False)
 
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(activate,bool):
+            raise TypeError(&#39;activate input is not of type bool&#39;)
         self.activate = activate
 
     def get_attributes(self):
@@ -5055,6 +5295,11 @@ active (boolean): overide (True) or stop override (False)
         ET.SubElement(overrideaction,&#39;OverrideClutchAction&#39;,self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.OverrideClutchAction.get_attributes"><code class="name flex">
@@ -5128,7 +5373,7 @@ active (boolean): overide (True) or stop override (False)
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class OverrideGearAction():
+<pre><code class="python">class OverrideGearAction(_PrivateActionType):
     &#34;&#34;&#34; OverrideGearAction creates a ControllerAction of type OverrideControllerValueAction and OverrideGearAction 
         
         Parameters
@@ -5163,6 +5408,8 @@ active (boolean): overide (True) or stop override (False)
 
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(activate,bool):
+            raise TypeError(&#39;activate input is not of type bool&#39;)
         self.activate = activate
 
     def get_attributes(self):
@@ -5181,6 +5428,11 @@ active (boolean): overide (True) or stop override (False)
         ET.SubElement(overrideaction,&#39;OverrideGearAction&#39;,self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.OverrideGearAction.get_attributes"><code class="name flex">
@@ -5254,7 +5506,7 @@ active (boolean): overide (True) or stop override (False)
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class OverrideParkingBrakeAction():
+<pre><code class="python">class OverrideParkingBrakeAction(_PrivateActionType):
     &#34;&#34;&#34; OverrideParkingBrakeAction creates a ControllerAction of type OverrideControllerValueAction and OverrideParkingBrakeAction 
         
         Parameters
@@ -5289,6 +5541,8 @@ active (boolean): overide (True) or stop override (False)
 
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(activate,bool):
+            raise TypeError(&#39;activate input is not of type bool&#39;)
         self.activate = activate
 
     def get_attributes(self):
@@ -5307,6 +5561,11 @@ active (boolean): overide (True) or stop override (False)
         ET.SubElement(overrideaction,&#39;OverrideParkingBrakeAction&#39;,self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.OverrideParkingBrakeAction.get_attributes"><code class="name flex">
@@ -5380,7 +5639,7 @@ active (boolean): overide (True) or stop override (False)
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class OverrideSteeringWheelAction():
+<pre><code class="python">class OverrideSteeringWheelAction(_PrivateActionType):
     &#34;&#34;&#34; OverrideSteeringWheelAction creates a ControllerAction of type OverrideControllerValueAction and OverrideSteeringWheelAction 
         
         Parameters
@@ -5415,6 +5674,8 @@ active (boolean): overide (True) or stop override (False)
 
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(activate,bool):
+            raise TypeError(&#39;activate input is not of type bool&#39;)
         self.activate = activate
 
     def get_attributes(self):
@@ -5433,6 +5694,11 @@ active (boolean): overide (True) or stop override (False)
         ET.SubElement(overrideaction,&#39;OverrideSteeringWheelAction&#39;,self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.OverrideSteeringWheelAction.get_attributes"><code class="name flex">
@@ -5506,7 +5772,7 @@ active (boolean): overide (True) or stop override (False)
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class OverrideThrottleAction():
+<pre><code class="python">class OverrideThrottleAction(_PrivateActionType):
     &#34;&#34;&#34; OverrideThrottleAction creates a ControllerAction of type OverrideControllerValueAction and OverrideThrottleAction 
         
         Parameters
@@ -5541,6 +5807,8 @@ active (boolean): overide (True) or stop override (False)
 
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(activate,bool):
+            raise TypeError(&#39;activate input is not of type bool&#39;)
         self.activate = activate
 
     def get_attributes(self):
@@ -5559,6 +5827,11 @@ active (boolean): overide (True) or stop override (False)
         ET.SubElement(overrideaction,&#39;OverrideThrottleAction&#39;,self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.OverrideThrottleAction.get_attributes"><code class="name flex">
@@ -5632,7 +5905,7 @@ value (double): the value that should be added to the parameter
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ParameterAddAction():
+<pre><code class="python">class ParameterAddAction(_ActionType):
     &#34;&#34;&#34; The ParameterAddAction class creates a ParameterAction of type ParameterModifyAction which adds a value to an existing Parameter
         
         Parameters
@@ -5688,6 +5961,10 @@ value (double): the value that should be added to the parameter
         
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.ParameterAddAction.get_attributes"><code class="name flex">
@@ -5764,7 +6041,7 @@ value (double): the value that should be added to the parameter
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ParameterMultiplyAction():
+<pre><code class="python">class ParameterMultiplyAction(_ActionType):
     &#34;&#34;&#34; The ParameterMultiplyAction class creates a ParameterAction of tyoe ParameterModifyAction which adds a value to an existing Parameter
         
         Parameters
@@ -5819,6 +6096,10 @@ value (double): the value that should be added to the parameter
 
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.ParameterMultiplyAction.get_attributes"><code class="name flex">
@@ -5894,7 +6175,7 @@ value (double): the value that should be added to the parameter
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ParameterSetAction():
+<pre><code class="python">class ParameterSetAction(_ActionType):
     &#34;&#34;&#34; The ParameterSetAction class creates a ParameterAction which adds a value to an existing Parameter
         
         Parameters
@@ -5947,6 +6228,10 @@ value (double): the value that should be added to the parameter
         
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.ParameterSetAction.get_attributes"><code class="name flex">
@@ -6034,7 +6319,7 @@ target_lane_offset (float): if a offset in the target lane is wanted
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RelativeLaneChangeAction():
+<pre><code class="python">class RelativeLaneChangeAction(_PrivateActionType):
     &#34;&#34;&#34; the RelativeLaneChangeAction creates a LateralAction of type LaneChangeAction with a relative target
         
         Parameters
@@ -6086,6 +6371,8 @@ target_lane_offset (float): if a offset in the target lane is wanted
         self.lane = lane
         self.target = entity
         self.target_lane_offset = target_lane_offset
+        if not isinstance(transition_dynamics,TransitionDynamics):
+            raise TypeError(&#39;transition_dynamics input not of type TransitionDynamics&#39;)
         self.transition_dynamics = transition_dynamics
 
 
@@ -6115,6 +6402,11 @@ target_lane_offset (float): if a offset in the target lane is wanted
         ET.SubElement(lanchangetarget,&#39;RelativeTargetLane&#39;,self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.RelativeLaneChangeAction.get_attributes"><code class="name flex">
@@ -6218,7 +6510,7 @@ continious (bool): if the controller tries to keep the relative speed
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RelativeLaneOffsetAction():
+<pre><code class="python">class RelativeLaneOffsetAction(_PrivateActionType):
     &#34;&#34;&#34; the RelativeLaneOffsetAction class creates a LateralAction of type LaneOffsetAction with a relative target
         
         Parameters
@@ -6271,6 +6563,9 @@ continious (bool): if the controller tries to keep the relative speed
                 continious (bool): if the controller tries to keep the relative speed 
                     Default: True
         &#34;&#34;&#34;
+        if not isinstance(continious,bool):
+            raise TypeError(&#39;continious input not of type bool&#39;)
+        
         self.continious = continious
         self.value = value
         self.target = entity
@@ -6301,6 +6596,11 @@ continious (bool): if the controller tries to keep the relative speed
 
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.RelativeLaneOffsetAction.get_attributes"><code class="name flex">
@@ -6354,11 +6654,11 @@ continious (bool): if the controller tries to keep the relative speed
 <dd>
 <div class="desc"><p>The RelativeSpeedAction creates a LongitudinalAction of type SpeedAction with a relative target</p>
 <h2 id="parameters">Parameters</h2>
-<pre><code>transition_dynamics (TransitionDynamics): how the change should be made
-
-speed (float): the speed wanted
+<pre><code>speed (float): the speed wanted
 
 target (str): the name of the relative target (used for relative speed)
+
+transition_dynamics (TransitionDynamics): how the change should be made
 
 valuetype (str): the type of relative speed wanted (used for relative speed)
 
@@ -6398,16 +6698,16 @@ continious (bool): if the controller tries to keep the relative speed
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RelativeSpeedAction():
+<pre><code class="python">class RelativeSpeedAction(_PrivateActionType):
     &#34;&#34;&#34; The RelativeSpeedAction creates a LongitudinalAction of type SpeedAction with a relative target
         
         Parameters
         ----------
-            transition_dynamics (TransitionDynamics): how the change should be made
-
             speed (float): the speed wanted
 
             target (str): the name of the relative target (used for relative speed)
+
+            transition_dynamics (TransitionDynamics): how the change should be made
 
             valuetype (str): the type of relative speed wanted (used for relative speed)
 
@@ -6453,8 +6753,13 @@ continious (bool): if the controller tries to keep the relative speed
         self.speed = speed
         self.target = entity
         self.valuetype = valuetype
-        self.continious = continious
+        if not isinstance(continious,bool):
+            raise TypeError(&#39;continious input not of type bool&#39;)
+        
+        if not isinstance(transition_dynamics,TransitionDynamics):
+            raise TypeError(&#39;transition_dynamics input not of type TransitionDynamics&#39;)
         self.transition_dynamics = transition_dynamics
+        self.continious = continious
 
     
     def get_attributes(self):
@@ -6477,6 +6782,11 @@ continious (bool): if the controller tries to keep the relative speed
         
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.RelativeSpeedAction.get_attributes"><code class="name flex">
@@ -6523,16 +6833,16 @@ continious (bool): if the controller tries to keep the relative speed
 </dd>
 <dt id="pyoscx.actions.RelativeSynchronizeAction"><code class="flex name class">
 <span>class <span class="ident">RelativeSynchronizeAction</span></span>
-<span>(</span><span>entity, entity_position, target_position, speed, speed_target_type, target_tolerance_master=None, target_tolerance=None)</span>
+<span>(</span><span>entity, entity_PositionType, target_PositionType, speed, speed_target_type, target_tolerance_master=None, target_tolerance=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>creates a SynchronizeAction with a relative speed target</p>
 <h2 id="parameters">Parameters</h2>
 <pre><code>entity (str): entity to syncronize with
 
-entity_position (*Position): the position of the entity to syncronize to
+entity_PositionType (*Position): the position of the entity to syncronize to
 
-target_position (*Position): the position of the target that should syncronize
+target_PositionType (*Position): the position of the target that should syncronize
 
 speed (double): the relative speed of the target that should syncronize
 
@@ -6545,9 +6855,9 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
 <h2 id="attributes">Attributes</h2>
 <pre><code>entity (str): entity to syncronize with
 
-entity_position (*Position): the position of the entity to syncronize to
+entity_PositionType (*Position): the position of the entity to syncronize to
 
-target_position (*Position): the position of the target that should syncronize
+target_PositionType (*Position): the position of the target that should syncronize
 
 speed (double): the relative speed of the target that should syncronize
 
@@ -6568,9 +6878,9 @@ get_attributes()
 <h2 id="parameters_1">Parameters</h2>
 <pre><code>entity (str): entity to syncronize with
 
-entity_position (*Position): the position of the entity to syncronize to
+entity_PositionType (*Position): the position of the entity to syncronize to
 
-target_position (*Position): the position of the target that should syncronize
+target_PositionType (*Position): the position of the target that should syncronize
 
 speed (double): the absolute speed of the target that should syncronize
 
@@ -6584,16 +6894,16 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RelativeSynchronizeAction():
+<pre><code class="python">class RelativeSynchronizeAction(_PrivateActionType):
     &#34;&#34;&#34; creates a SynchronizeAction with a relative speed target
         
         Parameters
         ----------
             entity (str): entity to syncronize with
 
-            entity_position (*Position): the position of the entity to syncronize to
+            entity_PositionType (*Position): the position of the entity to syncronize to
 
-            target_position (*Position): the position of the target that should syncronize
+            target_PositionType (*Position): the position of the target that should syncronize
 
             speed (double): the relative speed of the target that should syncronize
 
@@ -6607,9 +6917,9 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
         ----------
             entity (str): entity to syncronize with
 
-            entity_position (*Position): the position of the entity to syncronize to
+            entity_PositionType (*Position): the position of the entity to syncronize to
 
-            target_position (*Position): the position of the target that should syncronize
+            target_PositionType (*Position): the position of the target that should syncronize
 
             speed (double): the relative speed of the target that should syncronize
 
@@ -6628,16 +6938,16 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
                 Returns the the attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,entity,entity_position,target_position,speed,speed_target_type,target_tolerance_master=None,target_tolerance=None):
+    def __init__(self,entity,entity_PositionType,target_PositionType,speed,speed_target_type,target_tolerance_master=None,target_tolerance=None):
         &#34;&#34;&#34; initalize the RelativeSynchronizeAction
     
             Parameters
             ----------
                 entity (str): entity to syncronize with
 
-                entity_position (*Position): the position of the entity to syncronize to
+                entity_PositionType (*Position): the position of the entity to syncronize to
 
-                target_position (*Position): the position of the target that should syncronize
+                target_PositionType (*Position): the position of the target that should syncronize
 
                 speed (double): the absolute speed of the target that should syncronize
 
@@ -6649,8 +6959,13 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
         &#34;&#34;&#34;
 
         self.entity = entity
-        self.entity_position = entity_position
-        self.target_position = target_position
+        if not isinstance(entity_PositionType,_PositionType):
+            raise TypeError(&#39;entity_PositionType input is not a valid Position&#39;)
+        
+        if not isinstance(target_PositionType,_PositionType):
+            raise TypeError(&#39;target_PositionType input is not a valid Position&#39;)
+        self.entity_PositionType = entity_PositionType
+        self.target_PositionType = target_PositionType
         self.speed = speed
         # if speed_target_type not in SpeedTargetValueType:
             # ValueError(speed_target_type + &#39; is not a valid speed_target_type&#39;)
@@ -6675,13 +6990,18 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
         syncaction = ET.SubElement(element,&#39;SynchronizeAction&#39;,self.get_attributes())
-        syncaction.append(self.entity_position.get_element(&#39;TargetPositionMaster&#39;))
-        syncaction.append(self.target_position.get_element(&#39;TargetPosition&#39;))
+        syncaction.append(self.entity_PositionType.get_element(&#39;TargetPositionMaster&#39;))
+        syncaction.append(self.target_PositionType.get_element(&#39;TargetPosition&#39;))
         finalspeed = ET.SubElement(syncaction,&#39;FinalSpeed&#39;)
         ET.SubElement(finalspeed,&#39;RelativeSpeedToMaster&#39;,attrib={&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.speed_target_type})
         
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.RelativeSynchronizeAction.get_attributes"><code class="name flex">
@@ -6720,8 +7040,8 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
     &#34;&#34;&#34;
     element = ET.Element(&#39;PrivateAction&#39;)
     syncaction = ET.SubElement(element,&#39;SynchronizeAction&#39;,self.get_attributes())
-    syncaction.append(self.entity_position.get_element(&#39;TargetPositionMaster&#39;))
-    syncaction.append(self.target_position.get_element(&#39;TargetPosition&#39;))
+    syncaction.append(self.entity_PositionType.get_element(&#39;TargetPositionMaster&#39;))
+    syncaction.append(self.target_PositionType.get_element(&#39;TargetPosition&#39;))
     finalspeed = ET.SubElement(syncaction,&#39;FinalSpeed&#39;)
     ET.SubElement(finalspeed,&#39;RelativeSpeedToMaster&#39;,attrib={&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.speed_target_type})
     
@@ -6754,7 +7074,7 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TeleportAction():
+<pre><code class="python">class TeleportAction(_PrivateActionType):
     &#34;&#34;&#34; the TeleportAction creates the Teleport action of OpenScenario
         
         Parameters
@@ -6780,6 +7100,9 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
             position (*Position): any position object
 
         &#34;&#34;&#34;
+        if not isinstance(position,_PositionType):
+            raise TypeError(&#39;position input not a valid Position type&#39;)        
+
         self.position = position
 
     def get_element(self):
@@ -6791,6 +7114,11 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
         telact.append(self.position.get_element())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.TeleportAction.get_element"><code class="name flex">
@@ -6847,7 +7175,7 @@ state (str): the state to set to the traffic light
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TrafficSignalControllerAction():
+<pre><code class="python">class TrafficSignalControllerAction(_ActionType):
     &#34;&#34;&#34; The TrafficSignalControllerAction class creates a Infrastructure action which activates a controller of a traffic signal
         
         Parameters
@@ -6902,6 +7230,10 @@ state (str): the state to set to the traffic light
         
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.TrafficSignalControllerAction.get_attributes"><code class="name flex">
@@ -6976,7 +7308,7 @@ state (str): the state to set to the traffic light
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TrafficSignalStateAction():
+<pre><code class="python">class TrafficSignalStateAction(_ActionType):
     &#34;&#34;&#34; The TrafficSignalStateAction class creates a Infrastructure action which controls the state of a traffic signal
         
         Parameters
@@ -7031,6 +7363,10 @@ state (str): the state to set to the traffic light
         
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.TrafficSignalStateAction.get_attributes"><code class="name flex">
@@ -7117,7 +7453,7 @@ trafficdefinition (TrafficDefinition): definition of the traffic
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TrafficSinkAction():
+<pre><code class="python">class TrafficSinkAction(_ActionType):
     &#34;&#34;&#34; The TrafficSinkAction class creates a TrafficAction of the typ TrafficSinkAction
         
         Parameters
@@ -7166,6 +7502,11 @@ trafficdefinition (TrafficDefinition): definition of the traffic
         &#34;&#34;&#34;
         self.rate = rate
         self.radius = radius
+        if not isinstance(position,_PositionType):
+            raise TypeError(&#39;position input is not a valid Position&#39;)
+        
+        if not isinstance(trafficdefinition,TrafficDefinition):
+            raise TypeError(&#39;trafficdefinition input is not of type TrafficDefinition&#39;)
         self.position = position
         self.trafficdefinition = trafficdefinition
 
@@ -7192,6 +7533,10 @@ trafficdefinition (TrafficDefinition): definition of the traffic
 
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.TrafficSinkAction.get_attributes"><code class="name flex">
@@ -7292,7 +7637,7 @@ velocity (float): optional starting velocity of the traffic
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TrafficSourceAction():
+<pre><code class="python">class TrafficSourceAction(_ActionType):
     &#34;&#34;&#34; The TrafficSourceAction class creates a TrafficAction of the typ TrafficSourceAction
         
         Parameters
@@ -7351,6 +7696,11 @@ velocity (float): optional starting velocity of the traffic
         &#34;&#34;&#34;
         self.rate = rate
         self.radius = radius
+        if not isinstance(position,_PositionType):
+            raise TypeError(&#39;position input is not a valid Position&#39;)
+        
+        if not isinstance(trafficdefinition,TrafficDefinition):
+            raise TypeError(&#39;trafficdefinition input is not of type TrafficDefinition&#39;)
         self.position = position
         self.trafficdefinition = trafficdefinition
         self.velocity = velocity
@@ -7380,6 +7730,10 @@ velocity (float): optional starting velocity of the traffic
         
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.TrafficSourceAction.get_attributes"><code class="name flex">
@@ -7501,7 +7855,7 @@ velocity (float): optional starting velocity
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TrafficSwarmAction():
+<pre><code class="python">class TrafficSwarmAction(_ActionType):
     &#34;&#34;&#34; The TrafficSwarmAction class creates a TrafficAction of the typ TrafficSwarmAction
         
         Parameters
@@ -7579,6 +7933,8 @@ velocity (float): optional starting velocity
         self.offset = offset
         self.numberofvehicles = numberofvehicles
         self.centralobject = centralobject
+        if not isinstance(trafficdefinition,TrafficDefinition):
+            raise TypeError(&#39;trafficdefinition input is not of type TrafficDefinition&#39;)
         self.trafficdefinition = trafficdefinition
         self.velocity = velocity
 
@@ -7608,6 +7964,10 @@ velocity (float): optional starting velocity
 
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.TrafficSwarmAction.get_attributes"><code class="name flex">
@@ -7694,7 +8054,7 @@ get_attributes()
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class VisibilityAction():
+<pre><code class="python">class VisibilityAction(_PrivateActionType):
     &#34;&#34;&#34; creates a VisibilityAction
         
         Parameters
@@ -7734,6 +8094,12 @@ get_attributes()
             sensors (boolean): visible to sensors or not
 
         &#34;&#34;&#34;
+        if not isinstance(graphics,bool):
+            raise TypeError(&#39;graphics input is not of type bool&#39;)
+        if not isinstance(traffic,bool):
+            raise TypeError(&#39;traffic input is not of type bool&#39;)
+        if not isinstance(sensors,bool):
+            raise TypeError(&#39;sensors input is not of type bool&#39;)
         self.graphics = graphics
         self.traffic = traffic
         self.sensors = sensors
@@ -7752,6 +8118,11 @@ get_attributes()
         ET.SubElement(element,&#39;VisibilityAction&#39;,self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.actions._PrivateActionType</li>
+<li>pyoscx.actions._ActionType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.actions.VisibilityAction.get_attributes"><code class="name flex">

@@ -28,12 +28,14 @@
 </summary>
 <pre><code class="python">import xml.etree.ElementTree as ET
 
-from .utils import EntityRef, convert_bool
-from .enumerations import Rule, ConditionEdge
+from .utils import EntityRef, convert_bool, _PositionType, _ValueTriggerType, _EntityTriggerType, _TriggerType
+from .enumerations import Rule, ConditionEdge, TriggeringEntitiesRule, RelativeDistanceType, StoryboardElementType, StoryboardElementState
 
 
 
-class EmptyTrigger():
+
+
+class EmptyTrigger(_TriggerType):
     &#34;&#34;&#34; EmptyTrigger creates an empty trigger
         
         Parameters
@@ -72,7 +74,7 @@ class EmptyTrigger():
         
 
 
-class Trigger():
+class Trigger(_TriggerType):
     &#34;&#34;&#34; The Trigger class creates a Trigger that can be used if multiple ConditionGroups are wanted
         
         Parameters
@@ -119,6 +121,8 @@ class Trigger():
             conditiongroup (ConditionGroup): a conditiongroup to add to the trigger
          
         &#34;&#34;&#34;
+        if not isinstance(conditiongroup,ConditionGroup):
+            raise TypeError(&#39;conditiongroup input not of type ConditionGroup&#39;)   
         conditiongroup._set_used_by_parent()
         self.conditiongroups.append(conditiongroup)
     
@@ -133,7 +137,7 @@ class Trigger():
             element.append(c.get_element())
         return element
 
-class ConditionGroup():
+class ConditionGroup(_TriggerType):
     &#34;&#34;&#34; The ConditionGroup class creates a Trigger that can be used if multiple Conditions are wanted
         
         Parameters
@@ -175,11 +179,13 @@ class ConditionGroup():
     def add_condition(self,condition):
         &#34;&#34;&#34; Adds a condition (EntityTrigger or ValueTrigger) to the ConditionGroup
 
-        Parameters
-        ----------
-            conditiongroup (EntityTrigger, or ValueTrigger): a condition to add to the ConditionGroup
+            Parameters
+            ----------
+                condition (EntityTrigger, or ValueTrigger): a condition to add to the ConditionGroup
          
         &#34;&#34;&#34;
+        if not ( isinstance(condition,EntityTrigger) or isinstance(condition,ValueTrigger)):
+            raise TypeError(&#39;condition input not of type EntityTrigger or ValueTrigger&#39;)   
         condition._set_used_by_parent()
         self.conditions.append(condition)
         self._used_by_parent = False
@@ -195,7 +201,7 @@ class ConditionGroup():
 
         &#34;&#34;&#34;
         if not self.conditions:
-            ValueError(&#39;No conditions were added to the ConditionGroup&#39;)
+            raise ValueError(&#39;No conditions were added to the ConditionGroup&#39;)
         condgroup = ET.Element(&#39;ConditionGroup&#39;)
 
         for c in self.conditions:
@@ -211,7 +217,7 @@ class ConditionGroup():
 
 
 
-class EntityTrigger():
+class EntityTrigger(_TriggerType):
     &#34;&#34;&#34; the EntityTrigger creates an Trigger containing an EntityTrigger 
         
         Parameters
@@ -226,7 +232,7 @@ class EntityTrigger():
 
             triggeringentity (str): the entity of the trigger
 
-            triggeringrule (str): rule of the trigger
+            triggeringrule (TriggeringEntitiesRule): rule of the trigger
                 Default: &#39;any&#39;
 
             triggeringpoint (str): start or stop 
@@ -252,7 +258,7 @@ class EntityTrigger():
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,name,delay,conditionedge,entitycondition,triggerentity,triggeringrule=&#39;any&#39;,triggeringpoint = &#39;start&#39;):
+    def __init__(self,name,delay,conditionedge,entitycondition,triggerentity,triggeringrule=TriggeringEntitiesRule.any,triggeringpoint = &#39;start&#39;):
         &#34;&#34;&#34; initalize the EntityTrigger
 
         Parameters
@@ -267,7 +273,7 @@ class EntityTrigger():
 
             triggeringentity (str): the entity of the trigger 
 
-            triggeringrule (str): rule of the trigger
+            triggeringrule (TriggeringEntitiesRule): rule of the trigger
                 Default: &#39;any&#39;
 
             triggeringpoint (str): start or stop 
@@ -285,6 +291,8 @@ class EntityTrigger():
         if conditionedge not in ConditionEdge:
             raise ValueError(&#39;not a valid condition edge&#39;)
         self.conditionedge = conditionedge
+        if not isinstance(entitycondition,_EntityTriggerType):
+            raise TypeError(&#39;entitycondition is not a valid EntityCondition&#39;)
         self.entitycondition = entitycondition
         self.triggerentity = TriggeringEntities(triggeringrule)
         self.triggerentity.add_entity(triggerentity)
@@ -333,7 +341,7 @@ class EntityTrigger():
 
 
 
-class ValueTrigger():
+class ValueTrigger(_TriggerType):
     &#34;&#34;&#34; the ValueTrigger creates a Trigger of the type ValueTrigger of openscenario
         
         Parameters
@@ -407,6 +415,8 @@ class ValueTrigger():
         if conditionedge not in ConditionEdge:
             raise ValueError(&#39;not a valid condition edge&#39;)
         self.conditionedge = conditionedge
+        if not isinstance(valuecondition,_ValueTriggerType):
+            raise TypeError(&#39;entitycondition is not a valid EntityCondition&#39;)
         self.valuecondition = valuecondition
         self._used_by_parent = False
 
@@ -444,13 +454,13 @@ class TriggeringEntities():
         
         Parameters
         ----------
-            triggeringrule (str): all or any
+            triggeringrule (TriggeringEntitiesRule): all or any
 
         Attributes
         ----------
             entity (list of EntityRef): refernce to the entity
 
-            triggeringrule (str): all or any
+            triggeringrule (TriggeringEntitiesRule): all or any
 
         Methods
         -------
@@ -469,12 +479,12 @@ class TriggeringEntities():
         
         Parameters
         ----------
-            entity (str): name of the entity
+            entity (TriggeringEntitiesRule): name of the entity
 
             triggeringrule (str): all or any
 
         &#34;&#34;&#34;
-        if triggeringrule not in [&#39;any&#39;,&#39;all&#39;]:
+        if triggeringrule not in TriggeringEntitiesRule:
             raise ValueError(&#39;not a vaild triggering rule&#39;)
         self.entity = [] 
         self.triggeringrule = triggeringrule
@@ -493,7 +503,7 @@ class TriggeringEntities():
         &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;triggeringEntitiesRule&#39;:self.triggeringrule}
+        return {&#39;triggeringEntitiesRule&#39;:self.triggeringrule.name}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the LaneOffsetAction
@@ -511,7 +521,7 @@ class TriggeringEntities():
 
 &#34;&#34;&#34; 
 
-class EndOfRoadCondition():
+class EndOfRoadCondition(_EntityTriggerType):
     &#34;&#34;&#34; the EndOfRoadCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -555,7 +565,7 @@ class EndOfRoadCondition():
         ET.SubElement(element,&#39;EndOfRoadCondition&#39;,attrib=self.get_attributes())
         return element
 
-class CollisionCondition():
+class CollisionCondition(_EntityTriggerType):
     &#34;&#34;&#34; the CollisionCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -598,7 +608,7 @@ class CollisionCondition():
             ET.SubElement(colcond,&#39;ByType&#39;,{&#39;type&#39;:self.entity.name})
         return element
 
-class OffroadCondition():
+class OffroadCondition(_EntityTriggerType):
     &#34;&#34;&#34; the OffroadCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -642,7 +652,7 @@ class OffroadCondition():
         ET.SubElement(element,&#39;OffroadCondition&#39;,attrib=self.get_attributes())
         return element
 
-class TimeHeadwayCondition():
+class TimeHeadwayCondition(_EntityTriggerType):
     &#34;&#34;&#34; the TimeHeadwayCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -700,6 +710,10 @@ class TimeHeadwayCondition():
         &#34;&#34;&#34;
         self.entity = entity
         self.value = value
+        if not isinstance(alongroute,bool):
+            raise TypeError(&#39;alongroute input not of type bool&#39;)
+        if not isinstance(freespace,bool):
+            raise TypeError(&#39;freespace input not of type bool&#39;)
         self.alongroute = alongroute
         self.freespace = freespace
         if rule not in Rule:
@@ -727,7 +741,7 @@ class TimeHeadwayCondition():
         return element
 
 
-class TimeToCollisionCondition():
+class TimeToCollisionCondition(_EntityTriggerType):
     &#34;&#34;&#34; the TimeToCollisionCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -796,6 +810,10 @@ class TimeToCollisionCondition():
         
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(alongroute,bool):
+            raise TypeError(&#39;alongroute input not of type bool&#39;)
+        if not isinstance(freespace,bool):
+            raise TypeError(&#39;freespace input not of type bool&#39;)
         self.freespace = freespace
         self.alongroute = alongroute
         if rule not in Rule:
@@ -808,8 +826,11 @@ class TimeToCollisionCondition():
             self.entity = EntityRef(entity)
             self.use_entity = True
         if position:
+            if not isinstance(position,_PositionType):
+                raise TypeError(&#39;input position is not a valid Position&#39;)
             self.position = position
             self.use_entity = False
+
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the TimeToCollisionCondition as a dict
 
@@ -843,7 +864,7 @@ class TimeToCollisionCondition():
 
 
 
-class AccelerationCondition():
+class AccelerationCondition(_EntityTriggerType):
     &#34;&#34;&#34; the AccelerationCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -895,7 +916,7 @@ class AccelerationCondition():
         ET.SubElement(element,&#39;AccelerationCondition&#39;,attrib=self.get_attributes())
         return element
 
-class StandStillCondition():
+class StandStillCondition(_EntityTriggerType):
     &#34;&#34;&#34; the StandStillCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -938,7 +959,7 @@ class StandStillCondition():
         ET.SubElement(element,&#39;StandStillCondition&#39;,attrib=self.get_attributes())
         return element
 
-class SpeedCondition():
+class SpeedCondition(_EntityTriggerType):
     &#34;&#34;&#34; the SpeedCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -994,7 +1015,7 @@ class SpeedCondition():
         ET.SubElement(element,&#39;SpeedCondition&#39;,attrib=self.get_attributes())
         return element
 
-class RelativeSpeedCondition():
+class RelativeSpeedCondition(_EntityTriggerType):
     &#34;&#34;&#34; the RelativeSpeedCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -1058,7 +1079,7 @@ class RelativeSpeedCondition():
         ET.SubElement(element,&#39;RelativeSpeedCondition&#39;,attrib=self.get_attributes())
         return element
 
-class TraveledDistanceCondition():
+class TraveledDistanceCondition(_EntityTriggerType):
     &#34;&#34;&#34; the TraveledDistanceCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -1102,7 +1123,7 @@ class TraveledDistanceCondition():
         ET.SubElement(element,&#39;TraveledDistanceCondition&#39;,attrib=self.get_attributes())
         return element 
     
-class ReachPositionCondition():
+class ReachPositionCondition(_EntityTriggerType):
     &#34;&#34;&#34; the ReachPositionCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -1136,6 +1157,8 @@ class ReachPositionCondition():
             tolerance (float): tolerance of the position
 
         &#34;&#34;&#34;
+        if not (isinstance(position,_PositionType)):
+            raise TypeError(&#39;position input is not a valid Position&#39;)
         self.position = position
         self.tolerance = tolerance
 
@@ -1155,7 +1178,7 @@ class ReachPositionCondition():
         reachposcond.append(self.position.get_element())
         return element
 
-class DistanceCondition():
+class DistanceCondition(_EntityTriggerType):
     &#34;&#34;&#34; the DistanceCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -1200,6 +1223,8 @@ class DistanceCondition():
         if rule not in Rule:
             raise ValueError(rule + &#39;; is not a valid rule.&#39;)
         self.rule = rule
+        if not (isinstance(position,_PositionType)):
+            raise TypeError(&#39;position input is not a valid Position&#39;)
         self.position = position
 
     def get_attributes(self):
@@ -1222,7 +1247,7 @@ class DistanceCondition():
         distancecond.append(self.position.get_element())
         return element
 
-class RelativeDistanceCondition():
+class RelativeDistanceCondition(_EntityTriggerType):
     &#34;&#34;&#34; the RelativeDistanceCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -1231,9 +1256,9 @@ class RelativeDistanceCondition():
 
             rule (Rule): condition rule of triggering 
 
-            entity (str): name of the entity fore relative distance
-
             dist_type (RelativeDistanceType): type of relative distance
+
+            entity (str): name of the entity fore relative distance     
 
             alongroute (bool): if the route should count
                 Default: True
@@ -1273,9 +1298,9 @@ class RelativeDistanceCondition():
 
             rule (Rule): condition rule of triggering 
 
-            entity (str): name of the entity fore relative distance
-
             dist_type (RelativeDistanceType): type of relative distance
+
+            entity (str): name of the entity fore relative distance           
 
             alongroute (bool): if the route should count
                 Default: True
@@ -1285,8 +1310,14 @@ class RelativeDistanceCondition():
 
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(alongroute,bool):
+            raise TypeError(&#39;alongroute input not of type bool&#39;)
+        if not isinstance(freespace,bool):
+            raise TypeError(&#39;freespace input not of type bool&#39;)
         self.alongroute = alongroute
         self.freespace = freespace
+        if dist_type not in RelativeDistanceType:
+            raise TypeError(&#39;dist_type is not of type RelativeDistanceType&#39;)
         self.dist_type = dist_type
         if rule not in Rule:
             raise ValueError(rule + &#39;; is not a valid rule.&#39;)
@@ -1303,7 +1334,7 @@ class RelativeDistanceCondition():
         basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
         basedict[&#39;entityRef&#39;] = self.entity
         basedict[&#39;rule&#39;] = self.rule.name
-        basedict[&#39;relativeDistancetype&#39;] = self.dist_type.name
+        basedict[&#39;relativeDistanceType&#39;] = self.dist_type.name
         return basedict
 
     def get_element(self):
@@ -1321,7 +1352,7 @@ class RelativeDistanceCondition():
 &#34;&#34;&#34;
 
 
-class ParameterCondition():
+class ParameterCondition(_ValueTriggerType):
     &#34;&#34;&#34; the ParameterCondition class is an Value Condition used by the ValueTrigger
         
         Parameters
@@ -1381,7 +1412,7 @@ class ParameterCondition():
         &#34;&#34;&#34;
         return ET.Element(&#39;ParameterCondition&#39;,attrib=self.get_attributes())
 
-class TimeOfDayCondition():
+class TimeOfDayCondition(_ValueTriggerType):
     &#34;&#34;&#34; the TimeOfDayCondition class is an Value Condition used by the ValueTrigger
         
         Parameters
@@ -1435,7 +1466,7 @@ class TimeOfDayCondition():
         return ET.Element(&#39;TimeOfDayCondition&#39;,attrib=self.get_attributes())
 
 
-class SimulationTimeCondition():
+class SimulationTimeCondition(_ValueTriggerType):
     &#34;&#34;&#34; the SimulationTimeCondition class is an Value Condition used by the ValueTrigger
         
         Parameters
@@ -1487,7 +1518,7 @@ class SimulationTimeCondition():
         &#34;&#34;&#34;
         return ET.Element(&#39;SimulationTimeCondition&#39;,attrib=self.get_attributes())
 
-class StoryboardElementStateCondition():
+class StoryboardElementStateCondition(_ValueTriggerType):
     &#34;&#34;&#34; the StoryboardElementStateCondition class is an Value Condition used by the ValueTrigger
         
         Parameters
@@ -1526,6 +1557,10 @@ class StoryboardElementStateCondition():
 
                 state (StoryboardElementType): state to trigger on
         &#34;&#34;&#34;
+        if element not in StoryboardElementType:
+            raise TypeError(&#39;element input is not of type StoryBoardElementType&#39;)
+        if state not in StoryboardElementState:
+            raise TypeError(&#39;state input is not of type StoryBoardElementState&#39;)
         self.element = element
         self.reference = reference
         self.state = state
@@ -1542,7 +1577,7 @@ class StoryboardElementStateCondition():
         &#34;&#34;&#34;
         return ET.Element(&#39;StoryboardElementStateCondition&#39;,attrib=self.get_attributes())
 
-class UserDefinedValueCondition():
+class UserDefinedValueCondition(_ValueTriggerType):
     &#34;&#34;&#34; the UserDefinedValueCondition class is an Value Condition used by the ValueTrigger
         
         Parameters
@@ -1600,7 +1635,7 @@ class UserDefinedValueCondition():
         &#34;&#34;&#34;
         return ET.Element(&#39;UserDefinedValueCondition&#39;,attrib=self.get_attributes())
 
-class TrafficSignalCondition():
+class TrafficSignalCondition(_ValueTriggerType):
     &#34;&#34;&#34; the TrafficSignalCondition class is an Value Condition used by the ValueTrigger
         
         Parameters
@@ -1650,7 +1685,7 @@ class TrafficSignalCondition():
         return ET.Element(&#39;TrafficSignalCondition&#39;,attrib=self.get_attributes())
 
 
-class TrafficSignalControllerCondition():
+class TrafficSignalControllerCondition(_ValueTriggerType):
     &#34;&#34;&#34; the TrafficSignalControllerCondition class is an Value Condition used by the ValueTrigger
         
         Parameters
@@ -1742,7 +1777,7 @@ rule (Rule): condition rule of triggering
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class AccelerationCondition():
+<pre><code class="python">class AccelerationCondition(_EntityTriggerType):
     &#34;&#34;&#34; the AccelerationCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -1794,6 +1829,10 @@ rule (Rule): condition rule of triggering
         ET.SubElement(element,&#39;AccelerationCondition&#39;,attrib=self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._EntityTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.AccelerationCondition.get_attributes"><code class="name flex">
@@ -1859,7 +1898,7 @@ get_attributes()
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class CollisionCondition():
+<pre><code class="python">class CollisionCondition(_EntityTriggerType):
     &#34;&#34;&#34; the CollisionCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -1902,6 +1941,10 @@ get_attributes()
             ET.SubElement(colcond,&#39;ByType&#39;,{&#39;type&#39;:self.entity.name})
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._EntityTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.CollisionCondition.get_element"><code class="name flex">
@@ -1958,7 +2001,7 @@ add_condition(condition)
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ConditionGroup():
+<pre><code class="python">class ConditionGroup(_TriggerType):
     &#34;&#34;&#34; The ConditionGroup class creates a Trigger that can be used if multiple Conditions are wanted
         
         Parameters
@@ -2000,11 +2043,13 @@ add_condition(condition)
     def add_condition(self,condition):
         &#34;&#34;&#34; Adds a condition (EntityTrigger or ValueTrigger) to the ConditionGroup
 
-        Parameters
-        ----------
-            conditiongroup (EntityTrigger, or ValueTrigger): a condition to add to the ConditionGroup
+            Parameters
+            ----------
+                condition (EntityTrigger, or ValueTrigger): a condition to add to the ConditionGroup
          
         &#34;&#34;&#34;
+        if not ( isinstance(condition,EntityTrigger) or isinstance(condition,ValueTrigger)):
+            raise TypeError(&#39;condition input not of type EntityTrigger or ValueTrigger&#39;)   
         condition._set_used_by_parent()
         self.conditions.append(condition)
         self._used_by_parent = False
@@ -2020,7 +2065,7 @@ add_condition(condition)
 
         &#34;&#34;&#34;
         if not self.conditions:
-            ValueError(&#39;No conditions were added to the ConditionGroup&#39;)
+            raise ValueError(&#39;No conditions were added to the ConditionGroup&#39;)
         condgroup = ET.Element(&#39;ConditionGroup&#39;)
 
         for c in self.conditions:
@@ -2034,6 +2079,10 @@ add_condition(condition)
             element.append(condgroup)
             return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._TriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.ConditionGroup.add_condition"><code class="name flex">
@@ -2042,7 +2091,7 @@ add_condition(condition)
 <dd>
 <div class="desc"><p>Adds a condition (EntityTrigger or ValueTrigger) to the ConditionGroup</p>
 <h2 id="parameters">Parameters</h2>
-<pre><code>conditiongroup (EntityTrigger, or ValueTrigger): a condition to add to the ConditionGroup
+<pre><code>condition (EntityTrigger, or ValueTrigger): a condition to add to the ConditionGroup
 </code></pre></div>
 <details class="source">
 <summary>
@@ -2051,11 +2100,13 @@ add_condition(condition)
 <pre><code class="python">def add_condition(self,condition):
     &#34;&#34;&#34; Adds a condition (EntityTrigger or ValueTrigger) to the ConditionGroup
 
-    Parameters
-    ----------
-        conditiongroup (EntityTrigger, or ValueTrigger): a condition to add to the ConditionGroup
+        Parameters
+        ----------
+            condition (EntityTrigger, or ValueTrigger): a condition to add to the ConditionGroup
      
     &#34;&#34;&#34;
+    if not ( isinstance(condition,EntityTrigger) or isinstance(condition,ValueTrigger)):
+        raise TypeError(&#39;condition input not of type EntityTrigger or ValueTrigger&#39;)   
     condition._set_used_by_parent()
     self.conditions.append(condition)
     self._used_by_parent = False</code></pre>
@@ -2075,7 +2126,7 @@ add_condition(condition)
 
     &#34;&#34;&#34;
     if not self.conditions:
-        ValueError(&#39;No conditions were added to the ConditionGroup&#39;)
+        raise ValueError(&#39;No conditions were added to the ConditionGroup&#39;)
     condgroup = ET.Element(&#39;ConditionGroup&#39;)
 
     for c in self.conditions:
@@ -2133,7 +2184,7 @@ get_attributes()
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class DistanceCondition():
+<pre><code class="python">class DistanceCondition(_EntityTriggerType):
     &#34;&#34;&#34; the DistanceCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -2178,6 +2229,8 @@ get_attributes()
         if rule not in Rule:
             raise ValueError(rule + &#39;; is not a valid rule.&#39;)
         self.rule = rule
+        if not (isinstance(position,_PositionType)):
+            raise TypeError(&#39;position input is not a valid Position&#39;)
         self.position = position
 
     def get_attributes(self):
@@ -2200,6 +2253,10 @@ get_attributes()
         distancecond.append(self.position.get_element())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._EntityTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.DistanceCondition.get_attributes"><code class="name flex">
@@ -2266,7 +2323,7 @@ get_attributes()
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class EmptyTrigger():
+<pre><code class="python">class EmptyTrigger(_TriggerType):
     &#34;&#34;&#34; EmptyTrigger creates an empty trigger
         
         Parameters
@@ -2303,6 +2360,10 @@ get_attributes()
         &#34;&#34;&#34;
         return ET.Element(self._triggerpoint)</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._TriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.EmptyTrigger.get_element"><code class="name flex">
@@ -2350,7 +2411,7 @@ get_attributes()
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class EndOfRoadCondition():
+<pre><code class="python">class EndOfRoadCondition(_EntityTriggerType):
     &#34;&#34;&#34; the EndOfRoadCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -2394,6 +2455,10 @@ get_attributes()
         ET.SubElement(element,&#39;EndOfRoadCondition&#39;,attrib=self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._EntityTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.EndOfRoadCondition.get_attributes"><code class="name flex">
@@ -2434,7 +2499,7 @@ get_attributes()
 </dd>
 <dt id="pyoscx.triggers.EntityTrigger"><code class="flex name class">
 <span>class <span class="ident">EntityTrigger</span></span>
-<span>(</span><span>name, delay, conditionedge, entitycondition, triggerentity, triggeringrule='any', triggeringpoint='start')</span>
+<span>(</span><span>name, delay, conditionedge, entitycondition, triggerentity, triggeringrule=TriggeringEntitiesRule.any, triggeringpoint='start')</span>
 </code></dt>
 <dd>
 <div class="desc"><p>the EntityTrigger creates an Trigger containing an EntityTrigger </p>
@@ -2449,7 +2514,7 @@ entitycondotion (*Condition): an entity condition
 
 triggeringentity (str): the entity of the trigger
 
-triggeringrule (str): rule of the trigger
+triggeringrule (TriggeringEntitiesRule): rule of the trigger
     Default: 'any'
 
 triggeringpoint (str): start or stop
@@ -2484,7 +2549,7 @@ entitycondotion (*EntityCondition): an entity condition
 
 triggeringentity (str): the entity of the trigger
 
-triggeringrule (str): rule of the trigger
+triggeringrule (TriggeringEntitiesRule): rule of the trigger
     Default: 'any'
 
 triggeringpoint (str): start or stop
@@ -2493,7 +2558,7 @@ triggeringpoint (str): start or stop
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class EntityTrigger():
+<pre><code class="python">class EntityTrigger(_TriggerType):
     &#34;&#34;&#34; the EntityTrigger creates an Trigger containing an EntityTrigger 
         
         Parameters
@@ -2508,7 +2573,7 @@ triggeringpoint (str): start or stop
 
             triggeringentity (str): the entity of the trigger
 
-            triggeringrule (str): rule of the trigger
+            triggeringrule (TriggeringEntitiesRule): rule of the trigger
                 Default: &#39;any&#39;
 
             triggeringpoint (str): start or stop 
@@ -2534,7 +2599,7 @@ triggeringpoint (str): start or stop
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,name,delay,conditionedge,entitycondition,triggerentity,triggeringrule=&#39;any&#39;,triggeringpoint = &#39;start&#39;):
+    def __init__(self,name,delay,conditionedge,entitycondition,triggerentity,triggeringrule=TriggeringEntitiesRule.any,triggeringpoint = &#39;start&#39;):
         &#34;&#34;&#34; initalize the EntityTrigger
 
         Parameters
@@ -2549,7 +2614,7 @@ triggeringpoint (str): start or stop
 
             triggeringentity (str): the entity of the trigger 
 
-            triggeringrule (str): rule of the trigger
+            triggeringrule (TriggeringEntitiesRule): rule of the trigger
                 Default: &#39;any&#39;
 
             triggeringpoint (str): start or stop 
@@ -2567,6 +2632,8 @@ triggeringpoint (str): start or stop
         if conditionedge not in ConditionEdge:
             raise ValueError(&#39;not a valid condition edge&#39;)
         self.conditionedge = conditionedge
+        if not isinstance(entitycondition,_EntityTriggerType):
+            raise TypeError(&#39;entitycondition is not a valid EntityCondition&#39;)
         self.entitycondition = entitycondition
         self.triggerentity = TriggeringEntities(triggeringrule)
         self.triggerentity.add_entity(triggerentity)
@@ -2612,6 +2679,10 @@ triggeringpoint (str): start or stop
             condgroup.append(condition)
             return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._TriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.EntityTrigger.add_triggering_entity"><code class="name flex">
@@ -2710,7 +2781,7 @@ get_attributes()
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class OffroadCondition():
+<pre><code class="python">class OffroadCondition(_EntityTriggerType):
     &#34;&#34;&#34; the OffroadCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -2754,6 +2825,10 @@ get_attributes()
         ET.SubElement(element,&#39;OffroadCondition&#39;,attrib=self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._EntityTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.OffroadCondition.get_attributes"><code class="name flex">
@@ -2831,7 +2906,7 @@ rule (Rule): condition rule of triggering
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ParameterCondition():
+<pre><code class="python">class ParameterCondition(_ValueTriggerType):
     &#34;&#34;&#34; the ParameterCondition class is an Value Condition used by the ValueTrigger
         
         Parameters
@@ -2891,6 +2966,10 @@ rule (Rule): condition rule of triggering
         &#34;&#34;&#34;
         return ET.Element(&#39;ParameterCondition&#39;,attrib=self.get_attributes())</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._ValueTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.ParameterCondition.get_attributes"><code class="name flex">
@@ -2962,7 +3041,7 @@ tolerance (float): tolerance of the position
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ReachPositionCondition():
+<pre><code class="python">class ReachPositionCondition(_EntityTriggerType):
     &#34;&#34;&#34; the ReachPositionCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -2996,6 +3075,8 @@ tolerance (float): tolerance of the position
             tolerance (float): tolerance of the position
 
         &#34;&#34;&#34;
+        if not (isinstance(position,_PositionType)):
+            raise TypeError(&#39;position input is not a valid Position&#39;)
         self.position = position
         self.tolerance = tolerance
 
@@ -3015,6 +3096,10 @@ tolerance (float): tolerance of the position
         reachposcond.append(self.position.get_element())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._EntityTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.ReachPositionCondition.get_attributes"><code class="name flex">
@@ -3065,9 +3150,9 @@ tolerance (float): tolerance of the position
 
 rule (Rule): condition rule of triggering
 
-entity (str): name of the entity fore relative distance
-
 dist_type (RelativeDistanceType): type of relative distance
+
+entity (str): name of the entity fore relative distance
 
 alongroute (bool): if the route should count
     Default: True
@@ -3101,9 +3186,9 @@ get_attributes()
 
 rule (Rule): condition rule of triggering
 
-entity (str): name of the entity fore relative distance
-
 dist_type (RelativeDistanceType): type of relative distance
+
+entity (str): name of the entity fore relative distance
 
 alongroute (bool): if the route should count
     Default: True
@@ -3115,7 +3200,7 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RelativeDistanceCondition():
+<pre><code class="python">class RelativeDistanceCondition(_EntityTriggerType):
     &#34;&#34;&#34; the RelativeDistanceCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -3124,9 +3209,9 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
 
             rule (Rule): condition rule of triggering 
 
-            entity (str): name of the entity fore relative distance
-
             dist_type (RelativeDistanceType): type of relative distance
+
+            entity (str): name of the entity fore relative distance     
 
             alongroute (bool): if the route should count
                 Default: True
@@ -3166,9 +3251,9 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
 
             rule (Rule): condition rule of triggering 
 
-            entity (str): name of the entity fore relative distance
-
             dist_type (RelativeDistanceType): type of relative distance
+
+            entity (str): name of the entity fore relative distance           
 
             alongroute (bool): if the route should count
                 Default: True
@@ -3178,8 +3263,14 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
 
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(alongroute,bool):
+            raise TypeError(&#39;alongroute input not of type bool&#39;)
+        if not isinstance(freespace,bool):
+            raise TypeError(&#39;freespace input not of type bool&#39;)
         self.alongroute = alongroute
         self.freespace = freespace
+        if dist_type not in RelativeDistanceType:
+            raise TypeError(&#39;dist_type is not of type RelativeDistanceType&#39;)
         self.dist_type = dist_type
         if rule not in Rule:
             raise ValueError(rule + &#39;; is not a valid rule.&#39;)
@@ -3196,7 +3287,7 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
         basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
         basedict[&#39;entityRef&#39;] = self.entity
         basedict[&#39;rule&#39;] = self.rule.name
-        basedict[&#39;relativeDistancetype&#39;] = self.dist_type.name
+        basedict[&#39;relativeDistanceType&#39;] = self.dist_type.name
         return basedict
 
     def get_element(self):
@@ -3207,6 +3298,10 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
         ET.SubElement(element,&#39;RelativeDistanceCondition&#39;,attrib=self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._EntityTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.RelativeDistanceCondition.get_attributes"><code class="name flex">
@@ -3228,7 +3323,7 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
     basedict[&#39;freespace&#39;] = convert_bool(self.freespace)
     basedict[&#39;entityRef&#39;] = self.entity
     basedict[&#39;rule&#39;] = self.rule.name
-    basedict[&#39;relativeDistancetype&#39;] = self.dist_type.name
+    basedict[&#39;relativeDistanceType&#39;] = self.dist_type.name
     return basedict</code></pre>
 </details>
 </dd>
@@ -3291,7 +3386,7 @@ entity (str): name of the entity to be relative to
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RelativeSpeedCondition():
+<pre><code class="python">class RelativeSpeedCondition(_EntityTriggerType):
     &#34;&#34;&#34; the RelativeSpeedCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -3355,6 +3450,10 @@ entity (str): name of the entity to be relative to
         ET.SubElement(element,&#39;RelativeSpeedCondition&#39;,attrib=self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._EntityTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.RelativeSpeedCondition.get_attributes"><code class="name flex">
@@ -3429,7 +3528,7 @@ rule (Rule): condition rule of triggering
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class SimulationTimeCondition():
+<pre><code class="python">class SimulationTimeCondition(_ValueTriggerType):
     &#34;&#34;&#34; the SimulationTimeCondition class is an Value Condition used by the ValueTrigger
         
         Parameters
@@ -3481,6 +3580,10 @@ rule (Rule): condition rule of triggering
         &#34;&#34;&#34;
         return ET.Element(&#39;SimulationTimeCondition&#39;,attrib=self.get_attributes())</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._ValueTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.SimulationTimeCondition.get_attributes"><code class="name flex">
@@ -3553,7 +3656,7 @@ rule (Rule): condition rule of triggering
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class SpeedCondition():
+<pre><code class="python">class SpeedCondition(_EntityTriggerType):
     &#34;&#34;&#34; the SpeedCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -3609,6 +3712,10 @@ rule (Rule): condition rule of triggering
         ET.SubElement(element,&#39;SpeedCondition&#39;,attrib=self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._EntityTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.SpeedCondition.get_attributes"><code class="name flex">
@@ -3677,7 +3784,7 @@ get_attributes()
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class StandStillCondition():
+<pre><code class="python">class StandStillCondition(_EntityTriggerType):
     &#34;&#34;&#34; the StandStillCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -3720,6 +3827,10 @@ get_attributes()
         ET.SubElement(element,&#39;StandStillCondition&#39;,attrib=self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._EntityTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.StandStillCondition.get_attributes"><code class="name flex">
@@ -3797,7 +3908,7 @@ state (StoryboardElementType): state to trigger on
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class StoryboardElementStateCondition():
+<pre><code class="python">class StoryboardElementStateCondition(_ValueTriggerType):
     &#34;&#34;&#34; the StoryboardElementStateCondition class is an Value Condition used by the ValueTrigger
         
         Parameters
@@ -3836,6 +3947,10 @@ state (StoryboardElementType): state to trigger on
 
                 state (StoryboardElementType): state to trigger on
         &#34;&#34;&#34;
+        if element not in StoryboardElementType:
+            raise TypeError(&#39;element input is not of type StoryBoardElementType&#39;)
+        if state not in StoryboardElementState:
+            raise TypeError(&#39;state input is not of type StoryBoardElementState&#39;)
         self.element = element
         self.reference = reference
         self.state = state
@@ -3852,6 +3967,10 @@ state (StoryboardElementType): state to trigger on
         &#34;&#34;&#34;
         return ET.Element(&#39;StoryboardElementStateCondition&#39;,attrib=self.get_attributes())</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._ValueTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.StoryboardElementStateCondition.get_attributes"><code class="name flex">
@@ -3943,7 +4062,7 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TimeHeadwayCondition():
+<pre><code class="python">class TimeHeadwayCondition(_EntityTriggerType):
     &#34;&#34;&#34; the TimeHeadwayCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -4001,6 +4120,10 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
         &#34;&#34;&#34;
         self.entity = entity
         self.value = value
+        if not isinstance(alongroute,bool):
+            raise TypeError(&#39;alongroute input not of type bool&#39;)
+        if not isinstance(freespace,bool):
+            raise TypeError(&#39;freespace input not of type bool&#39;)
         self.alongroute = alongroute
         self.freespace = freespace
         if rule not in Rule:
@@ -4027,6 +4150,10 @@ freespace (bool): (True) distance between bounding boxes, (False) distance betwe
         ET.SubElement(element,&#39;TimeHeadwayCondition&#39;,attrib=self.get_attributes())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._EntityTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.TimeHeadwayCondition.get_attributes"><code class="name flex">
@@ -4105,7 +4232,7 @@ time of day (str): datetime ??? format unknown
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TimeOfDayCondition():
+<pre><code class="python">class TimeOfDayCondition(_ValueTriggerType):
     &#34;&#34;&#34; the TimeOfDayCondition class is an Value Condition used by the ValueTrigger
         
         Parameters
@@ -4158,6 +4285,10 @@ time of day (str): datetime ??? format unknown
         &#34;&#34;&#34;
         return ET.Element(&#39;TimeOfDayCondition&#39;,attrib=self.get_attributes())</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._ValueTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.TimeOfDayCondition.get_attributes"><code class="name flex">
@@ -4262,7 +4393,7 @@ optionals:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TimeToCollisionCondition():
+<pre><code class="python">class TimeToCollisionCondition(_EntityTriggerType):
     &#34;&#34;&#34; the TimeToCollisionCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -4331,6 +4462,10 @@ optionals:
         
         &#34;&#34;&#34;
         self.value = value
+        if not isinstance(alongroute,bool):
+            raise TypeError(&#39;alongroute input not of type bool&#39;)
+        if not isinstance(freespace,bool):
+            raise TypeError(&#39;freespace input not of type bool&#39;)
         self.freespace = freespace
         self.alongroute = alongroute
         if rule not in Rule:
@@ -4343,8 +4478,11 @@ optionals:
             self.entity = EntityRef(entity)
             self.use_entity = True
         if position:
+            if not isinstance(position,_PositionType):
+                raise TypeError(&#39;input position is not a valid Position&#39;)
             self.position = position
             self.use_entity = False
+
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the TimeToCollisionCondition as a dict
 
@@ -4375,6 +4513,10 @@ optionals:
         
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._EntityTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.TimeToCollisionCondition.get_attributes"><code class="name flex">
@@ -4461,7 +4603,7 @@ state (str): state of the signal
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TrafficSignalCondition():
+<pre><code class="python">class TrafficSignalCondition(_ValueTriggerType):
     &#34;&#34;&#34; the TrafficSignalCondition class is an Value Condition used by the ValueTrigger
         
         Parameters
@@ -4510,6 +4652,10 @@ state (str): state of the signal
         &#34;&#34;&#34;
         return ET.Element(&#39;TrafficSignalCondition&#39;,attrib=self.get_attributes())</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._ValueTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.TrafficSignalCondition.get_attributes"><code class="name flex">
@@ -4579,7 +4725,7 @@ phase (str): ???
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TrafficSignalControllerCondition():
+<pre><code class="python">class TrafficSignalControllerCondition(_ValueTriggerType):
     &#34;&#34;&#34; the TrafficSignalControllerCondition class is an Value Condition used by the ValueTrigger
         
         Parameters
@@ -4628,6 +4774,10 @@ phase (str): ???
         &#34;&#34;&#34;
         return ET.Element(&#39;TrafficSignalControllerCondition&#39;,attrib=self.get_attributes())</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._ValueTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.TrafficSignalControllerCondition.get_attributes"><code class="name flex">
@@ -4691,7 +4841,7 @@ get_attributes()
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TraveledDistanceCondition():
+<pre><code class="python">class TraveledDistanceCondition(_EntityTriggerType):
     &#34;&#34;&#34; the TraveledDistanceCondition class is an Entity Condition used by the EntityTrigger
         
         Parameters
@@ -4735,6 +4885,10 @@ get_attributes()
         ET.SubElement(element,&#39;TraveledDistanceCondition&#39;,attrib=self.get_attributes())
         return element </code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._EntityTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.TraveledDistanceCondition.get_attributes"><code class="name flex">
@@ -4803,7 +4957,7 @@ add_conditiongroup(conditiongroup)
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Trigger():
+<pre><code class="python">class Trigger(_TriggerType):
     &#34;&#34;&#34; The Trigger class creates a Trigger that can be used if multiple ConditionGroups are wanted
         
         Parameters
@@ -4850,6 +5004,8 @@ add_conditiongroup(conditiongroup)
             conditiongroup (ConditionGroup): a conditiongroup to add to the trigger
          
         &#34;&#34;&#34;
+        if not isinstance(conditiongroup,ConditionGroup):
+            raise TypeError(&#39;conditiongroup input not of type ConditionGroup&#39;)   
         conditiongroup._set_used_by_parent()
         self.conditiongroups.append(conditiongroup)
     
@@ -4864,6 +5020,10 @@ add_conditiongroup(conditiongroup)
             element.append(c.get_element())
         return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._TriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.Trigger.add_conditiongroup"><code class="name flex">
@@ -4886,6 +5046,8 @@ add_conditiongroup(conditiongroup)
         conditiongroup (ConditionGroup): a conditiongroup to add to the trigger
      
     &#34;&#34;&#34;
+    if not isinstance(conditiongroup,ConditionGroup):
+        raise TypeError(&#39;conditiongroup input not of type ConditionGroup&#39;)   
     conditiongroup._set_used_by_parent()
     self.conditiongroups.append(conditiongroup)</code></pre>
 </details>
@@ -4920,12 +5082,12 @@ add_conditiongroup(conditiongroup)
 <dd>
 <div class="desc"><p>the TriggeringEntities class is used by Value and Entity Triggers to defined the trigger entity</p>
 <h2 id="parameters">Parameters</h2>
-<pre><code>triggeringrule (str): all or any
+<pre><code>triggeringrule (TriggeringEntitiesRule): all or any
 </code></pre>
 <h2 id="attributes">Attributes</h2>
 <pre><code>entity (list of EntityRef): refernce to the entity
 
-triggeringrule (str): all or any
+triggeringrule (TriggeringEntitiesRule): all or any
 </code></pre>
 <h2 id="methods">Methods</h2>
 <pre><code>add_entity(entity)
@@ -4939,7 +5101,7 @@ get_attributes()
 </code></pre>
 <p>initalize the TriggeringEntities</p>
 <h2 id="parameters_1">Parameters</h2>
-<pre><code>entity (str): name of the entity
+<pre><code>entity (TriggeringEntitiesRule): name of the entity
 
 triggeringrule (str): all or any
 </code></pre></div>
@@ -4952,13 +5114,13 @@ triggeringrule (str): all or any
         
         Parameters
         ----------
-            triggeringrule (str): all or any
+            triggeringrule (TriggeringEntitiesRule): all or any
 
         Attributes
         ----------
             entity (list of EntityRef): refernce to the entity
 
-            triggeringrule (str): all or any
+            triggeringrule (TriggeringEntitiesRule): all or any
 
         Methods
         -------
@@ -4977,12 +5139,12 @@ triggeringrule (str): all or any
         
         Parameters
         ----------
-            entity (str): name of the entity
+            entity (TriggeringEntitiesRule): name of the entity
 
             triggeringrule (str): all or any
 
         &#34;&#34;&#34;
-        if triggeringrule not in [&#39;any&#39;,&#39;all&#39;]:
+        if triggeringrule not in TriggeringEntitiesRule:
             raise ValueError(&#39;not a vaild triggering rule&#39;)
         self.entity = [] 
         self.triggeringrule = triggeringrule
@@ -5001,7 +5163,7 @@ triggeringrule (str): all or any
         &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;triggeringEntitiesRule&#39;:self.triggeringrule}
+        return {&#39;triggeringEntitiesRule&#39;:self.triggeringrule.name}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the LaneOffsetAction
@@ -5050,7 +5212,7 @@ triggeringrule (str): all or any
     &#34;&#34;&#34; returns the attributes of the LaneOffsetAction as a dict
 
     &#34;&#34;&#34;
-    return {&#39;triggeringEntitiesRule&#39;:self.triggeringrule}</code></pre>
+    return {&#39;triggeringEntitiesRule&#39;:self.triggeringrule.name}</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.triggers.TriggeringEntities.get_element"><code class="name flex">
@@ -5113,7 +5275,7 @@ rule (Rule): condition rule of triggering
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class UserDefinedValueCondition():
+<pre><code class="python">class UserDefinedValueCondition(_ValueTriggerType):
     &#34;&#34;&#34; the UserDefinedValueCondition class is an Value Condition used by the ValueTrigger
         
         Parameters
@@ -5171,6 +5333,10 @@ rule (Rule): condition rule of triggering
         &#34;&#34;&#34;
         return ET.Element(&#39;UserDefinedValueCondition&#39;,attrib=self.get_attributes())</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._ValueTriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.UserDefinedValueCondition.get_attributes"><code class="name flex">
@@ -5270,7 +5436,7 @@ triggeringpoint (str): start or stop
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ValueTrigger():
+<pre><code class="python">class ValueTrigger(_TriggerType):
     &#34;&#34;&#34; the ValueTrigger creates a Trigger of the type ValueTrigger of openscenario
         
         Parameters
@@ -5344,6 +5510,8 @@ triggeringpoint (str): start or stop
         if conditionedge not in ConditionEdge:
             raise ValueError(&#39;not a valid condition edge&#39;)
         self.conditionedge = conditionedge
+        if not isinstance(valuecondition,_ValueTriggerType):
+            raise TypeError(&#39;entitycondition is not a valid EntityCondition&#39;)
         self.valuecondition = valuecondition
         self._used_by_parent = False
 
@@ -5375,6 +5543,10 @@ triggeringpoint (str): start or stop
             condgroup.append(condition)
             return element</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pyoscx.utils._TriggerType</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pyoscx.triggers.ValueTrigger.get_attributes"><code class="name flex">

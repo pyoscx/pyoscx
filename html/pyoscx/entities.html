@@ -27,11 +27,11 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">import xml.etree.ElementTree as ET
-
-from .utils import EntityRef, ObjectType
+from .utils import Controller, Dimensions, Center, BoundingBox, Properties, Parameter
+from .utils import EntityRef
 from .scenario import ParameterDeclarations
-from .enumerations import VehicleCategory, PedestrianCategory, MiscObjectCategory
-from .utils import DynamicsConstrains, CatalogFile
+from .enumerations import VehicleCategory, PedestrianCategory, MiscObjectCategory, ObjectType
+from .utils import DynamicsConstrains, CatalogFile, CatalogReference
 
 
 class Entities():
@@ -84,7 +84,7 @@ class Entities():
 
         self.scenario_objects.append(ScenarioObject(name,entityobject,controller))
     
-    def add_entity_bytype(self,name,entity_type):
+    def add_entity_bytype(self,name,object_type):
         &#34;&#34;&#34; adds an Entity to the scenario
         
             Parameters
@@ -94,7 +94,7 @@ class Entities():
                 object_type (ObjectType): type of entity
             
         &#34;&#34;&#34;
-        self.entities.append(Entity(name,object_type=entity_type))
+        self.entities.append(Entity(name,object_type=object_type))
 
     def add_entity_byref(self,name,entity):
         &#34;&#34;&#34; adds an Entity to the scenario
@@ -106,6 +106,7 @@ class Entities():
                 entity (str): type of entity
             
         &#34;&#34;&#34;
+
         self.entities.append(Entity(name,entityref=entity))
 
 
@@ -160,10 +161,15 @@ class ScenarioObject():
                 entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
 
                 controller (CatalogReference, or Controller): controller for the object
-                    Default (None)
+                    Default: None
 
         &#34;&#34;&#34;
         self.name = name
+        if not (isinstance(entityobject,CatalogReference) or isinstance(entityobject,Vehicle) or isinstance(entityobject,Pedestrian) or isinstance(entityobject,MiscObject)):
+            raise TypeError(&#39;entityobject is not of type CatalogReference, Vehicle, Pedestrian, nor MiscObject&#39;)
+        
+        if controller is not None and not (isinstance(controller,CatalogReference) or isinstance(controller,Controller)):
+            raise TypeError(&#39;controller input is not of type CatalogReference or Controller&#39;)
         self.entityobject = entityobject
         self.controller = controller
 
@@ -240,7 +246,7 @@ class Entity():
             self.object_type = None
         else:
             if object_type not in ObjectType:
-                ValueError(&#39;Not a valid ObjectType&#39;)
+                ValueError(&#39;object_type input not a valid ObjectType&#39;)
             self.object_type = object_type
             self.entity = None
         
@@ -339,6 +345,9 @@ class Pedestrian():
         self.mass = mass
         if category not in PedestrianCategory:
             ValueError(str(category) + &#39; is not a valid pedestrian type&#39;)    
+        if not isinstance(boundingbox,BoundingBox):
+            raise TypeError(&#39;boundingbox input is not of type BoundingBox&#39;)
+
         self.category = category
         self.boundingbox = boundingbox
         self.parameters = ParameterDeclarations()
@@ -386,6 +395,8 @@ class Pedestrian():
                 parameter (Parameter): A new parameter declaration for the pedestrian
 
         &#34;&#34;&#34;
+        if not isinstance(parameter,Parameter):
+            raise TypeError(&#39;parameter input is not of type Parameter&#39;)
         self.parameters.add_parameter(parameter)
 
     def add_property(self,name, value):
@@ -436,7 +447,7 @@ class MiscObject():
 
             mass (float): mass of the object
 
-            category (str): the category of the misc object
+            category (MiscObjectCategory): the category of the misc object
 
             boundingbox (BoundingBox): the bounding box of the MiscObject               
 
@@ -446,7 +457,7 @@ class MiscObject():
 
             mass (float): mass of the object
 
-            misc_type (str): type of misc object
+            misc_type (MiscObjectCategory): type of misc object
 
             boundingbox (BoundingBox): the bounding box of the MiscObject
 
@@ -487,16 +498,19 @@ class MiscObject():
 
             mass (float): mass of the object
 
-            category (str): the category of the misc object
+            category (MiscObjectCategory): the category of the misc object
 
             boundingbox (BoundingBox): the bounding box of the MiscObject       
         
         &#34;&#34;&#34;
         self.name = name
         self.mass = mass
-        # if category not in MiscObjectCategory:
-        #     ValueError(str(category) + &#39; is not a valid MiscObject type&#39;)    
+        if category not in MiscObjectCategory:
+            print(category)
+            raise TypeError(str(category) + &#39; is not a valid MiscObject type&#39;)    
         self.category = category
+        if not isinstance(boundingbox,BoundingBox):
+            raise TypeError(&#39;boundingbox input is not of type BoundingBox&#39;)
         self.boundingbox = boundingbox
         self.parameters = ParameterDeclarations()
         self.properties = Properties()
@@ -543,6 +557,8 @@ class MiscObject():
                 parameter (Parameter): A new parameter declaration for the MiscObject
 
         &#34;&#34;&#34;
+        if not isinstance(parameter,Parameter):
+            raise TypeError(&#39;parameter input is not of type Parameter&#39;)
         self.parameters.add_parameter(parameter)
 
     def add_property(self,name, value):
@@ -673,9 +689,14 @@ class Vehicle():
         &#34;&#34;&#34;
         self.name = name
         if vehicle_type not in VehicleCategory:
-            ValueError(&#39;not a valid vehicle type&#39;)    
+            print(&#39;wtf&#39; , vehicle_type)
+            raise TypeError(&#39;not a valid vehicle type&#39;)  
+        if not isinstance(boundingbox,BoundingBox):
+            raise TypeError(&#39;boundingbox input is not of type BoundingBox&#39;)
+        
         self.vehicle_type = vehicle_type
         self.boundingbox = boundingbox
+
         self.axels = Axels(frontaxel,backaxel)
         self.dynamics = DynamicsConstrains(max_acceleration,max_deceleration,max_speed)
         self.parameters = ParameterDeclarations()
@@ -722,6 +743,7 @@ class Vehicle():
                 axel (Axel): an additional Axel
 
         &#34;&#34;&#34;
+        
         self.axels.add_axel(axel)
 
 
@@ -733,6 +755,8 @@ class Vehicle():
                 parameter (Parameter): A new parameter declaration for the vehicle
 
         &#34;&#34;&#34;
+        if not isinstance(parameter,Parameter):
+            raise TypeError(&#39;parameter input is not of type Parameter&#39;)
         self.parameters.add_parameter(parameter)
 
     def add_property(self,name, value):
@@ -777,244 +801,7 @@ class Vehicle():
         return element
 
 
-class BoundingBox():
-    &#34;&#34;&#34; the Dimensions describes the size of an entity
 
-        Parameters
-        ----------
-            width (float): the width of the entity
-
-            length (float): the lenght of the entity
-
-            height (float): the height of the entity
-
-            x_center (float): x distance from back axel to center
-
-            y_center (float): y distance from back axel to center
-
-            z_center (float): z distance from back axel to center
-                
-
-        Attributes
-        ----------
-            boundingbox (BoundingBox): the bounding box of the entity
-
-            center (Center): the center of the object relative the the back axel
-
-        Methods
-        -------
-            get_element()
-                Returns the full ElementTree of the class
-
-    &#34;&#34;&#34;
-    def __init__(self,width,length,height,x_center,y_center,z_center):
-        &#34;&#34;&#34; initalzie the Dimensions
-
-        Parameters
-        ----------
-            width (float): the width of the entity
-
-            length (float): the lenght of the entity
-
-            height (float): the height of the entity
-
-            x_center (float): x distance from back axel to center
-
-            y_center (float): y distance from back axel to center
-
-            z_center (float): z distance from back axel to center
-        
-        &#34;&#34;&#34;
-        self.boundingbox = Dimensions(width,length,height)
-        self.center = Center(x_center,y_center,z_center)
-
-    def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the Dimensions
-
-        &#34;&#34;&#34;
-        element = ET.Element(&#39;BoundingBox&#39;)
-        element.append(self.center.get_element())
-        element.append(self.boundingbox.get_element())
-        return element
-
-class Center():
-    &#34;&#34;&#34; the Center Class creates a centerpoint for a bounding box, reference point of a vehicle is the back axel
-
-        Parameters
-        ----------
-            x (float): x distance from back axel to center
-
-            y (float): y distance from back axel to center
-
-            z (float): z distance from back axel to center
-                
-
-        Attributes
-        ----------
-            x (float): x distance from back axel to center
-
-            y (float): y distance from back axel to center
-
-            z (float): z distance from back axel to center
-
-        Methods
-        -------
-            get_element()
-                Returns the full ElementTree of the class
-
-            get_attributes()
-                Returns a dictionary of all attributes of the class
-
-    &#34;&#34;&#34;
-    def __init__(self,x,y,z):
-        &#34;&#34;&#34; initalzie the Center Class
-
-        Parameters
-        ----------
-            x (float): x distance from back axel to center
-
-            y (float): y distance from back axel to center
-
-            z (float): z distance from back axel to center
-        
-        &#34;&#34;&#34;
-        self.x = x
-        self.y = y
-        self.z = z
-    def get_attributes(self):
-        &#34;&#34;&#34; returns the attributes as a dict of the Center
-
-        &#34;&#34;&#34;
-        return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z)}
-
-    def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the Center
-
-        &#34;&#34;&#34;
-        element = ET.Element(&#39;Center&#39;,attrib=self.get_attributes())
-        return element
-
-class Dimensions():
-    &#34;&#34;&#34; the Dimensions describes the size of an entity
-
-        Parameters
-        ----------
-            width (float): the width of the entity
-
-            length (float): the lenght of the entity
-
-            height (float): the height of the entity
-                
-
-        Attributes
-        ----------
-            width (float): the width of the entity
-
-            length (float): the lenght of the entity
-
-            height (float): the height of the entity
-
-        Methods
-        -------
-            get_element()
-                Returns the full ElementTree of the class
-
-            get_attributes()
-                Returns a dictionary of all attributes of the class
-
-    &#34;&#34;&#34;
-    def __init__(self,width,length,height):
-        &#34;&#34;&#34; initalzie the Dimensions
-
-        Parameters
-        ----------
-            width (float): the width of the entity
-
-            length (float): the lenght of the entity
-
-            height (float): the height of the entity
-        
-        &#34;&#34;&#34;
-        self.width = width
-        self.length = length
-        self.height = height
-    def get_attributes(self):
-        &#34;&#34;&#34; returns the attributes as a dict of the Dimensions
-
-        &#34;&#34;&#34;
-        return {&#39;width&#39;:str(self.width),&#39;length&#39;:str(self.length),&#39;height&#39;:str(self.height)}
-
-    def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the Dimensions
-
-        &#34;&#34;&#34;
-        element = ET.Element(&#39;Dimensions&#39;,attrib=self.get_attributes())
-        return element
-
-class Properties():
-    &#34;&#34;&#34; the Properties contains are for user defined properties of an object               
-
-        Attributes
-        ----------
-            files (list of str): arbitrary files with properties
-
-            properties (list of tuple(str,str)): properties in name/value pairs
-
-        Methods
-        -------
-            add_file(file)
-                adds a file with properties
-
-            add_property(name,value)
-                adds a property pair, with name and value
-
-            get_element()
-                Returns the full ElementTree of the class
-
-            
-    &#34;&#34;&#34;
-    def __init__(self):
-        &#34;&#34;&#34; initalzie the Properties
-
-        &#34;&#34;&#34;
-        self.files = []
-        self.properties = []
-
-    def add_file(self,filename):
-        &#34;&#34;&#34; adds a property file
-
-        Parameters
-        ----------
-            filename (str): name of the file
-
-        &#34;&#34;&#34;
-
-        self.files.append(filename)
-
-    def add_property(self,name,value):
-        &#34;&#34;&#34; adds a property pair
-
-        Parameters
-        ----------
-            name (str): name of the property
-
-            value (str): value of the property
-
-        &#34;&#34;&#34;
-        self.properties.append((name,value))
-
-    def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the Properties
-
-        &#34;&#34;&#34;
-        element = ET.Element(&#39;Properties&#39;)
-        for p in self.properties:
-            ET.SubElement(element,&#39;Property&#39;,attrib={&#39;name&#39;:p[0],&#39;value&#39;:p[1]})
-        for f in self.files:
-            ET.SubElement(element,&#39;File&#39;,attrib={&#39;filepath&#39;:f})
-        
-        
-        return element
 
 class Axel():
     &#34;&#34;&#34; the Axel describes the axel properties of a vehicle
@@ -1123,6 +910,10 @@ class Axels():
                 backaxel (Axel): Axel properties of the rear axel
 
         &#34;&#34;&#34;
+        if not isinstance(frontaxel,Axel):
+            raise TypeError(&#39;frontaxel input is not of type Axel&#39;)  
+        if not isinstance(backaxel,Axel):
+            raise TypeError(&#39;backaxel input is not of type Axel&#39;)  
         self.frontaxel = frontaxel
         self.backaxel = backaxel
         self.additionals = []
@@ -1135,6 +926,8 @@ class Axels():
                 frontaxel (Axel): Axel properties of the front axel
 
         &#34;&#34;&#34;
+        if not isinstance(axel,Axel):
+            raise TypeError(&#39;axel input is not of type Axel&#39;) 
         self.additionals.append(axel)
 
     def get_element(self):
@@ -1147,111 +940,6 @@ class Axels():
         for ax in self.additionals:
             element.append(ax.get_element())
 
-        return element
-
-class Controller():
-    &#34;&#34;&#34; the Controller class creates a controller of openScenario
-
-        Parameters
-        ----------
-            name (str): name of the object
-
-            properties (Properties): properties of the controller
-                
-        Attributes
-        ----------
-            parameters (ParameterDeclaration): Parameter declarations of the vehicle
-
-            properties (Properties): additional properties of the vehicle
-
-        Methods
-        -------
-            add_parameter(parameter)
-                adds a parameter declaration to the Controller
-
-            append_to_catalog(filename)
-                adds the vehicle to an existing catalog
-
-            dump_to_catalog(filename,name,description,author)
-                crates a new catalog with the vehicle
-
-            get_element()
-                Returns the full ElementTree of the class
-
-            get_attributes()
-                Returns a dictionary of all attributes of the class
-
-    &#34;&#34;&#34;
-    def __init__(self ,name ,properties):
-        &#34;&#34;&#34; initalzie the Controller Class
-
-        Parameters
-        ----------
-            name (str): name of the object
-
-            properties (Properties): properties of the Controller
-        
-        &#34;&#34;&#34;
-        self.name = name
-        self.parameters = ParameterDeclarations()
-        self.properties = properties
-
-    def dump_to_catalog(self,filename,catalogtype,description,author):
-        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
-            
-            Parameters
-            ----------
-                filename (str): path of the new catalog file
-
-                catalogtype (str): name of the catalog
-
-                description (str): description of the catalog
-
-                author (str): author of the catalog
-        
-        &#34;&#34;&#34;
-        cf = CatalogFile()
-        cf.create_catalog(filename,catalogtype,description,author)
-        cf.add_to_catalog(self)
-        cf.dump()
-        
-    def append_to_catalog(self,filename):
-        &#34;&#34;&#34; adds the Controller to an existing catalog
-
-            Parameters
-            ----------
-                filename (str): path to the catalog file
-
-        &#34;&#34;&#34;
-        cf = CatalogFile()
-        cf.open_catalog(filename)
-        cf.add_to_catalog(self)
-        cf.dump()
-
-    def add_parameter(self,parameter):
-        &#34;&#34;&#34; adds a parameter declaration to the Controller
-
-            Parameters
-            ----------
-                parameter (Parameter): A new parameter declaration for the Controller
-
-        &#34;&#34;&#34;
-        self.parameters.add_parameter(parameter)
-
-    def get_attributes(self):
-        &#34;&#34;&#34; returns the attributes of the Controller as a dict
-
-        &#34;&#34;&#34;
-        return {&#39;name&#39;:self.name}
-
-    def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the Controller
-
-        &#34;&#34;&#34;
-        element = ET.Element(&#39;Controller&#39;,attrib=self.get_attributes())
-        element.append(self.parameters.get_element())
-        element.append(self.properties.get_element())
-        
         return element</code></pre>
 </details>
 </section>
@@ -1493,6 +1181,10 @@ backaxel (Axel): Axel properties of the rear axel
                 backaxel (Axel): Axel properties of the rear axel
 
         &#34;&#34;&#34;
+        if not isinstance(frontaxel,Axel):
+            raise TypeError(&#39;frontaxel input is not of type Axel&#39;)  
+        if not isinstance(backaxel,Axel):
+            raise TypeError(&#39;backaxel input is not of type Axel&#39;)  
         self.frontaxel = frontaxel
         self.backaxel = backaxel
         self.additionals = []
@@ -1505,6 +1197,8 @@ backaxel (Axel): Axel properties of the rear axel
                 frontaxel (Axel): Axel properties of the front axel
 
         &#34;&#34;&#34;
+        if not isinstance(axel,Axel):
+            raise TypeError(&#39;axel input is not of type Axel&#39;) 
         self.additionals.append(axel)
 
     def get_element(self):
@@ -1541,6 +1235,8 @@ backaxel (Axel): Axel properties of the rear axel
             frontaxel (Axel): Axel properties of the front axel
 
     &#34;&#34;&#34;
+    if not isinstance(axel,Axel):
+        raise TypeError(&#39;axel input is not of type Axel&#39;) 
     self.additionals.append(axel)</code></pre>
 </details>
 </dd>
@@ -1563,675 +1259,6 @@ backaxel (Axel): Axel properties of the rear axel
     for ax in self.additionals:
         element.append(ax.get_element())
 
-    return element</code></pre>
-</details>
-</dd>
-</dl>
-</dd>
-<dt id="pyoscx.entities.BoundingBox"><code class="flex name class">
-<span>class <span class="ident">BoundingBox</span></span>
-<span>(</span><span>width, length, height, x_center, y_center, z_center)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>the Dimensions describes the size of an entity</p>
-<h2 id="parameters">Parameters</h2>
-<pre><code>width (float): the width of the entity
-
-length (float): the lenght of the entity
-
-height (float): the height of the entity
-
-x_center (float): x distance from back axel to center
-
-y_center (float): y distance from back axel to center
-
-z_center (float): z distance from back axel to center
-</code></pre>
-<h2 id="attributes">Attributes</h2>
-<pre><code>boundingbox (BoundingBox): the bounding box of the entity
-
-center (Center): the center of the object relative the the back axel
-</code></pre>
-<h2 id="methods">Methods</h2>
-<pre><code>get_element()
-    Returns the full ElementTree of the class
-</code></pre>
-<p>initalzie the Dimensions</p>
-<h2 id="parameters_1">Parameters</h2>
-<pre><code>width (float): the width of the entity
-
-length (float): the lenght of the entity
-
-height (float): the height of the entity
-
-x_center (float): x distance from back axel to center
-
-y_center (float): y distance from back axel to center
-
-z_center (float): z distance from back axel to center
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class BoundingBox():
-    &#34;&#34;&#34; the Dimensions describes the size of an entity
-
-        Parameters
-        ----------
-            width (float): the width of the entity
-
-            length (float): the lenght of the entity
-
-            height (float): the height of the entity
-
-            x_center (float): x distance from back axel to center
-
-            y_center (float): y distance from back axel to center
-
-            z_center (float): z distance from back axel to center
-                
-
-        Attributes
-        ----------
-            boundingbox (BoundingBox): the bounding box of the entity
-
-            center (Center): the center of the object relative the the back axel
-
-        Methods
-        -------
-            get_element()
-                Returns the full ElementTree of the class
-
-    &#34;&#34;&#34;
-    def __init__(self,width,length,height,x_center,y_center,z_center):
-        &#34;&#34;&#34; initalzie the Dimensions
-
-        Parameters
-        ----------
-            width (float): the width of the entity
-
-            length (float): the lenght of the entity
-
-            height (float): the height of the entity
-
-            x_center (float): x distance from back axel to center
-
-            y_center (float): y distance from back axel to center
-
-            z_center (float): z distance from back axel to center
-        
-        &#34;&#34;&#34;
-        self.boundingbox = Dimensions(width,length,height)
-        self.center = Center(x_center,y_center,z_center)
-
-    def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the Dimensions
-
-        &#34;&#34;&#34;
-        element = ET.Element(&#39;BoundingBox&#39;)
-        element.append(self.center.get_element())
-        element.append(self.boundingbox.get_element())
-        return element</code></pre>
-</details>
-<h3>Methods</h3>
-<dl>
-<dt id="pyoscx.entities.BoundingBox.get_element"><code class="name flex">
-<span>def <span class="ident">get_element</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>returns the elementTree of the Dimensions</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_element(self):
-    &#34;&#34;&#34; returns the elementTree of the Dimensions
-
-    &#34;&#34;&#34;
-    element = ET.Element(&#39;BoundingBox&#39;)
-    element.append(self.center.get_element())
-    element.append(self.boundingbox.get_element())
-    return element</code></pre>
-</details>
-</dd>
-</dl>
-</dd>
-<dt id="pyoscx.entities.Center"><code class="flex name class">
-<span>class <span class="ident">Center</span></span>
-<span>(</span><span>x, y, z)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>the Center Class creates a centerpoint for a bounding box, reference point of a vehicle is the back axel</p>
-<h2 id="parameters">Parameters</h2>
-<pre><code>x (float): x distance from back axel to center
-
-y (float): y distance from back axel to center
-
-z (float): z distance from back axel to center
-</code></pre>
-<h2 id="attributes">Attributes</h2>
-<pre><code>x (float): x distance from back axel to center
-
-y (float): y distance from back axel to center
-
-z (float): z distance from back axel to center
-</code></pre>
-<h2 id="methods">Methods</h2>
-<pre><code>get_element()
-    Returns the full ElementTree of the class
-
-get_attributes()
-    Returns a dictionary of all attributes of the class
-</code></pre>
-<p>initalzie the Center Class</p>
-<h2 id="parameters_1">Parameters</h2>
-<pre><code>x (float): x distance from back axel to center
-
-y (float): y distance from back axel to center
-
-z (float): z distance from back axel to center
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Center():
-    &#34;&#34;&#34; the Center Class creates a centerpoint for a bounding box, reference point of a vehicle is the back axel
-
-        Parameters
-        ----------
-            x (float): x distance from back axel to center
-
-            y (float): y distance from back axel to center
-
-            z (float): z distance from back axel to center
-                
-
-        Attributes
-        ----------
-            x (float): x distance from back axel to center
-
-            y (float): y distance from back axel to center
-
-            z (float): z distance from back axel to center
-
-        Methods
-        -------
-            get_element()
-                Returns the full ElementTree of the class
-
-            get_attributes()
-                Returns a dictionary of all attributes of the class
-
-    &#34;&#34;&#34;
-    def __init__(self,x,y,z):
-        &#34;&#34;&#34; initalzie the Center Class
-
-        Parameters
-        ----------
-            x (float): x distance from back axel to center
-
-            y (float): y distance from back axel to center
-
-            z (float): z distance from back axel to center
-        
-        &#34;&#34;&#34;
-        self.x = x
-        self.y = y
-        self.z = z
-    def get_attributes(self):
-        &#34;&#34;&#34; returns the attributes as a dict of the Center
-
-        &#34;&#34;&#34;
-        return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z)}
-
-    def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the Center
-
-        &#34;&#34;&#34;
-        element = ET.Element(&#39;Center&#39;,attrib=self.get_attributes())
-        return element</code></pre>
-</details>
-<h3>Methods</h3>
-<dl>
-<dt id="pyoscx.entities.Center.get_attributes"><code class="name flex">
-<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>returns the attributes as a dict of the Center</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_attributes(self):
-    &#34;&#34;&#34; returns the attributes as a dict of the Center
-
-    &#34;&#34;&#34;
-    return {&#39;x&#39;:str(self.x),&#39;y&#39;:str(self.y),&#39;z&#39;:str(self.z)}</code></pre>
-</details>
-</dd>
-<dt id="pyoscx.entities.Center.get_element"><code class="name flex">
-<span>def <span class="ident">get_element</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>returns the elementTree of the Center</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_element(self):
-    &#34;&#34;&#34; returns the elementTree of the Center
-
-    &#34;&#34;&#34;
-    element = ET.Element(&#39;Center&#39;,attrib=self.get_attributes())
-    return element</code></pre>
-</details>
-</dd>
-</dl>
-</dd>
-<dt id="pyoscx.entities.Controller"><code class="flex name class">
-<span>class <span class="ident">Controller</span></span>
-<span>(</span><span>name, properties)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>the Controller class creates a controller of openScenario</p>
-<h2 id="parameters">Parameters</h2>
-<pre><code>name (str): name of the object
-
-properties (Properties): properties of the controller
-</code></pre>
-<h2 id="attributes">Attributes</h2>
-<pre><code>parameters (ParameterDeclaration): Parameter declarations of the vehicle
-
-properties (Properties): additional properties of the vehicle
-</code></pre>
-<h2 id="methods">Methods</h2>
-<pre><code>add_parameter(parameter)
-    adds a parameter declaration to the Controller
-
-append_to_catalog(filename)
-    adds the vehicle to an existing catalog
-
-dump_to_catalog(filename,name,description,author)
-    crates a new catalog with the vehicle
-
-get_element()
-    Returns the full ElementTree of the class
-
-get_attributes()
-    Returns a dictionary of all attributes of the class
-</code></pre>
-<p>initalzie the Controller Class</p>
-<h2 id="parameters_1">Parameters</h2>
-<pre><code>name (str): name of the object
-
-properties (Properties): properties of the Controller
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Controller():
-    &#34;&#34;&#34; the Controller class creates a controller of openScenario
-
-        Parameters
-        ----------
-            name (str): name of the object
-
-            properties (Properties): properties of the controller
-                
-        Attributes
-        ----------
-            parameters (ParameterDeclaration): Parameter declarations of the vehicle
-
-            properties (Properties): additional properties of the vehicle
-
-        Methods
-        -------
-            add_parameter(parameter)
-                adds a parameter declaration to the Controller
-
-            append_to_catalog(filename)
-                adds the vehicle to an existing catalog
-
-            dump_to_catalog(filename,name,description,author)
-                crates a new catalog with the vehicle
-
-            get_element()
-                Returns the full ElementTree of the class
-
-            get_attributes()
-                Returns a dictionary of all attributes of the class
-
-    &#34;&#34;&#34;
-    def __init__(self ,name ,properties):
-        &#34;&#34;&#34; initalzie the Controller Class
-
-        Parameters
-        ----------
-            name (str): name of the object
-
-            properties (Properties): properties of the Controller
-        
-        &#34;&#34;&#34;
-        self.name = name
-        self.parameters = ParameterDeclarations()
-        self.properties = properties
-
-    def dump_to_catalog(self,filename,catalogtype,description,author):
-        &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
-            
-            Parameters
-            ----------
-                filename (str): path of the new catalog file
-
-                catalogtype (str): name of the catalog
-
-                description (str): description of the catalog
-
-                author (str): author of the catalog
-        
-        &#34;&#34;&#34;
-        cf = CatalogFile()
-        cf.create_catalog(filename,catalogtype,description,author)
-        cf.add_to_catalog(self)
-        cf.dump()
-        
-    def append_to_catalog(self,filename):
-        &#34;&#34;&#34; adds the Controller to an existing catalog
-
-            Parameters
-            ----------
-                filename (str): path to the catalog file
-
-        &#34;&#34;&#34;
-        cf = CatalogFile()
-        cf.open_catalog(filename)
-        cf.add_to_catalog(self)
-        cf.dump()
-
-    def add_parameter(self,parameter):
-        &#34;&#34;&#34; adds a parameter declaration to the Controller
-
-            Parameters
-            ----------
-                parameter (Parameter): A new parameter declaration for the Controller
-
-        &#34;&#34;&#34;
-        self.parameters.add_parameter(parameter)
-
-    def get_attributes(self):
-        &#34;&#34;&#34; returns the attributes of the Controller as a dict
-
-        &#34;&#34;&#34;
-        return {&#39;name&#39;:self.name}
-
-    def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the Controller
-
-        &#34;&#34;&#34;
-        element = ET.Element(&#39;Controller&#39;,attrib=self.get_attributes())
-        element.append(self.parameters.get_element())
-        element.append(self.properties.get_element())
-        
-        return element</code></pre>
-</details>
-<h3>Methods</h3>
-<dl>
-<dt id="pyoscx.entities.Controller.add_parameter"><code class="name flex">
-<span>def <span class="ident">add_parameter</span></span>(<span>self, parameter)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>adds a parameter declaration to the Controller</p>
-<h2 id="parameters">Parameters</h2>
-<pre><code>parameter (Parameter): A new parameter declaration for the Controller
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add_parameter(self,parameter):
-    &#34;&#34;&#34; adds a parameter declaration to the Controller
-
-        Parameters
-        ----------
-            parameter (Parameter): A new parameter declaration for the Controller
-
-    &#34;&#34;&#34;
-    self.parameters.add_parameter(parameter)</code></pre>
-</details>
-</dd>
-<dt id="pyoscx.entities.Controller.append_to_catalog"><code class="name flex">
-<span>def <span class="ident">append_to_catalog</span></span>(<span>self, filename)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>adds the Controller to an existing catalog</p>
-<h2 id="parameters">Parameters</h2>
-<pre><code>filename (str): path to the catalog file
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def append_to_catalog(self,filename):
-    &#34;&#34;&#34; adds the Controller to an existing catalog
-
-        Parameters
-        ----------
-            filename (str): path to the catalog file
-
-    &#34;&#34;&#34;
-    cf = CatalogFile()
-    cf.open_catalog(filename)
-    cf.add_to_catalog(self)
-    cf.dump()</code></pre>
-</details>
-</dd>
-<dt id="pyoscx.entities.Controller.dump_to_catalog"><code class="name flex">
-<span>def <span class="ident">dump_to_catalog</span></span>(<span>self, filename, catalogtype, description, author)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>dump_to_catalog creates a new catalog and adds the Controller to it</p>
-<h2 id="parameters">Parameters</h2>
-<pre><code>filename (str): path of the new catalog file
-
-catalogtype (str): name of the catalog
-
-description (str): description of the catalog
-
-author (str): author of the catalog
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def dump_to_catalog(self,filename,catalogtype,description,author):
-    &#34;&#34;&#34; dump_to_catalog creates a new catalog and adds the Controller to it
-        
-        Parameters
-        ----------
-            filename (str): path of the new catalog file
-
-            catalogtype (str): name of the catalog
-
-            description (str): description of the catalog
-
-            author (str): author of the catalog
-    
-    &#34;&#34;&#34;
-    cf = CatalogFile()
-    cf.create_catalog(filename,catalogtype,description,author)
-    cf.add_to_catalog(self)
-    cf.dump()</code></pre>
-</details>
-</dd>
-<dt id="pyoscx.entities.Controller.get_attributes"><code class="name flex">
-<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>returns the attributes of the Controller as a dict</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_attributes(self):
-    &#34;&#34;&#34; returns the attributes of the Controller as a dict
-
-    &#34;&#34;&#34;
-    return {&#39;name&#39;:self.name}</code></pre>
-</details>
-</dd>
-<dt id="pyoscx.entities.Controller.get_element"><code class="name flex">
-<span>def <span class="ident">get_element</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>returns the elementTree of the Controller</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_element(self):
-    &#34;&#34;&#34; returns the elementTree of the Controller
-
-    &#34;&#34;&#34;
-    element = ET.Element(&#39;Controller&#39;,attrib=self.get_attributes())
-    element.append(self.parameters.get_element())
-    element.append(self.properties.get_element())
-    
-    return element</code></pre>
-</details>
-</dd>
-</dl>
-</dd>
-<dt id="pyoscx.entities.Dimensions"><code class="flex name class">
-<span>class <span class="ident">Dimensions</span></span>
-<span>(</span><span>width, length, height)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>the Dimensions describes the size of an entity</p>
-<h2 id="parameters">Parameters</h2>
-<pre><code>width (float): the width of the entity
-
-length (float): the lenght of the entity
-
-height (float): the height of the entity
-</code></pre>
-<h2 id="attributes">Attributes</h2>
-<pre><code>width (float): the width of the entity
-
-length (float): the lenght of the entity
-
-height (float): the height of the entity
-</code></pre>
-<h2 id="methods">Methods</h2>
-<pre><code>get_element()
-    Returns the full ElementTree of the class
-
-get_attributes()
-    Returns a dictionary of all attributes of the class
-</code></pre>
-<p>initalzie the Dimensions</p>
-<h2 id="parameters_1">Parameters</h2>
-<pre><code>width (float): the width of the entity
-
-length (float): the lenght of the entity
-
-height (float): the height of the entity
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Dimensions():
-    &#34;&#34;&#34; the Dimensions describes the size of an entity
-
-        Parameters
-        ----------
-            width (float): the width of the entity
-
-            length (float): the lenght of the entity
-
-            height (float): the height of the entity
-                
-
-        Attributes
-        ----------
-            width (float): the width of the entity
-
-            length (float): the lenght of the entity
-
-            height (float): the height of the entity
-
-        Methods
-        -------
-            get_element()
-                Returns the full ElementTree of the class
-
-            get_attributes()
-                Returns a dictionary of all attributes of the class
-
-    &#34;&#34;&#34;
-    def __init__(self,width,length,height):
-        &#34;&#34;&#34; initalzie the Dimensions
-
-        Parameters
-        ----------
-            width (float): the width of the entity
-
-            length (float): the lenght of the entity
-
-            height (float): the height of the entity
-        
-        &#34;&#34;&#34;
-        self.width = width
-        self.length = length
-        self.height = height
-    def get_attributes(self):
-        &#34;&#34;&#34; returns the attributes as a dict of the Dimensions
-
-        &#34;&#34;&#34;
-        return {&#39;width&#39;:str(self.width),&#39;length&#39;:str(self.length),&#39;height&#39;:str(self.height)}
-
-    def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the Dimensions
-
-        &#34;&#34;&#34;
-        element = ET.Element(&#39;Dimensions&#39;,attrib=self.get_attributes())
-        return element</code></pre>
-</details>
-<h3>Methods</h3>
-<dl>
-<dt id="pyoscx.entities.Dimensions.get_attributes"><code class="name flex">
-<span>def <span class="ident">get_attributes</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>returns the attributes as a dict of the Dimensions</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_attributes(self):
-    &#34;&#34;&#34; returns the attributes as a dict of the Dimensions
-
-    &#34;&#34;&#34;
-    return {&#39;width&#39;:str(self.width),&#39;length&#39;:str(self.length),&#39;height&#39;:str(self.height)}</code></pre>
-</details>
-</dd>
-<dt id="pyoscx.entities.Dimensions.get_element"><code class="name flex">
-<span>def <span class="ident">get_element</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>returns the elementTree of the Dimensions</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_element(self):
-    &#34;&#34;&#34; returns the elementTree of the Dimensions
-
-    &#34;&#34;&#34;
-    element = ET.Element(&#39;Dimensions&#39;,attrib=self.get_attributes())
     return element</code></pre>
 </details>
 </dd>
@@ -2315,7 +1342,7 @@ get_element()
 
         self.scenario_objects.append(ScenarioObject(name,entityobject,controller))
     
-    def add_entity_bytype(self,name,entity_type):
+    def add_entity_bytype(self,name,object_type):
         &#34;&#34;&#34; adds an Entity to the scenario
         
             Parameters
@@ -2325,7 +1352,7 @@ get_element()
                 object_type (ObjectType): type of entity
             
         &#34;&#34;&#34;
-        self.entities.append(Entity(name,object_type=entity_type))
+        self.entities.append(Entity(name,object_type=object_type))
 
     def add_entity_byref(self,name,entity):
         &#34;&#34;&#34; adds an Entity to the scenario
@@ -2337,6 +1364,7 @@ get_element()
                 entity (str): type of entity
             
         &#34;&#34;&#34;
+
         self.entities.append(Entity(name,entityref=entity))
 
 
@@ -2379,11 +1407,12 @@ entity (str): type of entity
             entity (str): type of entity
         
     &#34;&#34;&#34;
+
     self.entities.append(Entity(name,entityref=entity))</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.entities.Entities.add_entity_bytype"><code class="name flex">
-<span>def <span class="ident">add_entity_bytype</span></span>(<span>self, name, entity_type)</span>
+<span>def <span class="ident">add_entity_bytype</span></span>(<span>self, name, object_type)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>adds an Entity to the scenario</p>
@@ -2396,7 +1425,7 @@ object_type (ObjectType): type of entity
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_entity_bytype(self,name,entity_type):
+<pre><code class="python">def add_entity_bytype(self,name,object_type):
     &#34;&#34;&#34; adds an Entity to the scenario
     
         Parameters
@@ -2406,7 +1435,7 @@ object_type (ObjectType): type of entity
             object_type (ObjectType): type of entity
         
     &#34;&#34;&#34;
-    self.entities.append(Entity(name,object_type=entity_type))</code></pre>
+    self.entities.append(Entity(name,object_type=object_type))</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.entities.Entities.add_scenario_object"><code class="name flex">
@@ -2563,7 +1592,7 @@ optionals (only use one):
             self.object_type = None
         else:
             if object_type not in ObjectType:
-                ValueError(&#39;Not a valid ObjectType&#39;)
+                ValueError(&#39;object_type input not a valid ObjectType&#39;)
             self.object_type = object_type
             self.entity = None
         
@@ -2638,7 +1667,7 @@ optionals (only use one):
 
 mass (float): mass of the object
 
-category (str): the category of the misc object
+category (MiscObjectCategory): the category of the misc object
 
 boundingbox (BoundingBox): the bounding box of the MiscObject
 </code></pre>
@@ -2647,7 +1676,7 @@ boundingbox (BoundingBox): the bounding box of the MiscObject
 
 mass (float): mass of the object
 
-misc_type (str): type of misc object
+misc_type (MiscObjectCategory): type of misc object
 
 boundingbox (BoundingBox): the bounding box of the MiscObject
 
@@ -2683,7 +1712,7 @@ get_attributes()
 
 mass (float): mass of the object
 
-category (str): the category of the misc object
+category (MiscObjectCategory): the category of the misc object
 
 boundingbox (BoundingBox): the bounding box of the MiscObject
 </code></pre></div>
@@ -2700,7 +1729,7 @@ boundingbox (BoundingBox): the bounding box of the MiscObject
 
             mass (float): mass of the object
 
-            category (str): the category of the misc object
+            category (MiscObjectCategory): the category of the misc object
 
             boundingbox (BoundingBox): the bounding box of the MiscObject               
 
@@ -2710,7 +1739,7 @@ boundingbox (BoundingBox): the bounding box of the MiscObject
 
             mass (float): mass of the object
 
-            misc_type (str): type of misc object
+            misc_type (MiscObjectCategory): type of misc object
 
             boundingbox (BoundingBox): the bounding box of the MiscObject
 
@@ -2751,16 +1780,19 @@ boundingbox (BoundingBox): the bounding box of the MiscObject
 
             mass (float): mass of the object
 
-            category (str): the category of the misc object
+            category (MiscObjectCategory): the category of the misc object
 
             boundingbox (BoundingBox): the bounding box of the MiscObject       
         
         &#34;&#34;&#34;
         self.name = name
         self.mass = mass
-        # if category not in MiscObjectCategory:
-        #     ValueError(str(category) + &#39; is not a valid MiscObject type&#39;)    
+        if category not in MiscObjectCategory:
+            print(category)
+            raise TypeError(str(category) + &#39; is not a valid MiscObject type&#39;)    
         self.category = category
+        if not isinstance(boundingbox,BoundingBox):
+            raise TypeError(&#39;boundingbox input is not of type BoundingBox&#39;)
         self.boundingbox = boundingbox
         self.parameters = ParameterDeclarations()
         self.properties = Properties()
@@ -2807,6 +1839,8 @@ boundingbox (BoundingBox): the bounding box of the MiscObject
                 parameter (Parameter): A new parameter declaration for the MiscObject
 
         &#34;&#34;&#34;
+        if not isinstance(parameter,Parameter):
+            raise TypeError(&#39;parameter input is not of type Parameter&#39;)
         self.parameters.add_parameter(parameter)
 
     def add_property(self,name, value):
@@ -2870,6 +1904,8 @@ boundingbox (BoundingBox): the bounding box of the MiscObject
             parameter (Parameter): A new parameter declaration for the MiscObject
 
     &#34;&#34;&#34;
+    if not isinstance(parameter,Parameter):
+        raise TypeError(&#39;parameter input is not of type Parameter&#39;)
     self.parameters.add_parameter(parameter)</code></pre>
 </details>
 </dd>
@@ -3173,6 +2209,9 @@ boundingbox (BoundingBox): the bounding box of the pedestrian
         self.mass = mass
         if category not in PedestrianCategory:
             ValueError(str(category) + &#39; is not a valid pedestrian type&#39;)    
+        if not isinstance(boundingbox,BoundingBox):
+            raise TypeError(&#39;boundingbox input is not of type BoundingBox&#39;)
+
         self.category = category
         self.boundingbox = boundingbox
         self.parameters = ParameterDeclarations()
@@ -3220,6 +2259,8 @@ boundingbox (BoundingBox): the bounding box of the pedestrian
                 parameter (Parameter): A new parameter declaration for the pedestrian
 
         &#34;&#34;&#34;
+        if not isinstance(parameter,Parameter):
+            raise TypeError(&#39;parameter input is not of type Parameter&#39;)
         self.parameters.add_parameter(parameter)
 
     def add_property(self,name, value):
@@ -3283,6 +2324,8 @@ boundingbox (BoundingBox): the bounding box of the pedestrian
             parameter (Parameter): A new parameter declaration for the pedestrian
 
     &#34;&#34;&#34;
+    if not isinstance(parameter,Parameter):
+        raise TypeError(&#39;parameter input is not of type Parameter&#39;)
     self.parameters.add_parameter(parameter)</code></pre>
 </details>
 </dd>
@@ -3439,175 +2482,6 @@ author (str): author of the catalog
 </dd>
 </dl>
 </dd>
-<dt id="pyoscx.entities.Properties"><code class="flex name class">
-<span>class <span class="ident">Properties</span></span>
-</code></dt>
-<dd>
-<div class="desc"><p>the Properties contains are for user defined properties of an object
-</p>
-<h2 id="attributes">Attributes</h2>
-<pre><code>files (list of str): arbitrary files with properties
-
-properties (list of tuple(str,str)): properties in name/value pairs
-</code></pre>
-<h2 id="methods">Methods</h2>
-<pre><code>add_file(file)
-    adds a file with properties
-
-add_property(name,value)
-    adds a property pair, with name and value
-
-get_element()
-    Returns the full ElementTree of the class
-</code></pre>
-<p>initalzie the Properties</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Properties():
-    &#34;&#34;&#34; the Properties contains are for user defined properties of an object               
-
-        Attributes
-        ----------
-            files (list of str): arbitrary files with properties
-
-            properties (list of tuple(str,str)): properties in name/value pairs
-
-        Methods
-        -------
-            add_file(file)
-                adds a file with properties
-
-            add_property(name,value)
-                adds a property pair, with name and value
-
-            get_element()
-                Returns the full ElementTree of the class
-
-            
-    &#34;&#34;&#34;
-    def __init__(self):
-        &#34;&#34;&#34; initalzie the Properties
-
-        &#34;&#34;&#34;
-        self.files = []
-        self.properties = []
-
-    def add_file(self,filename):
-        &#34;&#34;&#34; adds a property file
-
-        Parameters
-        ----------
-            filename (str): name of the file
-
-        &#34;&#34;&#34;
-
-        self.files.append(filename)
-
-    def add_property(self,name,value):
-        &#34;&#34;&#34; adds a property pair
-
-        Parameters
-        ----------
-            name (str): name of the property
-
-            value (str): value of the property
-
-        &#34;&#34;&#34;
-        self.properties.append((name,value))
-
-    def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the Properties
-
-        &#34;&#34;&#34;
-        element = ET.Element(&#39;Properties&#39;)
-        for p in self.properties:
-            ET.SubElement(element,&#39;Property&#39;,attrib={&#39;name&#39;:p[0],&#39;value&#39;:p[1]})
-        for f in self.files:
-            ET.SubElement(element,&#39;File&#39;,attrib={&#39;filepath&#39;:f})
-        
-        
-        return element</code></pre>
-</details>
-<h3>Methods</h3>
-<dl>
-<dt id="pyoscx.entities.Properties.add_file"><code class="name flex">
-<span>def <span class="ident">add_file</span></span>(<span>self, filename)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>adds a property file</p>
-<h2 id="parameters">Parameters</h2>
-<pre><code>filename (str): name of the file
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add_file(self,filename):
-    &#34;&#34;&#34; adds a property file
-
-    Parameters
-    ----------
-        filename (str): name of the file
-
-    &#34;&#34;&#34;
-
-    self.files.append(filename)</code></pre>
-</details>
-</dd>
-<dt id="pyoscx.entities.Properties.add_property"><code class="name flex">
-<span>def <span class="ident">add_property</span></span>(<span>self, name, value)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>adds a property pair</p>
-<h2 id="parameters">Parameters</h2>
-<pre><code>name (str): name of the property
-
-value (str): value of the property
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add_property(self,name,value):
-    &#34;&#34;&#34; adds a property pair
-
-    Parameters
-    ----------
-        name (str): name of the property
-
-        value (str): value of the property
-
-    &#34;&#34;&#34;
-    self.properties.append((name,value))</code></pre>
-</details>
-</dd>
-<dt id="pyoscx.entities.Properties.get_element"><code class="name flex">
-<span>def <span class="ident">get_element</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>returns the elementTree of the Properties</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_element(self):
-    &#34;&#34;&#34; returns the elementTree of the Properties
-
-    &#34;&#34;&#34;
-    element = ET.Element(&#39;Properties&#39;)
-    for p in self.properties:
-        ET.SubElement(element,&#39;Property&#39;,attrib={&#39;name&#39;:p[0],&#39;value&#39;:p[1]})
-    for f in self.files:
-        ET.SubElement(element,&#39;File&#39;,attrib={&#39;filepath&#39;:f})
-    
-    
-    return element</code></pre>
-</details>
-</dd>
-</dl>
-</dd>
 <dt id="pyoscx.entities.ScenarioObject"><code class="flex name class">
 <span>class <span class="ident">ScenarioObject</span></span>
 <span>(</span><span>name, entityobject, controller=None)</span>
@@ -3642,7 +2516,7 @@ get_attributes()
 entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
 
 controller (CatalogReference, or Controller): controller for the object
-    Default (None)
+    Default: None
 </code></pre></div>
 <details class="source">
 <summary>
@@ -3685,10 +2559,15 @@ controller (CatalogReference, or Controller): controller for the object
                 entityobject (CatalogReference, Vehicle, Pedestrian, or MiscObject): object description
 
                 controller (CatalogReference, or Controller): controller for the object
-                    Default (None)
+                    Default: None
 
         &#34;&#34;&#34;
         self.name = name
+        if not (isinstance(entityobject,CatalogReference) or isinstance(entityobject,Vehicle) or isinstance(entityobject,Pedestrian) or isinstance(entityobject,MiscObject)):
+            raise TypeError(&#39;entityobject is not of type CatalogReference, Vehicle, Pedestrian, nor MiscObject&#39;)
+        
+        if controller is not None and not (isinstance(controller,CatalogReference) or isinstance(controller,Controller)):
+            raise TypeError(&#39;controller input is not of type CatalogReference or Controller&#39;)
         self.entityobject = entityobject
         self.controller = controller
 
@@ -3930,9 +2809,14 @@ max_deceleration (float): the maximum deceleration of the vehicle
         &#34;&#34;&#34;
         self.name = name
         if vehicle_type not in VehicleCategory:
-            ValueError(&#39;not a valid vehicle type&#39;)    
+            print(&#39;wtf&#39; , vehicle_type)
+            raise TypeError(&#39;not a valid vehicle type&#39;)  
+        if not isinstance(boundingbox,BoundingBox):
+            raise TypeError(&#39;boundingbox input is not of type BoundingBox&#39;)
+        
         self.vehicle_type = vehicle_type
         self.boundingbox = boundingbox
+
         self.axels = Axels(frontaxel,backaxel)
         self.dynamics = DynamicsConstrains(max_acceleration,max_deceleration,max_speed)
         self.parameters = ParameterDeclarations()
@@ -3979,6 +2863,7 @@ max_deceleration (float): the maximum deceleration of the vehicle
                 axel (Axel): an additional Axel
 
         &#34;&#34;&#34;
+        
         self.axels.add_axel(axel)
 
 
@@ -3990,6 +2875,8 @@ max_deceleration (float): the maximum deceleration of the vehicle
                 parameter (Parameter): A new parameter declaration for the vehicle
 
         &#34;&#34;&#34;
+        if not isinstance(parameter,Parameter):
+            raise TypeError(&#39;parameter input is not of type Parameter&#39;)
         self.parameters.add_parameter(parameter)
 
     def add_property(self,name, value):
@@ -4055,6 +2942,7 @@ max_deceleration (float): the maximum deceleration of the vehicle
             axel (Axel): an additional Axel
 
     &#34;&#34;&#34;
+    
     self.axels.add_axel(axel)</code></pre>
 </details>
 </dd>
@@ -4078,6 +2966,8 @@ max_deceleration (float): the maximum deceleration of the vehicle
             parameter (Parameter): A new parameter declaration for the vehicle
 
     &#34;&#34;&#34;
+    if not isinstance(parameter,Parameter):
+        raise TypeError(&#39;parameter input is not of type Parameter&#39;)
     self.parameters.add_parameter(parameter)</code></pre>
 </details>
 </dd>
@@ -4267,36 +3157,6 @@ author (str): author of the catalog
 </ul>
 </li>
 <li>
-<h4><code><a title="pyoscx.entities.BoundingBox" href="#pyoscx.entities.BoundingBox">BoundingBox</a></code></h4>
-<ul class="">
-<li><code><a title="pyoscx.entities.BoundingBox.get_element" href="#pyoscx.entities.BoundingBox.get_element">get_element</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="pyoscx.entities.Center" href="#pyoscx.entities.Center">Center</a></code></h4>
-<ul class="">
-<li><code><a title="pyoscx.entities.Center.get_attributes" href="#pyoscx.entities.Center.get_attributes">get_attributes</a></code></li>
-<li><code><a title="pyoscx.entities.Center.get_element" href="#pyoscx.entities.Center.get_element">get_element</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="pyoscx.entities.Controller" href="#pyoscx.entities.Controller">Controller</a></code></h4>
-<ul class="">
-<li><code><a title="pyoscx.entities.Controller.add_parameter" href="#pyoscx.entities.Controller.add_parameter">add_parameter</a></code></li>
-<li><code><a title="pyoscx.entities.Controller.append_to_catalog" href="#pyoscx.entities.Controller.append_to_catalog">append_to_catalog</a></code></li>
-<li><code><a title="pyoscx.entities.Controller.dump_to_catalog" href="#pyoscx.entities.Controller.dump_to_catalog">dump_to_catalog</a></code></li>
-<li><code><a title="pyoscx.entities.Controller.get_attributes" href="#pyoscx.entities.Controller.get_attributes">get_attributes</a></code></li>
-<li><code><a title="pyoscx.entities.Controller.get_element" href="#pyoscx.entities.Controller.get_element">get_element</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="pyoscx.entities.Dimensions" href="#pyoscx.entities.Dimensions">Dimensions</a></code></h4>
-<ul class="">
-<li><code><a title="pyoscx.entities.Dimensions.get_attributes" href="#pyoscx.entities.Dimensions.get_attributes">get_attributes</a></code></li>
-<li><code><a title="pyoscx.entities.Dimensions.get_element" href="#pyoscx.entities.Dimensions.get_element">get_element</a></code></li>
-</ul>
-</li>
-<li>
 <h4><code><a title="pyoscx.entities.Entities" href="#pyoscx.entities.Entities">Entities</a></code></h4>
 <ul class="">
 <li><code><a title="pyoscx.entities.Entities.add_entity_byref" href="#pyoscx.entities.Entities.add_entity_byref">add_entity_byref</a></code></li>
@@ -4334,14 +3194,6 @@ author (str): author of the catalog
 <li><code><a title="pyoscx.entities.Pedestrian.dump_to_catalog" href="#pyoscx.entities.Pedestrian.dump_to_catalog">dump_to_catalog</a></code></li>
 <li><code><a title="pyoscx.entities.Pedestrian.get_attributes" href="#pyoscx.entities.Pedestrian.get_attributes">get_attributes</a></code></li>
 <li><code><a title="pyoscx.entities.Pedestrian.get_element" href="#pyoscx.entities.Pedestrian.get_element">get_element</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="pyoscx.entities.Properties" href="#pyoscx.entities.Properties">Properties</a></code></h4>
-<ul class="">
-<li><code><a title="pyoscx.entities.Properties.add_file" href="#pyoscx.entities.Properties.add_file">add_file</a></code></li>
-<li><code><a title="pyoscx.entities.Properties.add_property" href="#pyoscx.entities.Properties.add_property">add_property</a></code></li>
-<li><code><a title="pyoscx.entities.Properties.get_element" href="#pyoscx.entities.Properties.get_element">get_element</a></code></li>
 </ul>
 </li>
 <li>
