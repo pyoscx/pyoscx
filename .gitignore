@@ -1,2 +1,13 @@
 *.pyc
 *.pyo
+.pytest_cache/v/cache/nodeids
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/pyoscx.iml
+.idea/modules.xml
+.idea/misc.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.pytest_cache/v/cache/lastfailed
+examples/Controller.xosx
+examples/my_vehicles.xosc
