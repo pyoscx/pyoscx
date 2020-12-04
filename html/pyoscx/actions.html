@@ -945,8 +945,8 @@ class TeleportAction(_PrivateActionType):
 
 # Routing actions
 
-class AssingRouteAction(_PrivateActionType):
-    &#34;&#34;&#34; AssingRouteAction creates a RouteAction of type AssingRouteAction
+class AssignRouteAction(_PrivateActionType):
+    &#34;&#34;&#34; AssignRouteAction creates a RouteAction of type AssignRouteAction
 
         Parameters
         ----------
@@ -964,7 +964,7 @@ class AssingRouteAction(_PrivateActionType):
 
     &#34;&#34;&#34;
     def __init__(self,route):
-        &#34;&#34;&#34; initalizes the AssingRouteAction
+        &#34;&#34;&#34; initalizes the AssignRouteAction
 
             Parameters
             ----------
@@ -977,7 +977,7 @@ class AssingRouteAction(_PrivateActionType):
         self.route = route
 
     def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the AssingRouteAction
+        &#34;&#34;&#34; returns the elementTree of the AssignRouteAction
 
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
@@ -1006,7 +1006,7 @@ class AcquirePositionAction(_PrivateActionType):
 
     &#34;&#34;&#34;
     def __init__(self,position):
-        &#34;&#34;&#34; initalizes the AssingRouteAction
+        &#34;&#34;&#34; initalizes the AssignRouteAction
 
             Parameters
             ----------
@@ -1019,7 +1019,7 @@ class AcquirePositionAction(_PrivateActionType):
         self.position = position
 
     def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the AssingRouteAction
+        &#34;&#34;&#34; returns the elementTree of the AssignRouteAction
 
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
@@ -1087,7 +1087,7 @@ class FollowTrajectoryAction(_PrivateActionType):
         self.timeref = TimeReference(reference_domain,scale,offset)
 
     def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the AssingRouteAction
+        &#34;&#34;&#34; returns the elementTree of the AssignRouteAction
 
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
@@ -3315,7 +3315,7 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
 <pre><code>get_element()
     Returns the full ElementTree of the class
 </code></pre>
-<p>initalizes the AssingRouteAction</p>
+<p>initalizes the AssignRouteAction</p>
 <h2 id="parameters_1">Parameters</h2>
 <pre><code>position (*Position): target position
 </code></pre></div>
@@ -3341,7 +3341,7 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
 
     &#34;&#34;&#34;
     def __init__(self,position):
-        &#34;&#34;&#34; initalizes the AssingRouteAction
+        &#34;&#34;&#34; initalizes the AssignRouteAction
 
             Parameters
             ----------
@@ -3354,7 +3354,7 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
         self.position = position
 
     def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the AssingRouteAction
+        &#34;&#34;&#34; returns the elementTree of the AssignRouteAction
 
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
@@ -3375,13 +3375,13 @@ target_tolerance (optional) (double): tolerance offset of the target's position 
 <span>def <span class="ident">get_element</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>returns the elementTree of the AssingRouteAction</p></div>
+<div class="desc"><p>returns the elementTree of the AssignRouteAction</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_element(self):
-    &#34;&#34;&#34; returns the elementTree of the AssingRouteAction
+    &#34;&#34;&#34; returns the elementTree of the AssignRouteAction
 
     &#34;&#34;&#34;
     element = ET.Element(&#39;PrivateAction&#39;)
@@ -3755,12 +3755,12 @@ position (*Position): position where the vehicle should be added
 </dd>
 </dl>
 </dd>
-<dt id="pyoscx.actions.AssingRouteAction"><code class="flex name class">
-<span>class <span class="ident">AssingRouteAction</span></span>
+<dt id="pyoscx.actions.AssignRouteAction"><code class="flex name class">
+<span>class <span class="ident">AssignRouteAction</span></span>
 <span>(</span><span>route)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>AssingRouteAction creates a RouteAction of type AssingRouteAction</p>
+<div class="desc"><p>AssignRouteAction creates a RouteAction of type AssignRouteAction</p>
 <h2 id="parameters">Parameters</h2>
 <pre><code>route (Route, or CatalogReference): the route to follow
 </code></pre>
@@ -3771,7 +3771,7 @@ position (*Position): position where the vehicle should be added
 <pre><code>get_element()
     Returns the full ElementTree of the class
 </code></pre>
-<p>initalizes the AssingRouteAction</p>
+<p>initalizes the AssignRouteAction</p>
 <h2 id="parameters_1">Parameters</h2>
 <pre><code>route (Route, or CatalogReference): the route to follow
 </code></pre></div>
@@ -3779,8 +3779,8 @@ position (*Position): position where the vehicle should be added
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class AssingRouteAction(_PrivateActionType):
-    &#34;&#34;&#34; AssingRouteAction creates a RouteAction of type AssingRouteAction
+<pre><code class="python">class AssignRouteAction(_PrivateActionType):
+    &#34;&#34;&#34; AssignRouteAction creates a RouteAction of type AssignRouteAction
 
         Parameters
         ----------
@@ -3798,7 +3798,7 @@ position (*Position): position where the vehicle should be added
 
     &#34;&#34;&#34;
     def __init__(self,route):
-        &#34;&#34;&#34; initalizes the AssingRouteAction
+        &#34;&#34;&#34; initalizes the AssignRouteAction
 
             Parameters
             ----------
@@ -3811,7 +3811,7 @@ position (*Position): position where the vehicle should be added
         self.route = route
 
     def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the AssingRouteAction
+        &#34;&#34;&#34; returns the elementTree of the AssignRouteAction
 
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
@@ -3828,17 +3828,17 @@ position (*Position): position where the vehicle should be added
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="pyoscx.actions.AssingRouteAction.get_element"><code class="name flex">
+<dt id="pyoscx.actions.AssignRouteAction.get_element"><code class="name flex">
 <span>def <span class="ident">get_element</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>returns the elementTree of the AssingRouteAction</p></div>
+<div class="desc"><p>returns the elementTree of the AssignRouteAction</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_element(self):
-    &#34;&#34;&#34; returns the elementTree of the AssingRouteAction
+    &#34;&#34;&#34; returns the elementTree of the AssignRouteAction
 
     &#34;&#34;&#34;
     element = ET.Element(&#39;PrivateAction&#39;)
@@ -4337,7 +4337,7 @@ offset (double): offset for time values (must be combined with reference_domain 
         self.timeref = TimeReference(reference_domain,scale,offset)
 
     def get_element(self):
-        &#34;&#34;&#34; returns the elementTree of the AssingRouteAction
+        &#34;&#34;&#34; returns the elementTree of the AssignRouteAction
 
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
@@ -4360,13 +4360,13 @@ offset (double): offset for time values (must be combined with reference_domain 
 <span>def <span class="ident">get_element</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>returns the elementTree of the AssingRouteAction</p></div>
+<div class="desc"><p>returns the elementTree of the AssignRouteAction</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_element(self):
-    &#34;&#34;&#34; returns the elementTree of the AssingRouteAction
+    &#34;&#34;&#34; returns the elementTree of the AssignRouteAction
 
     &#34;&#34;&#34;
     element = ET.Element(&#39;PrivateAction&#39;)
@@ -8232,9 +8232,9 @@ get_attributes()
 </ul>
 </li>
 <li>
-<h4><code><a title="pyoscx.actions.AssingRouteAction" href="#pyoscx.actions.AssingRouteAction">AssingRouteAction</a></code></h4>
+<h4><code><a title="pyoscx.actions.AssignRouteAction" href="#pyoscx.actions.AssignRouteAction">AssignRouteAction</a></code></h4>
 <ul class="">
-<li><code><a title="pyoscx.actions.AssingRouteAction.get_element" href="#pyoscx.actions.AssingRouteAction.get_element">get_element</a></code></li>
+<li><code><a title="pyoscx.actions.AssignRouteAction.get_element" href="#pyoscx.actions.AssignRouteAction.get_element">get_element</a></code></li>
 </ul>
 </li>
 <li>
