@@ -38,6 +38,8 @@ To view the scenario created, esmini can be used. Visit https://github.com/esmin
 ### pyodrx
 [pyodrx](https://github.com/pyoscx/pyodrx) basic python wrapper for OpenDRIVE
  
+### scenariogeneration
+[scenariogeneration](https://github.com/pyoscx/scenariogeneration) basic python wrapper to combine pyodrx and pyoscx to generate scenarios
 ## Authors
 
 * **Mikael Andersson** - *Initial work* - [MandolinMicke](https://github.com/MandolinMicke)
