@@ -174,7 +174,7 @@ class RelativeSpeedAction(_PrivateActionType):
 
             valuetype (str): the type of relative speed wanted (used for relative speed)
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
         Attributes
         ----------
@@ -184,7 +184,7 @@ class RelativeSpeedAction(_PrivateActionType):
 
             valuetype (str): the type of relative speed wanted (used for relative speed)
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
             transition_dynamics (TransitionDynamics): how the change should be made
 
@@ -197,7 +197,7 @@ class RelativeSpeedAction(_PrivateActionType):
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,speed,entity,transition_dynamics,valuetype=&#39;delta&#39;,continious=True):
+    def __init__(self,speed,entity,transition_dynamics,valuetype=&#39;delta&#39;,continuous=True):
         &#34;&#34;&#34; initalizes RelativeSpeedAction
 
         Parameters
@@ -210,26 +210,26 @@ class RelativeSpeedAction(_PrivateActionType):
 
             valuetype (str): the type of relative speed wanted (used for relative speed)
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
         &#34;&#34;&#34;
         self.speed = speed
         self.target = entity
         self.valuetype = valuetype
-        if not isinstance(continious,bool):
-            raise TypeError(&#39;continious input not of type bool&#39;)
+        if not isinstance(continuous,bool):
+            raise TypeError(&#39;continuous input not of type bool&#39;)
         
         if not isinstance(transition_dynamics,TransitionDynamics):
             raise TypeError(&#39;transition_dynamics input not of type TransitionDynamics&#39;)
         self.transition_dynamics = transition_dynamics
-        self.continious = continious
+        self.continuous = continuous
 
     
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the RelativeSpeedAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;entityRef&#39;:self.target,&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.valuetype,&#39;continious&#39;:convert_bool(self.continious)}
+        return {&#39;entityRef&#39;:self.target,&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.valuetype,&#39;continuous&#39;:convert_bool(self.continuous)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the RelativeSpeedAction
@@ -257,7 +257,7 @@ class LongitudinalDistanceAction(_PrivateActionType):
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
                 Default: True
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
             max_acceleration (float): maximum acceleration allowed
@@ -275,7 +275,7 @@ class LongitudinalDistanceAction(_PrivateActionType):
 
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
             distance (float): the distance to the entity
 
@@ -290,7 +290,7 @@ class LongitudinalDistanceAction(_PrivateActionType):
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,distance,entity,freespace=True,continious=True,max_acceleration = None,max_deceleration = None,max_speed = None):
+    def __init__(self,distance,entity,freespace=True,continuous=True,max_acceleration = None,max_deceleration = None,max_speed = None):
         &#34;&#34;&#34; initalize the LongitudinalDistanceAction
         
         Parameters
@@ -302,7 +302,7 @@ class LongitudinalDistanceAction(_PrivateActionType):
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
                 Default: True
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
             max_acceleration (float): maximum acceleration allowed
@@ -316,15 +316,15 @@ class LongitudinalDistanceAction(_PrivateActionType):
 
         &#34;&#34;&#34;
         self.target = entity
-        if not isinstance(continious,bool):
-            raise TypeError(&#39;continious input not of type bool&#39;)
+        if not isinstance(continuous,bool):
+            raise TypeError(&#39;continuous input not of type bool&#39;)
         
         if not isinstance(freespace,bool):
             raise TypeError(&#39;freespace input not of type bool&#39;)
 
 
         self.freespace = freespace
-        self.continious = continious
+        self.continuous = continuous
         self.dynamic_constraint = DynamicsConstrains(max_acceleration,max_deceleration,max_speed)
         self.distance = distance   
         
@@ -336,7 +336,7 @@ class LongitudinalDistanceAction(_PrivateActionType):
         retdict = {}
         retdict[&#39;entityRef&#39;] = self.target
         retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
-        retdict[&#39;continious&#39;] = convert_bool(self.continious)
+        retdict[&#39;continuous&#39;] = convert_bool(self.continuous)
         retdict[&#39;distance&#39;] = str(self.distance)
         return retdict
 
@@ -364,7 +364,7 @@ class LongitudinalTimegapAction(_PrivateActionType):
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
                 Default: True
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
             max_acceleration (float): maximum acceleration allowed
@@ -382,7 +382,7 @@ class LongitudinalTimegapAction(_PrivateActionType):
 
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
             timegap (float): timegap to the target
 
@@ -397,7 +397,7 @@ class LongitudinalTimegapAction(_PrivateActionType):
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,timegap,entity,freespace=True,continious=True,max_acceleration = None,max_deceleration = None,max_speed = None):
+    def __init__(self,timegap,entity,freespace=True,continuous=True,max_acceleration = None,max_deceleration = None,max_speed = None):
         &#34;&#34;&#34; initalize the LongitudinalTimegapAction
         
         Parameters
@@ -409,7 +409,7 @@ class LongitudinalTimegapAction(_PrivateActionType):
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
                 Default: True
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
             max_acceleration (float): maximum acceleration allowed
@@ -423,8 +423,8 @@ class LongitudinalTimegapAction(_PrivateActionType):
 
         &#34;&#34;&#34;
         self.target = entity
-        if not isinstance(continious,bool):
-            raise TypeError(&#39;continious input not of type bool&#39;)
+        if not isinstance(continuous,bool):
+            raise TypeError(&#39;continuous input not of type bool&#39;)
 
 
         if not isinstance(freespace,bool):
@@ -432,7 +432,7 @@ class LongitudinalTimegapAction(_PrivateActionType):
 
 
         self.freespace = freespace
-        self.continious = continious
+        self.continuous = continuous
         self.timegap = timegap
         self.dynamic_constraint = DynamicsConstrains(max_acceleration,max_deceleration,max_speed)
         
@@ -445,7 +445,7 @@ class LongitudinalTimegapAction(_PrivateActionType):
         retdict = {}
         retdict[&#39;entityRef&#39;] = self.target
         retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
-        retdict[&#39;continious&#39;] = convert_bool(self.continious)
+        retdict[&#39;continuous&#39;] = convert_bool(self.continuous)
         retdict[&#39;timeGap&#39;] = str(self.timegap)
         return retdict
 
@@ -633,12 +633,12 @@ class AbsoluteLaneOffsetAction(_PrivateActionType):
 
             maxlatacc (float): maximum allowed lateral acceleration
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
         Attributes
         ----------
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
             value (float): lateral offset of the lane
 
@@ -657,7 +657,7 @@ class AbsoluteLaneOffsetAction(_PrivateActionType):
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,value,shape,maxlatacc,continious = True):
+    def __init__(self,value,shape,maxlatacc,continuous = True):
         &#34;&#34;&#34; initalizes the LaneOffsetAction
             Parameters
             ----------
@@ -667,13 +667,13 @@ class AbsoluteLaneOffsetAction(_PrivateActionType):
 
                 maxlatacc (float): maximum allowed lateral acceleration
 
-                continious (bool): if the controller tries to keep the relative speed 
+                continuous (bool): if the controller tries to keep the relative speed 
                     Default: True
         &#34;&#34;&#34;
-        if not isinstance(continious,bool):
-            raise TypeError(&#39;continious input not of type bool&#39;)
+        if not isinstance(continuous,bool):
+            raise TypeError(&#39;continuous input not of type bool&#39;)
 
-        self.continious = continious
+        self.continuous = continuous
         self.value = value
         if shape not in DynamicsShapes:
             raise ValueError(shape + &#39;; is not a valid shape.&#39;)
@@ -694,7 +694,7 @@ class AbsoluteLaneOffsetAction(_PrivateActionType):
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
         lataction = ET.SubElement(element,&#39;LateralAction&#39;)
-        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:convert_bool(self.continious)})
+        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continuous&#39;:convert_bool(self.continuous)})
         ET.SubElement(laneoffsetaction,&#39;LaneOffsetActionDynamics&#39;,{&#39;maxLateralAcc&#39;:str(self.maxlatacc),&#39;dynamicsShape&#39;:self.dynshape.name})
         laneoftarget = ET.SubElement(laneoffsetaction,&#39;LaneOffsetTarget&#39;)
         ET.SubElement(laneoftarget,&#39;AbsoluteTargetLaneOffset&#39;,self.get_attributes())
@@ -714,12 +714,12 @@ class RelativeLaneOffsetAction(_PrivateActionType):
 
             maxlatacc (float): maximum allowed lateral acceleration
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
         Attributes
         ----------
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
             value (float): relative lateral offset of the arget
 
@@ -738,7 +738,7 @@ class RelativeLaneOffsetAction(_PrivateActionType):
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,value,entity,shape,maxlatacc,continious = True):
+    def __init__(self,value,entity,shape,maxlatacc,continuous = True):
         &#34;&#34;&#34; initalizes the LaneOffsetAction,
 
             Parameters
@@ -751,13 +751,13 @@ class RelativeLaneOffsetAction(_PrivateActionType):
 
                 maxlatacc (float): maximum allowed lateral acceleration
 
-                continious (bool): if the controller tries to keep the relative speed 
+                continuous (bool): if the controller tries to keep the relative speed 
                     Default: True
         &#34;&#34;&#34;
-        if not isinstance(continious,bool):
-            raise TypeError(&#39;continious input not of type bool&#39;)
+        if not isinstance(continuous,bool):
+            raise TypeError(&#39;continuous input not of type bool&#39;)
         
-        self.continious = continious
+        self.continuous = continuous
         self.value = value
         self.target = entity
         if shape not in DynamicsShapes:
@@ -780,7 +780,7 @@ class RelativeLaneOffsetAction(_PrivateActionType):
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
         lataction = ET.SubElement(element,&#39;LateralAction&#39;)
-        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:convert_bool(self.continious)})
+        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continuous&#39;:convert_bool(self.continuous)})
         ET.SubElement(laneoffsetaction,&#39;LaneOffsetActionDynamics&#39;,{&#39;maxLateralAcc&#39;:str(self.maxlatacc),&#39;dynamicsShape&#39;:self.dynshape.name})
         laneoftarget = ET.SubElement(laneoffsetaction,&#39;LaneOffsetTarget&#39;)
         ET.SubElement(laneoftarget,&#39;RelativeTargetLaneOffset&#39;,attrib=self.get_attributes())
@@ -800,7 +800,7 @@ class LateralDistanceAction(_PrivateActionType):
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
                 Default: True
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
             max_acceleration (float): maximum acceleration allowed
@@ -820,7 +820,7 @@ class LateralDistanceAction(_PrivateActionType):
 
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
             distance (float): if the distance metric is used
 
@@ -838,7 +838,7 @@ class LateralDistanceAction(_PrivateActionType):
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,entity,distance=None,freespace=True,continious=True,max_acceleration = None,max_deceleration = None,max_speed = None):
+    def __init__(self,entity,distance=None,freespace=True,continuous=True,max_acceleration = None,max_deceleration = None,max_speed = None):
         &#34;&#34;&#34; initalizes the LateralDistanceAction
 
         Parameters
@@ -850,7 +850,7 @@ class LateralDistanceAction(_PrivateActionType):
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
                 Default: True
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
             max_acceleration (float): maximum acceleration allowed
@@ -864,14 +864,14 @@ class LateralDistanceAction(_PrivateActionType):
         &#34;&#34;&#34;
         self.distance = distance
         self.target = entity
-        if not isinstance(continious,bool):
-            raise TypeError(&#39;continious input not of type bool&#39;)
+        if not isinstance(continuous,bool):
+            raise TypeError(&#39;continuous input not of type bool&#39;)
 
         if not isinstance(freespace,bool):
             raise TypeError(&#39;freespace input not of type bool&#39;)
         
         self.freespace = freespace
-        self.continious = continious
+        self.continuous = continuous
         self.dynamic_constraint = DynamicsConstrains(max_acceleration,max_deceleration,max_speed)
 
     def get_attributes(self):
@@ -881,7 +881,7 @@ class LateralDistanceAction(_PrivateActionType):
         retdict = {}
         retdict[&#39;entityRef&#39;] = self.target
         retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
-        retdict[&#39;continious&#39;] = convert_bool(self.continious)
+        retdict[&#39;continuous&#39;] = convert_bool(self.continuous)
         if self.distance:
             retdict[&#39;distance&#39;] = str(self.distance)
         return retdict
@@ -2775,7 +2775,7 @@ target_lane_offset (float): if a offset in the target lane is wanted
 </dd>
 <dt id="pyoscx.actions.AbsoluteLaneOffsetAction"><code class="flex name class">
 <span>class <span class="ident">AbsoluteLaneOffsetAction</span></span>
-<span>(</span><span>value, shape, maxlatacc, continious=True)</span>
+<span>(</span><span>value, shape, maxlatacc, continuous=True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>the AbsoluteLaneOffsetAction class creates a LateralAction of type LaneOffsetAction with an absolute target</p>
@@ -2786,11 +2786,11 @@ shape (DynamicsShapes): shape of the offset action
 
 maxlatacc (float): maximum allowed lateral acceleration
 
-continious (bool): if the controller tries to keep the relative speed 
+continuous (bool): if the controller tries to keep the relative speed 
     Default: True
 </code></pre>
 <h2 id="attributes">Attributes</h2>
-<pre><code>continious (bool): if the controller tries to keep the relative speed
+<pre><code>continuous (bool): if the controller tries to keep the relative speed
 
 value (float): lateral offset of the lane
 
@@ -2816,7 +2816,7 @@ shape (DynamicsShapes): shape of the offset action
 
 maxlatacc (float): maximum allowed lateral acceleration
 
-continious (bool): if the controller tries to keep the relative speed 
+continuous (bool): if the controller tries to keep the relative speed 
     Default: True
 </code></pre></div>
 <details class="source">
@@ -2834,12 +2834,12 @@ continious (bool): if the controller tries to keep the relative speed
 
             maxlatacc (float): maximum allowed lateral acceleration
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
         Attributes
         ----------
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
             value (float): lateral offset of the lane
 
@@ -2858,7 +2858,7 @@ continious (bool): if the controller tries to keep the relative speed
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,value,shape,maxlatacc,continious = True):
+    def __init__(self,value,shape,maxlatacc,continuous = True):
         &#34;&#34;&#34; initalizes the LaneOffsetAction
             Parameters
             ----------
@@ -2868,13 +2868,13 @@ continious (bool): if the controller tries to keep the relative speed
 
                 maxlatacc (float): maximum allowed lateral acceleration
 
-                continious (bool): if the controller tries to keep the relative speed 
+                continuous (bool): if the controller tries to keep the relative speed 
                     Default: True
         &#34;&#34;&#34;
-        if not isinstance(continious,bool):
-            raise TypeError(&#39;continious input not of type bool&#39;)
+        if not isinstance(continuous,bool):
+            raise TypeError(&#39;continuous input not of type bool&#39;)
 
-        self.continious = continious
+        self.continuous = continuous
         self.value = value
         if shape not in DynamicsShapes:
             raise ValueError(shape + &#39;; is not a valid shape.&#39;)
@@ -2895,7 +2895,7 @@ continious (bool): if the controller tries to keep the relative speed
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
         lataction = ET.SubElement(element,&#39;LateralAction&#39;)
-        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:convert_bool(self.continious)})
+        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continuous&#39;:convert_bool(self.continuous)})
         ET.SubElement(laneoffsetaction,&#39;LaneOffsetActionDynamics&#39;,{&#39;maxLateralAcc&#39;:str(self.maxlatacc),&#39;dynamicsShape&#39;:self.dynshape.name})
         laneoftarget = ET.SubElement(laneoffsetaction,&#39;LaneOffsetTarget&#39;)
         ET.SubElement(laneoftarget,&#39;AbsoluteTargetLaneOffset&#39;,self.get_attributes())
@@ -2942,7 +2942,7 @@ continious (bool): if the controller tries to keep the relative speed
     &#34;&#34;&#34;
     element = ET.Element(&#39;PrivateAction&#39;)
     lataction = ET.SubElement(element,&#39;LateralAction&#39;)
-    laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:convert_bool(self.continious)})
+    laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continuous&#39;:convert_bool(self.continuous)})
     ET.SubElement(laneoffsetaction,&#39;LaneOffsetActionDynamics&#39;,{&#39;maxLateralAcc&#39;:str(self.maxlatacc),&#39;dynamicsShape&#39;:self.dynshape.name})
     laneoftarget = ET.SubElement(laneoffsetaction,&#39;LaneOffsetTarget&#39;)
     ET.SubElement(laneoftarget,&#39;AbsoluteTargetLaneOffset&#39;,self.get_attributes())
@@ -4383,7 +4383,7 @@ offset (double): offset for time values (must be combined with reference_domain 
 </dd>
 <dt id="pyoscx.actions.LateralDistanceAction"><code class="flex name class">
 <span>class <span class="ident">LateralDistanceAction</span></span>
-<span>(</span><span>entity, distance=None, freespace=True, continious=True, max_acceleration=None, max_deceleration=None, max_speed=None)</span>
+<span>(</span><span>entity, distance=None, freespace=True, continuous=True, max_acceleration=None, max_deceleration=None, max_speed=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="parameters">Parameters</h2>
@@ -4394,7 +4394,7 @@ distance (float): the lateral distance to the entity
 freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
     Default: True
 
-continious (bool): if the controller tries to keep the relative speed 
+continuous (bool): if the controller tries to keep the relative speed 
     Default: True
 
 max_acceleration (float): maximum acceleration allowed
@@ -4413,7 +4413,7 @@ distance (float): the lateral distance to the entity
 
 freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
 
-continious (bool): if the controller tries to keep the relative speed
+continuous (bool): if the controller tries to keep the relative speed
 
 distance (float): if the distance metric is used
 
@@ -4437,7 +4437,7 @@ distance (float): the lateral distance to the entity
 freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
     Default: True
 
-continious (bool): if the controller tries to keep the relative speed 
+continuous (bool): if the controller tries to keep the relative speed 
     Default: True
 
 max_acceleration (float): maximum acceleration allowed
@@ -4465,7 +4465,7 @@ max_speed (float): maximum speed allowed
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
                 Default: True
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
             max_acceleration (float): maximum acceleration allowed
@@ -4485,7 +4485,7 @@ max_speed (float): maximum speed allowed
 
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
             distance (float): if the distance metric is used
 
@@ -4503,7 +4503,7 @@ max_speed (float): maximum speed allowed
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,entity,distance=None,freespace=True,continious=True,max_acceleration = None,max_deceleration = None,max_speed = None):
+    def __init__(self,entity,distance=None,freespace=True,continuous=True,max_acceleration = None,max_deceleration = None,max_speed = None):
         &#34;&#34;&#34; initalizes the LateralDistanceAction
 
         Parameters
@@ -4515,7 +4515,7 @@ max_speed (float): maximum speed allowed
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
                 Default: True
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
             max_acceleration (float): maximum acceleration allowed
@@ -4529,14 +4529,14 @@ max_speed (float): maximum speed allowed
         &#34;&#34;&#34;
         self.distance = distance
         self.target = entity
-        if not isinstance(continious,bool):
-            raise TypeError(&#39;continious input not of type bool&#39;)
+        if not isinstance(continuous,bool):
+            raise TypeError(&#39;continuous input not of type bool&#39;)
 
         if not isinstance(freespace,bool):
             raise TypeError(&#39;freespace input not of type bool&#39;)
         
         self.freespace = freespace
-        self.continious = continious
+        self.continuous = continuous
         self.dynamic_constraint = DynamicsConstrains(max_acceleration,max_deceleration,max_speed)
 
     def get_attributes(self):
@@ -4546,7 +4546,7 @@ max_speed (float): maximum speed allowed
         retdict = {}
         retdict[&#39;entityRef&#39;] = self.target
         retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
-        retdict[&#39;continious&#39;] = convert_bool(self.continious)
+        retdict[&#39;continuous&#39;] = convert_bool(self.continuous)
         if self.distance:
             retdict[&#39;distance&#39;] = str(self.distance)
         return retdict
@@ -4586,7 +4586,7 @@ max_speed (float): maximum speed allowed
     retdict = {}
     retdict[&#39;entityRef&#39;] = self.target
     retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
-    retdict[&#39;continious&#39;] = convert_bool(self.continious)
+    retdict[&#39;continuous&#39;] = convert_bool(self.continuous)
     if self.distance:
         retdict[&#39;distance&#39;] = str(self.distance)
     return retdict</code></pre>
@@ -4618,7 +4618,7 @@ max_speed (float): maximum speed allowed
 </dd>
 <dt id="pyoscx.actions.LongitudinalDistanceAction"><code class="flex name class">
 <span>class <span class="ident">LongitudinalDistanceAction</span></span>
-<span>(</span><span>distance, entity, freespace=True, continious=True, max_acceleration=None, max_deceleration=None, max_speed=None)</span>
+<span>(</span><span>distance, entity, freespace=True, continuous=True, max_acceleration=None, max_deceleration=None, max_speed=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>The LongitudinalDistanceAction creates a LongitudinalAction of type LongitudinalDistanceAction with a distance target</p>
@@ -4630,7 +4630,7 @@ entity (str): the target name
 freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
     Default: True
 
-continious (bool): if the controller tries to keep the relative speed 
+continuous (bool): if the controller tries to keep the relative speed 
     Default: True
 
 max_acceleration (float): maximum acceleration allowed
@@ -4647,7 +4647,7 @@ max_speed (float): maximum speed allowed
 
 freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
 
-continious (bool): if the controller tries to keep the relative speed
+continuous (bool): if the controller tries to keep the relative speed
 
 distance (float): the distance to the entity
 
@@ -4669,7 +4669,7 @@ entity (str): the target name
 freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
     Default: True
 
-continious (bool): if the controller tries to keep the relative speed 
+continuous (bool): if the controller tries to keep the relative speed 
     Default: True
 
 max_acceleration (float): maximum acceleration allowed
@@ -4697,7 +4697,7 @@ max_speed (float): maximum speed allowed
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
                 Default: True
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
             max_acceleration (float): maximum acceleration allowed
@@ -4715,7 +4715,7 @@ max_speed (float): maximum speed allowed
 
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
             distance (float): the distance to the entity
 
@@ -4730,7 +4730,7 @@ max_speed (float): maximum speed allowed
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,distance,entity,freespace=True,continious=True,max_acceleration = None,max_deceleration = None,max_speed = None):
+    def __init__(self,distance,entity,freespace=True,continuous=True,max_acceleration = None,max_deceleration = None,max_speed = None):
         &#34;&#34;&#34; initalize the LongitudinalDistanceAction
         
         Parameters
@@ -4742,7 +4742,7 @@ max_speed (float): maximum speed allowed
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
                 Default: True
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
             max_acceleration (float): maximum acceleration allowed
@@ -4756,15 +4756,15 @@ max_speed (float): maximum speed allowed
 
         &#34;&#34;&#34;
         self.target = entity
-        if not isinstance(continious,bool):
-            raise TypeError(&#39;continious input not of type bool&#39;)
+        if not isinstance(continuous,bool):
+            raise TypeError(&#39;continuous input not of type bool&#39;)
         
         if not isinstance(freespace,bool):
             raise TypeError(&#39;freespace input not of type bool&#39;)
 
 
         self.freespace = freespace
-        self.continious = continious
+        self.continuous = continuous
         self.dynamic_constraint = DynamicsConstrains(max_acceleration,max_deceleration,max_speed)
         self.distance = distance   
         
@@ -4776,7 +4776,7 @@ max_speed (float): maximum speed allowed
         retdict = {}
         retdict[&#39;entityRef&#39;] = self.target
         retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
-        retdict[&#39;continious&#39;] = convert_bool(self.continious)
+        retdict[&#39;continuous&#39;] = convert_bool(self.continuous)
         retdict[&#39;distance&#39;] = str(self.distance)
         return retdict
 
@@ -4815,7 +4815,7 @@ max_speed (float): maximum speed allowed
     retdict = {}
     retdict[&#39;entityRef&#39;] = self.target
     retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
-    retdict[&#39;continious&#39;] = convert_bool(self.continious)
+    retdict[&#39;continuous&#39;] = convert_bool(self.continuous)
     retdict[&#39;distance&#39;] = str(self.distance)
     return retdict</code></pre>
 </details>
@@ -4846,7 +4846,7 @@ max_speed (float): maximum speed allowed
 </dd>
 <dt id="pyoscx.actions.LongitudinalTimegapAction"><code class="flex name class">
 <span>class <span class="ident">LongitudinalTimegapAction</span></span>
-<span>(</span><span>timegap, entity, freespace=True, continious=True, max_acceleration=None, max_deceleration=None, max_speed=None)</span>
+<span>(</span><span>timegap, entity, freespace=True, continuous=True, max_acceleration=None, max_deceleration=None, max_speed=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>The LongitudinalTimegapAction creates a LongitudinalAction of type LongitudinalDistanceAction with the timegap option</p>
@@ -4858,7 +4858,7 @@ entity (str): the target name
 freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
     Default: True
 
-continious (bool): if the controller tries to keep the relative speed 
+continuous (bool): if the controller tries to keep the relative speed 
     Default: True
 
 max_acceleration (float): maximum acceleration allowed
@@ -4875,7 +4875,7 @@ max_speed (float): maximum speed allowed
 
 freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
 
-continious (bool): if the controller tries to keep the relative speed
+continuous (bool): if the controller tries to keep the relative speed
 
 timegap (float): timegap to the target
 
@@ -4897,7 +4897,7 @@ entity (str): the target name
 freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
     Default: True
 
-continious (bool): if the controller tries to keep the relative speed 
+continuous (bool): if the controller tries to keep the relative speed 
     Default: True
 
 max_acceleration (float): maximum acceleration allowed
@@ -4925,7 +4925,7 @@ max_speed (float): maximum speed allowed
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
                 Default: True
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
             max_acceleration (float): maximum acceleration allowed
@@ -4943,7 +4943,7 @@ max_speed (float): maximum speed allowed
 
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
             timegap (float): timegap to the target
 
@@ -4958,7 +4958,7 @@ max_speed (float): maximum speed allowed
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,timegap,entity,freespace=True,continious=True,max_acceleration = None,max_deceleration = None,max_speed = None):
+    def __init__(self,timegap,entity,freespace=True,continuous=True,max_acceleration = None,max_deceleration = None,max_speed = None):
         &#34;&#34;&#34; initalize the LongitudinalTimegapAction
         
         Parameters
@@ -4970,7 +4970,7 @@ max_speed (float): maximum speed allowed
             freespace (bool): (True) distance between bounding boxes, (False) distance between ref point
                 Default: True
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
             max_acceleration (float): maximum acceleration allowed
@@ -4984,8 +4984,8 @@ max_speed (float): maximum speed allowed
 
         &#34;&#34;&#34;
         self.target = entity
-        if not isinstance(continious,bool):
-            raise TypeError(&#39;continious input not of type bool&#39;)
+        if not isinstance(continuous,bool):
+            raise TypeError(&#39;continuous input not of type bool&#39;)
 
 
         if not isinstance(freespace,bool):
@@ -4993,7 +4993,7 @@ max_speed (float): maximum speed allowed
 
 
         self.freespace = freespace
-        self.continious = continious
+        self.continuous = continuous
         self.timegap = timegap
         self.dynamic_constraint = DynamicsConstrains(max_acceleration,max_deceleration,max_speed)
         
@@ -5006,7 +5006,7 @@ max_speed (float): maximum speed allowed
         retdict = {}
         retdict[&#39;entityRef&#39;] = self.target
         retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
-        retdict[&#39;continious&#39;] = convert_bool(self.continious)
+        retdict[&#39;continuous&#39;] = convert_bool(self.continuous)
         retdict[&#39;timeGap&#39;] = str(self.timegap)
         return retdict
 
@@ -5045,7 +5045,7 @@ max_speed (float): maximum speed allowed
     retdict = {}
     retdict[&#39;entityRef&#39;] = self.target
     retdict[&#39;freespace&#39;] = convert_bool(self.freespace)
-    retdict[&#39;continious&#39;] = convert_bool(self.continious)
+    retdict[&#39;continuous&#39;] = convert_bool(self.continuous)
     retdict[&#39;timeGap&#39;] = str(self.timegap)
     return retdict</code></pre>
 </details>
@@ -6459,7 +6459,7 @@ target_lane_offset (float): if a offset in the target lane is wanted
 </dd>
 <dt id="pyoscx.actions.RelativeLaneOffsetAction"><code class="flex name class">
 <span>class <span class="ident">RelativeLaneOffsetAction</span></span>
-<span>(</span><span>value, entity, shape, maxlatacc, continious=True)</span>
+<span>(</span><span>value, entity, shape, maxlatacc, continuous=True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>the RelativeLaneOffsetAction class creates a LateralAction of type LaneOffsetAction with a relative target</p>
@@ -6472,11 +6472,11 @@ shape (str): shape of the offset action
 
 maxlatacc (float): maximum allowed lateral acceleration
 
-continious (bool): if the controller tries to keep the relative speed 
+continuous (bool): if the controller tries to keep the relative speed 
     Default: True
 </code></pre>
 <h2 id="attributes">Attributes</h2>
-<pre><code>continious (bool): if the controller tries to keep the relative speed
+<pre><code>continuous (bool): if the controller tries to keep the relative speed
 
 value (float): relative lateral offset of the arget
 
@@ -6503,7 +6503,7 @@ shape (str): shape of the offset action
 
 maxlatacc (float): maximum allowed lateral acceleration
 
-continious (bool): if the controller tries to keep the relative speed 
+continuous (bool): if the controller tries to keep the relative speed 
     Default: True
 </code></pre></div>
 <details class="source">
@@ -6523,12 +6523,12 @@ continious (bool): if the controller tries to keep the relative speed
 
             maxlatacc (float): maximum allowed lateral acceleration
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
                 Default: True
 
         Attributes
         ----------
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
             value (float): relative lateral offset of the arget
 
@@ -6547,7 +6547,7 @@ continious (bool): if the controller tries to keep the relative speed
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,value,entity,shape,maxlatacc,continious = True):
+    def __init__(self,value,entity,shape,maxlatacc,continuous = True):
         &#34;&#34;&#34; initalizes the LaneOffsetAction,
 
             Parameters
@@ -6560,13 +6560,13 @@ continious (bool): if the controller tries to keep the relative speed
 
                 maxlatacc (float): maximum allowed lateral acceleration
 
-                continious (bool): if the controller tries to keep the relative speed 
+                continuous (bool): if the controller tries to keep the relative speed 
                     Default: True
         &#34;&#34;&#34;
-        if not isinstance(continious,bool):
-            raise TypeError(&#39;continious input not of type bool&#39;)
+        if not isinstance(continuous,bool):
+            raise TypeError(&#39;continuous input not of type bool&#39;)
         
-        self.continious = continious
+        self.continuous = continuous
         self.value = value
         self.target = entity
         if shape not in DynamicsShapes:
@@ -6589,7 +6589,7 @@ continious (bool): if the controller tries to keep the relative speed
         &#34;&#34;&#34;
         element = ET.Element(&#39;PrivateAction&#39;)
         lataction = ET.SubElement(element,&#39;LateralAction&#39;)
-        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:convert_bool(self.continious)})
+        laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continuous&#39;:convert_bool(self.continuous)})
         ET.SubElement(laneoffsetaction,&#39;LaneOffsetActionDynamics&#39;,{&#39;maxLateralAcc&#39;:str(self.maxlatacc),&#39;dynamicsShape&#39;:self.dynshape.name})
         laneoftarget = ET.SubElement(laneoffsetaction,&#39;LaneOffsetTarget&#39;)
         ET.SubElement(laneoftarget,&#39;RelativeTargetLaneOffset&#39;,attrib=self.get_attributes())
@@ -6637,7 +6637,7 @@ continious (bool): if the controller tries to keep the relative speed
     &#34;&#34;&#34;
     element = ET.Element(&#39;PrivateAction&#39;)
     lataction = ET.SubElement(element,&#39;LateralAction&#39;)
-    laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continious&#39;:convert_bool(self.continious)})
+    laneoffsetaction = ET.SubElement(lataction,&#39;LaneOffsetAction&#39;,attrib={&#39;continuous&#39;:convert_bool(self.continuous)})
     ET.SubElement(laneoffsetaction,&#39;LaneOffsetActionDynamics&#39;,{&#39;maxLateralAcc&#39;:str(self.maxlatacc),&#39;dynamicsShape&#39;:self.dynshape.name})
     laneoftarget = ET.SubElement(laneoffsetaction,&#39;LaneOffsetTarget&#39;)
     ET.SubElement(laneoftarget,&#39;RelativeTargetLaneOffset&#39;,attrib=self.get_attributes())
@@ -6649,7 +6649,7 @@ continious (bool): if the controller tries to keep the relative speed
 </dd>
 <dt id="pyoscx.actions.RelativeSpeedAction"><code class="flex name class">
 <span>class <span class="ident">RelativeSpeedAction</span></span>
-<span>(</span><span>speed, entity, transition_dynamics, valuetype='delta', continious=True)</span>
+<span>(</span><span>speed, entity, transition_dynamics, valuetype='delta', continuous=True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>The RelativeSpeedAction creates a LongitudinalAction of type SpeedAction with a relative target</p>
@@ -6662,7 +6662,7 @@ transition_dynamics (TransitionDynamics): how the change should be made
 
 valuetype (str): the type of relative speed wanted (used for relative speed)
 
-continious (bool): if the controller tries to keep the relative speed
+continuous (bool): if the controller tries to keep the relative speed
 </code></pre>
 <h2 id="attributes">Attributes</h2>
 <pre><code>speed (float): the speed wanted
@@ -6671,7 +6671,7 @@ target (str): the name of the relative target (used for relative speed)
 
 valuetype (str): the type of relative speed wanted (used for relative speed)
 
-continious (bool): if the controller tries to keep the relative speed
+continuous (bool): if the controller tries to keep the relative speed
 
 transition_dynamics (TransitionDynamics): how the change should be made
 </code></pre>
@@ -6692,7 +6692,7 @@ transition_dynamics (TransitionDynamics): how the change should be made
 
 valuetype (str): the type of relative speed wanted (used for relative speed)
 
-continious (bool): if the controller tries to keep the relative speed
+continuous (bool): if the controller tries to keep the relative speed
 </code></pre></div>
 <details class="source">
 <summary>
@@ -6711,7 +6711,7 @@ continious (bool): if the controller tries to keep the relative speed
 
             valuetype (str): the type of relative speed wanted (used for relative speed)
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
         Attributes
         ----------
@@ -6721,7 +6721,7 @@ continious (bool): if the controller tries to keep the relative speed
 
             valuetype (str): the type of relative speed wanted (used for relative speed)
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
             transition_dynamics (TransitionDynamics): how the change should be made
 
@@ -6734,7 +6734,7 @@ continious (bool): if the controller tries to keep the relative speed
                 Returns a dictionary of all attributes of the class
 
     &#34;&#34;&#34;
-    def __init__(self,speed,entity,transition_dynamics,valuetype=&#39;delta&#39;,continious=True):
+    def __init__(self,speed,entity,transition_dynamics,valuetype=&#39;delta&#39;,continuous=True):
         &#34;&#34;&#34; initalizes RelativeSpeedAction
 
         Parameters
@@ -6747,26 +6747,26 @@ continious (bool): if the controller tries to keep the relative speed
 
             valuetype (str): the type of relative speed wanted (used for relative speed)
 
-            continious (bool): if the controller tries to keep the relative speed 
+            continuous (bool): if the controller tries to keep the relative speed 
 
         &#34;&#34;&#34;
         self.speed = speed
         self.target = entity
         self.valuetype = valuetype
-        if not isinstance(continious,bool):
-            raise TypeError(&#39;continious input not of type bool&#39;)
+        if not isinstance(continuous,bool):
+            raise TypeError(&#39;continuous input not of type bool&#39;)
         
         if not isinstance(transition_dynamics,TransitionDynamics):
             raise TypeError(&#39;transition_dynamics input not of type TransitionDynamics&#39;)
         self.transition_dynamics = transition_dynamics
-        self.continious = continious
+        self.continuous = continuous
 
     
     def get_attributes(self):
         &#34;&#34;&#34; returns the attributes of the RelativeSpeedAction as a dict
 
         &#34;&#34;&#34;
-        return {&#39;entityRef&#39;:self.target,&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.valuetype,&#39;continious&#39;:convert_bool(self.continious)}
+        return {&#39;entityRef&#39;:self.target,&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.valuetype,&#39;continuous&#39;:convert_bool(self.continuous)}
 
     def get_element(self):
         &#34;&#34;&#34; returns the elementTree of the RelativeSpeedAction
@@ -6802,7 +6802,7 @@ continious (bool): if the controller tries to keep the relative speed
     &#34;&#34;&#34; returns the attributes of the RelativeSpeedAction as a dict
 
     &#34;&#34;&#34;
-    return {&#39;entityRef&#39;:self.target,&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.valuetype,&#39;continious&#39;:convert_bool(self.continious)}</code></pre>
+    return {&#39;entityRef&#39;:self.target,&#39;value&#39;:str(self.speed),&#39;speedTargetValueType&#39;:self.valuetype,&#39;continuous&#39;:convert_bool(self.continuous)}</code></pre>
 </details>
 </dd>
 <dt id="pyoscx.actions.RelativeSpeedAction.get_element"><code class="name flex">
